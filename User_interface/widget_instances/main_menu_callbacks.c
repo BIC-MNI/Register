@@ -13,7 +13,6 @@ typedef  enum
     SAVE_TAGS_BUTTON,
     RECORD_TAG_BUTTON,
     DELETE_TAG_BUTTON,
-    GOTO_END_TAGS_BUTTON,
     N_MAIN_WIDGETS
 } Main_widgets;
 
@@ -82,10 +81,6 @@ private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback ) /* ARGSUSED */
 {
 }
 
-private  DEFINE_WIDGET_CALLBACK( goto_end_tags_button_callback ) /* ARGSUSED */
-{
-}
-
 public  void  add_main_widgets(
     UI_struct         *ui_info )
 {
@@ -95,6 +90,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Quit",
                    ON, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -107,6 +103,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Resample", 
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -114,11 +111,12 @@ public  void  add_main_widgets(
 
     widget_indices[SYNC_VOLUMES_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
-                   create_button( &ui_info->graphics_window,
+                   create_toggle_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
-                   "Sync Volumes", 
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   "Not Synced",
+                   "Synced",
+                   OFF, OFF, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -169,6 +167,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Load Tags",
                    ON, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -196,6 +195,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Save Tags",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -208,6 +208,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Record Tag",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -220,22 +221,11 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Delete Tag",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    delete_tag_button_callback, (void *) 0 ) );
-
-    widget_indices[GOTO_END_TAGS_BUTTON] = add_widget_to_list(
-                   &ui_info->widget_list[Main_menu_viewport],
-                   create_button( &ui_info->graphics_window,
-                   Main_menu_viewport, 
-                   0, 0, Button_width, Button_height,
-                   "Goto End Tags",
-                   OFF, BUTTON_ACTIVE_COLOUR,
-                   BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
-                   goto_end_tags_button_callback, (void *) 0 ) );
 
     position_main_widgets( ui_info );
 }
