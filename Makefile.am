@@ -107,5 +107,6 @@ User_interface/widgets/utilities.o \
 User_interface/widgets/widgets.o \
 User_interface/windows/lookup.o \
 User_interface/windows/popup.o \
-User_interface/windows/update.o
+User_interface/windows/update.o \
+User_interface/windows/xsect.o
 
