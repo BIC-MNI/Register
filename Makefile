@@ -11,16 +11,15 @@ all:  register  lint_register
 
 $(OBJECTS):
 
-include $(C_DEV_DIRECTORY)/Make/Makefile.include
-include $(GRAPHICS_DIRECTORY)/Makefile.include
+include Makefile.include
 
 OPT = -g
 
 register: $(OBJECTS)
-	$(CC) $(LFLAGS) $(OBJECTS) $(GRAPHICS_LIBS) -lrecipes -o $@
+	$(CC) $(LFLAGS) $(OBJECTS) $(GRAPHICS_LIBS_2D) -o $@
 
 lint_register: $(OBJECTS:.o=.ln)
-	lint -u $(OBJECTS:.o=.ln) $(GRAPHICS_LINT_LIBS)
+	$(LINT) -u $(OBJECTS:.o=.ln) $(GRAPHICS_LINT_LIBS)
 
 register.pixie:  $(OBJECTS)
 	if( -e register ) rm register
