@@ -1,0 +1,11 @@
+MNI-register is an interactive program to display and merge 2 volumes and
+pick homologous points for manually registering one volume to the other.
+
+See README.CVS, if you just checked-out the sources from CVS.
+
+See INSTALL.register and INSTALL for installation instructions.
+
+Any comments, questions, bug reports, or patches may be
+sent to
+	Steve Robbins <stever@bic.mni.mcgill.ca>
+

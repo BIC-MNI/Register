@@ -1,3 +1,22 @@
+2001-01-26  Steve ROBBINS  <stever@bic.mni.mcgill.ca>
+
+	* Tagged as release-1_3_1.
+
+	* AUTHORS:
+	* COPYING:
+	* NEWS:
+	* INSTALL.register:
+	* README: Add content for release.  The files were just
+	placeholders before.
+
+	* Makefile.am (register_LDADD): Add -lXmu to link step.  Why
+	is this not necessary on linux?
+
+	* User_interface/*/Makefile.am (INCLUDES): 
+	* UI_calls_F/Makefile.am (INCLUDES): 
+	* Functionality/*/Makefile.am (INCLUDES): Add $(top_srcdir)
+	to includes, to pick up common_include.h.
+
 2000-12-01  Steve Robbins  <Steven Michael Robbins <steven.robbins@videotron.ca>>
 
 	* README.CVS: Remove erroneous instructions.

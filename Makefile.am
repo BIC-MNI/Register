@@ -1,7 +1,11 @@
-SUBDIRS = Graphics Functionality UI_calls_F User_interface Register_resample Tagtoxfm
+AUTOMAKE_OPTIONS = check-news
+
+SUBDIRS = Graphics Functionality UI_calls_F User_interface \
+	Register_resample Tagtoxfm
 
 bin_PROGRAMS = register
 
+EXTRA_DIST = INSTALL.register
 
 # Adding a dummy source file to register is a work-around for a bug in 
 # automake, which does not (in version 1.4) allow linking together
@@ -18,7 +22,7 @@ CLEANFILES = dummy.c
 register_LDADD = $(objects) \
 	Graphics/libbicgl.a \
 	-lglut -lGL -lGLU \
-	$(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) \
+	$(X_LIBS) $(X_PRE_LIBS) -lX11 -lXmu $(X_EXTRA_LIBS) \
 	$(MNI_LIBS) -lm
 
 
