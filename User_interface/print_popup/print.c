@@ -2,8 +2,7 @@
 
 typedef  struct
 {
-    graphics_window_struct  graphics;
-    widget_struct           *widget;
+    popup_struct            popup_window;
     Real                    expiration_time;
 } message_struct;
 
@@ -20,8 +19,15 @@ public  void  initialize_print_popup()
     set_print_function( output_chars );
 }
 
+public  void  disable_print_popup()
+{
+    set_print_function( 0 );
+}
+
 private  DEFINE_EVENT_FUNCTION( create_the_window )    /* ARGSUSED */
 {
+    disable_print_popup();
+
     create_new_window = TRUE;
     remove_global_event_callback( NO_EVENT, create_the_window,
                                   (void *) NULL );
@@ -30,12 +36,16 @@ private  DEFINE_EVENT_FUNCTION( create_the_window )    /* ARGSUSED */
 
     SET_ARRAY_SIZE( output, n_chars, 0, DEFAULT_CHUNK_SIZE );
     n_chars = 0;
+
+    initialize_print_popup();
 }
 
 private  void  output_chars(
     char   str[] )
 {
     int   new_size;
+
+    disable_print_popup();
 
     if( create_new_window )
     {
@@ -51,17 +61,17 @@ private  void  output_chars(
     (void) strcpy( &output[n_chars], str );
 
     n_chars = new_size - 1;
+
+    initialize_print_popup();
 }
 
 private  void  delete_message_popup(
     message_struct          *popup )
 {
-    delete_widget( popup->widget );
-
     remove_global_event_callback( NO_EVENT, check_to_expire_popup,
                                   (void *) popup );
 
-    delete_popup_window( &popup->graphics );
+    delete_popup_window( &popup->popup_window );
 
     FREE( popup );
 }
@@ -95,6 +105,7 @@ private  void  create_message_popup(
     char                    *ptr;
     object_struct           *object;
     object_struct           **text_objects;
+    widget_struct           *widget;
     text_struct             *text;
     message_struct          *popup;   
 
@@ -138,7 +149,7 @@ private  void  create_message_popup(
     y_size = 2 * Message_y_offset + n_lines * Message_text_y_offset +
              Message_ok_button_height;
 
-    create_popup_window( &popup->graphics, "Register Message",
+    create_popup_window( &popup->popup_window, "Register Message",
                          x, y, x_size, y_size );
 
     popup->expiration_time = current_realtime_seconds() +
@@ -150,7 +161,7 @@ private  void  create_message_popup(
         Point_y( text->origin ) = y_size-1-Message_y_offset -
                                     i * Message_text_y_offset;
         
-        add_object_to_viewport( &popup->graphics.graphics, 0,
+        add_object_to_viewport( &popup->popup_window.graphics.graphics, 0,
                                 NORMAL_PLANES, text_objects[i] );
     }
 
@@ -159,7 +170,7 @@ private  void  create_message_popup(
         FREE( text_objects );
     }
 
-    popup->widget = create_button( &popup->graphics, 0,
+    widget = create_button( &popup->popup_window.graphics, 0,
                             Interface_x_spacing, Interface_y_spacing,
                             Button_width, Button_height,
                             "Acknowledge",
@@ -169,6 +180,9 @@ private  void  create_message_popup(
                             BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                             Button_text_font, Button_text_font_size,
                             acknowledge_callback, (void *) popup );
+
+    (void) add_widget_to_list( &popup->popup_window.widgets,
+                               widget );
 
     add_global_event_callback( NO_EVENT, check_to_expire_popup,
                                ANY_MODIFIER, (void *) popup );

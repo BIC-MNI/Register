@@ -4,16 +4,13 @@ typedef  struct
 {
     int                     volume;
     int                     over_or_under;
-    graphics_window_struct  graphics;
-    widgets_struct          widgets;
+    popup_struct            popup_window;
 } colour_selection_struct;
 
 private  void  delete_colour_selection(
     colour_selection_struct          *popup )
 {
-    delete_widget_list( &popup->widgets );
-
-    delete_popup_window( &popup->graphics );
+    delete_popup_window( &popup->popup_window );
 
     set_over_under_colour_activity( get_ui_struct(), popup->volume,
                                     popup->over_or_under, ON );
@@ -33,7 +30,7 @@ private  DEFINE_WIDGET_CALLBACK( colour_button_callback )   /* ARGSUSED */
     delete_colour_selection( popup );
 }
 
-private  DEFINE_EVENT_FUNCTION( cancel_callback )   /* ARGSUSED */
+private  DEFINE_WIDGET_CALLBACK( cancel_callback )   /* ARGSUSED */
 {
     colour_selection_struct   *popup;
 
@@ -54,7 +51,7 @@ public  void  popup_colour_selection(
     String                    window_name;
     String                    colour_name;
     static  Colour            colours[] = { BLACK, WHITE, RED, GREEN, BLUE,
-                                            CYAN, MAGENTA, YELLOW };
+                                            CYAN, MAGENTA, YELLOW, ORANGE };
 
     set_over_under_colour_activity( ui, volume, over_or_under, OFF );
 
@@ -68,10 +65,10 @@ public  void  popup_colour_selection(
     (void) sprintf( window_name, "Volume %d %s Colour Selection", volume + 1,
                     over_under_names[over_or_under] );
 
-    create_popup_window( &popup->graphics, window_name, x, y,
+    create_popup_window( &popup->popup_window, window_name, x, y,
                          Colour_selection_x_size, Colour_selection_y_size );
 
-    initialize_widget_list( &popup->widgets );
+    initialize_widget_list( &popup->popup_window.widgets );
 
     x = Interface_x_spacing;
     y = Colour_selection_y_size - 1 - Interface_y_spacing - Button_height;
@@ -80,7 +77,7 @@ public  void  popup_colour_selection(
     {
         convert_colour_to_string( colours[i], colour_name );
 
-        widget = create_button( &popup->graphics, 0,
+        widget = create_button( &popup->popup_window.graphics, 0,
                                 x, y, Button_width, Button_height,
                                 colour_name, ON, FALSE, colours[i],
                                 get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
@@ -90,7 +87,7 @@ public  void  popup_colour_selection(
                                 Button_text_font, Button_text_font_size,
                                 colour_button_callback, (void *) popup );
 
-        (void) add_widget_to_list( &popup->widgets, widget );
+        (void) add_widget_to_list( &popup->popup_window.widgets, widget );
 
         x += Button_width + Interface_x_spacing;
 
@@ -102,7 +99,7 @@ public  void  popup_colour_selection(
         }
     }
 
-    widget = create_button( &popup->graphics, 0,
+    widget = create_button( &popup->popup_window.graphics, 0,
                             x, y, Button_width, Button_height,
                             "Cancel", ON, FALSE,
                             get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),
@@ -113,5 +110,5 @@ public  void  popup_colour_selection(
                             Button_text_font, Button_text_font_size,
                             cancel_callback, (void *) popup );
 
-    (void) add_widget_to_list( &popup->widgets, widget );
+    (void) add_widget_to_list( &popup->popup_window.widgets, widget );
 }
