@@ -239,37 +239,17 @@ public  Status   save_transform(
     main_struct   *main,
     char          filename[] )
 {
-    int              i, j;
-    FILE             *file;
-    Status           file_status, status;
+    Status           status;
     Transform        *transform;
-    double           mni_transform[3][4];
     char             comments[1000];
 
     status = OK;
 
     if( get_tag_point_transform( main, &transform, (Transform **) NULL ) )
     {
-        for_less( i, 0, 3 )
-        {
-            for_less( j, 0, 4 )
-            {
-                mni_transform[i][j] = (double) Transform_elem(*transform,i,j);
-            }
-        }
-
-        file_status = open_file_with_default_suffix( filename, "xfm",
-                             WRITE_FILE, ASCII_FORMAT, &file );
-
         create_comments( main, comments );
 
-        if( file_status == OK )
-        {
-            if( !output_transform( file, comments, mni_transform ) )
-                status = ERROR;
-
-            (void) close_file( file );
-        }
+        status = write_transform_file( filename, comments, transform );
     }
 
     return( status );

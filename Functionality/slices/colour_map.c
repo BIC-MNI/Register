@@ -158,8 +158,6 @@ private  void  update_merged_cmode_maps(
     n1 = main->merged.n_colour_entries1;
     n2 = main->merged.n_colour_entries2;
 
-    G_set_bitplanes( main->window, NORMAL_PLANES );
-
     for_less( j, 0, n2 )
     {
         val = CONVERT_INTEGER_RANGE( j, 0, n2-1, 0, N_VOXEL_VALUES-1 );
@@ -226,8 +224,6 @@ private  void  update_cmode_colour_maps(
     min_ind = main->trislice[volume].start_colour_map;
     max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
 
-    G_set_bitplanes( main->window, NORMAL_PLANES );
-
     for_inclusive( i, min_ind, max_ind )
     {
         voxel_value = CONVERT_INTEGER_RANGE( i, min_ind, max_ind,
@@ -290,6 +286,12 @@ public  void  colour_mode_has_toggled(
                                 main->start_colour_index +
                                       TAG_OUTSIDE_INACTIVE_COLOUR,
                                 Tag_outside_inactive_colour );
+        G_set_colour_map_entry( main->window,
+                                main->start_colour_index + CURSOR_INSIDE_COLOUR,
+                                Cursor_inside_colour );
+        G_set_colour_map_entry( main->window,
+                                main->start_colour_index +CURSOR_OUTSIDE_COLOUR,
+                                Cursor_outside_colour );
 
         start_index = main->start_colour_index + N_MAIN_COLOURS;
 
@@ -343,6 +345,10 @@ public  void  colour_mode_has_toggled(
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
         set_recreate_3_slices_flags( main, volume );
+
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+        for_less( view, 0, N_VIEWS )
+            update_cursor_colours( main, volume, view );
 
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }

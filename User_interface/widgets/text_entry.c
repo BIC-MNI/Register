@@ -1,5 +1,8 @@
 #include  <def_user_interface.h>
 
+#define  CONTROL_A    1
+#define  CONTROL_E    5
+
 private  Boolean  fit_text_within_widget(
     char         string[],
     Real         x_size,
@@ -139,6 +142,15 @@ private  void  add_character_to_text_entry(
 {
     switch( key )
     {
+    case CONTROL_A:
+        if( text_entry->string_index > 0 )
+            text_entry->string_index = 0;
+        break;
+
+    case CONTROL_E:
+        text_entry->string_index = strlen(text_entry->string);
+        break;
+
     case LEFT_ARROW_KEY:
         if( text_entry->string_index > 0 )
             --text_entry->string_index;

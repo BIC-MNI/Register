@@ -17,6 +17,7 @@ int  main(
     int   argc,
     char  *argv[] )
 {
+    int              n_volumes;
     char             *filename;
     String           home_filename;
     Status           status;
@@ -35,16 +36,21 @@ int  main(
 
     status = initialize_user_interface( &ui_struct );
 
-    if( get_string_argument( "", &filename ) )
-    {
-        set_load_filename( &ui_struct, 0, filename );
-        status = initialize_loading_volume( &ui_struct, 0, filename, FALSE );
-    }
+    n_volumes = 0;
 
-    if( get_string_argument( "", &filename ) )
+    while( get_string_argument( "", &filename ) )
     {
-        set_load_filename( &ui_struct, 1, filename );
-        status = initialize_loading_volume( &ui_struct, 1, filename, FALSE );
+        if( string_ends_in( filename, TAG_FILE_SUFFIX ) )
+        {
+            load_tags_file( &ui_struct, filename );
+        }
+        else if( n_volumes < 2 )
+        {
+            set_load_filename( &ui_struct, n_volumes, filename );
+            status = initialize_loading_volume( &ui_struct, n_volumes,
+                                                filename, FALSE );
+            ++n_volumes;
+        }
     }
 
     event_loop();

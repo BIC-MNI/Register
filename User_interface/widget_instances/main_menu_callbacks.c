@@ -16,6 +16,7 @@ typedef  enum
     TRANSFORM_FILENAME_ENTRY,
     RECORD_TAG_BUTTON,
     DELETE_TAG_BUTTON,
+    DELETE_ALL_TAGS_BUTTON,
     TAG_VISIBILITY_BUTTON,
     AVG_RMS_LABEL,
     AVG_RMS_ERROR,
@@ -84,13 +85,17 @@ private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback ) /* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback ) /* ARGSUSED */
 {
-    int            state;
+    int            state, true_state;
 
     state = get_toggle_button_state( widget );
 
     G_set_double_buffer_state( get_ui_struct()->graphics_window.window, state );
 
-    colour_map_state_has_changed( get_ui_struct() );
+    true_state = G_get_double_buffer_state(
+                    get_ui_struct()->graphics_window.window );
+
+    if( true_state != state )
+        set_toggle_button_state( widget, true_state );
 
     set_clear_and_update_flags( get_ui_struct() );
 }
@@ -189,16 +194,14 @@ private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback ) /* ARGSUSED */
 {
-    int      tag_index;
+    delete_current_tag_point( get_ui_struct() );
+}
 
-    tag_index = get_current_tag_index( get_ui_struct() );
-
-    if( tag_index < IF_get_n_tag_points() )
+private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )/* ARGSUSED */
+{
+    if( IF_get_n_tag_points() > 0 )
     {
-        IF_delete_tag_point( tag_index );
-        if( tag_index > IF_get_n_tag_points() )
-            --tag_index;
-        set_current_tag_index( get_ui_struct(), tag_index );
+        popup_delete_tags( get_ui_struct() );
     }
 }
 
@@ -214,6 +217,8 @@ private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback ) /* ARGSUSED */
 public  void  add_main_widgets(
     UI_struct         *ui_info )
 {
+    Boolean   colour_map_toggle_activity;
+
     widget_indices[QUIT_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
                    create_button( &ui_info->graphics_window, Main_menu_viewport, 
@@ -279,6 +284,9 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    interpolation_button_callback, (void *) 0 ) );
 
+    colour_map_toggle_activity = (G_get_n_colour_map_entries(
+             ui_info->graphics_window.window) >= Min_colour_map_size);
+
     widget_indices[COLOUR_MODE_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
                    create_toggle_button( &ui_info->graphics_window,
@@ -286,7 +294,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "RGB", "Colour Map",
                    G_get_colour_map_state(ui_info->graphics_window.window),
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   colour_map_toggle_activity, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -399,6 +407,19 @@ public  void  add_main_widgets(
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    delete_tag_button_callback, (void *) 0 ) );
+
+    widget_indices[DELETE_ALL_TAGS_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
+                   Main_menu_viewport, 
+                   0, 0, Button_width, Button_height,
+                   "Delete All Tags",
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   delete_all_tags_button_callback, (void *) 0 ) );
 
     widget_indices[TAG_VISIBILITY_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
@@ -516,6 +537,14 @@ public  void  set_resample_button_activity(
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[RESAMPLE_BUTTON]], activity );
+}
+
+public  void  set_delete_tags_button_activity(
+    UI_struct         *ui_info,
+    Boolean           activity )
+{
+    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
+                         [widget_indices[DELETE_ALL_TAGS_BUTTON]], activity );
 }
 
 public  void  update_avg_rms_error(

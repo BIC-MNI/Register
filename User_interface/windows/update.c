@@ -17,8 +17,14 @@ public  Boolean  make_window_up_to_date(
     if( something_was_drawn )
     {
         G_set_bitplanes( window, NORMAL_PLANES );
-
         G_update_window( window );
+
+        if( G_has_overlay_planes() )
+        {
+            G_set_bitplanes( window, OVERLAY_PLANES );
+            G_update_window( window );
+            G_set_bitplanes( window, NORMAL_PLANES ); /* leave in normal mode */
+        }
     }
 
     return( something_was_drawn );

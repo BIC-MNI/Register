@@ -2,6 +2,7 @@ START_GLOBALS
     DEF_GLOBAL_STRING( Main_window_name, "Register" )
 
     DEF_GLOBAL( Initial_rgb_state, Boolean, FALSE )
+    DEF_GLOBAL( Min_colour_map_size, int, 1024 )
     DEF_GLOBAL( Initial_double_buffer_state, Boolean, TRUE )
     DEF_GLOBAL( Initial_interpolation_state, Boolean, FALSE )
 
@@ -157,6 +158,9 @@ START_GLOBALS
 
     DEF_GLOBAL( Quit_x_size, int, 350 )
     DEF_GLOBAL( Quit_y_size, int, 100 )
+
+    DEF_GLOBAL( Delete_tags_x_size, int, 350 )
+    DEF_GLOBAL( Delete_tags_y_size, int, 60 )
 
     DEF_GLOBAL( Seconds_per_resample, Real, 0.1 )
 END_GLOBALS

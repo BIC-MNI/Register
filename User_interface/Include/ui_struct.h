@@ -55,6 +55,7 @@ typedef  struct
     int                      interaction_viewport_index;
     int                      x_mouse_start;
     int                      y_mouse_start;
+    int                      prev_y_mouse;
     Real                     slice_position_start;
 
     Transform                resampling_transform;

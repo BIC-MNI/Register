@@ -34,6 +34,23 @@ public  void  terminate_interaction(
     set_interaction_in_progress( FALSE );
 }
 
+public  void  restore_mouse_position(
+    UI_struct   *ui )
+{
+    int   x_min, x_max, y_min, y_max;
+    int   x_window, y_window;
+
+    get_event_viewport( &ui->graphics_window.event_viewports,
+                        ui->interaction_viewport_index,
+                        &x_min, &x_max, &y_min, &y_max );
+
+    G_get_window_position( ui->graphics_window.window,
+                           &x_window, &y_window );
+
+    G_set_mouse_position( x_window + x_min + ui->x_mouse_start,
+                          y_window + y_min + ui->y_mouse_start );
+}
+
 public  void  get_viewport_mouse_position(
     graphics_window_struct    *graphics_window,
     int                       event_viewport_index,

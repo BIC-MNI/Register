@@ -3,6 +3,7 @@
 public  Status   initialize_user_interface( UI_struct  *ui )
 {
     Status      status;
+    Boolean     initial_rgb;
 
     ui->volumes_synced = Initial_volumes_synced;
 
@@ -20,10 +21,18 @@ public  Status   initialize_user_interface( UI_struct  *ui )
     IF_set_interpolation_flag( Initial_interpolation_state );
 
     G_set_zbuffer_state( ui->graphics_window.window, OFF );
-    G_set_colour_map_state( ui->graphics_window.window, !Initial_rgb_state );
     G_set_transparency_state( ui->graphics_window.window, OFF );
     G_set_double_buffer_state( ui->graphics_window.window,
                                Initial_double_buffer_state );
+
+    initial_rgb = Initial_rgb_state;
+    if( G_get_n_colour_map_entries(ui->graphics_window.window) <
+        Min_colour_map_size )
+    {
+        initial_rgb = TRUE;
+    }
+
+    G_set_colour_map_state( ui->graphics_window.window, !initial_rgb );
 
     G_set_automatic_clear_state( ui->graphics_window.window, OFF );
 

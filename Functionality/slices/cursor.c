@@ -2,6 +2,10 @@
 
 private  const  int  N_LINES = 12;
 
+private  void  set_cursor_colours(
+    main_struct    *main,
+    lines_struct   *lines );
+
 private  Bitplane_types  get_cursor_bitplane()
 {
     if( G_has_overlay_planes() && Use_overlay_planes )
@@ -11,9 +15,7 @@ private  Bitplane_types  get_cursor_bitplane()
 }
 
 private  void  create_cursor_graphics(
-    lines_struct   *lines,
-    Colour         inside_colour,
-    Colour         outside_colour )
+    lines_struct   *lines )
 {
     int   i;
 
@@ -22,19 +24,19 @@ private  void  create_cursor_graphics(
     REALLOC( lines->colours, N_LINES );
     lines->colour_flag = PER_ITEM_COLOURS;
 
-    lines->colours[0] = inside_colour;
-    lines->colours[1] = inside_colour;
-    lines->colours[2] = inside_colour;
-    lines->colours[3] = inside_colour;
+    lines->colours[0] = 0;
+    lines->colours[1] = 0;
+    lines->colours[2] = 0;
+    lines->colours[3] = 0;
 
-    lines->colours[4] = outside_colour;
-    lines->colours[5] = outside_colour;
-    lines->colours[6] = outside_colour;
-    lines->colours[7] = outside_colour;
-    lines->colours[8] = outside_colour;
-    lines->colours[9] = outside_colour;
-    lines->colours[10] = outside_colour;
-    lines->colours[11] = outside_colour;
+    lines->colours[4] = 0;
+    lines->colours[5] = 0;
+    lines->colours[6] = 0;
+    lines->colours[7] = 0;
+    lines->colours[8] = 0;
+    lines->colours[9] = 0;
+    lines->colours[10] = 0;
+    lines->colours[11] = 0;
 
     lines->n_points = 2 * N_LINES;
 
@@ -70,8 +72,9 @@ public  lines_struct  *create_cursor(
 
     lines = get_lines_ptr( object );
 
-    create_cursor_graphics( lines, Slice_cursor_inside_colour,
-                            Slice_cursor_outside_colour );
+    create_cursor_graphics( lines );
+
+    set_cursor_colours( main, lines );
 
     add_object_to_viewport( &main->graphics,
                             get_slice_viewport_index(volume_index,view_index),
@@ -148,6 +151,70 @@ public  void  position_cursor(
     Point_y(lines->points[23]) = Point_y(lines->points[7]) + 1;
 }
 
+private  lines_struct  *get_cursor_lines(
+    main_struct    *main,
+    int            volume,
+    int            view )
+{
+    lines_struct  *lines;
+
+    if( volume == MERGED_VOLUME_INDEX )
+        lines = main->merged.slices[view].cursor_lines;
+    else
+        lines = main->trislice[volume].slices[view].cursor_lines;
+
+    return( lines );
+}
+
+private  void  set_cursor_colours(
+    main_struct    *main,
+    lines_struct   *lines )
+{
+    Colour         inside, outside;
+
+    if( get_cursor_bitplane() == OVERLAY_PLANES )
+    {
+        inside = 1;
+        outside = 3;
+    }
+    else if( G_get_colour_map_state( main->window ) )
+    {
+        inside = main->start_colour_index + CURSOR_INSIDE_COLOUR;
+        outside = main->start_colour_index + CURSOR_OUTSIDE_COLOUR;
+    }
+    else
+    {
+        inside = Cursor_inside_colour;
+        outside = Cursor_outside_colour;
+    }
+
+    lines->colours[0] = inside;
+    lines->colours[1] = inside;
+    lines->colours[2] = inside;
+    lines->colours[3] = inside;
+
+    lines->colours[4] = outside;
+    lines->colours[5] = outside;
+    lines->colours[6] = outside;
+    lines->colours[7] = outside;
+    lines->colours[8] = outside;
+    lines->colours[9] = outside;
+    lines->colours[10] = outside;
+    lines->colours[11] = outside;
+}
+
+public  void  update_cursor_colours(
+    main_struct    *main,
+    int            volume,
+    int            view )
+{
+    lines_struct   *lines;
+
+    lines = get_cursor_lines( main, volume, view );
+
+    set_cursor_colours( main, lines );
+}
+
 public  void  update_volume_cursor(
     main_struct   *main,
     int           volume_index,
@@ -162,10 +229,7 @@ public  void  update_volume_cursor(
     convert_voxel_to_pixel( main, volume_index, view_index, position,
                             &x_pixel, &y_pixel );
 
-    if( volume_index == MERGED_VOLUME_INDEX )
-        lines = main->merged.slices[view_index].cursor_lines;
-    else
-        lines = main->trislice[volume_index].slices[view_index].cursor_lines;
+    lines = get_cursor_lines( main, volume_index, view_index );
 
     position_cursor( lines, ROUND(x_pixel), ROUND(y_pixel),
                      Slice_cursor_offset, Slice_cursor_size );

@@ -27,6 +27,7 @@ typedef enum
 static  int  **rms_widget_indices;
 static  int  ***position_widgets_indices;
 static  int  **tag_name_widget_indices;
+static  int  start_tags_widget_index;
 static  int  prev_tag_widget_index;
 static  int  next_tag_widget_index;
 static  int  end_tags_widget_index;
@@ -200,6 +201,18 @@ private  DEFINE_WIDGET_CALLBACK( end_tags_button_callback ) /* ARGSUSED */
     if( tag_index < IF_get_n_tag_points() )
     {
         set_current_tag_index( get_ui_struct(), IF_get_n_tag_points() );
+    }
+}
+
+private  DEFINE_WIDGET_CALLBACK( start_tags_button_callback ) /* ARGSUSED */
+{
+    int  tag_index;
+
+    tag_index =  get_current_tag_index( get_ui_struct() );
+
+    if( tag_index != 0 )
+    {
+        set_current_tag_index( get_ui_struct(), 0 );
     }
 }
 
@@ -480,6 +493,22 @@ public  void  add_tag_point_widgets(
 
         if( tag == 0 )
         {
+            start_tags_widget_index =
+                   add_widget_to_list(
+                   &ui_info->widget_list[names_viewport_index],
+                   create_button( &ui_info->graphics_window,
+                   names_viewport_index,
+                   x, y, Advance_tags_button_width, Tag_point_height,
+                   "First",
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   start_tags_button_callback, (void *) NULL ) );
+        }
+        else if( tag == 1 )
+        {
             prev_tag_widget_index =
                    add_widget_to_list(
                    &ui_info->widget_list[names_viewport_index],
@@ -494,7 +523,7 @@ public  void  add_tag_point_widgets(
                    Button_text_font, Button_text_font_size,
                    prev_tag_button_callback, (void *) NULL ) );
         }
-        else if( tag == 1 )
+        else if( tag == 2 )
         {
             next_tag_widget_index =
                    add_widget_to_list(
@@ -518,7 +547,7 @@ public  void  add_tag_point_widgets(
                    create_button( &ui_info->graphics_window,
                    names_viewport_index,
                    x, y, Advance_tags_button_width, Tag_point_height,
-                   "End",
+                   "Last",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
@@ -761,4 +790,34 @@ public  int  get_current_tag_index(
     UI_struct      *ui_info )
 {
     return( ui_info->tag_points.current_tag_index );
+}
+
+private  void  delete_tag_point(
+    UI_struct  *ui,
+    int        tag_index )
+{
+    if( tag_index < IF_get_n_tag_points() )
+    {
+        IF_delete_tag_point( tag_index );
+        if( tag_index > IF_get_n_tag_points() )
+            --tag_index;
+        set_current_tag_index( ui, tag_index );
+    }
+}
+
+public  void  delete_current_tag_point(
+    UI_struct  *ui )
+{
+    int      tag_index;
+
+    tag_index = get_current_tag_index( ui );
+
+    delete_tag_point( ui, tag_index );
+}
+
+public  void  delete_all_tag_points(
+    UI_struct  *ui )
+{
+    while( IF_get_n_tag_points() > 0 )
+        delete_tag_point( ui, 0 );
 }

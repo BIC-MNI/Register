@@ -69,6 +69,8 @@ private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )  /* ARGSUSED */
 {
     update_move_slice( get_ui_struct() );
 
+    restore_mouse_position( get_ui_struct() );
+
     terminate_interaction( MIDDLE_MOUSE_UP_EVENT, middle_mouse_up_callback,
                            update_move_slice_callback );
 }
@@ -146,16 +148,16 @@ private  void  update_scale_slice(
                                  ui_info->interaction_viewport_index,
                                  &x_mouse, &y_mouse);
 
-    if( y_mouse != ui_info->y_mouse_start )
+    if( y_mouse != ui_info->prev_y_mouse )
     {
         ui_get_volume_view_index( ui_info->interaction_viewport_index,
                                   &volume, &view );
 
         scale_factor = pow( 2.0, 1.0 / Pixels_per_double_size *
-                            (double) (y_mouse - ui_info->y_mouse_start) );
+                            (double) (y_mouse - ui_info->prev_y_mouse) );
 
         IF_scale_slice( volume, view, scale_factor );
-        ui_info->y_mouse_start = y_mouse;
+        ui_info->prev_y_mouse = y_mouse;
     }
 }
 
@@ -168,6 +170,8 @@ private  DEFINE_EVENT_FUNCTION( terminate_scale_slice_callback )  /* ARGSUSED */
 {
     update_scale_slice( get_ui_struct() );
 
+    restore_mouse_position( get_ui_struct() );
+
     terminate_interaction( MIDDLE_MOUSE_UP_EVENT,
                            terminate_scale_slice_callback,
                            scale_slice_callback );
@@ -178,6 +182,54 @@ private  DEFINE_EVENT_FUNCTION( start_scale_slice_callback )   /* ARGSUSED */
     start_interaction( get_ui_struct(), event_viewport_index,
                        MIDDLE_MOUSE_UP_EVENT, terminate_scale_slice_callback,
                        scale_slice_callback );
+    get_ui_struct()->prev_y_mouse = get_ui_struct()->y_mouse_start;
+}
+
+private  void  increment_slice(
+     UI_struct        *ui_info,
+     Viewport_types   viewport,
+     int              increment )
+{
+    int   volume, view, axis;
+    Real  position[N_DIMENSIONS];
+
+    if( is_slice_viewport( viewport ) )
+    {
+        ui_get_volume_view_index( viewport, &volume, &view );
+
+        if( IF_volume_is_loaded( volume ) )
+        {
+            IF_get_volume_voxel_position( volume, position );
+            axis = IF_get_slice_axis( view );
+
+            position[axis] += (Real) increment;
+            position[axis] = (Real) ROUND( position[axis] );
+
+            ui_set_volume_voxel_position( ui_info, volume, position );
+        }
+    }
+}
+
+public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )  /* ARGSUSED */
+{
+    switch( keyboard_character )
+    {
+    case  LEFT_ARROW_KEY:
+        increment_slice( get_ui_struct(), event_viewport_index, -1 );
+        break;
+
+    case  RIGHT_ARROW_KEY:
+        increment_slice( get_ui_struct(), event_viewport_index, +1 );
+        break;
+
+    case  UP_ARROW_KEY:
+        previous_current_tag_point( get_ui_struct() );
+        break;
+
+    case  DOWN_ARROW_KEY:
+        advance_current_tag_point( get_ui_struct() );
+        break;
+    }
 }
 
 public  void  install_slice_events(

@@ -26,6 +26,14 @@ private  DEFINE_EVENT_FUNCTION( quit_window_callback )   /* ARGSUSED */
     popup_quit_confirm( get_ui_struct() );
 }
 
+/* ---- a hook to force update of colour map, when other program has
+        screwed up the colour map ------------------------------------ */
+
+private  DEFINE_EVENT_FUNCTION( deiconize_window_callback )   /* ARGSUSED */
+{
+    set_window_colours( get_ui_struct()->graphics_window.window );
+}
+
 public  void  install_window_events(
     UI_struct  *ui )
 {
@@ -54,5 +62,11 @@ public  void  install_window_events(
                                  Whole_window_event_viewport,
                                  WINDOW_QUIT_EVENT, -1, -1, -1, -1,
                                  quit_window_callback, ANY_MODIFIER,
+                                 (void *) NULL );
+
+    add_event_viewport_callback( &ui->graphics_window.event_viewports,
+                                 Whole_window_event_viewport,
+                                 WINDOW_DEICONIZED_EVENT, -1, -1, -1, -1,
+                                 deiconize_window_callback, ANY_MODIFIER,
                                  (void *) NULL );
 }

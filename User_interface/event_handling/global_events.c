@@ -4,7 +4,7 @@ private  event_callback_list_struct    global_event_table[N_EVENT_TYPES];
 
 private  Boolean   interaction_in_progress = FALSE;
 
-private  Event_types  interation_starting_events[] = {
+private  Event_types  interaction_starting_events[] = {
                             LEFT_MOUSE_DOWN_EVENT,
                             MIDDLE_MOUSE_DOWN_EVENT,
                             RIGHT_MOUSE_DOWN_EVENT
@@ -24,8 +24,8 @@ public  Boolean  event_is_allowable(
         first = FALSE;
         for_enum( type, N_EVENT_TYPES, Event_types )
             event_can_start_interaction[type] = FALSE;
-        for_less( i, 0, SIZEOF_STATIC_ARRAY(interation_starting_events) )
-            event_can_start_interaction[interation_starting_events[i]] = TRUE;
+        for_less( i, 0, SIZEOF_STATIC_ARRAY(interaction_starting_events) )
+            event_can_start_interaction[interaction_starting_events[i]] = TRUE;
     }
 
     return( !interaction_in_progress ||

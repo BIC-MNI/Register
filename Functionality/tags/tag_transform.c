@@ -69,9 +69,8 @@ public  void  recompute_tag_transform(
         procrustes( n_valid, N_DIMENSIONS, Apoints, Bpoints,
                     translation, centre_of_rotation, rotation, &scale );
 
-/*
-scale = 1.0;
-*/
+        if( !Scaling_allowed )
+            scale = 1.0;
 
         transformations_to_homogeneous( N_DIMENSIONS, translation, 
                                         centre_of_rotation, rotation, scale,

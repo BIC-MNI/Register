@@ -12,6 +12,8 @@ typedef enum { BACKGROUND_COLOUR,
                TAG_OUTSIDE_COLOUR,
                TAG_INSIDE_INACTIVE_COLOUR,
                TAG_OUTSIDE_INACTIVE_COLOUR,
+               CURSOR_INSIDE_COLOUR,
+               CURSOR_OUTSIDE_COLOUR,
                N_MAIN_COLOURS } Main_colours;
 
 typedef  struct

@@ -49,7 +49,7 @@ public  void  popup_quit_confirm(
     x = Interface_x_spacing;
     y = Quit_y_size - 1 - Interface_y_spacing;
 
-    if( !IF_tag_points_have_been_saved() )
+    if( !IF_tag_points_have_been_saved() && IF_get_n_tag_points() > 0 )
     {
         object = create_object( TEXT );
         text = get_text_ptr( object );
