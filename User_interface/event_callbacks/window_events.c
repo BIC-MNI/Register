@@ -23,7 +23,11 @@ private  DEFINE_EVENT_FUNCTION( resize_window_callback )   /* ARGSUSED */
 
 private  DEFINE_EVENT_FUNCTION( quit_window_callback )   /* ARGSUSED */
 {
+#ifdef DEBUG
+    set_quit_program_flag();
+#else
     popup_quit_confirm( get_ui_struct() );
+#endif
 }
 
 /* ---- a hook to force update of colour map, when other program has

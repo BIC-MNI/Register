@@ -150,7 +150,7 @@ private  void  update_merged_cmode_indices(
     for_inclusive( i, min_value1, max_value1 )
     {
         i1 = CONVERT_INTEGER_RANGE( i, min_value1, max_value1, 0, n1-1 );
-        for_less( j, 0, N_VOXEL_VALUES )
+        for_inclusive( j, min_value2, max_value2 )
             main->merged.cmode_colour_map[i][j] = min_ind + IJ(i1,i2[j],n2);
     }
 }
@@ -370,6 +370,16 @@ public  void  repartition_colour_maps(
        n_volume_1 + n_volume_2 + n_merged_1 * n_merged_2 );
 #endif
 
+/*
+    n_volume_1 = 200;
+    (void) printf( "Enter n_volume_1: " );
+    (void) scanf( "%d", &n_volume_1 );
+ 
+    n_volume_2 = 200;
+    n_merged_1 = 10;
+    n_merged_2 = 10;
+*/
+
     main->trislice[0].start_colour_map = start_index;
     main->trislice[0].n_colour_entries = n_volume_1;
 
@@ -386,7 +396,7 @@ public  void  repartition_colour_maps(
             update_cmode_indices( main, volume );
     }
 
-    if( main->merged.active_flag )
+    if( n_merged_1 > 0 && n_merged_2 > 0 )
         update_merged_cmode_indices( main );
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )

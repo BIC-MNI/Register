@@ -43,8 +43,12 @@ public  BOOLEAN  update_slice_display(
         }
     }
 
+#ifndef DEBUG
     drawn = redraw_out_of_date_viewports( &main->graphics, main->window,
                                           current_buffer );
+#else
+    drawn = FALSE;
+#endif
 
     return( drawn );
 }
