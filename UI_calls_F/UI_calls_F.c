@@ -13,14 +13,23 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.17 1995-12-19 15:47:01 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.18 1996-04-11 19:01:38 david Exp $";
 #endif
 
 #include  <UI_calls_F.h>
 
-public  void  IF_initialize_register( window_struct *window )
+public  void  IF_initialize_register(
+    Gwindow  window,
+    STRING   executable_name )
 {
-    (void) initialize_register( window );
+    (void) initialize_register( window, executable_name );
+}
+
+public  Status   UI_set_global_variable(
+    STRING  variable_name,
+    STRING  value_to_set )
+{
+    set_functional_global_variable( variable_name, value_to_set );
 }
 
 public  void  IF_terminate_register()

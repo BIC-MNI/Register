@@ -13,12 +13,15 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.14 1996-01-15 17:38:11 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.15 1996-04-11 19:01:39 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 private  STRING  version = "1.0      Dec. 19, 1995";
+
+#define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
+#define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
 
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
 #include  <globals.h>
@@ -26,6 +29,8 @@ private  STRING  version = "1.0      Dec. 19, 1995";
 #define   UI_GLOBALS_FILENAME   "register_UI.globals"
 
 private  void     initialize_global_colours();
+private  void  read_global_files(
+    STRING  executable_name );
 
 private  UI_struct  ui_struct;
 
@@ -57,22 +62,13 @@ int  main(
 {
     int              volume, n_volumes;
     STRING           argument;
-    STRING           home_filename, volume_filenames[2], tag_filename;
+    STRING           volume_filenames[2], tag_filename;
+    STRING           variable_name, variable_value;
     Status           status;
 
     initialize_global_colours();
 
-    home_filename = get_absolute_filename( UI_GLOBALS_FILENAME, "$HOME" );
-
-    if( file_exists( home_filename ) )
-        status = input_globals_file( SIZEOF_STATIC_ARRAY(UI_globals_list),
-                          UI_globals_list, home_filename );
-
-    delete_string( home_filename );
-
-    if( file_exists( UI_GLOBALS_FILENAME ) )
-        status = input_globals_file( SIZEOF_STATIC_ARRAY(UI_globals_list),
-                          UI_globals_list, UI_GLOBALS_FILENAME );
+    read_global_files( argv[0] );
 
     initialize_argument_processing( argc, argv );
 
@@ -108,6 +104,22 @@ int  main(
         {
             Initial_double_buffer_state = TRUE;
         }
+        else if( equal_strings( argument, "-global" ) )
+        {
+            if( !get_string_argument( NULL, &variable_name ) ||
+                !get_string_argument( NULL, &variable_value ) )
+            {
+                print_error( "Error in arguments after -global.\n" );
+                return( 1 );
+            }
+
+            if( set_global_variable( SIZEOF_STATIC_ARRAY(UI_globals_list),
+                        UI_globals_list, variable_name, variable_value ) != OK )
+            {
+                if( UI_set_global_variable( variable_name, variable_value )!=OK)
+                    print("Error setting global variable from command line.\n");
+            }
+        }
         else if( string_ends_in( argument, TAG_FILE_SUFFIX ) )
         {
             tag_filename = argument;
@@ -124,7 +136,7 @@ int  main(
         }
     }
 
-    status = initialize_user_interface( &ui_struct );
+    status = initialize_user_interface( &ui_struct, argv[0] );
 
     for_less( volume, 0, n_volumes )
     {
@@ -181,4 +193,43 @@ private  void     initialize_global_colours()
     Resample_meter_colour = BLUE;
     Popup_background_colour = DIM_GREY;
     Message_text_colour = WHITE;
+}
+
+private  void  read_global_files(
+    STRING  executable_name )
+{
+    int      dir, n_directories;
+    STRING   runtime_directory, *directories, globals_filename;
+
+    runtime_directory = extract_directory( executable_name );
+
+    n_directories = 0;
+
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          HARD_CODED_REGISTER_DIRECTORY1, DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          runtime_directory, DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          getenv("HOME"), DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories, ".", DEFAULT_CHUNK_SIZE );
+
+    for_less( dir, 0, n_directories )
+    {
+        globals_filename = get_absolute_filename( UI_GLOBALS_FILENAME,
+                                                  directories[dir] );
+
+        if( file_exists( globals_filename ) )
+        {
+            (void) input_globals_file( SIZEOF_STATIC_ARRAY(UI_globals_list),
+                                       UI_globals_list, globals_filename );
+        }
+
+        delete_string( globals_filename );
+    }
+
+    delete_string( runtime_directory );
+
+    FREE( directories );
 }

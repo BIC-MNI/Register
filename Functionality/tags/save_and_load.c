@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.14 1996-02-28 16:04:22 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.15 1996-04-11 19:01:36 david Exp $";
 #endif
 
 #include  <register.h>
@@ -95,6 +95,7 @@ public  Status   save_tag_points(
     STRING           comments;
 
     tags = &main->tags;
+    tags_volume2 = NULL;
 
     if( tags->n_tag_points > 0 )
         ALLOC( tag_is_valid, tags->n_tag_points );

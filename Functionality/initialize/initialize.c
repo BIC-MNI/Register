@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.17 1995-12-19 15:46:55 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.18 1996-04-11 19:01:35 david Exp $";
 #endif
 
 #include  <register.h>
@@ -22,6 +22,13 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 #include  <globals.h>
 
 #define   REGISTER_GLOBALS_FILENAME   "register.globals"
+
+#define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
+#define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
+
+
+private  void  read_global_files(
+    STRING  executable_name );
 
 private   main_struct      main_info;
 
@@ -32,37 +39,20 @@ public  main_struct  *get_main_struct()
     return( &main_info );
 }
 
-public  Status   initialize_register( window_struct  *window )
+public  Status   initialize_register(
+    Gwindow   window,
+    STRING    executable_name )
 {
     Status          status;
     int             volume, view;
     Bitplane_types  bitplane;
-    STRING          home_filename;
 
     initialize_global_colours();
 
-    home_filename = get_absolute_filename( REGISTER_GLOBALS_FILENAME, "$HOME" );
-
-    if( file_exists( home_filename ) )
-    {
-        status = input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
-                                     functional_globals, home_filename );
-    }
-
-    if( file_exists( REGISTER_GLOBALS_FILENAME ) )
-    {
-        status = input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
-                          functional_globals, REGISTER_GLOBALS_FILENAME );
-    }
-
-    delete_string( home_filename );
+    read_global_files( executable_name );
 
     if( Disable_alloc_checking )
         set_alloc_checking( OFF );
-
-/*
-    set_alloc_debug( Alloc_debugging );
-*/
 
     if( G_has_overlay_planes() && Use_overlay_planes )
     {
@@ -143,4 +133,52 @@ private  void    initialize_global_colours()
     Tag_outside_inactive_colour = GRAY;
     Initial_under_colour = BLACK;
     Initial_over_colour = WHITE;
+}
+
+private  void  read_global_files(
+    STRING  executable_name )
+{
+    int      dir, n_directories;
+    STRING   runtime_directory, *directories, globals_filename;
+
+    runtime_directory = extract_directory( executable_name );
+
+    n_directories = 0;
+
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          HARD_CODED_REGISTER_DIRECTORY1, DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          runtime_directory, DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          getenv("HOME"), DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories, ".", DEFAULT_CHUNK_SIZE );
+
+    for_less( dir, 0, n_directories )
+    {
+        globals_filename = get_absolute_filename( REGISTER_GLOBALS_FILENAME,
+                                                  directories[dir] );
+
+        if( file_exists( globals_filename ) )
+        {
+            (void) input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
+                                       functional_globals, globals_filename );
+        }
+
+        delete_string( globals_filename );
+    }
+
+    delete_string( runtime_directory );
+
+    FREE( directories );
+}
+
+public  Status  set_functional_global_variable(
+    STRING  variable_name,
+    STRING  value_to_set )
+{
+    return( set_global_variable( SIZEOF_STATIC_ARRAY(functional_globals),
+                                 functional_globals, variable_name,
+                                 value_to_set ) );
 }

@@ -13,13 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.15 1995-10-02 18:34:54 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.16 1996-04-11 19:01:39 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 public  Status   initialize_user_interface(
-    UI_struct  *ui )
+    UI_struct  *ui,
+    STRING     executable_name )
 {
     Status      status;
 
@@ -57,7 +58,7 @@ public  Status   initialize_user_interface(
                                   FALSE, 2, &ui->graphics_window.window );
     }
 
-    IF_initialize_register( ui->graphics_window.window );
+    IF_initialize_register( ui->graphics_window.window, executable_name );
 
     IF_set_interpolation_flag( Initial_interpolation_state );
 
