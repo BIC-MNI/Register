@@ -26,7 +26,11 @@ private  int  widget_indices[N_MAIN_WIDGETS];
 
 private  DEFINE_WIDGET_CALLBACK( quit_button_callback ) /* ARGSUSED */
 {
+#ifdef DEBUG
+    set_quit_program_flag();
+#else
     popup_quit_confirm( get_ui_struct() );
+#endif
 }
 
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED */
