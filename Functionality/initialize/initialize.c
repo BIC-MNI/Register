@@ -1,55 +1,57 @@
 #include  <def_register.h>
 
-public  void  record_window( graphics_window_struct  *graphics_window )
-{
-    add_graphics_window( graphics_window );
-    initialize_event_rectangles( &graphics_window->rectangles_actions );
-}
+#define  GLOBALS_LOOKUP_NAME  functional_globals
+#include  <def_globals.h>
 
 #define   REGISTER_GLOBALS_FILENAME   "register.globals"
 
-public  Status   initialize_register( main_struct  *main )
+private   main_struct      main_info;
+
+public  main_struct  *get_main_struct()
 {
-    Status     status;
+    return( &main_info );
+}
+
+public  Status   initialize_register( window_struct  *window )
+{
+    int            volume, view;
+    object_struct  *object;
+    Status         status;
 
     if( file_exists( REGISTER_GLOBALS_FILENAME ) )
     {
-        status = input_globals_file( REGISTER_GLOBALS_FILENAME );
+        status = input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
+                          functional_globals, REGISTER_GLOBALS_FILENAME );
     }
 
-    main->rgb_mode = Initial_rgb_state;
-    main->double_buffer_mode = Initial_double_buffer_state;
-    main->current_buffer = 0;
-    main->interpolation_flag = Initial_interpolation_state;
+    main_info.window = window;
 
-    status = G_create_window( Main_window_name, -1, -1, 900, 900,
-                              &main->graphics_window.window );
+    initialize_slices( &main_info );
 
-    record_window( &main->graphics_window );
+    initialize_graphics_struct( &main_info.graphics );
 
-    G_set_colour_map_state( main->graphics_window.window, !main->rgb_mode );
-
-    if( main->rgb_mode )
+    for_less( volume, 0, N_VOLUMES )
     {
-        G_set_background_colour( main->graphics_window.window,
-                                 Default_background_colour );
+        for_less( view, 0, N_VIEWS )
+        {
+            set_graphics_viewport_background( &main_info.graphics,
+                                get_slice_viewport_index(volume,view),
+                                Slice_background_colour, 0 );
+
+            object = create_object( PIXELS );
+
+            add_object_to_viewport( &main_info.graphics,
+                                    get_slice_viewport_index(volume,view),
+                                    NORMAL_PLANES, object );
+
+            main_info.trislice[volume].slices[view].pixels =
+                             (pixels_struct *) get_object_pointer( object );
+
+            set_viewport_objects_visibility( &main_info.graphics,
+                                    get_slice_viewport_index(volume,view),
+                                    OFF );
+        }
     }
-
-    G_set_double_buffer_state( main->graphics_window.window,
-                               main->double_buffer_mode );
-
-    G_set_automatic_clear_state( main->graphics_window.window, FALSE );
-
-    initialize_global_events();
-    install_window_events();
-
-    initialize_layout( main );
-
-    initialize_slices( main );
-
-    install_quit_events( &main->graphics_window.rectangles_actions );
-
-    set_all_update_flags( main );
 
     return( status );
 }
