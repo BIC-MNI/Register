@@ -1,22 +1,30 @@
+def: all
+
+include ../Makefile.include
+
 LIBRARY_NAME = UI_calls_F
 
-OBJECTS = UI_calls_F.o
+SRC = $(ARCH_DIR)/UI_calls_F.c
+
+OBJECTS = $(SRC:.c=.o)
 
 PROTOTYPE_FILE = Include/$(LIBRARY_NAME)_prototypes.h
 
 all:  $(PROTOTYPE_FILE) $(OBJECTS) Makefile.objects
 
-$(OBJECTS) $(OBJECTS:.o=.ln): $(PROTOTYPE_FILE)
+$(SRC):
+	@$(MAKE_SOURCE_LINKS)
 
-lint: $(OBJECTS:.o=.ln)
+objects-O3: $(PROTOTYPE_FILE) $(OBJECTS:.o=.u)
+
+lint: $(SRC:.c=.ln)
 
 Makefile.objects: Makefile
 	@echo "$(LIBRARY_NAME)_OBJECTS = \\"   >  $@
-	../make_object_list `pwd` $(OBJECTS)  >> $@
+	../make_object_list `pwd` $(OBJECTS) | sed -e 's/$(ARCH_DIR)/$$(ARCH_DIR
+)/' >> $@
 
-include ../Makefile.include
-
-OPT = -O
+OPT = $(OPT_O)
 
 INCLUDE = -IInclude -I.. \
           -I../User_interface/Include \
@@ -25,5 +33,5 @@ INCLUDE = -IInclude -I.. \
 
 # ------------------------------
 
-$(PROTOTYPE_FILE): $(OBJECTS:.o=.c) 
-	@$(MAKE_DIRECTORY)/create_prototypes.csh $@ $(OBJECTS:.o=.c)
+$(PROTOTYPE_FILE): $(SRC) 
+	@$(MAKE_PROTOTYPES) $@ $(SRC)

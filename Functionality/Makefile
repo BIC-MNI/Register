@@ -1,38 +1,46 @@
+def: all
+
+include ../Makefile.include
+
 LIBRARY_NAME = Functionality
 
-OBJECTS = initialize/initialize.o \
-          slices/colour_map.o \
-          slices/cursor.o \
-          slices/create_slice.o \
-          slices/initialize_slice.o \
-          slices/resample.o \
-          slices/save_image.o \
-          slices/set_volume.o \
-          slices/slices.o \
-          slices/updates.o \
-          tags/objects.o \
-          tags/save_and_load.o \
-          tags/tag_points.o \
-          tags/tag_transform.o \
-          update/update_window.o
+SRC = initialize/$(ARCH_DIR)/initialize.c \
+      slices/$(ARCH_DIR)/colour_map.c \
+      slices/$(ARCH_DIR)/cursor.c \
+      slices/$(ARCH_DIR)/create_slice.c \
+      slices/$(ARCH_DIR)/initialize_slice.c \
+      slices/$(ARCH_DIR)/resample.c \
+      slices/$(ARCH_DIR)/save_image.c \
+      slices/$(ARCH_DIR)/set_volume.c \
+      slices/$(ARCH_DIR)/slices.c \
+      slices/$(ARCH_DIR)/updates.c \
+      tags/$(ARCH_DIR)/objects.c \
+      tags/$(ARCH_DIR)/save_and_load.c \
+      tags/$(ARCH_DIR)/tag_points.c \
+      tags/$(ARCH_DIR)/tag_transform.c \
+      update/$(ARCH_DIR)/update_window.c
+
+OBJECTS = $(SRC:.c=.o)
 
 PROTOTYPE_FILE = Include/$(LIBRARY_NAME)_prototypes.h
 
 all:  $(PROTOTYPE_FILE) $(OBJECTS)  Makefile.objects
 
-$(OBJECTS) $(OBJECTS:.o=.ln): $(PROTOTYPE_FILE)
+$(SRC):
+	@$(MAKE_SOURCE_LINKS)
 
-lint: $(OBJECTS:.o=.ln)
+objects-O3: $(PROTOTYPE_FILE) $(OBJECTS:.o=.u)
+
+lint: $(SRC:.c=.ln)
 
 Makefile.objects: Makefile
 	@echo "$(LIBRARY_NAME)_OBJECTS = \\"   >  $@
-	../make_object_list `pwd` $(OBJECTS)  >> $@
+	../make_object_list `pwd` $(OBJECTS) | sed -e 's/$(ARCH_DIR)/$$(ARCH_DIR)/' >> $@
 
-initialize/initialize.o: Include/global_variables.h
+initialize/$(ARCH_DIR)/initialize.o: Include/global_variables.h
+initialize/$(ARCH_DIR)/initialize.u: Include/global_variables.h
 
-include ../Makefile.include
-
-OPT = -O
+OPT = $(OPT_O)
 
 INCLUDE = -IInclude \
           -I.. \
@@ -41,5 +49,5 @@ INCLUDE = -IInclude \
 
 # ------------------------------
 
-$(PROTOTYPE_FILE): $(OBJECTS:.o=.c) Include/*.h
-	@$(MAKE_DIRECTORY)/create_prototypes.csh $@ $(OBJECTS:.o=.c)
+$(PROTOTYPE_FILE): $(SRC)
+	@$(MAKE_PROTOTYPES) $@ $(SRC)
