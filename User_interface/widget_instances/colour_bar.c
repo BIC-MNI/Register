@@ -43,6 +43,9 @@ private  void  set_colour_coding(
     volume_index = get_viewport_volume_index(widget->viewport_index);
 
     IF_set_volume_colour_coding_type( volume_index, type );
+
+    IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX + volume_index,
+                                      type );
 }
 
 private  DEFINE_WIDGET_CALLBACK( gray_scale_callback ) /* ARGSUSED */
@@ -86,6 +89,8 @@ private  void  change_limits(
     get_slider_values( widget, &min_val, &max_val );
 
     IF_set_colour_coding_limits( volume_index, min_val, max_val );
+    IF_set_colour_coding_limits( MERGED_VOLUME_INDEX + volume_index,
+                                 min_val, max_val );
 }
 
 private  DEFINE_WIDGET_CALLBACK( lower_limit_callback ) /* ARGSUSED */
@@ -110,73 +115,93 @@ public  int  add_colour_bar_widgets(
 
     dx = Colour_bar_button_width + Colour_bar_button_spacing;
 
-    start_index = create_button( ui_info, viewport_index, 
+    start_index = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Gray",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   gray_scale_callback );
+                   gray_scale_callback, (void *) NULL ) );
 
     widget_indices[GRAY_SCALE_BUTTON] = 0;
 
-    widget_indices[HOT_METAL_BUTTON] = create_button( ui_info, viewport_index, 
+    widget_indices[HOT_METAL_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x + dx, y, Colour_bar_button_width, Volume_button_height,
                    "Hot",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   hot_metal_callback ) - start_index;
+                   hot_metal_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[SPECTRAL_BUTTON] = create_button( ui_info, viewport_index, 
+    widget_indices[SPECTRAL_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x + 2 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Spect",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   spectral_callback ) - start_index;
+                   spectral_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[RED_BUTTON] = create_button( ui_info, viewport_index, 
+    widget_indices[RED_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x + 3 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Red",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   red_callback ) - start_index;
+                   red_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[GREEN_BUTTON] = create_button( ui_info, viewport_index, 
+    widget_indices[GREEN_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x + 4 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Green",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   green_callback ) - start_index;
+                   green_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[BLUE_BUTTON] = create_button( ui_info, viewport_index, 
+    widget_indices[BLUE_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x + 5 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Blue",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   blue_callback ) - start_index;
+                   blue_callback, (void *) NULL ) ) - start_index;
 
     y += Volume_button_height + Interface_y_spacing;
 
-    widget_indices[COLOUR_BAR_SLIDER] = create_colour_bar_slider( ui_info,
+    widget_indices[COLOUR_BAR_SLIDER] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_colour_bar_slider( &ui_info->graphics_window,
                    viewport_index, x, y, Colour_bar_slider_width,
                    Colour_bar_slider_height,
-                   0.0, 255.0, 0.0, 255.0,
+                   0.0, 255.0, 0.0, 255.0, Colour_bar_text_format,
                    OFF,
                    SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
                    SLIDER_PEG_COLOUR,
-                   lower_limit_callback,
-                   upper_limit_callback ) - start_index;
+                   lower_limit_callback, (void *) NULL,
+                   upper_limit_callback, (void *) NULL ) ) - start_index;
 
     *height = y + Colour_bar_slider_height;
 
@@ -209,8 +234,7 @@ public  void  set_colour_bar_widgets_activity(
 
     for_enum( widget_index, N_COLOUR_BAR_WIDGETS, Colour_bar_widgets )
     {
-        set_widget_activity_and_update( ui_info,
-                             ui_info->widget_list[viewport_index].widgets
+        set_widget_activity( ui_info->widget_list[viewport_index].widgets
                                    [start_widget_index +
                                     widget_indices[widget_index]],
                              activity );
@@ -220,7 +244,7 @@ public  void  set_colour_bar_widgets_activity(
     {
         type = IF_get_colour_coding_type(
                           get_viewport_volume_index(viewport_index) );
-        set_widget_activity_and_update( ui_info,
+        set_widget_activity( 
                      ui_info->widget_list[viewport_index].widgets
                      [start_widget_index + widget_indices[
                            get_colour_coding_widget_index(type)]],

@@ -20,7 +20,7 @@ public  DEFINE_WIDGET_CALLBACK( reset_view_callback ) /* ARGSUSED */
 
     volume_index = get_viewport_volume_index(widget->viewport_index);
 
-    for_less( view_index, 0, N_DIMENSIONS )
+    for_less( view_index, 0, N_VIEWS )
         IF_reset_slice_view( volume_index, view_index );
 }
 
@@ -59,46 +59,51 @@ public  void  add_volume_widgets(
 
     y += height + Interface_y_spacing;
 
-    widget_indices[RESET_VIEW_BUTTON] = create_button( ui_info, viewport_index, 
+    widget_indices[RESET_VIEW_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Volume_button_width, Volume_button_height,
                    "Reset View",
                    OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   reset_view_callback );
+                   reset_view_callback, (void *) NULL ) );
 
     y += Volume_button_height + Interface_y_spacing;
 
-    widget_indices[LOAD_BUTTON] = create_button( ui_info, viewport_index, 
+    widget_indices[LOAD_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Volume_button_width, Volume_button_height,
                    "Load",
-                   ON, BUTTON_ACTIVE_COLOUR,
+                   ON, BUTTON_ACTIVE_COLOUR, BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   load_volume_callback );
+                   load_volume_callback, (void *) NULL ) );
 
-    widget_indices[LOAD_FILENAME_TEXT] = create_text_entry( ui_info,
+    widget_indices[LOAD_FILENAME_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_text_entry( &ui_info->graphics_window,
                        viewport_index, 
                        x + Volume_button_width + Interface_x_spacing, y,
                        Load_filename_width, Text_entry_height,
                        "",
                        ON,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       volume_filename_callback );
-
-    y += Volume_button_height + Interface_y_spacing;
+                       volume_filename_callback, (void *) NULL ) );
 
     ui_info->position_text_start_index[volume_index] =
-                             add_cursor_position_widgets(
-                                   ui_info, viewport_index, x, y, &height );
+                             add_cursor_position_widgets( ui_info,
+                                   viewport_index, &height );
 }
 
 public  void  set_load_activity(
@@ -110,20 +115,14 @@ public  void  set_load_activity(
 
     viewport_index = get_volume_menu_viewport_index( volume_index );
 
-    set_widget_activity_and_update( ui_info,
-                         ui_info->widget_list
+    set_widget_activity( ui_info->widget_list
                                  [viewport_index].widgets
                                  [widget_indices[LOAD_BUTTON]],
                          state );
-    set_widget_activity_and_update( ui_info,
-                         ui_info->widget_list
+    set_widget_activity( ui_info->widget_list
                                  [viewport_index].widgets
                                  [widget_indices[LOAD_FILENAME_TEXT]],
                          state );
-
-    set_viewport_update_flag( &ui_info->graphics_window.graphics,
-                              viewport_index, NORMAL_PLANES );
-
 }
 
 public  void  set_load_filename(
@@ -135,8 +134,7 @@ public  void  set_load_filename(
 
     viewport_index = get_volume_menu_viewport_index( volume_index );
 
-    set_text_entry_string( ui_info,
-                           ui_info->widget_list[viewport_index].widgets
+    set_text_entry_string( ui_info->widget_list[viewport_index].widgets
                              [widget_indices[LOAD_FILENAME_TEXT]],
                            filename );
 }
@@ -153,14 +151,10 @@ public  void  set_volume_widgets_activity(
 
     for_enum( widget_index, N_VOLUME_WIDGETS, Volume_widgets )
     {
-        set_widget_activity_and_update( ui_info,
-                             ui_info->widget_list[viewport_index].widgets
+        set_widget_activity( ui_info->widget_list[viewport_index].widgets
                                             [widget_indices[widget_index]],
                              activity );
     }
-
-    set_viewport_update_flag( &ui_info->graphics_window.graphics,
-                              viewport_index, NORMAL_PLANES );
 
     set_colour_bar_widgets_activity( ui_info, viewport_index,
                            colour_bar_start_index, activity );
