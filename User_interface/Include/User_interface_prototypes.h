@@ -909,4 +909,6 @@ public  void  set_clear_and_update_flags( UI_struct  *ui_struct );
 
 public  void  set_recreate_all_slice_flags( void );
 
+public  void  xs_display(UI_struct *ui_info,
+                         Viewport_types viewport, int force);
 #endif
