@@ -6,8 +6,10 @@ public  void  create_slice_pixels(
     int           view )
 {
     int              x_axis_index, y_axis_index;
-    int              x_size, y_size, axis;
+    int              x_size, y_size, axis, n_slices;
     Pixel_types      pixel_type;
+    Filter_types     filter_type;
+    Real             filter_width, *positions, *weights;
     Real             x_translation, y_translation, x_scale, y_scale;
     Volume           volume;
     Real             *position;
@@ -19,6 +21,8 @@ public  void  create_slice_pixels(
     get_slice_axes( view, &x_axis_index, &y_axis_index );
     get_slice_transform( main, volume_index, view,
                          &x_translation, &y_translation, &x_scale, &y_scale );
+    filter_type = get_slice_filter_type( main, volume_index, view );
+    filter_width = get_slice_filter_width( main, volume_index, view );
 
     if( G_get_colour_map_state(main->window) )
         pixel_type = COLOUR_INDEX_16BIT_PIXEL;
@@ -32,9 +36,28 @@ public  void  create_slice_pixels(
 
     axis = get_slice_axis( view );
 
-    create_volume_slice( volume, position[axis],
+    n_slices = get_slice_weights_for_filter( volume, axis, position[axis],
+                                             filter_type, filter_width,
+                                             &positions, &weights );
+
+#ifdef DEBUG
+#define DEBUG
+{
+int   i;
+(void) printf( "%3d slices: ", n_slices );
+for_less( i, 0, n_slices )
+    (void) printf( "%10g", positions[i] );
+(void) printf( "\n" );
+(void) printf( "          : " );
+for_less( i, 0, n_slices )
+    (void) printf( "%10g", weights[i] );
+(void) printf( "\n" );
+}
+#endif
+
+    create_volume_slice( n_slices, volume, positions, weights,
                     x_translation, y_translation, x_scale, y_scale,
-                    (Volume) NULL, 0.0,
+                    (Volume) NULL, (Real *) NULL, (Real *) NULL,
                     0.0, 0.0, 0.0, 0.0,
                     x_axis_index, y_axis_index,
                     x_size, y_size, pixel_type,
@@ -43,6 +66,9 @@ public  void  create_slice_pixels(
                     &rgb_colour_map,
                     &main->trislice[volume_index].slices[view].n_pixels_alloced,
                     main->trislice[volume_index].slices[view].pixels );
+
+    FREE( positions );
+    FREE( weights );
 }
 
 public  void  create_merged_pixels(
@@ -150,10 +176,10 @@ public  void  create_merged_pixels(
         y_scale2 = (y_pixel_max - y_pixel_min) / (Real) sizes2[y_axis_index] /
                    volume2->separation[y_axis_index];
 
-        create_volume_slice(
-                    volume1, position1[axis],
+        create_volume_slice( 1,
+                    volume1, &position1[axis], (Real *) NULL,
                     x_translation1, y_translation1, x_scale1, y_scale1,
-                    volume2, position2[axis],
+                    volume2, &position2[axis], (Real *) NULL,
                     x_translation2, y_translation2, x_scale2, y_scale2,
                     x_axis_index, y_axis_index,
                     x_size, y_size, pixel_type,
