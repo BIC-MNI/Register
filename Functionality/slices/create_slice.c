@@ -36,7 +36,7 @@ public  void  create_slice_pixels(
                     x_translation, y_translation, x_scale, y_scale,
                     (volume_struct *) NULL, 0.0,
                     0.0, 0.0, 0.0, 0.0,
-                    x_axis_index, FALSE, y_axis_index, FALSE,
+                    x_axis_index, y_axis_index,
                     x_size, y_size, pixel_type,
                     main->interpolation_flag,
                     &cmode_colour_map,
@@ -53,7 +53,7 @@ public  void  create_merged_pixels(
     int              x_size, y_size, axis;
     Pixel_types      pixel_type;
     Real             x_translation1, y_translation1, x_scale, y_scale;
-    Real             x_translation2, y_translation2, trans;
+    Real             x_translation2, y_translation2;
     volume_struct    *volume1, *volume2;
     Real             tmp[N_DIMENSIONS];
     Real             *position1, position2[N_DIMENSIONS];
@@ -101,37 +101,15 @@ public  void  create_merged_pixels(
     }
     else
     {
-        if( volume2->flip_axis[x_axis_index] )
-            x_voxel2 = (Real) (volume2->sizes[x_axis_index]-1) -
-                       position2[x_axis_index];
-        else
-            x_voxel2 = position2[x_axis_index];
+        x_voxel2 = position2[x_axis_index];
 
-        if( volume1->flip_axis[x_axis_index] )
-            trans = x_translation1 + x_scale *
-                           (Real) volume1->sizes[x_axis_index] *
-                           (Real) volume1->thickness[x_axis_index];
-        else
-            trans = x_translation1;
-
-        x_translation2 = trans +
+        x_translation2 = x_translation1 +
           0.5 * x_scale * volume1->thickness[x_axis_index] -
           (x_voxel2 + 0.5) * x_scale * volume2->thickness[x_axis_index];
 
-        if( volume2->flip_axis[y_axis_index] )
-            y_voxel2 = (Real) (volume2->sizes[y_axis_index]-1) -
-                       position2[y_axis_index];
-        else
-            y_voxel2 = position2[y_axis_index];
+        y_voxel2 = position2[y_axis_index];
 
-        if( volume1->flip_axis[y_axis_index] )
-            trans = y_translation1 + y_scale *
-                           (Real) volume1->sizes[y_axis_index] *
-                           (Real) volume1->thickness[y_axis_index];
-        else
-            trans = y_translation1;
-
-        y_translation2 = trans +
+        y_translation2 = y_translation1 +
           0.5 * y_scale * volume1->thickness[y_axis_index] -
           (y_voxel2 + 0.5) * y_scale * volume2->thickness[y_axis_index];
 
@@ -140,7 +118,7 @@ public  void  create_merged_pixels(
                     x_translation1, y_translation1, x_scale, y_scale,
                     volume2, position2[axis],
                     x_translation2, y_translation2, x_scale, y_scale,
-                    x_axis_index, FALSE, y_axis_index, FALSE,
+                    x_axis_index, y_axis_index,
                     x_size, y_size, pixel_type,
                     main->interpolation_flag,
                     main->merged.cmode_colour_map,
@@ -172,7 +150,7 @@ public  Boolean   convert_pixel_to_voxel(
 
     in_volume = convert_slice_pixel_to_voxel(
               volume, x_pixel, y_pixel, position,
-              x_axis_index, FALSE, y_axis_index, FALSE,
+              x_axis_index, y_axis_index,
               x_translation, y_translation, x_scale, y_scale,
               voxel_position );
 
@@ -197,7 +175,7 @@ public  void   convert_voxel_to_pixel(
                          &x_translation, &y_translation, &x_scale, &y_scale );
 
     convert_voxel_to_slice_pixel( volume, voxel_position,
-                                  x_axis_index, FALSE, y_axis_index, FALSE,
+                                  x_axis_index, y_axis_index,
                                   x_translation, y_translation,
                                   x_scale, y_scale, x_pixel, y_pixel );
 }
@@ -288,10 +266,9 @@ public  void  fit_slice_to_view(
     int          view )
 {
     int            viewport_size[2], axis, axis_index[2];
-    Real           voxel_diff[2], start_voxel;
-    Real           sign_flip;
-    Real           scales[2], scale_factor;
-    Real           translation[2];
+    Real           voxel_diff[2];
+    Real           scales[2], sign_scales[2];
+    Real           translation[2], n_pixels;
     volume_struct  *volume;
     slice_struct   *slice;
 
@@ -306,67 +283,71 @@ public  void  fit_slice_to_view(
         voxel_diff[axis] = slice->upper_display_limits[axis] -
                            slice->lower_display_limits[axis];
 
-        voxel_diff[axis] = ABS( voxel_diff[axis] );
-
-        scales[axis] = (Real) (viewport_size[axis] - 1) / voxel_diff[axis] /
+        scales[axis] = (Real) viewport_size[axis] / voxel_diff[axis] /
                        volume->thickness[axis_index[axis]]; 
+
+        if( scales[axis] < 0.0 )
+            sign_scales[axis] = -1.0;
+        else
+            sign_scales[axis] = 1.0;
     }
 
-    scale_factor = MIN( scales[0], scales[1] );
+    if( ABS(scales[0]) < ABS(scales[1]) )
+        scales[1] = sign_scales[1] * ABS( scales[0] );
+    else
+        scales[0] = sign_scales[0] * ABS( scales[1] );
 
     for_less( axis, 0, 2 )
     {
-        if( volume->flip_axis[axis_index[axis]] )
-            sign_flip = 1.0;
-        else
-            sign_flip = -1.0;
+        n_pixels = scales[axis] * volume->thickness[axis_index[axis]] *
+                   voxel_diff[axis];
 
-        start_voxel = slice->lower_display_limits[axis] + sign_flip * 
-              ((Real) (viewport_size[axis] - 1) / scale_factor /
-               volume->thickness[axis_index[axis]] - voxel_diff[axis]) / 2.0;
-
-        if( volume->flip_axis[axis_index[axis]] )
-            start_voxel = start_voxel - (Real)(volume->sizes[axis_index[axis]]);
-
-        translation[axis] = sign_flip * scale_factor *
-                            volume->thickness[axis_index[axis]] *
-                            start_voxel + 0.5;
+        translation[axis] = ((Real) viewport_size[axis] - n_pixels) / 2.0 -
+                            slice->lower_display_limits[axis] *
+                            scales[axis] *
+                            volume->thickness[axis_index[axis]] + 0.5;
     }
 
     set_slice_translation( main, volume_index, view,
                            translation[0], translation[1] );
 
-    set_slice_scale( main, volume_index, view, scale_factor, scale_factor );
+    set_slice_scale( main, volume_index, view, scales[0], scales[1] );
 
     update_volume_cursor( main, volume_index, view );
     set_recreate_slice_flag( main, volume_index, view );
     update_slice_tag_objects( main, volume_index, view );
 }
 
-public  void  reset_slice_view(
+public  void  initialize_slice_view(
     main_struct  *main,
     int          volume_index,
     int          view )
 {
     int            x_axis_index, y_axis_index;
     Real           x_voxel[2], y_voxel[2], x_boundary, y_boundary;
+    Boolean        x_flip, y_flip;
     volume_struct  *volume;
     slice_struct   *slice;
 
     volume = get_slice_volume( main, volume_index );
     slice = get_slice_struct( main, volume_index, view );
     get_slice_axes( view, &x_axis_index, &y_axis_index );
+    get_slice_axes_flip( view, &x_flip, &y_flip );
 
     x_boundary = (1.0-Slice_fit_size)/2.0*(Real) volume->sizes[x_axis_index];
     y_boundary = (1.0-Slice_fit_size)/2.0*(Real) volume->sizes[y_axis_index];
 
-    x_voxel[volume->flip_axis[x_axis_index]] = - 0.5 - x_boundary;
-    x_voxel[1-volume->flip_axis[x_axis_index]] =
-                     (Real) volume->sizes[x_axis_index] - 0.5 + x_boundary;
+    if( volume->thickness[x_axis_index] < 0.0 )
+        x_flip = !x_flip;
 
-    y_voxel[volume->flip_axis[y_axis_index]] = - 0.5 - y_boundary;
-    y_voxel[1-volume->flip_axis[y_axis_index]] =
-                     (Real) volume->sizes[y_axis_index] - 0.5 + y_boundary;
+    if( volume->thickness[y_axis_index] < 0.0 )
+        y_flip = !y_flip;
+
+    x_voxel[  x_flip] = - 0.5 - x_boundary;
+    x_voxel[1-x_flip] = (Real) volume->sizes[x_axis_index] - 0.5 + x_boundary;
+
+    y_voxel[  y_flip] = - 0.5 - y_boundary;
+    y_voxel[1-y_flip] = (Real) volume->sizes[y_axis_index] - 0.5 + y_boundary;
 
     slice->lower_display_limits[0] = x_voxel[0];
     slice->upper_display_limits[0] = x_voxel[1];
