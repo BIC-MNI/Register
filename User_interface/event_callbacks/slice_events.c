@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/slice_events.c,v 1.16 2004-10-25 19:11:08 bert Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/slice_events.c,v 1.17 2005-01-18 22:05:07 bert Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -44,12 +44,13 @@ private  void  update_move_voxel_cursor(
      UI_struct *ui_info )
 {
     int    volume_index;
-    Real   voxel_position[N_DIMENSIONS];
+    Real   voxel_position[MAX_DIMENSIONS];
 
     if( get_voxel_under_mouse( ui_info, ui_info->interaction_viewport_index,
                                &volume_index, voxel_position ) )
     {
         ui_set_volume_voxel_position( ui_info, volume_index, voxel_position );
+        xs_display(ui_info, ui_info->interaction_viewport_index, 0);
     }
 }
 
@@ -86,7 +87,7 @@ private  void  update_move_slice(
      UI_struct *ui_info )
 {
     int   volume, view, x_mouse, y_mouse;
-    Real  position[N_DIMENSIONS], delta_slice;
+    Real  position[MAX_DIMENSIONS], delta_slice;
 
     ui_get_volume_view_index( ui_info->interaction_viewport_index,
                               &volume, &view );
@@ -130,7 +131,7 @@ private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )
 private  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )
 {
     int   volume, view;
-    Real  position[N_DIMENSIONS];
+    Real  position[MAX_DIMENSIONS];
 
     start_interaction( get_ui_struct(), event_viewport_index,
                        MIDDLE_MOUSE_UP_EVENT, middle_mouse_up_callback,
@@ -255,7 +256,7 @@ private  void  increment_slice(
      int              increment )
 {
     int   volume, view, axis;
-    Real  position[N_DIMENSIONS];
+    Real  position[MAX_DIMENSIONS];
 
     if( is_slice_viewport( viewport ) )
     {
@@ -306,6 +307,10 @@ public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )
 
     case '>':
         time_step(get_ui_struct(), event_viewport_index, 1);
+        break;
+
+    case 'T':
+        xs_display(get_ui_struct(), event_viewport_index, 1);
         break;
     }
 }
