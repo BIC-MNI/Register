@@ -1,7 +1,42 @@
+2005-02-28  Bert Vincent <bert@bic.mni.mcgill.ca>
+	* Fix save_image.c to calculate the correct parameters to pass to
+	the ImageMagick "import" utility.
+	* Changed color mapping to mimic the behavior of Display.  This
+	change allows Register to load images in the original type (with
+	only normal slice normalization), which in turn should cause us to 
+	represent the full range of the data rather than mapping volumes
+	onto a single-byte range. The crucial issue here was that for
+	non-RGB images, the previous code created the merged images by 
+	calculating a 2D array of composited colors, indexed by the voxel
+	values of volume 1 and volume 2 to get the composite color for
+	each merged pixel.  This was practical only because the volume was
+	mapped onto the 0-255 byte range. As soon as the range widened to,
+	say, 0-65535, the scheme falls apart because we cannot allocate a
+	65536x65536x4 array of colormap entries to perform this lookup 
+	operation.
+	Thankfully, a solution already existed in the form of the code to
+	implement the merged images when using RGB volumes.  Since there
+	is no lookup table for RGB volumes, the code special-cased them to
+	form the merged image by first calculating the individual pixel
+	maps for volume 1 and volume 2, then calculating the
+	composite. This is slower but clearly much less memory intensive.
+	* Fixed a small bug that caused incorrect 0.0 voxel values to 
+	display for 4D volumes.
+	
+	
 2005-02-02  Andrew Janke <a.janke@gmail.com>
         * Changes to autoconf build that allows a native build on OSX
         also changes to various headers so that gl.h and glut.h are found
 
+2005-01-25  Bert Vincent <bert@bic.mni.mcgill.ca>
+	* Added file User_interface/windows/xsect.c, which implements the
+	"timecourse" (cross-section) window.
+	* Changed color maps and voxels to be 16-bit rather than
+	8-bits. This allows greater voxel precision.  This should be
+	generalized further to allow arbitrary precision of voxel values.
+	* Implemented support for time-varying (functional) files.
+	* Added the 'T', '>', and '<' keyboard commands
+	
 2004-09-01  Bert Vincent <bert@bic.mni.mcgill.ca>
         * Use ImageMagick's 'import' utility rather than 'scrsave' to
 	implement the image capture functionality.  This allows us to

@@ -1,3 +1,12 @@
+    New in Release 1.3.7
+
+* Support for time-varying (functional MRI or PET) files
+* Added 'T', '>', and '<' commands to enable display of timecourse
+window, stepping forward through time-varying files, and stepping backward.
+* Changed internal voxel representation to match that of the loaded volume,
+rather than unsigned 8-bit, to allow for increased precision of reported
+voxel values.
+
     New in Release 1.3.6
 
 * Now compiles against native OSX GLUT/GL with 
