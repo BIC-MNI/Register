@@ -1,0 +1,19 @@
+#!/bin/csh -f
+    set dir = $1
+    shift
+
+    set objects = ( $* )
+
+    set n_objects = $#objects
+
+    set prefix = $dir:t
+
+    foreach object ( $objects )
+        @ n_objects = $n_objects - 1
+
+        if( "$n_objects" == "0" ) then
+            echo $prefix/$object
+        else
+            echo $prefix/$object \\
+        endif
+    end
