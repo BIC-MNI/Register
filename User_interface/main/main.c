@@ -1,22 +1,28 @@
 #include  <def_register.h>
 
-#define  X_SIZE   100
-#define  Y_SIZE   100
-#define  Z_SIZE   100
+#define  X_SIZE          100
+#define  Y_SIZE          100
+#define  Z_SIZE          100
 
-#define  N_VALUES   256
+#define  VIEWPORT_SIZE   300
+
+#define  N_VALUES        256
 
 main()
 {
     Status           status;
     window_struct    *window;
-    int              i, x, y, z, val, slice_offset;
+    int              i, x, y, z, val, iter;
     Real             dx, dy, dz;
     int              colour_index_offset;
     int              x_stride, y_stride;
+    Real             x_scale[3][3], y_scale[3][3];
+    int              x_translation[3][3], y_translation[3][3];
+    int              x_offset[3][3], y_offset[3][3];
     int              a, a1, a2, y_image, sizes[3];
     int              a_indices[3], a1_indices[3], a2_indices[3];
-    Real             x_start, y_start;
+    int              x_size, y_size;
+    Real             x_start, y_start, x_end, y_end, x_delta, y_delta;
     Pixel_types      pixel_type;
     pixels_struct    pixels[3][3];
     Boolean          interpolation_flag;
@@ -79,8 +85,32 @@ main()
 
     /* ---------------- render pixels --------------------- */
 
-    slice_offset = 0;
+    for_less( a, 0, 3 )
+    {
+        for_less( y_image, 0, 3 )
+        {
+            x_translation[a][y_image] = 0;
+            y_translation[a][y_image] = 0;
+            x_scale[a][y_image] = 1.0;
+            y_scale[a][y_image] = 1.0;
+        }
+    }
 
+    for_less( iter, 0, 10 )
+    {
+
+    for_less( a, 0, 3 )
+    {
+        for_less( y_image, 0, 3 )
+        {
+            x_scale[a][y_image] += 0.05;
+            y_scale[a][y_image] += 0.03;
+/*
+            x_translation[a][y_image] -= 10;
+            y_translation[a][y_image] += 30;
+*/
+        }
+    }
     start_time = current_realtime_seconds();
 
     for_less( a, 0, 3 )
@@ -105,9 +135,6 @@ main()
             y_stride = IJK(a2_indices[X],a2_indices[Y],a2_indices[Z],Y_SIZE,Z_SIZE) -
                        IJK(0,0,0,Y_SIZE,Z_SIZE);
 
-            status = initialize_pixels( &pixels[a][y_image], sizes[a1],
-                                        sizes[a2], pixel_type );
-
             a_indices[X] = 0;
             a_indices[Y] = 0;
             a_indices[Z] = 0;
@@ -117,13 +144,43 @@ main()
 
             x_start = -0.5;
             y_start = -0.5;
+            x_end = (Real) sizes[a1] - 0.5;
+            y_end = (Real) sizes[a2] - 0.5;
 
-            render_volume_to_slice( volume_start, x_stride, y_stride,
-                                    x_start, y_start,
-                                    thickness[a1], thickness[a2],
-                                    interpolation_flag, rgb_colour_map,
-                                    colour_index_offset,
-                                    &pixels[a][y_image] );
+            x_delta = x_scale[a][y_image] * thickness[a1];
+            y_delta = y_scale[a][y_image] * thickness[a2];
+
+            if( clip_slice_to_viewport( VIEWPORT_SIZE, VIEWPORT_SIZE,
+                                    x_translation[a][y_image],
+                                    y_translation[a][y_image],
+                                    x_delta,
+                                    y_delta,
+                                    x_start,
+                                    y_start,
+                                    x_end,
+                                    y_end,
+                                    &x_start,
+                                    &y_start,
+                                    &x_size,
+                                    &y_size,
+                                    &x_offset[a][y_image],
+                                    &y_offset[a][y_image] ) )
+            {
+                status = initialize_pixels( &pixels[a][y_image], x_size,
+                                            y_size, pixel_type );
+
+                render_volume_to_slice( volume_start, x_stride, y_stride,
+                                        x_start, y_start,
+                                        x_delta, y_delta,
+                                        interpolation_flag, rgb_colour_map,
+                                        colour_index_offset,
+                                        &pixels[a][y_image] );
+            }
+            else
+            {
+                status = initialize_pixels( &pixels[a][y_image], 0, 0,
+                                            pixel_type );
+            }
         }
     }
 
@@ -133,7 +190,11 @@ main()
     for_less( a, 0, 3 )
     {
         for_less( y_image, 0, 3 )
-            G_draw_pixels( window, 10 + a * 300, 10 + y_image * 300, 0,
+            G_draw_pixels( window,
+                           10 + a * (VIEWPORT_SIZE + 10) + x_offset[a][y_image],
+                           10 + y_image * (VIEWPORT_SIZE + 10) +
+                               y_offset[a][y_image],
+                           0,
                            &pixels[a][y_image] );
     }
 
@@ -142,6 +203,8 @@ main()
     G_update_window( window );
 
     (void) printf( "%g %g\n", compute_time, render_time );
+    }
+
     (void) printf( "Hit return: " );
     (void) getchar();
 
