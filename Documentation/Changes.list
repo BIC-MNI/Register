@@ -1,0 +1,14 @@
+Oct.  2, 1995  :  Fixed popups so that they more than one instance could not
+                  be created at once.
+Oct.  2, 1995  :  Added cursor visibility toggle.
+Oct.  2, 1995  :  Added smooth/flag interpolation toggle.
+Oct.  2, 1995  :  Moved volume input from User_interface to Functionality,
+                  where it should always have been.
+Dec. 14, 1995  :  Added support for reading RGB volumes.
+Jan. 31, 1996  :  Fixed bug where tags created with only 1 volume could not
+                  be saved when a second volume was loaded.
+Feb. 11, 1996  :  Register no longer clobbers images on saves.
+Apr. 10, 1996  :  Made it read global files from /usr/local/lib, ...
+                  and from command line
+Jun.  3, 1996  :  Added -fullwarn to compile line and modified source to avoid
+                  the resulting messages.

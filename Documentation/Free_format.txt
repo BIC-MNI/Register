@@ -1,0 +1,37 @@
+----------------------- free format volume files ----------------------
+
+Free format files consist of a short ascii header file and a binary
+image file or several slice files:
+
+header file (usually filename.fre)  Explanation
+============                        =================
+2                                   bytes per voxel (1 or 2)
+0 0 0                               translation of world space (usually 0)
+80   -1.5  z                        #voxels  voxel_thickness  axis  (outer dim)
+128   0.8  x                        #voxels  voxel_thickness  axis  (middle dim)
+128   0.8  y                        #voxels  voxel_thickness  axis  (inner dim)
+image_data.img  10                  image_filename   [optional byte offset 
+                                                      for start within file]
+
+The x, y, and z indices allow reading volumes with arbitrary axis ordering
+within the file.  A negative slice thickness results in flipping along that
+axis.
+
+Alternatively, one may read in a series of slice image files by setting the
+first #voxels to 0:
+
+header file (usually filename.fre)  Explanation
+============                        =================
+2
+0 0 0
+0    -1.5  z
+128   0.8  x
+128   0.8  y
+slice1.img   10                     first_slice_filename  [optional byte offset]
+slice2.img                          second_slice_filename [optional byte offset]
+slice3.img                          third_slice_filename  [optional byte offset]
+slice4.img   10                     fourth_slice_filename [optional byte offset]
+...
+slice80.img  10                     last_slice_filename   [optional byte offset]
+
+The number of slices is equal to the number of slice filenames.

@@ -1,0 +1,90 @@
+*   Disable interactions when one started.
+*   type in values
+*   double/single buffer
+*   cross hair
+*   colour tables
+*   color map mode
+*   merged volumes
+*   sliders
+*   popup errors
+*   finish buttons, sliders, etc.
+*   invalid slider value should update text
+*   when two sliders on top of each other
+*   line up positions
+*   y on top
+*   escape from text edit
+*   reset view merge
+*   don't reassign colour indices when colour maps updated
+*   mouse position before push button
+*   shift-mouse
+*   tag points
+*   update rms on delete
+*   radio-toggle buttons get greyed out
+*   filename expansion
+*   under colour and over colour popup
+*   output transformation
+*   correct background colour in colour map mode
+*   jump to tag point when select
+*   slider should go all the way to right or left
+*   sync on load and active merged
+*   middle button on colour bar slider
+*   quit confirm popup
+*   flip axes on input
+*   some text_entry should clear when typing
+*   resize properly
+*   layout separators
+*   On/Ignore tag points
+*   Make room for 4 tag points
+*   sphere markers on/off
+*   types of merged display
+*   resample and load
+*   right mouse button = tag point
+*   up arrow on tag points (maybe down, too)
+*   merging method
+*   update UI first, then slices
+*   clear the screen overlay plane when resized
+*   consistent scaling for default/reset view
+*   initial scaling of slices
+*   circle aspect ratio
+
+    add -global support
+    make it choose right display mode
+    make it choose right window size
+    loading tags overwrites - add a confirm popup
+    default tag name should be volume1 filename
+    loading a resampled volume doesn't regenerate tag display list.
+    moving through slices depends on sign of separations.
+    click on first doesn't update view
+    tag files volume name on output should be the original tag volume
+    load already resampled volume
+    cannot change voxel position at extreme end of slices
+    8 bit machines
+    filtering for merged view
+
+~neelin/src/register_code/tagtoxfm/compute_xfm.h
+
+    union of merged images rather than intersection
+    cut and paste
+
+
+LATER
+
+    no clearing if volume not resized or moved
+    popup a slice window
+    colour map in slider
+
+MAYBE
+
+    smaller chunks on input file
+    pick current tag point on slice
+
+ROIDIS
+
+    check  ~tomas/meta*.cnt
+
+BUGS
+
+    when reloading volume1 with a different sample, the merged image
+    view gets screwed up.
+
+    input_mnc /data/disk2/neelin/icbm/ucla/cor.minc

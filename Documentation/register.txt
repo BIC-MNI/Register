@@ -1,0 +1,330 @@
+
+
+
+     RREEGGIIMMSSooTTnnEEttRRrr((ee11aa))ll NNeeuurroollooggiiccaall IInnssttiittuuttee ((RReeggiisstteerr VVeerrssiioonn 11..RR00EEGGaaIIllSSppTThhEEaaRR))((11))
+
+
+
+     NNAAMMEE
+          MNI-register - interactive volume display and point tagging
+          program
+
+     SSYYNNOOPPSSIISS
+          rreeggiisstteerr [-version] [-rgb] [-cmap] [-single] [-double]
+          [volume1_filename] [volume2_filename]
+
+     DDEESSCCRRIIPPTTIIOONN
+          _R_e_g_i_s_t_e_r is an interactive graphics application.  It can
+          display one or two volumes (typically MR or PET), and the
+          merged image of the two.  Some, but not all, versions will
+          allow switching between single and double buffer mode and
+          between RGB and colour map mode, so the options -rgb, -cmap,
+          -single, -double are useful for setting the initial state of
+          the program.  There are three viewports for each volume,
+          showing tranverse, sagittal, coronal slices.  The user can
+          move throughout the volumes, and create tag points within
+          the volumes.  If enough tag points for two volumes are
+          picked, then a transformation is computed for registering
+          the two volumes.  This transform is used in displaying the
+          merged image and in allowing the user to start a process
+          which resamples one of the volumes into the same space as
+          the other.
+
+     UUSSEERR IINNTTEERRFFAACCEE
+          The user interface is a mouse-based interface composed of
+          buttons, sliders, and text entry.  Buttons can be pressed
+          with the left mouse button.  Text entries can be changed by
+          pressing the left mouse button on them, then typing text.
+          Typing return signals the text entry is done.  Typing escape
+          ends text editting without modifying the text.  The delete,
+          cursor left, and cursor right keys may be used.  Ctrl-a and
+          ctrl-e move the cursor to the beginning and end of text,
+          respectively.  Ctrl-u deletes all text in the text entry.
+
+
+     MMAAIINN MMEENNUU
+          _Q_u_i_t_: Quits the program, after confirmation.
+
+          _R_e_s_a_m_p_l_e _a_n_d _L_o_a_d_: Resamples the second volume to place it
+          in the same space as the first, according to the
+          transformation defined by the tag points.
+
+          _R_e_s_a_m_p_l_e _F_i_l_e_n_a_m_e_: Text entry to set the name of the file to
+          create for the resampling.
+
+          _S_y_n_c_e_d _/ _N_o_t _S_y_n_c_e_d_: Toggle switch to control whether the
+          cursor position in all volumes is enforced to always be the
+          same.
+
+          _F_l_a_t _/ _I_n_t_e_r_p_o_l_a_t_e_d_: Not implemented yet.  Eventually will
+
+
+
+     Page 1                                          (printed 8/13/98)
+
+
+
+
+
+
+     RREEGGIIMMSSooTTnnEEttRRrr((ee11aa))ll NNeeuurroollooggiiccaall IInnssttiittuuttee ((RReeggiisstteerr VVeerrssiioonn 11..RR00EEGGaaIIllSSppTThhEEaaRR))((11))
+
+
+
+          control the interpolation method for display.
+
+          _C_o_l_o_u_r _M_a_p _/ _R_G_B_: Toggles between colour map mode (faster
+          updates) and RGB mode (truer colours).
+
+          _D_o_u_b_l_e _/ _S_i_n_g_l_e_: Toggles between double and single buffer.
+
+          _L_o_a_d _T_a_g_s_: Loads a set of tag points into the program.
+
+          _T_a_g_s _F_i_l_e_n_a_m_e_: Text entry to set name of filename to be used
+          by load and save tags.  A default extension ".tag" is
+          provided automatically.
+
+          _S_a_v_e _T_a_g_s_: Saves all active tag points to a file.  If one
+          volume is loaded, then a set of single tags is saved.  If
+          two volumes are loaded, then a set of pairs of tags are
+          saved.
+
+          _S_a_v_e _T_r_a_n_s_f_o_r_m_: Saves the transform defined by the tag
+          points, if it exists.
+
+          _T_r_a_n_s_f_o_r_m _F_i_l_e_n_a_m_e_: Text entry to set name of filename to be
+          used by save transform.  A default extension ".xfm" is
+          provided automatically.
+
+          _R_e_c_o_r_d _T_a_g_: Overwrites the current tag point positions with
+          the current positions within the volumes.  If the current
+          tag point is the end of the tags, then it creates a new tag
+          point.
+
+          _D_e_l_e_t_e _T_a_g_: Deletes the current tag point.
+
+          _D_e_l_e_t_e _A_l_l _T_a_g_s_: Pops up a confirmation box allowing you to
+          delete all the tags.
+
+          _T_r_a_n_s_f_o_r_m _T_y_p_e_: Pops up a dialog to select 6 parameter, 7
+          parameter, 12 parameter, or thin-plate spline non-linear
+          fitting.
+
+          _T_a_g_s _I_n_/_V_i_s_i_b_l_e_: Toggles the display of tag point positions
+          on the slices.
+
+          _C_u_r_s_o_r _I_n_/_V_i_s_i_b_l_e_: Toggles the display of cursor crosshair
+          on the slices.
+
+          _I_n_t_e_r_p_: _F_l_a_t_/_S_m_o_o_t_h_: Toggles the display of slices between
+          flat and smooth shading.  Smooth shading takes much longer
+          to update (a few seconds), but produces higher quality
+          images, especially noticeable when the images are zoomed up.
+
+          _R_M_S_: Displays the average RMS error of the tag points, if a
+          transform exists.
+
+
+
+     Page 2                                          (printed 8/13/98)
+
+
+
+
+
+
+     RREEGGIIMMSSooTTnnEEttRRrr((ee11aa))ll NNeeuurroollooggiiccaall IInnssttiittuuttee ((RReeggiisstteerr VVeerrssiioonn 11..RR00EEGGaaIIllSSppTThhEEaaRR))((11))
+
+
+
+     VVOOLLUUMMEE MMEENNUUSS
+          _V_o_x_e_l _a_n_d _W_o_r_l_d _P_o_s_i_t_i_o_n _R_e_a_d_o_u_t_s Displays the position of
+          the volume cursor in voxel and world coordinates.  The
+          positions can be changed numerically by clicking on the
+          number and typing in the desired position.
+
+          _L_o_a_d _V_o_l_u_m_e_: Loads the specified volume.
+
+          _V_o_l_u_m_e _F_i_l_e_n_a_m_e_: Specifies the volume filename.
+
+          _R_e_s_e_t _V_i_e_w_: Resets the scale and translation of the slices
+          to fit in the viewports.
+
+          _F_i_l_t_e_r Pops up a dialog window that selects the filter type
+          for each of the 3 views of the volume.  The filtering
+          applies across slices, but not within slice.  The filter
+          types are: nearest neighbour, linear interpolation, box
+          filter, triangle filter, and gaussian filter.
+
+          _U_n_d_e_r _C_o_l_o_u_r_: Sets the colour displayed for voxels whose
+          values are less than the range.
+
+          _O_v_e_r _C_o_l_o_u_r_: Sets the colour displayed for voxels whose
+          values are greater than the range.
+
+          _C_o_l_o_u_r _B_a_r _S_l_i_d_e_r_: Sets the colour range.  The left mouse
+          can be used to drag the upper or lower limit.  The middle
+          mouse is used to move both at the same time.
+
+          _C_o_l_o_u_r _C_o_d_i_n_g _T_y_p_e_: Sets the colour coding method to one of
+          gray scale, hot metal, spectral, red, green, or blue.
+
+
+     MMEERRGGEEDD MMEENNUU
+          _V_o_x_e_l _a_n_d _W_o_r_l_d _P_o_s_i_t_i_o_n _R_e_a_d_o_u_t_s_: Displays the position of
+          the volume cursor in voxel and world coordinates.  The
+          positions can be changed numerically by clicking on the
+          number and typing in the desired position.
+
+          _R_e_s_e_t _V_i_e_w_: Resets the scale and translation of the slices
+          to fit in the viewports.
+
+          _M_e_r_g_e _M_e_t_h_o_d _B_u_t_t_o_n_s_: Sets the merge method to one of blend,
+          weighted, one on two, or two on one.  Blend allows blending
+          between the two volumes.  Weighted allows arbitrary weights
+          for the two volumes.  One on two places volume one on top of
+          volume two, with volume two showing through if volume one is
+          out of range.  Two on one is the opposite.
+
+          _O_p_a_c_i_t_y _S_l_i_d_e_r_s Sets the weights of the two volumes.  Only
+          used if the merge method is blend or weighted.
+
+
+
+
+     Page 3                                          (printed 8/13/98)
+
+
+
+
+
+
+     RREEGGIIMMSSooTTnnEEttRRrr((ee11aa))ll NNeeuurroollooggiiccaall IInnssttiittuuttee ((RReeggiisstteerr VVeerrssiioonn 11..RR00EEGGaaIIllSSppTThhEEaaRR))((11))
+
+
+
+     TTAAGGSS MMEENNUU
+          _P_o_s_i_t_i_o_n_: Displays and allows setting of tag positions.
+
+          _N_a_m_e_: Sets the name of a tag.
+
+          _O_n _/ _I_g_n_o_r_e_: Sets the activity of a tag, whether it
+          contributes to the transformation or not.
+
+          _D_s_t_: Displays the distance of the tag point in the first
+          volume from the position of the  transformed
+
+
+     MMOOUUSSEE AANNDD KKEEYYBBOOAARRDD
+          In the slice viewports, the following actions are valid:
+
+          _L_e_f_t _M_o_u_s_e_: Sets the volume cursor position.
+
+          _M_i_d_d_l_e _M_o_u_s_e_: Moves slice perpendicular according to y
+          position of mouse.
+
+          _R_i_g_h_t _M_o_u_s_e_: Adds a new tag point at the current volume
+          cursor positions.
+
+          _S_h_i_f_t_/_C_t_r_l_/_A_l_t _L_e_f_t _M_o_u_s_e_: Translates the slice display
+
+          _S_h_i_f_t_/_C_t_r_l_/_A_l_t _M_i_d_d_l_e _M_o_u_s_e_: Zooms the slice display
+          according to the y position of the mouse.
+
+
+     VVOOLLUUMMEE CCAACCHHIINNGG
+          Register has the ability to handle volumes larger than
+          virtual memory by caching parts of the volume in memory.
+          The current default for deciding when to cache is volume is
+          80 Megabytes.  See the documentation of the source libraries
+          for MNI-register for more information.
+
+
+     AAUUTTHHOORR
+          David MacDonald
+
+     BBUUGGSS
+          Sometimes turning the tags visibilities off does not turn
+          them off.
+
+          Switching between colour map and rgb mode or double/single
+          buffer on the OpenGL version sometimes prints error
+          messages, or core dumps.
+
+          In smooth interpolation mode, filtering has not been
+          implemented.
+
+     BBUUGG RREEPPOORRTTSS TTOO
+
+
+
+     PPaaggee 44                                          ((pprriinntteedd 88//1133//9988))
+
+
+
+
+
+
+     RREEGGIIMMSSooTTnnEEttRRrr((ee11aa))ll NNeeuurroollooggiiccaall IInnssttiittuuttee ((RReeggiisstteerr VVeerrssiioonn 11..RR00EEGGaaIIllSSppTThhEEaaRR))((11))
+
+
+
+          David MacDonald           david@bic.mni.mcgill.ca
+
+     CCOOPPYYRRIIGGHHTTSS
+          ((CC)) Copyright 1993 by David MacDonald
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 5                                          (printed 8/13/98)
+
+
+
