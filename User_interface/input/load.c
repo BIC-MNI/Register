@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.19 1995-10-02 18:34:52 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.20 1995-12-11 19:31:33 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -28,25 +28,21 @@ private  DEFINE_EVENT_FUNCTION( more_input )
 {
     BOOLEAN       done_loading;
     load_struct   *data;
-    Real          fraction_done, end_time;
+    Real          fraction_done;
 
     data = (load_struct *) callback_data;
 
-    end_time = current_realtime_seconds() + TIME_SLICE;
-
-    do
-    {
-        done_loading = !input_more_of_volume( data->volume, &data->input,
-                                              &fraction_done );
-    }
-    while( !done_loading && current_realtime_seconds() < end_time );
+    done_loading = IF_load_more_of_volume( data->volume_index, TIME_SLICE,
+                                           &fraction_done );
 
     if( done_loading )
     {
+#ifdef  DISABLED_TO_SEE_IF_IT_IS_STILL_NEEDED
         /*  --- the following printf line seems to fix a memory leak
             error that occurs when reading an rgb MINC file */
             
         (void) printf( "" );
+#endif
 
         volume_has_been_loaded( get_ui_struct(), data );
     }
@@ -60,8 +56,6 @@ private  void  delete_popup_interaction(
     set_load_activity( get_ui_struct(), data->volume_index, ON );
 
     remove_global_event_callback( NO_EVENT, more_input, (void *) data );
-
-    delete_volume_input( &data->input );
 
     delete_load_popup( data );
 
@@ -87,10 +81,7 @@ public  Status  initialize_loading_volume(
     data->filename = create_string( filename );
     data->this_is_resampled_volume = this_is_resampled_volume;
 
-    status = start_volume_input( filename, 3, XYZ_dimension_names,
-                                 NC_BYTE, FALSE, 0.0, 0.0, TRUE,
-                                 &data->volume, (minc_input_options *) NULL,
-                                 &data->input );
+    status = IF_start_loading_volume( volume, filename );
 
     if( status == OK )
     {
@@ -131,13 +122,13 @@ private  void  volume_has_been_loaded(
 
     if( data->this_is_resampled_volume )
     {
-        IF_set_resampled_volume( data->volume, data->filename,
+        IF_set_resampled_volume( data->volume_index, data->filename,
                                  ui_info->original_filename_volume_2,
                                  &ui_info->resampling_transform );
     }
     else
     {
-        IF_set_volume( data->volume_index, data->volume, data->filename );
+        IF_set_volume( data->volume_index, data->filename );
     }
 
     set_resampled_label_activity( ui_info, IF_is_resampled_volume_loaded() );
@@ -172,7 +163,7 @@ private  void  volume_has_been_loaded(
 public  void  cancel_loading(
     load_struct    *data )
 {
-    delete_volume( data->volume );
+    IF_cancel_loading_volume( data->volume_index );
 
     delete_popup_interaction( data );
 }

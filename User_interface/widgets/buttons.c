@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.16 1995-10-02 18:35:02 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.17 1995-12-11 19:31:36 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -80,11 +80,10 @@ private  DEFINE_EVENT_FUNCTION( check_unpush_button )
     }
     else if( current_realtime_seconds() >= button->time_to_unpush )
     {
-        set_widget_activity( widget, ON );
+        /*--- calling this will cause update_button_activity() to be called
+              and remove the check_unpush_button_event */
 
-        button->update_counter = -1;
-        remove_global_event_callback( NO_EVENT, check_unpush_button,
-                                      (void *) widget );
+        set_widget_activity( widget, ON );
     }
 }
 
@@ -116,6 +115,28 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
     button->update_counter = 0;
     add_global_event_callback( NO_EVENT, check_unpush_button,
                                ANY_MODIFIER, (void *) widget );
+}
+
+public  void  update_button_activity(
+    widget_struct           *widget )
+{
+    button_struct   *button;
+
+    button = get_widget_button( widget );
+
+    update_button_colours( widget );
+
+    set_event_viewport_callback_enabled( &widget->graphics->event_viewports,
+                       widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
+                       push_button_event_callback, (void *) widget,
+                       widget->active_flag );
+
+    if( button->update_counter >= 0 )
+    {
+        button->update_counter = -1;
+        remove_global_event_callback( NO_EVENT, check_unpush_button,
+                                      (void *) widget );
+    }
 }
 
 public  void  update_button_colours(
@@ -234,17 +255,6 @@ public  void  set_button_text(
 
     set_viewport_update_flag( &widget->graphics->graphics,
                               widget->viewport_index, NORMAL_PLANES );
-}
-
-public  void  update_button_activity(
-    widget_struct           *widget )
-{
-    update_button_colours( widget );
-
-    set_event_viewport_callback_enabled( &widget->graphics->event_viewports,
-                       widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
-                       push_button_event_callback, (void *) widget,
-                       widget->active_flag );
 }
 
 private  void  create_button_graphics(

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.25 1995-10-02 18:34:40 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.26 1995-12-11 19:31:28 david Exp $";
 #endif
 
 #include  <register.h>
@@ -348,7 +348,7 @@ public  void  repartition_colour_maps(
     }
     else
     {
-        ratio = (Real) max_colours_1 / (Real) max_colours_2;
+        ratio = (Real) max_colours_1 / (Real) (max_colours_1 + max_colours_2);
         n_volume_1 = ROUND( (Real) total_volume * ratio );
         if( n_volume_1 < 1 && max_colours_1 > 0 )
             n_volume_1 = 1;

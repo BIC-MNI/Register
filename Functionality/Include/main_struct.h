@@ -18,7 +18,7 @@
 #include  <common_include.h>
 
 #ifndef lint
-static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.19 1995-10-02 20:13:46 david Exp $";
+static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.20 1995-12-11 19:31:26 david Exp $";
 #endif
 
 #define  TWO_BUFFERS            2
@@ -62,6 +62,9 @@ typedef struct
     int                        start_colour_map;
     int                        n_colour_entries;
     colour_coding_struct       colour_coding;
+
+    volume_input_struct        volume_input;
+    Volume                     volume_being_input;
 }
 trislice_struct;
 

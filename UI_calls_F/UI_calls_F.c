@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.15 1995-10-02 18:34:46 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.16 1995-12-11 19:31:31 david Exp $";
 #endif
 
 #include  <UI_calls_F.h>
@@ -26,6 +26,28 @@ public  void  IF_initialize_register( window_struct *window )
 public  void  IF_terminate_register()
 {
     terminate_register();
+}
+
+public  Status  IF_start_loading_volume(
+    int     volume_index,
+    STRING  filename )
+{
+    return( start_loading_volume( get_main_struct(), volume_index, filename ) );
+}
+
+public  BOOLEAN  IF_load_more_of_volume(
+    int     volume_index,
+    Real    max_time,
+    Real    *fraction_done )
+{
+    return( load_more_of_volume( get_main_struct(), volume_index, max_time,
+                                 fraction_done ) );
+}
+
+public  void  IF_cancel_loading_volume(
+    int     volume_index )
+{
+    cancel_loading_volume( get_main_struct(), volume_index );
 }
 
 public  BOOLEAN  IF_volume_is_loaded(
@@ -71,19 +93,18 @@ public  void  IF_set_merged_slice_visibility(
 
 public  void  IF_set_volume(
     int     volume_index,
-    Volume  volume,
     STRING  filename )
 {
-    set_register_volume( get_main_struct(), volume_index, volume, filename );
+    set_register_volume( get_main_struct(), volume_index, filename );
 }
 
 public  void  IF_set_resampled_volume(
-    Volume                 volume,
+    int                    volume_index,
     STRING                 filename,
     STRING                 original_filename,
     General_transform      *resampling_transform )
 {
-    set_register_resampled_volume( get_main_struct(), volume, filename,
+    set_register_resampled_volume( get_main_struct(), volume_index, filename,
                                    original_filename, resampling_transform );
 }
 
@@ -112,10 +133,14 @@ public  void  IF_delete_volume(
     delete_register_volume( get_main_struct(), volume_index );
 }
 
-/* ARGSUSED */
+public  BOOLEAN  IF_get_interpolation_flag()
+{
+    return( get_interpolation_mode( get_main_struct() ) );
+}
 
 public  void  IF_set_interpolation_flag( BOOLEAN  flag )
 {
+    set_interpolation_mode( get_main_struct(), flag );
 }
 
 public  void  IF_set_recreate_slice_flag(
@@ -480,3 +505,14 @@ public  void  IF_set_transform_type(
 {
     set_tag_transform_type( get_main_struct(), type );
 }
+
+public  BOOLEAN  IF_get_cursor_visibility( void )
+{
+    return( get_cursor_visibility(get_main_struct()) );
+}
+
+public  void  IF_set_cursor_visibility( BOOLEAN  visibility )
+{
+    set_cursor_visibility( get_main_struct(), visibility );
+}
+

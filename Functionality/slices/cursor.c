@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/cursor.c,v 1.9 1995-10-02 18:34:41 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/cursor.c,v 1.10 1995-12-11 19:31:29 david Exp $";
 #endif
 
 #include  <register.h>
@@ -77,14 +77,13 @@ private  void  create_cursor_graphics(
     position_cursor( lines, 0, 0, 0, 0 );
 }
 
-public  lines_struct  *create_cursor(
+public  object_struct  *create_cursor(
     main_struct  *main,
     int          volume_index,
     int          view_index )
 {
     object_struct  *object;
     lines_struct   *lines;
-
     
     object = create_object( LINES );
 
@@ -98,7 +97,7 @@ public  lines_struct  *create_cursor(
                             get_slice_viewport_index(volume_index,view_index),
                             get_cursor_bitplane(), object );
 
-    return( lines );
+    return( object );
 }
 
 public  void  position_cursor(
@@ -169,12 +168,12 @@ public  void  position_cursor(
     Point_y(lines->points[23]) = Point_y(lines->points[7]) + 1;
 }
 
-private  lines_struct  *get_cursor_lines(
+private  object_struct  *get_cursor_lines(
     main_struct    *main,
     int            volume,
     int            view )
 {
-    lines_struct  *lines;
+    object_struct  *lines;
 
     if( volume == MERGED_VOLUME_INDEX )
         lines = main->merged.slices[view].cursor_lines;
@@ -228,7 +227,7 @@ public  void  update_cursor_colours(
 {
     lines_struct   *lines;
 
-    lines = get_cursor_lines( main, volume, view );
+    lines = get_lines_ptr( get_cursor_lines( main, volume, view ) );
 
     set_cursor_colours( main, lines );
 }
@@ -238,19 +237,27 @@ public  void  update_volume_cursor(
     int           volume_index,
     int           view_index )
 {
-    Real          x_pixel, y_pixel;
-    Real          position[N_DIMENSIONS];
-    lines_struct  *lines;
+    BOOLEAN        activity;
+    Real           x_pixel, y_pixel;
+    Real           position[N_DIMENSIONS];
+    object_struct  *cursor;
 
-    get_volume_voxel_position( main, volume_index, position );
+    cursor = get_cursor_lines( main, volume_index, view_index );
 
-    convert_voxel_to_pixel( main, volume_index, view_index, position,
-                            &x_pixel, &y_pixel );
+    activity = main->cursor_visibility && is_volume_active(main,volume_index);
 
-    lines = get_cursor_lines( main, volume_index, view_index );
+    set_object_visibility( cursor, activity );
 
-    position_cursor( lines, ROUND(x_pixel), ROUND(y_pixel),
-                     Slice_cursor_offset, Slice_cursor_size );
+    if( activity )
+    {
+        get_volume_voxel_position( main, volume_index, position );
+
+        convert_voxel_to_pixel( main, volume_index, view_index, position,
+                                &x_pixel, &y_pixel );
+
+        position_cursor( get_lines_ptr(cursor), ROUND(x_pixel), ROUND(y_pixel),
+                         Slice_cursor_offset, Slice_cursor_size );
+    }
 
     set_update_slice_viewport_flag( main, volume_index, view_index,
                                     get_cursor_bitplane() );
@@ -264,4 +271,22 @@ public  void  update_volume_cursors(
 
     for_less( view_index, 0, N_VIEWS )
         update_volume_cursor( main, volume_index, view_index );
+}
+
+public  BOOLEAN  get_cursor_visibility(
+    main_struct  *main )
+{
+    return( main->cursor_visibility );
+}
+
+public  void  set_cursor_visibility(
+    main_struct  *main,
+    BOOLEAN      state )
+{
+    int   volume;
+
+    main->cursor_visibility = state;
+
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+        update_volume_cursors( main, volume );
 }

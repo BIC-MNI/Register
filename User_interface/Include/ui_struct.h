@@ -16,7 +16,7 @@
 #define  DEF_UI_STRUCT
 
 #ifndef lint
-static char ui_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_struct.h,v 1.12 1995-07-31 19:54:18 david Exp $";
+static char ui_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_struct.h,v 1.13 1995-12-11 19:31:32 david Exp $";
 #endif
 
 #include  <common_include.h>
@@ -97,8 +97,6 @@ typedef  struct
     BOOLEAN                   this_is_resampled_volume;
     STRING                    filename;
     int                       volume_index;
-    volume_input_struct       input;
-    Volume                    volume;
     popup_struct              popup;
     polygons_struct           *meter_background;
     polygons_struct           *meter;

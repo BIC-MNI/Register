@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.17 1995-10-02 18:34:42 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.18 1995-12-11 19:31:30 david Exp $";
 #endif
 
 #include  <register.h>
@@ -692,4 +692,25 @@ public  Real  get_slice_filter_width(
     slice = get_slice_struct( main, volume_index, view );
 
     return( slice->filter_width );
+}
+
+public  void  set_interpolation_mode(
+    main_struct   *main,
+    BOOLEAN       smooth_flag )
+{
+    int   volume;
+
+    if( smooth_flag )
+        main->degrees_continuity = 0;
+    else
+        main->degrees_continuity = -1;
+
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+        set_recreate_3_slices_flags( main, volume );
+}
+
+public  BOOLEAN  get_interpolation_mode(
+    main_struct   *main )
+{
+    return( main->degrees_continuity == 0 );
 }

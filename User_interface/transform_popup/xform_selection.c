@@ -13,17 +13,20 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.6 1995-10-02 18:35:06 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.7 1995-12-11 19:31:37 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 private  void  delete_transform_selection(
+    UI_struct             *ui,
     popup_struct          *popup )
 {
     delete_popup_window( popup );
 
     FREE( popup );
+
+    set_transform_type_button_activity( ui, ON );
 }
 
 /* ARGSUSED */
@@ -38,14 +41,16 @@ private  DEFINE_WIDGET_CALLBACK( transform_callback )
 
 private  DEFINE_WIDGET_CALLBACK( close_callback )
 {
-    delete_transform_selection( (popup_struct *) callback_data );
+    delete_transform_selection( get_ui_struct(),
+                                (popup_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
 private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
-    delete_transform_selection( (popup_struct *) callback_data );
+    delete_transform_selection( get_ui_struct(),
+                                (popup_struct *) callback_data );
 }
 
 /* ARGSUSED */
@@ -72,6 +77,8 @@ public  void  popup_transform_dialog(
 
     widget_struct    *widget;
     widget_struct    *radio_widgets[SIZEOF_STATIC_ARRAY( choices )];
+
+    set_transform_type_button_activity( ui, OFF );
 
     ALLOC( popup, 1 );
 

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.32 1995-10-02 19:04:20 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.33 1995-12-11 19:31:35 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -36,6 +36,8 @@ typedef  enum
     DELETE_ALL_TAGS_BUTTON,
     TAG_VISIBILITY_BUTTON,
     TRANSFORM_TYPE_BUTTON,
+    CURSOR_VISIBILITY_BUTTON,
+    INTERPOLATION_BUTTON,
     AVG_RMS_LABEL,
     AVG_RMS_ERROR,
     N_MAIN_WIDGETS
@@ -269,6 +271,28 @@ private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback )
     IF_set_tags_visibility( visibility );
 }
 
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( cursor_visibility_button_callback )
+{
+    BOOLEAN   visibility;
+
+    visibility = get_toggle_button_state( widget );
+
+    IF_set_cursor_visibility( visibility );
+}
+
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
+{
+    BOOLEAN   smooth_flag;
+
+    smooth_flag = get_toggle_button_state( widget );
+
+    IF_set_interpolation_flag( smooth_flag );
+}
+
 public  void  add_main_widgets(
     UI_struct         *ui_info )
 {
@@ -483,14 +507,42 @@ public  void  add_main_widgets(
                    create_toggle_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
-                   "Tags Hidden",
-                   "Tags Displayed",
+                   "Tags: Invisible",
+                   "Tags: Visible",
                    IF_get_tags_visibility(),
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    tag_visibility_button_callback, (void *) 0 ) );
+
+    widget_indices[CURSOR_VISIBILITY_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_toggle_button( &ui_info->graphics_window,
+                   Main_menu_viewport, 
+                   0, 0, Button_width, Button_height,
+                   "Cursor: Invisible",
+                   "Cursor: Visible",
+                   IF_get_cursor_visibility(),
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   cursor_visibility_button_callback, (void *) 0 ) );
+
+    widget_indices[INTERPOLATION_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_toggle_button( &ui_info->graphics_window,
+                   Main_menu_viewport, 
+                   0, 0, Button_width, Button_height,
+                   "Interp: Flat",
+                   "Interp: Smooth",
+                   IF_get_interpolation_flag(),
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   interpolation_button_callback, (void *) 0 ) );
 
     widget_indices[AVG_RMS_LABEL] = add_widget_to_list(
                   &ui_info->widget_list[Main_menu_viewport],

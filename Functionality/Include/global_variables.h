@@ -54,4 +54,6 @@ START_GLOBALS
 
     DEF_GLOBAL( Initial_slice_filter_type, int, 0 )
     DEF_GLOBAL( Initial_slice_filter_width, Real, 1.0 )
+
+    DEF_GLOBAL( Convert_vectors_to_rgb, BOOLEAN, TRUE )
 END_GLOBALS
