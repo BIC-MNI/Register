@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.30 1998-06-29 15:01:43 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.31 2005-02-28 22:54:00 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -117,114 +117,6 @@ private  Range_flags  lookup_colour_code(
     return( flag );
 }
 
-private  void  update_merged_rgb_colour_maps(
-    main_struct  *main )
-{
-    int             i, j;
-    int             min_value1, max_value1, min_value2, max_value2;
-    Colour          col1, col2[N_VOXEL_VALUES];
-    Range_flags     flag1, flags2[N_VOXEL_VALUES];
-    Volume          volume1, volume2;
-
-    volume1 = get_slice_volume( main, 0 );
-    volume2 = get_slice_volume( main, 1 );
-
-    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
-    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
-
-    for_inclusive( j, min_value2, max_value2 )
-    {
-        flags2[j] = lookup_colour_code( volume2, &main->merged.colour_coding[1],
-                                        j, &col2[j] );
-    }
-
-    for_inclusive( i, min_value1, max_value1 )
-    {
-        flag1 = lookup_colour_code( volume1, &main->merged.colour_coding[0],
-                                    i, &col1 );
-
-        for_inclusive( j, min_value2, max_value2 )
-        {
-            main->merged.rgb_colour_map[i][j] = 
-                    get_merged_colour( main->merged.merge_method,
-                                   Use_over_under_colour_in_weights,
-                                   main->merged.colour_coding[0].under_colour,
-                                   main->merged.colour_coding[0].over_colour,
-                                   flag1,     main->merged.opacity[0], col1,
-                                   flags2[j], main->merged.opacity[1], col2[j]);
-        }
-    }
-}
-
-private  void  update_merged_cmode_indices(
-    main_struct  *main )
-{
-    int     i, j, n1, n2, min_ind, i1, i2[N_VOXEL_VALUES];
-    int     min_value1, max_value1, min_value2, max_value2;
-
-    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
-    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
-
-    min_ind = main->merged.start_colour_map;
-    n1 = main->merged.n_colour_entries1;
-    n2 = main->merged.n_colour_entries2;
-
-    for_inclusive( j, min_value2, max_value2 )
-        i2[j] = CONVERT_INTEGER_RANGE( j, min_value2, max_value2, 0, n2-1 );
-
-    for_inclusive( i, min_value1, max_value1 )
-    {
-        i1 = CONVERT_INTEGER_RANGE( i, min_value1, max_value1, 0, n1-1 );
-        for_inclusive( j, min_value2, max_value2 )
-            main->merged.cmode_colour_map[i][j] = (unsigned short)
-                                                (min_ind + IJ(i1,i2[j],n2));
-    }
-}
-
-private  void  update_merged_cmode_maps(
-    main_struct  *main )
-{
-    int             i, j, n1, n2, min_ind, voxel;
-    Colour          col1, col2[N_VOXEL_VALUES];
-    Range_flags     flag1, flags2[N_VOXEL_VALUES];
-    int             min_value1, max_value1, min_value2, max_value2;
-    Volume          volume1, volume2;
-
-    volume1 = get_slice_volume( main, 0 );
-    volume2 = get_slice_volume( main, 1 );
-
-    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
-    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
-
-    min_ind = main->merged.start_colour_map;
-    n1 = main->merged.n_colour_entries1;
-    n2 = main->merged.n_colour_entries2;
-
-    for_less( j, 0, n2 )
-    {
-        voxel = CONVERT_INTEGER_RANGE( j, 0, n2-1, min_value2, max_value2 );
-        flags2[j] = lookup_colour_code( volume2, &main->merged.colour_coding[1],
-                                        voxel, &col2[j] );
-    }
-
-    for_less( i, 0, n1 )
-    {
-        voxel = CONVERT_INTEGER_RANGE( i, 0, n1-1, min_value1, max_value1 );
-        flag1 = lookup_colour_code( volume1, &main->merged.colour_coding[0],
-                                    voxel, &col1 );
-        for_less( j, 0, n2 )
-        {
-            G_set_colour_map_entry( main->window, min_ind + IJ(i,j,n2), 
-                get_merged_colour( main->merged.merge_method,
-                               Use_over_under_colour_in_weights,
-                               main->merged.colour_coding[0].under_colour,
-                               main->merged.colour_coding[0].over_colour,
-                               flag1, main->merged.opacity[0], col1,
-                               flags2[j], main->merged.opacity[1], col2[j] ) );
-        }
-    }
-}
-
 private  void  update_rgb_colour_maps(
     main_struct  *main,
     int          volume_index )
@@ -232,11 +124,31 @@ private  void  update_rgb_colour_maps(
     int            i;
     int            min_value, max_value;
     Volume         volume;
+    Colour         *tmp_ptr;
 
     volume = get_slice_volume( main, volume_index );
 
+    /* If we had previously allocated a colour map, free it.
+     */
+    if (main->trislice[volume_index].rgb_colour_map != NULL) {
+        free(main->trislice[volume_index].rgb_colour_map +
+             main->trislice[volume_index].rgb_colour_offset);
+    }
+
     get_volume_range_of_voxels( main, volume_index, &min_value, &max_value );
 
+    tmp_ptr = malloc((max_value - min_value + 1) * sizeof (*tmp_ptr));
+    /* TODO: check!!! */
+
+    /* The colour map is set to the allocated pointer MINUS the minimum
+     * value.  For volumes with a signed range, this means that we can 
+     * index the colour map by a voxel value with no translation.
+     */
+    main->trislice[volume_index].rgb_colour_map = tmp_ptr - min_value;
+    main->trislice[volume_index].rgb_colour_offset = min_value;
+
+    /* Initialize all of the colour map entries.
+     */
     for_inclusive( i, min_value, max_value )
     {
         main->trislice[volume_index].rgb_colour_map[i] =
@@ -252,11 +164,26 @@ private  void  update_cmode_indices(
 {
     int   min_ind, max_ind, voxel_value;
     int   min_value, max_value;
+    unsigned short *tmp_ptr;
 
     min_ind = main->trislice[volume].start_colour_map;
     max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
 
+    if (main->trislice[volume].cmode_colour_map != NULL) {
+        free(main->trislice[volume].cmode_colour_map +
+             main->trislice[volume].cmode_colour_offset);
+    }
+
     get_volume_range_of_voxels( main, volume, &min_value, &max_value );
+    tmp_ptr = malloc((max_value - min_value + 1) * sizeof (*tmp_ptr));
+    /* TODO: check!!! */
+
+    /* The colour map is set to the allocated pointer MINUS the minimum
+     * value.  For volumes with a signed range, this means that we can 
+     * index the colour map by a voxel value with no translation.
+     */
+    main->trislice[volume].cmode_colour_map = tmp_ptr - min_value;
+    main->trislice[volume].cmode_colour_offset = min_value;
 
     for_inclusive( voxel_value, min_value, max_value )
     {
@@ -297,17 +224,7 @@ public  void   update_colour_maps(
     main_struct  *main,
     int          volume )
 {
-    if( volume == MERGED_VOLUME_INDEX )
-    {
-        if( main->merged.active_flag )
-        {
-            if( G_get_colour_map_state( main->window ) )
-                update_merged_cmode_maps( main );
-            else
-                update_merged_rgb_colour_maps( main );
-        }
-    }
-    else if( is_volume_active( main, volume ) )
+    if( volume != MERGED_VOLUME_INDEX && is_volume_active( main, volume ) )
     {
         if( G_get_colour_map_state( main->window ) )
             update_cmode_colour_maps( main, volume );
@@ -422,9 +339,6 @@ public  void  repartition_colour_maps(
         if( is_volume_active( main, volume ) )
             update_cmode_indices( main, volume );
     }
-
-    if( n_merged_1 > 0 && n_merged_2 > 0 )
-        update_merged_cmode_indices( main );
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
         update_colour_maps( main, volume );
