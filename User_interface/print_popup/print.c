@@ -78,10 +78,12 @@ private  void  delete_message_popup(
 
 private  DEFINE_WIDGET_CALLBACK( acknowledge_callback )   /* ARGSUSED */
 {
-    message_struct   *popup;
+    delete_message_popup( (message_struct *) callback_data );
+}
 
-    popup = (message_struct *) callback_data;
-    delete_message_popup( popup );
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )   /* ARGSUSED */
+{
+    delete_message_popup( (message_struct *) callback_data );
 }
 
 private  DEFINE_EVENT_FUNCTION( check_to_expire_popup )   /* ARGSUSED */
@@ -145,12 +147,13 @@ private  void  create_message_popup(
 
     G_get_mouse_screen_position( &x, &y );
 
-    x_size = graphics_length + 2 * Message_x_offset;
+    x_size = max_length + 2 * Message_x_offset;
     y_size = 2 * Message_y_offset + n_lines * Message_text_y_offset +
              Message_ok_button_height;
 
     create_popup_window( &popup->popup_window, "Register Message",
-                         x, y, x_size, y_size );
+                         x, y, x_size, y_size, quit_window_callback,
+                         (void *) popup );
 
     popup->expiration_time = current_realtime_seconds() +
                              Message_expiration_time;

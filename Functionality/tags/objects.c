@@ -122,8 +122,8 @@ private  Boolean  convert_tag_to_pixel(
     int               volume,
     int               view,
     tag_point_struct  *tag,
-    int               *x,
-    int               *y,
+    Real              *x,
+    Real              *y,
     Real              *radius )
 {
     Boolean  visible;
@@ -188,78 +188,15 @@ private  void  fill_in_circle_points(
 
 private  void  position_tag_circle(
     lines_struct   *lines,
-    int            x,
-    int            y,
+    Real           x,
+    Real           y,
     Real           radius )
 {
-    fill_in_circle_points( (Real) x + 0.5, (Real) y + 0.5, radius,
+    fill_in_circle_points( x + 0.5, y + 0.5, radius,
                            lines->n_points / 2, lines->points );
-    fill_in_circle_points( (Real) x + 0.5, (Real) y + 0.5, radius + 1.0,
+    fill_in_circle_points( x + 0.5, y + 0.5, radius + 1.0,
                            lines->n_points / 2,
                            &lines->points[lines->n_points / 2] );
-}
-
-private  Boolean  assigned = FALSE;
-private  Real  x_c, y_c;
-private  lines_struct  *tag_lines;
-
-public  void  check_tag_integrity()
-{
-    viewport_struct  *viewport;
-    lines_struct     *lines;
-    main_struct      *main = get_main_struct();
-    Real  x, y, z;
-    int   i;
-
-    if( assigned )
-    {
-        if( tag_lines->n_points != 28 )
-            abort();
-
-        for_less( i, 0, tag_lines->n_points )
-        {
-            x = Point_x(tag_lines->points[i]);
-            y = Point_y(tag_lines->points[i]);
-            z = Point_z(tag_lines->points[i]);
-
-            if( x < x_c - 20.0 || x > x_c + 20 ||
-                y < y_c - 20.0 || y > y_c + 20 ||
-                z != 0.0 )
-            {
-                (void) printf( "check_tag_integrity" );
-                abort();
-            }
-        }
-    }
-
-    viewport = &main->graphics.viewports[get_slice_viewport_index(2,0)];
-    for_less( i, 0, viewport->bitplanes[NORMAL_PLANES].n_objects )
-    {
-        if( viewport->bitplanes[NORMAL_PLANES].objects[i]->visibility &&
-            viewport->bitplanes[NORMAL_PLANES].objects[i]->object_type ==
-            LINES )
-        {
-            lines = (lines_struct *) get_object_pointer(
-                viewport->bitplanes[NORMAL_PLANES].objects[i]);
-
-            if( lines->n_points < 0 || lines->n_items < 0 )
-                abort();
-
-            for_less( i, 0, lines->n_points )
-            {
-                x = Point_x(lines->points[i]);
-                y = Point_y(lines->points[i]);
-                z = Point_z(lines->points[i]);
-
-                if( x < 20.0 || x > 1000.0 ||
-                    y < 20.0 || y > 1000.0 || z != 0.0 )
-                {
-                    (void) printf( "check_tag_integrity" );
-                    abort();
-                }
-            }
-        }
-    }
 }
 
 public  void  update_tag_object(
@@ -268,12 +205,13 @@ public  void  update_tag_object(
     int               view,
     tag_point_struct  *tag )
 {
-    int             x, y;
+    Real            x, y;
     Real            radius;
     Boolean         visibility;
     lines_struct    *lines;
 
-    if( is_volume_active( main, volume ) &&
+    if( main->tags.tags_visible &&
+        is_volume_active( main, volume ) &&
         convert_tag_to_pixel( main, volume, view, tag, &x, &y, &radius ) )
     {
         lines = (lines_struct *)
@@ -281,14 +219,6 @@ public  void  update_tag_object(
         position_tag_circle( lines, x, y, radius );
         update_slice_tag_colours( main, volume, view, tag );
         visibility = ON;
-
-if( !assigned && volume == 2 && view == 0 )
-{
-    assigned = TRUE;
-    x_c = (Real) x;
-    y_c = (Real) y;
-    tag_lines = lines;
-}
     }
     else
     {

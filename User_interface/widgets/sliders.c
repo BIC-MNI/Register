@@ -64,6 +64,9 @@ private  void  update_slider_position_from_mouse(
     values[ind] = convert_position_to_slider_value( slider, x_mouse - widget->x,
                                                     widget->x_size );
 
+    if( slider->colour_bar_flag && values[0] > values[1] )
+        values[ind] = values[1-ind];
+
     set_slider_values( widget, values[0], values[1] );
 }
 
@@ -539,7 +542,7 @@ private  widget_struct  *create_a_slider(
     slider->text_widgets[0] = (void *) create_text_entry( graphics,
                        viewport_index,
                        0, 0, Slider_text_width, Slider_text_height,
-                       "", ON,
+                       TRUE, "", ON,
                        TEXT_ENTRY_ACTIVE_COLOUR,
                        TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
@@ -566,7 +569,7 @@ private  widget_struct  *create_a_slider(
         slider->text_widgets[1] = (void *) create_text_entry( graphics,
                        viewport_index,
                        0, 0, Slider_text_width, Slider_text_height,
-                       "", ON,
+                       TRUE, "", ON,
                        TEXT_ENTRY_ACTIVE_COLOUR,
                        TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,

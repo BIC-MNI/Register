@@ -1,23 +1,5 @@
 #include  <def_user_interface.h>
 
-private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
-{
-    widget_struct   *widget;
-    button_struct   *button;
-
-    widget = (widget_struct *) callback_data;
-    button = get_widget_button( widget );
-
-    if( current_realtime_seconds() >= button->time_to_unpush )
-    {
-        set_widget_activity( widget, ON );
-
-        button->time_to_unpush = -1.0;
-        remove_global_event_callback( NO_EVENT, check_unpush_button,
-                                      (void *) widget );
-    }
-}
-
 private  void  deselect_other_radio_buttons(
     widget_struct           *widget )
 {
@@ -57,6 +39,35 @@ public  void  define_radio_buttons(
     }
 }
 
+private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
+{
+    widget_struct   *widget;
+    button_struct   *button;
+
+    widget = (widget_struct *) callback_data;
+    button = get_widget_button( widget );
+
+    if( button->update_counter == 0 )
+    {
+        ++button->update_counter;
+    }
+    else if( button->update_counter == 1 )
+    {
+        ++button->update_counter;
+        button->time_to_unpush = current_realtime_seconds() +
+                                 Interface_highlight_time;
+        button->push_callback( widget, button->callback_data );
+    }
+    else if( current_realtime_seconds() >= button->time_to_unpush )
+    {
+        set_widget_activity( widget, ON );
+
+        button->update_counter = -1;
+        remove_global_event_callback( NO_EVENT, check_unpush_button,
+                                      (void *) widget );
+    }
+}
+
 private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
 {
     widget_struct   *widget;
@@ -80,13 +91,9 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
     set_viewport_update_flag( &widget->graphics->graphics,
                               widget->viewport_index, NORMAL_PLANES );
 
-    button->time_to_unpush = current_realtime_seconds() +
-                             Interface_highlight_time;
-
+    button->update_counter = 0;
     add_global_event_callback( NO_EVENT, check_unpush_button,
                                ANY_MODIFIER, (void *) widget );
-
-    button->push_callback( widget, button->callback_data );
 }
 
 public  void  update_button_colours(
@@ -255,9 +262,9 @@ public  void  delete_button(
 
     button = get_widget_button( widget );
 
-    if( button->time_to_unpush >= 0.0 )
+    if( button->update_counter >= 0 )
     {
-        button->time_to_unpush = -1.0;
+        button->update_counter = -1;
         remove_global_event_callback( NO_EVENT, check_unpush_button,
                                       (void *) widget );
     }
@@ -302,7 +309,7 @@ private  widget_struct  *create_a_button(
     button->next_radio_button = (widget_struct *) 0;
 
     button->toggle_flag = toggle_flag;
-    button->time_to_unpush = -1.0;
+    button->update_counter = -1;
 
     if( toggle_flag )
     {

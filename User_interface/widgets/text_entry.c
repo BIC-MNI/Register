@@ -151,6 +151,7 @@ private  void  add_character_to_text_entry(
         break;
 
     case DELETE_KEY:
+    case BACKSPACE_KEY:
         delete_character_in_text_entry( text_entry );
 
     default:
@@ -214,6 +215,10 @@ private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )/* ARGSUSED */
     text_entry->in_edit_mode = TRUE;
 
     (void) strcpy( text_entry->saved_string, text_entry->string );
+
+    if( text_entry->clear_text_when_selected )
+        text_entry->string[0] = (char) 0;
+
     text_entry->string_index = strlen( text_entry->string );
 
     set_object_visibility( text_entry->cursor, TRUE );
@@ -424,6 +429,7 @@ private  widget_struct  *create_a_text_entry(
     int                        x_size,
     int                        y_size,
     Boolean                    label_only_flag,
+    Boolean                    clear_text_when_selected,
     char                       initial_text[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
@@ -457,6 +463,7 @@ private  widget_struct  *create_a_text_entry(
     text_entry->cursor_colour = cursor_colour;
 
     text_entry->label_only_flag = label_only_flag;
+    text_entry->clear_text_when_selected = clear_text_when_selected;
     text_entry->string_index = 0;
     text_entry->left_index = 0;
 
@@ -493,6 +500,7 @@ public  widget_struct  *create_text_entry(
     int                        y,
     int                        x_size,
     int                        y_size,
+    Boolean                    clear_text_when_selected,
     char                       initial_text[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
@@ -508,7 +516,8 @@ public  widget_struct  *create_text_entry(
     void                       *callback_data )
 {
     return( create_a_text_entry( graphics, viewport_index, x, y, x_size, y_size,
-                         FALSE, initial_text, initial_activity, active_colour,
+                         FALSE, clear_text_when_selected,
+                         initial_text, initial_activity, active_colour,
                          selected_colour, inactive_colour,
                          text_colour, edit_colour,
                          text_edit_colour, cursor_colour,
@@ -533,7 +542,8 @@ public  widget_struct  *create_label(
     Real                       font_size )
 {
     return( create_a_text_entry( graphics, viewport_index, x, y, x_size, y_size,
-                         TRUE, initial_text, initial_activity, active_colour,
+                         TRUE, FALSE,
+                         initial_text, initial_activity, active_colour,
                          selected_colour, inactive_colour, text_colour,
                          (UI_colours) 0, (UI_colours) 0, (UI_colours) 0,
                          text_font, font_size,

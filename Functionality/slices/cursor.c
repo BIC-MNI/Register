@@ -147,16 +147,21 @@ public  void  update_volume_cursor(
     int           volume_index,
     int           view_index )
 {
-    int    x_pixel, y_pixel;
-    Real   position[N_DIMENSIONS];
+    Real          x_pixel, y_pixel;
+    Real          position[N_DIMENSIONS];
+    lines_struct  *lines;
 
     get_volume_voxel_position( main, volume_index, position );
 
     convert_voxel_to_pixel( main, volume_index, view_index, position,
                             &x_pixel, &y_pixel );
 
-    position_cursor( main->trislice[volume_index].slices[view_index].
-                     cursor_lines, x_pixel, y_pixel,
+    if( volume_index == MERGED_VOLUME_INDEX )
+        lines = main->merged.slices[view_index].cursor_lines;
+    else
+        lines = main->trislice[volume_index].slices[view_index].cursor_lines;
+
+    position_cursor( lines, ROUND(x_pixel), ROUND(y_pixel),
                      Slice_cursor_offset, Slice_cursor_size );
 
     set_update_slice_viewport_flag( main, volume_index, view_index,
