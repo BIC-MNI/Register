@@ -1,5 +1,44 @@
 #include  <def_user_interface.h>
 
+private  DEFINE_EVENT_FUNCTION( check_unpush_button )
+{
+    widget_struct   *widget;
+    button_struct   *button;
+
+    widget = (widget_struct *) callback_data;
+    button = (button_struct  *) get_widget_pointer(widget);
+
+    if( current_realtime_seconds() >= button->time_to_unpush )
+    {
+        button->polygons->colours[0] = Button_colour;
+        set_viewport_update_flag( &get_ui_struct()->graphics_window.graphics,
+                                  widget->viewport_index, NORMAL_PLANES );
+
+        remove_global_event_callback( NO_EVENT, check_unpush_button,
+                                      (void *) widget );
+    }
+}
+
+private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
+{
+    widget_struct   *widget;
+    button_struct   *button;
+
+    widget = (widget_struct *) callback_data;
+    button = (button_struct  *) get_widget_pointer(widget);
+
+    button->polygons->colours[0] = Button_pushed_colour;
+    set_viewport_update_flag( &get_ui_struct()->graphics_window.graphics,
+                              widget->viewport_index, NORMAL_PLANES );
+
+    button->time_to_unpush = current_realtime_seconds() +
+                             Interface_highlight_time;
+    add_global_event_callback( NO_EVENT, check_unpush_button,
+                               (void *) widget );
+
+    button->push_callback();
+}
+
 private  void  position_button_text(
     button_struct    *button )
 {
@@ -36,10 +75,13 @@ private  void  position_button_rectangle(
 public  void  position_button(
     event_viewports_struct        *event_viewports,
     int                           viewport_index,
-    button_struct                 *button,
+    widget_struct                 *widget,
     int                           x,
     int                           y )
 {
+    button_struct   *button;
+
+    button = (button_struct *) get_widget_pointer( widget );
     button->x = x;
     button->y = y;
     position_button_text( button );
@@ -48,8 +90,8 @@ public  void  position_button(
     set_event_viewport_callback_viewport(
                event_viewports,
                viewport_index, LEFT_MOUSE_DOWN_EVENT,
-               button->push_button_function,
-               (void *) button,
+               push_button_event_callback,
+               (void *) widget,
                button->x, button->x + button->x_size - 1,
                button->y, button->y + button->y_size - 1 );
 }
@@ -102,33 +144,33 @@ public  void  create_button(
     Colour                     text_colour,
     Font_types                 text_font,
     Real                       font_size,
-    event_function_type        push_button_function )
+    widget_callback_type       push_callback )
 {
     widget_struct   *widget;
     button_struct   *button;
 
-    widget = create_widget( BUTTON );
+    widget = create_widget( BUTTON, viewport_index );
     button = (button_struct *) get_widget_pointer( widget );
 
     button->x = 0;
     button->y = 0;
     button->x_size = x_size;
     button->y_size = y_size;
-    button->push_button_function = push_button_function;
+    button->push_callback = push_callback;
 
     add_event_viewport_callback( &ui_info->graphics_window.event_viewports,
                                  viewport_index,
                                  LEFT_MOUSE_DOWN_EVENT,
                                  x, x + x_size - 1, y, y + y_size - 1,
-                                 push_button_function,
-                                 (void *) button );
+                                 push_button_event_callback,
+                                 (void *) widget );
 
     create_button_graphics( ui_info, viewport_index, button, label,
                             button_colour, text_colour, text_font,
                             font_size );
 
     position_button( &ui_info->graphics_window.event_viewports,
-                     viewport_index, button, x, y );
+                     viewport_index, widget, x, y );
 
     add_widget_to_list( &ui_info->widget_list, widget );
 }
