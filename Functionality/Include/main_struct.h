@@ -18,12 +18,12 @@
 #include  <common_include.h>
 
 #ifndef lint
-static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.23 2004-10-25 19:11:07 bert Exp $";
+static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.24 2005-02-28 20:53:27 bert Exp $";
 #endif
 
-#define  TWO_BUFFERS            2
-#define  N_VOXEL_VALUES       256
-#define  N_MERGED               2
+#define  TWO_BUFFERS    2
+#define  VOXEL_TYPE     MI_ORIGINAL_TYPE
+#define  N_MERGED       2
 
 typedef enum { BACKGROUND_COLOUR,
                TAG_INSIDE_COLOUR,
@@ -57,8 +57,10 @@ typedef struct
     STRING                     filename;
     slice_struct               slices[N_VIEWS];
     Real                       position[N_DIMENSIONS];
-    unsigned short             cmode_colour_map[N_VOXEL_VALUES];
-    Colour                     rgb_colour_map[N_VOXEL_VALUES];
+    unsigned short             *cmode_colour_map;
+    int                        cmode_colour_offset;
+    Colour                     *rgb_colour_map;
+    int                        rgb_colour_offset;
     int                        start_colour_map;
     int                        n_colour_entries;
     colour_coding_struct       colour_coding;
@@ -74,8 +76,6 @@ typedef  struct
     BOOLEAN                active_flag;
     slice_struct           slices[N_VIEWS];
     Real                   position[N_DIMENSIONS];
-    unsigned short         **cmode_colour_map;
-    Colour                 **rgb_colour_map;
     int                    start_colour_map;
     int                    n_colour_entries1;
     int                    n_colour_entries2;
