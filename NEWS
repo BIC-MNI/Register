@@ -1,3 +1,10 @@
+    New in Release 1.3.5
+
+* Should now link with FreeGLUT
+* Screen image capture now uses ImageMagick, so it will now work on many
+Linux platforms.
+* Some build fixes
+
     New in Release 1.3.4
 
 * Link with -lXi when probing for glut library.  Should fix build
