@@ -46,7 +46,7 @@ CLEANFILES = dummy.c
 # added to the link line.
 register_LDFLAGS = $(X_LIBS)
 register_LDADD = $(objects) \
-	Graphics/libbicgl.a $(GL_LIBS) \
+	Graphics/libbicgl.a $(GL_LIBS) $(GLU_LIBS) $(GLUT_LIBS)\
 	$(MNI_LIBS)
 
 

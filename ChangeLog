@@ -1,3 +1,7 @@
+2005-02-02  Andrew Janke <a.janke@gmail.com>
+        * Changes to autoconf build that allows a native build on OSX
+        also changes to various headers so that gl.h and glut.h are found
+
 2004-09-01  Bert Vincent <bert@bic.mni.mcgill.ca>
         * Use ImageMagick's 'import' utility rather than 'scrsave' to
 	implement the image capture functionality.  This allows us to
