@@ -97,13 +97,13 @@ private  void  volume_has_been_loaded(
         IF_set_resampled_volume( data->volume, data->filename,
                                  ui_info->original_filename_volume_2,
                                  &ui_info->resampling_transform );
-        set_resampled_label_activity( ui_info, ON );
     }
     else
     {
         IF_set_volume( data->volume_index, data->volume, data->filename );
-        set_resampled_label_activity( ui_info, OFF );
     }
+
+    set_resampled_label_activity( ui_info, IF_is_resampled_volume_loaded() );
 
     update_position_counters( ui_info, data->volume_index );
 
