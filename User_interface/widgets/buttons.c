@@ -28,6 +28,42 @@ private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
     }
 }
 
+private  void  turn_on_other_radio_buttons(
+    widget_struct           *widget,
+    event_viewports_struct  *event_viewports,
+    Boolean                 colour_map_state )
+{
+    widget_struct   *current_widget;
+    button_struct   *button;
+
+    set_widget_activity( widget, event_viewports, colour_map_state, OFF );
+
+    current_widget = widget;
+    button = get_widget_button( widget );
+
+    while( button->next_radio_button != widget )
+    {
+        current_widget = button->next_radio_button;
+        button = get_widget_button( current_widget );
+        set_widget_activity( current_widget, event_viewports,
+                             colour_map_state, ON );
+    }
+}
+
+public  void  define_radio_buttons(
+    int            n_widgets,
+    widget_struct  *widgets[] )
+{
+    int            i;
+    button_struct  *button;
+
+    for_less( i, 0, n_widgets )
+    {
+        button = get_widget_button( widgets[i] );
+        button->next_radio_button = widgets[(i+1)%n_widgets];
+    }
+}
+
 private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
 {
     widget_struct   *widget;
@@ -54,6 +90,14 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
                              Interface_highlight_time;
     add_global_event_callback( NO_EVENT, check_unpush_button,
                                (void *) widget );
+
+    if( button->next_radio_button != (widget_struct *) 0 )
+    {
+        turn_on_other_radio_buttons( widget, &get_ui_struct()->
+                                             graphics_window.event_viewports,
+                 G_get_colour_map_state(get_ui_struct()->
+                                        graphics_window.window) );
+    }
 
     button->push_callback( widget );
 }
@@ -200,6 +244,8 @@ private  int  create_a_button(
     button->inactive_colour = inactive_colour;
     button->pushed_colour = pushed_colour;
     button->text_colour = text_colour;
+
+    button->next_radio_button = (widget_struct *) 0;
 
     button->toggle_flag = toggle_flag;
 
