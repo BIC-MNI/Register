@@ -1,0 +1,81 @@
+BIC_PL_INCLUDE    = @MNI_INCLUDES@
+BIC_PL_LIBS       = @MNI_LIBS@
+
+#MINC_INCLUDE = 
+#MINC_LIB = -lminc -lnetcdf
+
+
+VOLUME_IO_INCLUDE = @MNI_INCLUDES@ -I/usr/local/mni/include/volume_io
+
+#VOLUME_IO_LIBS = -L/usr/local/mni/lib -lvolume_io $(MINC_LIB) \
+#                         $(BASIC_LIBS)
+
+
+X11_LIBS          = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
+#-lXext -lXt
+
+
+GRAPHICS_INCLUDE   = -I$(TOP_DIR)/Include $(BIC_PL_INCLUDE) @X_CFLAGS@
+
+OPENGL_GRAPHICS_LIBS      = -L$(SRC_DIRECTORY)/Graphics -lopengl_x_graphics \
+                             $(GLUT_LIB) -lGL -lGLU $(X11_LIBS) -lXmu $(BIC_PL_LIBS)
+
+
+
+CFLAGS = $(OPT) $(INCLUDE) $(DEFINE)
+LINTFLAGS = -Dlint $(INCLUDE)
+
+
+ARCH_MAKEFILE_DIR = /usr/local/mni/src/Register/Build/Makefile_multi_architecture
+
+ECHO              = echo
+MV                = /bin/mv
+RM                = /bin/rm
+CP                = /bin/cp
+MKDIR             = mkdir
+OPT_O             = -O
+OPT_g             = -g
+
+#MAKE_PROTOTYPES   = $(ARCH_MAKEFILE_DIR)/bin/create_prototypes.csh $(ARCH_MAKEFILE_DIR)/bin
+#MAKE_SOURCE_LINKS = $(ARCH_MAKEFILE_DIR)/bin/make_source_links.csh $@
+
+MAKE_PROTOTYPES = echo make_prototypes
+MAKE_SOURCE_LINKS = echo make_source_links
+
+
+X11_INCLUDES      =
+
+CC           = @CC@
+LINK         = @LINK@
+LINT         = @/bin/true
+MAKE_LIBRARY = ar r
+RANLIB       = ranlib
+
+.SUFFIXES: .ln .i .u
+
+.c.o:
+	$(CC) -c $(CFLAGS) $< -o $@
+
+.c.i:
+	$(CC) -P $(CFLAGS) -c $< -o $@
+
+.c.ln:
+	$(LINT) $(LINTFLAGS) -i $<
+
+BASIC_LIBS = -lm 
+
+default:
+	@echo "Specify what you want to make"
+
+clean_o:
+	-$(RM) -f *.o */*.o */*/*.o
+
+clean_u:
+	-$(RM) -f *.u */*.u */*/*.u
+
+clean_ln:
+	-$(RM) -f *.ln */*.ln */*/*.ln
+
+clean: clean_o clean_u clean_ln
+
+
