@@ -88,7 +88,7 @@ private  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )   /* ARGSUSED */
     get_ui_struct()->slice_position_start = position[view];
 }
 
-/* ------------------------- right mouse --------------------------- */
+/* ------------------------- pan slice mouse --------------------------- */
 
 private  void  update_pan_slice(
      UI_struct *ui_info )
@@ -118,18 +118,18 @@ private  DEFINE_EVENT_FUNCTION( pan_slice_callback )  /* ARGSUSED */
     update_pan_slice( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( right_mouse_up_callback )  /* ARGSUSED */
+private  DEFINE_EVENT_FUNCTION( terminate_pan_slice_callback )  /* ARGSUSED */
 {
     update_pan_slice( get_ui_struct() );
 
-    terminate_interaction( RIGHT_MOUSE_UP_EVENT, right_mouse_up_callback,
+    terminate_interaction( LEFT_MOUSE_UP_EVENT, terminate_pan_slice_callback,
                            pan_slice_callback );
 }
 
-private  DEFINE_EVENT_FUNCTION( right_mouse_down_callback )   /* ARGSUSED */
+private  DEFINE_EVENT_FUNCTION( start_pan_slice_callback )   /* ARGSUSED */
 {
     start_interaction( get_ui_struct(), event_viewport_index,
-                       RIGHT_MOUSE_UP_EVENT, right_mouse_up_callback,
+                       LEFT_MOUSE_UP_EVENT, terminate_pan_slice_callback,
                        pan_slice_callback );
 }
 
@@ -145,17 +145,20 @@ public  void  install_slice_events(
                                      ui_get_slice_viewport_index(volume,view),
                                      LEFT_MOUSE_DOWN_EVENT,
                                      -1, -1, -1, -1,
-                                     left_mouse_down_callback, (void *) 0 );
+                                     left_mouse_down_callback, NO_SHIFT_ONLY,
+                                     (void *) 0 );
         add_event_viewport_callback( event_table,
                                      ui_get_slice_viewport_index(volume,view),
                                      MIDDLE_MOUSE_DOWN_EVENT,
                                      -1, -1, -1, -1,
-                                     middle_mouse_down_callback, (void *) 0 );
+                                     middle_mouse_down_callback, NO_SHIFT_ONLY,
+                                     (void *) 0 );
         add_event_viewport_callback( event_table,
                                      ui_get_slice_viewport_index(volume,view),
-                                     RIGHT_MOUSE_DOWN_EVENT,
+                                     LEFT_MOUSE_DOWN_EVENT,
                                      -1, -1, -1, -1,
-                                     right_mouse_down_callback, (void *) 0 );
+                                     start_pan_slice_callback, SHIFT_ONLY,
+                                     (void *) 0 );
     }
 }
 
@@ -177,7 +180,7 @@ public  void  remove_slice_events(
                                      middle_mouse_down_callback, (void *) 0 );
         remove_event_viewport_callback( event_table,
                                      ui_get_slice_viewport_index(volume,view),
-                                     RIGHT_MOUSE_DOWN_EVENT,
-                                     right_mouse_down_callback, (void *) 0 );
+                                     LEFT_MOUSE_DOWN_EVENT,
+                                     start_pan_slice_callback, (void *) 0 );
     }
 }
