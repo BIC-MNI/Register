@@ -84,7 +84,7 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
                              Interface_highlight_time;
 
     add_global_event_callback( NO_EVENT, check_unpush_button,
-                               (void *) widget );
+                               ANY_MODIFIER, (void *) widget );
 
     button->push_callback( widget, button->callback_data );
 }
@@ -290,7 +290,7 @@ private  widget_struct  *create_a_button(
                                  LEFT_MOUSE_DOWN_EVENT,
                                  x, x + x_size - 1, y, y + y_size - 1,
                                  push_button_event_callback,
-                                 (void *) widget );
+                                 ANY_MODIFIER, (void *) widget );
 
     create_button_graphics( widget, text1, text_font, font_size );
 

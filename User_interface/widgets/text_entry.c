@@ -233,7 +233,8 @@ private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )/* ARGSUSED */
 
     set_interaction_in_progress( TRUE );
 
-    add_global_event_callback( KEY_DOWN_EVENT, key_hit_event, (void *) widget );
+    add_global_event_callback( KEY_DOWN_EVENT, key_hit_event, ANY_MODIFIER,
+                               (void *) widget );
 }
 
 public  void  position_text_entry(
@@ -462,7 +463,7 @@ private  widget_struct  *create_a_text_entry(
                                      LEFT_MOUSE_DOWN_EVENT,
                                      x, x + x_size - 1, y, y + y_size - 1,
                                      select_text_entry_event_callback,
-                                     (void *) widget );
+                                     ANY_MODIFIER, (void *) widget );
     }
 
     create_text_entry_graphics( widget, text_font, font_size );

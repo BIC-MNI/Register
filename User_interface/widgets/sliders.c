@@ -109,10 +109,10 @@ private  void  select_slider(
     slider->peg_being_moved = ind;
 
     add_global_event_callback( LEFT_MOUSE_UP_EVENT, done_moving_slider,
-                               (void *) widget );
+                               ANY_MODIFIER, (void *) widget );
 
     add_global_event_callback( NO_EVENT, update_slider_position_event,
-                               (void *) widget );
+                               ANY_MODIFIER, (void *) widget );
 
     set_interaction_in_progress( TRUE );
 }
@@ -428,7 +428,7 @@ private  widget_struct  *create_a_slider(
                                  viewport_index,
                                  LEFT_MOUSE_DOWN_EVENT,
                                  x, x + x_size - 1, y, y + y_size - 1,
-                                 select_lower_slider,
+                                 select_lower_slider, ANY_MODIFIER,
                                  (void *) widget );
 
     slider->text_widgets[0] = (void *) create_text_entry( graphics,
@@ -455,7 +455,7 @@ private  widget_struct  *create_a_slider(
                                      viewport_index,
                                      LEFT_MOUSE_DOWN_EVENT,
                                      x, x + x_size - 1, y, y + y_size - 1,
-                                     select_upper_slider,
+                                     select_upper_slider, ANY_MODIFIER,
                                      (void *) widget );
 
         slider->text_widgets[1] = (void *) create_text_entry( graphics,
