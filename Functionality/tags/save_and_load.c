@@ -1,21 +1,34 @@
 #include  <def_register.h>
+#include  <def_tag_io.h>
 
 private  void   create_tags_array(
+    int                n_valid_tags,
+    Boolean            valid_tags[],
     int                n_tag_points,
     tag_point_struct   tag_points[],
     int                which_volume,
     double             ***tag_array )
 {
-    int   i, d;
+    int   i, tag_index, d;
 
-    ALLOC2D( *tag_array, n_tag_points, N_DIMENSIONS );
-
-    for_less( i, 0, n_tag_points )
+    if( n_valid_tags > 0 )
     {
-        for_less( d, 0, N_DIMENSIONS )
+        ALLOC2D( *tag_array, n_valid_tags, N_DIMENSIONS );
+
+        tag_index = 0;
+
+        for_less( i, 0, n_tag_points )
         {
-            (*tag_array)[i][d] = Point_coord
+            if( valid_tags[i] )
+            {
+                for_less( d, 0, N_DIMENSIONS )
+                {
+                    (*tag_array)[tag_index][d] = Point_coord
                                     (tag_points[i].position[which_volume], d );
+                }
+
+                ++tag_index;
+            }
         }
     }
 }
@@ -24,21 +37,55 @@ public  Status   save_tag_points(
     main_struct   *main,
     char          filename[] )
 {
-    int              i;
+    int              i, n_valid_tags;
     FILE             *file;
     Status           status;
-    int              n_volumes;
+    int              n_volumes, tag_index;
     double           **tags_volume1, **tags_volume2, ***ptr;
     char             **labels;
     tag_list_struct  *tags;
+    Boolean          *tag_is_valid, both_volumes_flag;
 
     tags = &main->tags;
+
+    if( tags->n_tag_points == 0 )
+        ALLOC( tag_is_valid, tags->n_tag_points );
+
+    both_volumes_flag = (main->trislice[0].input_flag &&
+                         main->trislice[1].input_flag);
+
+    if( !main->trislice[0].input_flag && !main->trislice[1].input_flag )
+        return( ERROR );
+
+    n_valid_tags = 0;
+
+    for_less( i, 0, tags->n_tag_points )
+    {
+        if( !get_tag_point_activity( main, i ) )
+            tag_is_valid[i] = FALSE;
+        else if( both_volumes_flag )
+        {
+            tag_is_valid[i] = tags->tag_points[i].position_exists[0] &&
+                              tags->tag_points[i].position_exists[1];
+        }
+        else
+        {
+            tag_is_valid[i] = (main->trislice[0].input_flag &&
+                               tags->tag_points[i].position_exists[0] ||
+                               main->trislice[1].input_flag &&
+                               tags->tag_points[i].position_exists[1]);
+        }
+
+        if( tag_is_valid[i] )
+            ++n_valid_tags;
+    }
 
     n_volumes = 0;
 
     if( main->trislice[0].input_flag )
     {
-        create_tags_array( tags->n_tag_points, tags->tag_points,
+        create_tags_array( n_valid_tags, tag_is_valid,
+                           tags->n_tag_points, tags->tag_points,
                            n_volumes, &tags_volume1 );
         ++n_volumes;
     }
@@ -50,19 +97,21 @@ public  Status   save_tag_points(
         else
             ptr = &tags_volume2;
 
-        create_tags_array( tags->n_tag_points, tags->tag_points,
+        create_tags_array( n_valid_tags, tag_is_valid,
+                           tags->n_tag_points, tags->tag_points,
                            n_volumes, ptr );
-        ++n_volumes;
     }
 
-    if( n_volumes == 0 )
-        return( ERROR );
+    ALLOC2D( labels, n_valid_tags, MAX_STRING_LENGTH+1 );
 
-    ALLOC2D( labels, tags->n_tag_points, MAX_STRING_LENGTH+1 );
-
+    tag_index = 0;
     for_less( i, 0, tags->n_tag_points )
     {
-        (void) strcpy( labels[i], tags->tag_points[i].name );
+        if( tag_is_valid[i] )
+        {
+            (void) strcpy( labels[tag_index], tags->tag_points[i].name );
+            ++tag_index;
+        }
     }
 
     status = open_file_with_default_suffix( filename, "tag", WRITE_FILE,
@@ -70,18 +119,27 @@ public  Status   save_tag_points(
 
     if( status == OK )
     {
-        (void) output_tag_points( file, n_volumes, tags->n_tag_points,
+        (void) output_tag_points( file, (char *) NULL, n_volumes,
+                                  n_valid_tags,
                                   tags_volume1, tags_volume2, labels );
     }
 
-    FREE2D( tags_volume1 );
-    FREE2D( labels );
+    if( n_valid_tags > 0 )
+    {
+        FREE2D( tags_volume1 );
+        FREE2D( labels );
 
-    if( n_volumes == 2 )
-       FREE2D( tags_volume2 );
+        if( n_volumes == 2 )
+           FREE2D( tags_volume2 );
+    }
 
     if( status == OK )
         status = close_file( file );
+
+    if( tags->n_tag_points > 0 )
+        FREE( tag_is_valid );
+
+    main->tags.saved_flag = TRUE;
 
     return( status );
 }
@@ -92,14 +150,16 @@ public  Status   load_tag_points(
 {
     int              i, d, n_tag_points;
     FILE             *file;
-    Status           status;
+    Status           file_status, status;
     int              n_volumes;
     double           **tags_volume1, **tags_volume2;
     char             **labels;
     Real             position[N_DIMENSIONS];
 
-    status = open_file_with_default_suffix( filename, "tag", READ_FILE,
-                                            ASCII_FORMAT, &file );
+    file_status = open_file_with_default_suffix( filename, "tag", READ_FILE,
+                                                 ASCII_FORMAT, &file );
+
+    status = file_status;
 
     if( status == OK &&
         !input_tag_points( file, &n_volumes, &n_tag_points, &tags_volume1,
@@ -137,5 +197,45 @@ public  Status   load_tag_points(
                          labels );
     }
 
-     return( status );
+    if( file_status == OK )
+        (void) close_file( file );
+
+    return( status );
+}
+
+public  Status   save_transform(
+    main_struct   *main,
+    char          filename[] )
+{
+    int              i, j;
+    FILE             *file;
+    Status           file_status, status;
+    Transform        transform;
+    double           mni_transform[3][4];
+
+    status = OK;
+
+    if( get_tag_point_transform( main, &transform ) )
+    {
+        for_less( i, 0, 3 )
+        {
+            for_less( j, 0, 4 )
+            {
+                mni_transform[i][j] = (double) Transform_elem(transform,i,j);
+            }
+        }
+
+        file_status = open_file_with_default_suffix( filename, "xfm",
+                             WRITE_FILE, ASCII_FORMAT, &file );
+
+        if( file_status == OK )
+        {
+            if( !output_transform( file, (char *) NULL, mni_transform ) )
+                status = ERROR;
+
+            (void) close_file( file );
+        }
+    }
+
+    return( status );
 }

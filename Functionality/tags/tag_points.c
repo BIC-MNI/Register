@@ -18,6 +18,7 @@ public  void  initialize_tag_points(
     main->tags.n_tag_points = 0;
     main->tags.transform_out_of_date = TRUE;
     main->tags.transform_exists = FALSE;
+    main->tags.saved_flag = TRUE;
 }
 
 public  void  delete_tag_points(
@@ -53,6 +54,7 @@ public  void  delete_tag_point(
     DELETE_ELEMENT_FROM_ARRAY( main->tags.tag_points, main->tags.n_tag_points,
                                ind, DEFAULT_CHUNK_SIZE );
     main->tags.transform_out_of_date = TRUE;
+    main->tags.saved_flag = FALSE;
 }
 
 public  int  get_n_tag_points(
@@ -104,6 +106,7 @@ public  void  set_tag_point_position(
                     position[X], position[Y], position[Z] );
 
         main->tags.transform_out_of_date = TRUE;
+        main->tags.saved_flag = FALSE;
     }
 }
 
@@ -127,7 +130,10 @@ public  void  set_tag_point_name(
     char             *name )
 {
     if( ind < main->tags.n_tag_points )
+    {
         (void) strcpy( main->tags.tag_points[ind].name, name );
+        main->tags.saved_flag = FALSE;
+    }
 }
 
 public  Boolean  get_tag_point_avg_rms_error(
@@ -190,6 +196,7 @@ public  void  set_tag_point_activity(
     {
         main->tags.tag_points[ind].activity = activity;
         main->tags.transform_out_of_date = TRUE;
+        main->tags.saved_flag = FALSE;
     }
 }
 
@@ -227,4 +234,10 @@ public  Boolean  get_tag_point_transform(
     }
 
     return( exists );
+}
+
+public  Boolean  get_tag_points_saved(
+    main_struct   *main )
+{
+    return( main->tags.saved_flag );
 }

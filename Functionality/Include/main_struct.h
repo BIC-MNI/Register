@@ -11,27 +11,19 @@ typedef  struct
 {
     Real            x_translation, y_translation;
     Real            x_scale, y_scale;
+    Real            lower_display_limits[N_DIMENSIONS-1];
+    Real            upper_display_limits[N_DIMENSIONS-1];
     Boolean         pixels_are_up_to_date;
     int             n_pixels_alloced;
     pixels_struct   *pixels;
     lines_struct    *cursor_lines;
-} one_volume_slice_struct;
-
-typedef  struct
-{
-    Real            x_translation, y_translation;
-    Real            x_scale, y_scale;
-    Boolean         pixels_are_up_to_date;
-    int             n_pixels_alloced;
-    pixels_struct   *pixels;
-    lines_struct    *cursor_lines;
-} merged_slice_struct;
+} slice_struct;
 
 typedef struct
 {
     Boolean                    input_flag;
     volume_struct              volume;
-    one_volume_slice_struct    slices[N_VIEWS];
+    slice_struct               slices[N_VIEWS];
     Real                       position[N_DIMENSIONS];
     unsigned short             cmode_colour_map[N_VOXEL_VALUES];
     Colour                     rgb_colour_map[N_VOXEL_VALUES];
@@ -44,7 +36,7 @@ trislice_struct;
 typedef  struct
 {
     Boolean                active_flag;
-    merged_slice_struct    slices[N_VIEWS];
+    slice_struct           slices[N_VIEWS];
     Real                   position[N_DIMENSIONS];
     unsigned short         **cmode_colour_map;
     Colour                 **rgb_colour_map;
