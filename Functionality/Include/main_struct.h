@@ -58,11 +58,33 @@ merged_struct;
 
 typedef  struct
 {
+    Real                   rms_error;
+    Boolean                position_exists[N_VOLUMES];
+    Point                  position[N_VOLUMES];
+    String                 name;
+    Boolean                activity;
+} tag_point_struct;
+
+typedef  struct
+{
+    int                    n_tag_points;
+    tag_point_struct       *tag_points;
+    Boolean                transform_out_of_date;
+    Transform              v2_to_v1_transform;
+    Real                   avg_rms_error;
+    Boolean                transform_exists;
+    Boolean                saved_flag;
+} tag_list_struct;
+
+typedef  struct
+{
     window_struct            *window;
     graphics_struct          graphics;
     Boolean                  interpolation_flag;
     trislice_struct          trislice[N_VOLUMES];
     merged_struct            merged;
+
+    tag_list_struct          tags;
 } main_struct;
 
 #endif
