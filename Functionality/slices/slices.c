@@ -224,12 +224,24 @@ private  void  convert_original_world_to_world(
     Real           *y_world,
     Real           *z_world )
 {
-    Point     original_world, world;
+    Point      original_world, world;
+    Transform  *inverse, *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
         fill_Point( original_world, x_original, y_original, z_original );
         transform_point( &main->resampling_transform, &original_world, &world );
+
+        *x_world = Point_x(world);
+        *y_world = Point_y(world);
+        *z_world = Point_z(world);
+    }
+    else if( volume_index == RESAMPLED_VOLUME_INDEX &&
+             !main->resampled_file_loaded &&
+             get_tag_point_transform( main, &transform, &inverse ) )
+    {
+        fill_Point( original_world, x_original, y_original, z_original );
+        transform_point( transform, &original_world, &world );
 
         *x_world = Point_x(world);
         *y_world = Point_y(world);
@@ -253,13 +265,25 @@ private  void  convert_world_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
-    Point     original_world, world;
+    Point      original_world, world;
+    Transform  *inverse, *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
         fill_Point( world, x_world, y_world, z_world );
         transform_point( &main->inverse_resampling_transform,
                          &world, &original_world );
+
+        *x_original = Point_x(original_world);
+        *y_original = Point_y(original_world);
+        *z_original = Point_z(original_world);
+    }
+    else if( volume_index == RESAMPLED_VOLUME_INDEX &&
+             !main->resampled_file_loaded &&
+             get_tag_point_transform( main, &transform, &inverse ) )
+    {
+        fill_Point( world, x_world, y_world, z_world );
+        transform_point( inverse, &world, &original_world );
 
         *x_original = Point_x(original_world);
         *y_original = Point_y(original_world);
