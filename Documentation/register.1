@@ -76,11 +76,25 @@ a new tag point.
 .I Delete Tag:
 Deletes the current tag point.
 .P
+.I Delete All Tags:
+Pops up a confirmation box allowing you to delete all the tags.
+.P
 .I Transform Type:
 Pops up a dialog to select 6 parameter, 7 parameter, 12 parameter, or
 thin-plate spline non-linear fitting.
 .P
-.I Avg Error:
+.I Tags In/Visible:
+Toggles the display of tag point positions on the slices.
+.P
+.I Cursor In/Visible:
+Toggles the display of cursor crosshair on the slices.
+.P
+.I Interp: Flat/Smooth:
+Toggles the display of slices between flat and smooth shading.  Smooth shading
+takes much longer to update (a few seconds), but produces higher quality images,
+especially noticeable when the images are zoomed up.
+.P
+.I RMS:
 Displays the average RMS error of the tag points, if a transform exists.
 
 .SH Volume Menus
@@ -152,8 +166,9 @@ Sets the name of a tag.
 Sets the activity of a tag, whether it contributes to the transformation or
 not.
 .P
-.I RMS error:
-Displays the RMS error of the tag point.
+.I Dst:
+Displays the distance of the tag point in the first volume from the
+position of the  transformed
 
 .SH MOUSE AND KEYBOARD
 In the slice viewports, the following actions are valid:
