@@ -26,8 +26,11 @@ CLEANFILES = dummy.c
 
 # All the required libs are in LIBS, which is automatically
 # added to the link line.
-register_LDADD = $(objects) Graphics/libbicgl.a \
-	$(X_LIBS) $(X_PRE_LIBS) -lX11 -lXmu $(X_EXTRA_LIBS)
+register_LDFLAGS = $(X_LIBS)
+register_LDADD = $(objects) \
+	Graphics/libbicgl.a $(GL_LIBS) \
+	$(X_PRE_LIBS) -lX11 -lXmu $(X_EXTRA_LIBS) \
+	$(MNI_LIBS)
 
 
 objects = \

@@ -24,10 +24,20 @@ smr_REQUIRED_LIB(netcdf,ncopen,netcdf.h)
 smr_REQUIRED_LIB(minc,miicv_create,minc.h)
 smr_REQUIRED_LIB(volume_io,input_volume,volume_io.h)
 smr_REQUIRED_LIB(bicpl,input_graphics_file,bicpl.h)
+
+MNI_LIBS="$LIBS"
+LIBS=
+
 smr_REQUIRED_LIB(GL,glBegin,GL/gl.h)
 smr_REQUIRED_LIB(GLU,gluLookAt,GL/glu.h)
 smr_REQUIRED_LIB(glut,glutInit,GL/glut.h,
                  [$X_LIBS $X_PRE_LIBS -lX11 -lXmu $X_EXTRA_LIBS])
+
+GL_LIBS="$LIBS"
+LIBS=
+
+AC_SUBST(MNI_LIBS)
+AC_SUBST(GL_LIBS)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
