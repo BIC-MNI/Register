@@ -174,11 +174,13 @@ David MacDonald
 .SH BUGS
 Sometimes turning the tags visibilities off does not turn them off.
 .P
-On Indigo systems the colour maps can get screwed up.  In this case,
-switch to rgb mode.
+On Indigo systems the colour maps can get screwed up, especially when
+sliding the colour bar limits.  In this case, iconize then deiconize the
+window to restore the colour maps.  To avoid this altogether, switch to
+RGB mode.
 .P
 Sometimes you have to hit the over-colour or under-colour button twice
-for it to register
+for it to notice.
 .SH MISSING FEATURES
 The resample and load as a subprocess is not yet complete.  Currently, it
 simply calls "system" and waits for the resampling to be done.
