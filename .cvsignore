@@ -9,5 +9,5 @@ config.h.in
 stamp-h.in
 Makefile.in
 .deps
-Makefile
-Makefile.include
+dummy.c
+register

@@ -12,14 +12,11 @@
 # PARTICULAR PURPOSE.
 
 
-
-
-
 SHELL = /bin/sh
 
 srcdir = .
 top_srcdir = .
-prefix = /usr/local
+prefix = /usr/local/mni
 exec_prefix = ${prefix}
 
 bindir = ${exec_prefix}/bin
@@ -37,9 +34,9 @@ oldincludedir = /usr/include
 
 DESTDIR =
 
-pkgdatadir = $(datadir)/register
-pkglibdir = $(libdir)/register
-pkgincludedir = $(includedir)/register
+pkgdatadir = $(datadir)/Register
+pkglibdir = $(libdir)/Register
+pkgincludedir = $(includedir)/Register
 
 top_builddir = .
 
@@ -63,25 +60,13 @@ POST_UNINSTALL = :
 CC = gcc
 LN_S = ln -s
 MAKEINFO = makeinfo
-MNI_INCLUDES =   -I/usr/local/mni/include 
-MNI_LIBS = -lbicpl -lvolume_io -L/usr/local/mni/lib -lminc -lnetcdf
-PACKAGE = register
+MNI_INCLUDES =    
+MNI_LIBS = -lbicpl -lvolume_io -lminc -lnetcdf
+PACKAGE = Register
 RANLIB = ranlib
 VERSION = 1.3.1
 
-SUBDIRS = Graphics Functionality UI_calls_F User_interface Register_resample Tagtoxfm 
-
-FUNC_DIR = Functionality/
-UIC_DIR = UI_calls_F/
-UI_DIR = User_interface/
-
-Functionality_OBJECTS =  $(FUNC_DIR)initialize/$(ARCH_DIR)/initialize.o $(FUNC_DIR)slices/$(ARCH_DIR)/colour_map.o $(FUNC_DIR)slices/$(ARCH_DIR)/cursor.o $(FUNC_DIR)slices/$(ARCH_DIR)/create_slice.o $(FUNC_DIR)slices/$(ARCH_DIR)/initialize_slice.o $(FUNC_DIR)slices/$(ARCH_DIR)/resample.o $(FUNC_DIR)slices/$(ARCH_DIR)/save_image.o $(FUNC_DIR)slices/$(ARCH_DIR)/set_volume.o $(FUNC_DIR)slices/$(ARCH_DIR)/slices.o $(FUNC_DIR)slices/$(ARCH_DIR)/updates.o $(FUNC_DIR)tags/$(ARCH_DIR)/objects.o $(FUNC_DIR)tags/$(ARCH_DIR)/save_and_load.o $(FUNC_DIR)tags/$(ARCH_DIR)/tag_points.o $(FUNC_DIR)tags/$(ARCH_DIR)/tag_transform.o $(FUNC_DIR)update/$(ARCH_DIR)/update_window.o
-
-
-User_interface_OBJECTS =  $(UI_DIR)main/$(ARCH_DIR)/main.o $(UI_DIR)main/$(ARCH_DIR)/initialize.o $(UI_DIR)colour_popup/$(ARCH_DIR)/colour_selection.o $(UI_DIR)delete_tags_popup/$(ARCH_DIR)/delete_tags.o $(UI_DIR)event_callbacks/$(ARCH_DIR)/save_image.o $(UI_DIR)event_callbacks/$(ARCH_DIR)/slice_events.o $(UI_DIR)event_callbacks/$(ARCH_DIR)/tag_events.o $(UI_DIR)event_callbacks/$(ARCH_DIR)/utilities.o $(UI_DIR)event_callbacks/$(ARCH_DIR)/window_events.o $(UI_DIR)event_handling/$(ARCH_DIR)/event_callbacks.o $(UI_DIR)event_handling/$(ARCH_DIR)/event_loop.o $(UI_DIR)event_handling/$(ARCH_DIR)/event_viewports.o $(UI_DIR)event_handling/$(ARCH_DIR)/global_events.o $(UI_DIR)event_handling/$(ARCH_DIR)/window_events.o $(UI_DIR)filter_popup/$(ARCH_DIR)/filter_selection.o $(UI_DIR)input/$(ARCH_DIR)/load.o $(UI_DIR)input/$(ARCH_DIR)/load_popup.o $(UI_DIR)layout/$(ARCH_DIR)/colours.o $(UI_DIR)layout/$(ARCH_DIR)/layout.o $(UI_DIR)print_popup/$(ARCH_DIR)/print.o $(UI_DIR)quit_popup/$(ARCH_DIR)/quit.o $(UI_DIR)resampling/$(ARCH_DIR)/resample.o $(UI_DIR)slices/$(ARCH_DIR)/slices.o $(UI_DIR)transform_popup/$(ARCH_DIR)/xform_selection.o $(UI_DIR)value_readout/$(ARCH_DIR)/update.o $(UI_DIR)widget_instances/$(ARCH_DIR)/colour_bar.o $(UI_DIR)widget_instances/$(ARCH_DIR)/initialize.o $(UI_DIR)widget_instances/$(ARCH_DIR)/main_menu_callbacks.o $(UI_DIR)widget_instances/$(ARCH_DIR)/merged_interface.o $(UI_DIR)widget_instances/$(ARCH_DIR)/meter.o $(UI_DIR)widget_instances/$(ARCH_DIR)/position_widgets.o $(UI_DIR)widget_instances/$(ARCH_DIR)/tag_points.o $(UI_DIR)widget_instances/$(ARCH_DIR)/volume_interface.o $(UI_DIR)widgets/$(ARCH_DIR)/buttons.o $(UI_DIR)widgets/$(ARCH_DIR)/sliders.o $(UI_DIR)widgets/$(ARCH_DIR)/text_entry.o $(UI_DIR)widgets/$(ARCH_DIR)/utilities.o $(UI_DIR)widgets/$(ARCH_DIR)/widgets.o $(UI_DIR)windows/$(ARCH_DIR)/lookup.o $(UI_DIR)windows/$(ARCH_DIR)/popup.o $(UI_DIR)windows/$(ARCH_DIR)/update.o
-
-
-UI_calls_F_OBJECTS = $(UIC_DIR)UI_calls_F.o
+SUBDIRS = Graphics Functionality UI_calls_F User_interface Register_resample Tagtoxfm
 
 bin_PROGRAMS = register
 
@@ -89,91 +74,81 @@ bin_PROGRAMS = register
 # automake, which does not (in version 1.4) allow linking together
 # only objects in subdirectories.
 
-register_SOURCES = dummy.c
+register_SOURCES = dummy.c common_include.h
 
 CLEANFILES = dummy.c
 
-register_LDADD = $(Functionality_OBJECTS) $(User_interface_OBJECTS) $(UI_calls_F_OBJECTS) 	-LGraphics -lopengl_x_graphics 	-lglut -lGL -lGLU 	$(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) 	$(MNI_LIBS) -lm
+register_LDADD = $(objects) 	Graphics/libbicgl.a 	-lglut -lGL -lGLU 	$(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) 	$(MNI_LIBS) -lm
+
+
+objects =  Functionality/initialize/initialize.o Functionality/slices/colour_map.o Functionality/slices/cursor.o Functionality/slices/create_slice.o Functionality/slices/initialize_slice.o Functionality/slices/resample.o Functionality/slices/save_image.o Functionality/slices/set_volume.o Functionality/slices/slices.o Functionality/slices/updates.o Functionality/tags/objects.o Functionality/tags/save_and_load.o Functionality/tags/tag_points.o Functionality/tags/tag_transform.o Functionality/update/update_window.o UI_calls_F/UI_calls_F.o User_interface/main/main.o User_interface/main/initialize.o User_interface/colour_popup/colour_selection.o User_interface/delete_tags_popup/delete_tags.o User_interface/event_callbacks/save_image.o User_interface/event_callbacks/slice_events.o User_interface/event_callbacks/tag_events.o User_interface/event_callbacks/utilities.o User_interface/event_callbacks/window_events.o User_interface/event_handling/event_callbacks.o User_interface/event_handling/event_loop.o User_interface/event_handling/event_viewports.o User_interface/event_handling/global_events.o User_interface/event_handling/window_events.o User_interface/filter_popup/filter_selection.o User_interface/input/load.o User_interface/input/load_popup.o User_interface/layout/colours.o User_interface/layout/layout.o User_interface/print_popup/print.o User_interface/quit_popup/quit.o User_interface/resampling/resample.o User_interface/slices/slices.o User_interface/transform_popup/xform_selection.o User_interface/value_readout/update.o User_interface/widget_instances/colour_bar.o User_interface/widget_instances/initialize.o User_interface/widget_instances/main_menu_callbacks.o User_interface/widget_instances/merged_interface.o User_interface/widget_instances/meter.o User_interface/widget_instances/position_widgets.o User_interface/widget_instances/tag_points.o User_interface/widget_instances/volume_interface.o User_interface/widgets/buttons.o User_interface/widgets/sliders.o User_interface/widgets/text_entry.o User_interface/widgets/utilities.o User_interface/widgets/widgets.o User_interface/windows/lookup.o User_interface/windows/popup.o User_interface/windows/update.o
 
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES =  Makefile.include
+CONFIG_CLEAN_FILES = 
 PROGRAMS =  $(bin_PROGRAMS)
 
 
 DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I.
-CPPFLAGS = 
-LDFLAGS = 
+CPPFLAGS =  -I/usr/local/mni/include
+LDFLAGS =  -L/usr/local/mni/lib
 LIBS = 
 X_CFLAGS =  -I/usr/X11R6/include
 X_LIBS =  -L/usr/X11R6/lib
 X_EXTRA_LIBS = 
 X_PRE_LIBS =  -lSM -lICE
 register_OBJECTS =  dummy.o
-register_DEPENDENCIES =  $(FUNC_DIR)initialize/$(ARCH_DIR)/initialize.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/colour_map.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/cursor.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/create_slice.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/initialize_slice.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/resample.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/save_image.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/set_volume.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/slices.o \
-$(FUNC_DIR)slices/$(ARCH_DIR)/updates.o \
-$(FUNC_DIR)tags/$(ARCH_DIR)/objects.o \
-$(FUNC_DIR)tags/$(ARCH_DIR)/save_and_load.o \
-$(FUNC_DIR)tags/$(ARCH_DIR)/tag_points.o \
-$(FUNC_DIR)tags/$(ARCH_DIR)/tag_transform.o \
-$(FUNC_DIR)update/$(ARCH_DIR)/update_window.o \
-$(UI_DIR)main/$(ARCH_DIR)/main.o $(UI_DIR)main/$(ARCH_DIR)/initialize.o \
-$(UI_DIR)colour_popup/$(ARCH_DIR)/colour_selection.o \
-$(UI_DIR)delete_tags_popup/$(ARCH_DIR)/delete_tags.o \
-$(UI_DIR)event_callbacks/$(ARCH_DIR)/save_image.o \
-$(UI_DIR)event_callbacks/$(ARCH_DIR)/slice_events.o \
-$(UI_DIR)event_callbacks/$(ARCH_DIR)/tag_events.o \
-$(UI_DIR)event_callbacks/$(ARCH_DIR)/utilities.o \
-$(UI_DIR)event_callbacks/$(ARCH_DIR)/window_events.o \
-$(UI_DIR)event_handling/$(ARCH_DIR)/event_callbacks.o \
-$(UI_DIR)event_handling/$(ARCH_DIR)/event_loop.o \
-$(UI_DIR)event_handling/$(ARCH_DIR)/event_viewports.o \
-$(UI_DIR)event_handling/$(ARCH_DIR)/global_events.o \
-$(UI_DIR)event_handling/$(ARCH_DIR)/window_events.o \
-$(UI_DIR)filter_popup/$(ARCH_DIR)/filter_selection.o \
-$(UI_DIR)input/$(ARCH_DIR)/load.o \
-$(UI_DIR)input/$(ARCH_DIR)/load_popup.o \
-$(UI_DIR)layout/$(ARCH_DIR)/colours.o \
-$(UI_DIR)layout/$(ARCH_DIR)/layout.o \
-$(UI_DIR)print_popup/$(ARCH_DIR)/print.o \
-$(UI_DIR)quit_popup/$(ARCH_DIR)/quit.o \
-$(UI_DIR)resampling/$(ARCH_DIR)/resample.o \
-$(UI_DIR)slices/$(ARCH_DIR)/slices.o \
-$(UI_DIR)transform_popup/$(ARCH_DIR)/xform_selection.o \
-$(UI_DIR)value_readout/$(ARCH_DIR)/update.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/colour_bar.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/initialize.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/main_menu_callbacks.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/merged_interface.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/meter.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/position_widgets.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/tag_points.o \
-$(UI_DIR)widget_instances/$(ARCH_DIR)/volume_interface.o \
-$(UI_DIR)widgets/$(ARCH_DIR)/buttons.o \
-$(UI_DIR)widgets/$(ARCH_DIR)/sliders.o \
-$(UI_DIR)widgets/$(ARCH_DIR)/text_entry.o \
-$(UI_DIR)widgets/$(ARCH_DIR)/utilities.o \
-$(UI_DIR)widgets/$(ARCH_DIR)/widgets.o \
-$(UI_DIR)windows/$(ARCH_DIR)/lookup.o \
-$(UI_DIR)windows/$(ARCH_DIR)/popup.o \
-$(UI_DIR)windows/$(ARCH_DIR)/update.o $(UIC_DIR)UI_calls_F.o
+register_DEPENDENCIES =  Functionality/initialize/initialize.o \
+Functionality/slices/colour_map.o Functionality/slices/cursor.o \
+Functionality/slices/create_slice.o \
+Functionality/slices/initialize_slice.o Functionality/slices/resample.o \
+Functionality/slices/save_image.o Functionality/slices/set_volume.o \
+Functionality/slices/slices.o Functionality/slices/updates.o \
+Functionality/tags/objects.o Functionality/tags/save_and_load.o \
+Functionality/tags/tag_points.o Functionality/tags/tag_transform.o \
+Functionality/update/update_window.o UI_calls_F/UI_calls_F.o \
+User_interface/main/main.o User_interface/main/initialize.o \
+User_interface/colour_popup/colour_selection.o \
+User_interface/delete_tags_popup/delete_tags.o \
+User_interface/event_callbacks/save_image.o \
+User_interface/event_callbacks/slice_events.o \
+User_interface/event_callbacks/tag_events.o \
+User_interface/event_callbacks/utilities.o \
+User_interface/event_callbacks/window_events.o \
+User_interface/event_handling/event_callbacks.o \
+User_interface/event_handling/event_loop.o \
+User_interface/event_handling/event_viewports.o \
+User_interface/event_handling/global_events.o \
+User_interface/event_handling/window_events.o \
+User_interface/filter_popup/filter_selection.o \
+User_interface/input/load.o User_interface/input/load_popup.o \
+User_interface/layout/colours.o User_interface/layout/layout.o \
+User_interface/print_popup/print.o User_interface/quit_popup/quit.o \
+User_interface/resampling/resample.o User_interface/slices/slices.o \
+User_interface/transform_popup/xform_selection.o \
+User_interface/value_readout/update.o \
+User_interface/widget_instances/colour_bar.o \
+User_interface/widget_instances/initialize.o \
+User_interface/widget_instances/main_menu_callbacks.o \
+User_interface/widget_instances/merged_interface.o \
+User_interface/widget_instances/meter.o \
+User_interface/widget_instances/position_widgets.o \
+User_interface/widget_instances/tag_points.o \
+User_interface/widget_instances/volume_interface.o \
+User_interface/widgets/buttons.o User_interface/widgets/sliders.o \
+User_interface/widgets/text_entry.o User_interface/widgets/utilities.o \
+User_interface/widgets/widgets.o User_interface/windows/lookup.o \
+User_interface/windows/popup.o User_interface/windows/update.o \
+Graphics/libbicgl.a
 register_LDFLAGS = 
 CFLAGS = -g -O2
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in Makefile.include.in NEWS aclocal.m4 config.h.in \
-configure configure.in install-sh missing mkinstalldirs
+Makefile.am Makefile.in NEWS TODO aclocal.m4 config.h.in configure \
+configure.in install-sh missing mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -187,7 +162,7 @@ OBJECTS = $(register_OBJECTS)
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .o .s
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) $(srcdir)/Functionality/Makefile.objects $(srcdir)/User_interface/Makefile.objects $(srcdir)/UI_calls_F/Makefile.objects
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
@@ -229,8 +204,6 @@ distclean-hdr:
 	-rm -f config.h
 
 maintainer-clean-hdr:
-Makefile.include: $(top_builddir)/config.status Makefile.include.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-binPROGRAMS:
 

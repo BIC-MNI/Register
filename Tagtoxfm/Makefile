@@ -16,7 +16,7 @@ SHELL = /bin/sh
 
 srcdir = .
 top_srcdir = ..
-prefix = /usr/local
+prefix = /usr/local/mni
 exec_prefix = ${prefix}
 
 bindir = ${exec_prefix}/bin
@@ -34,9 +34,9 @@ oldincludedir = /usr/include
 
 DESTDIR =
 
-pkgdatadir = $(datadir)/register
-pkglibdir = $(libdir)/register
-pkgincludedir = $(includedir)/register
+pkgdatadir = $(datadir)/Register
+pkglibdir = $(libdir)/Register
+pkgincludedir = $(includedir)/Register
 
 top_builddir = ..
 
@@ -60,9 +60,9 @@ POST_UNINSTALL = :
 CC = gcc
 LN_S = ln -s
 MAKEINFO = makeinfo
-MNI_INCLUDES =   -I/usr/local/mni/include 
-MNI_LIBS = -lbicpl -lvolume_io -L/usr/local/mni/lib -lminc -lnetcdf
-PACKAGE = register
+MNI_INCLUDES =    
+MNI_LIBS = -lbicpl -lvolume_io -lminc -lnetcdf
+PACKAGE = Register
 RANLIB = ranlib
 VERSION = 1.3.1
 
@@ -78,8 +78,8 @@ PROGRAMS =  $(bin_PROGRAMS)
 
 
 DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I..
-CPPFLAGS = 
-LDFLAGS = 
+CPPFLAGS =  -I/usr/local/mni/include
+LDFLAGS =  -L/usr/local/mni/lib
 LIBS = 
 X_CFLAGS =  -I/usr/X11R6/include
 X_LIBS =  -L/usr/X11R6/lib

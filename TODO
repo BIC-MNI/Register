@@ -1,0 +1,2 @@
+* finish creating automake-generated Makefiles in subdirectories:
+  Functionality, Graphics, UI_calls_F, and User_interface
