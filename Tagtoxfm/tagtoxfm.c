@@ -9,9 +9,12 @@
 @CALLS      : 
 @CREATED    : August 30, 1993 (Peter Neelin)
 @MODIFIED   : $Log: tagtoxfm.c,v $
-@MODIFIED   : Revision 1.4  1995-12-19 15:47:00  david
+@MODIFIED   : Revision 1.5  1997-12-10 20:25:06  david
 @MODIFIED   : check_in_all
 @MODIFIED   :
+ * Revision 1.4  1995/12/19  15:47:00  david
+ * check_in_all
+ *
  * Revision 1.3  1995/12/18  16:43:40  david
  * *** empty log message ***
  *
@@ -45,7 +48,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.4 1995-12-19 15:47:00 david Exp $";
+static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.5 1997-12-10 20:25:06 david Exp $";
 #endif
 
 #include <stdlib.h>
@@ -65,9 +68,6 @@ static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/t
 #  define public
 #  define private static
 #endif
-
-double  ftol;
-double  simplex_size;
 
 /* Main program */
 
