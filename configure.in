@@ -26,7 +26,8 @@ smr_REQUIRED_LIB(volume_io,input_volume,volume_io.h)
 smr_REQUIRED_LIB(bicpl,input_graphics_file,bicpl.h)
 smr_REQUIRED_LIB(GL,glBegin,GL/gl.h)
 smr_REQUIRED_LIB(GLU,gluLookAt,GL/glu.h)
-smr_REQUIRED_LIB(glut,glutInit,GL/glut.h)
+smr_REQUIRED_LIB(glut,glutInit,GL/glut.h,
+                 [$X_LIBS $X_PRE_LIBS -lX11 -lXmu $X_EXTRA_LIBS])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
