@@ -20,10 +20,7 @@ AC_CHECK_HEADERS(fcntl.h limits.h unistd.h)
 dnl Checks for libraries.
 
 smr_REQUIRED_LIB(m,sqrt,math.h)
-smr_REQUIRED_LIB(netcdf,ncopen,netcdf.h)
-smr_REQUIRED_LIB(minc,miicv_create,minc.h)
-smr_REQUIRED_LIB(volume_io,input_volume,volume_io.h)
-smr_REQUIRED_LIB(bicpl,input_graphics_file,bicpl.h)
+mni_REQUIRE_BICPL
 
 MNI_LIBS="$LIBS"
 LIBS=
