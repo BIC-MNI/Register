@@ -24,6 +24,7 @@ private  Colour  merge_colours(
 
 private  Colour  get_merged_colour(
     Merge_methods  method,
+    Boolean        use_under_over_colour_with_weights,
     Colour         under_colour,
     Colour         over_colour,
     Range_flags    range_flag1,
@@ -33,7 +34,9 @@ private  Colour  get_merged_colour(
     Real           alpha2,
     Colour         col2 )
 {
-    if( range_flag1 != WITHIN_RANGE && range_flag2 != WITHIN_RANGE )
+    if( (!use_under_over_colour_with_weights ||
+         method == ONE_ON_TWO || method == TWO_ON_ONE) &&
+         range_flag1 != WITHIN_RANGE && range_flag2 != WITHIN_RANGE )
     {
         if( range_flag1 == UNDER_RANGE )
             return( under_colour );
@@ -56,7 +59,8 @@ private  Colour  get_merged_colour(
             return( col1 );
 
     case BLEND_VOLUMES:
-        if( range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
+        if( use_under_over_colour_with_weights ||
+            range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
             return( merge_colours( alpha1, col1, 1.0-alpha1, col2 ) );
         else if( range_flag1 != WITHIN_RANGE )
             return( merge_colours( 0.0, col1, 1.0-alpha1, col2 ) );
@@ -64,7 +68,8 @@ private  Colour  get_merged_colour(
             return( merge_colours( alpha1, col1, 0.0, col2 ) );
 
     case WEIGHTED_VOLUMES:
-        if( range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
+        if( use_under_over_colour_with_weights ||
+            range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
             return( merge_colours( alpha1, col1, alpha2, col2 ) );
         else if( range_flag1 != WITHIN_RANGE )
             return( merge_colours( 0.0, col1, alpha2, col2 ) );
@@ -115,6 +120,7 @@ private  void  update_merged_rgb_colour_maps(
         {
             main->merged.rgb_colour_map[i][j] = 
                     get_merged_colour( main->merged.merge_method,
+                                   Use_over_under_colour_in_weights,
                                    main->merged.colour_coding[0].under_colour,
                                    main->merged.colour_coding[0].over_colour,
                                    flag1, main->merged.opacity[0], col1,
@@ -174,6 +180,7 @@ private  void  update_merged_cmode_maps(
         {
             G_set_colour_map_entry( main->window, min_ind + IJ(i,j,n2), 
                 get_merged_colour( main->merged.merge_method,
+                               Use_over_under_colour_in_weights,
                                main->merged.colour_coding[0].under_colour,
                                main->merged.colour_coding[0].over_colour,
                                flag1, main->merged.opacity[0], col1,
