@@ -95,6 +95,16 @@ private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback ) /* ARGSUSED */
     set_clear_and_update_flags( get_ui_struct() );
 }
 
+public  void  load_tags_file(
+    UI_struct  *ui,
+    char       filename[] )
+{
+    IF_load_tags_file( filename );
+
+    ui->tag_points.first_tag_displayed = 0;
+    set_current_tag_index( ui, 0 );
+}
+
 private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback ) /* ARGSUSED */
 {
     char   *filename;
@@ -107,10 +117,7 @@ private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback ) /* ARGSUSED */
         print( "You must enter a filename before pressing load.\n" );
     else
     {
-        IF_load_tags_file( filename );
-
-        get_ui_struct()->tag_points.first_tag_displayed = 0;   
-        set_current_tag_index( get_ui_struct(), 0 );
+        load_tags_file( get_ui_struct(), filename );
     }
 }
 
