@@ -34,7 +34,8 @@ private  void  delete_popup_interaction(
 public  Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
-    char       filename[] )
+    char       filename[],
+    Boolean    this_is_resampled_volume )
 {
     Status        status;
     load_struct   *data;
@@ -44,6 +45,7 @@ public  Status  initialize_loading_volume(
     ALLOC( data, 1 );
 
     data->volume_index = volume;
+    data->this_is_resampled_volume = this_is_resampled_volume;
 
     status = start_volume_input( filename, &data->volume, &data->input );
 
@@ -85,7 +87,18 @@ private  void  volume_has_been_loaded(
                               data->volume_index );
     }
 
-    IF_set_volume( data->volume_index, &data->volume );
+    if( data->this_is_resampled_volume )
+    {
+        IF_set_resampled_volume( &data->volume,
+                                 ui_info->original_filename_volume_2,
+                                 &ui_info->resampling_transform );
+        set_resampled_label_activity( ui_info, ON );
+    }
+    else
+    {
+        IF_set_volume( data->volume_index, &data->volume );
+        set_resampled_label_activity( ui_info, OFF );
+    }
 
     update_position_counters( ui_info, data->volume_index );
 
