@@ -12,8 +12,12 @@ public  void  initialize_UI_widgets( UI_struct  *ui_info )
     add_volume_widgets( ui_info, Volume_1_menu_viewport );
     add_volume_widgets( ui_info, Volume_2_menu_viewport );
 
-    add_merged_widgets( ui_info, Merged_menu_1_viewport );
-    add_merged_widgets( ui_info, Merged_menu_2_viewport );
+    add_merged_widgets( ui_info, Merged_menu_viewport );
+
+    ui_info->tag_points.n_tag_points = Default_n_tag_points;
+    add_tag_point_widgets( ui_info, ui_info->tag_points.n_tag_points,
+                           RMS_error_viewport, Volume_1_tags_viewport,
+                           Volume_2_tags_viewport, Tag_names_viewport );
 }
 
 public  void  delete_UI_widgets( UI_struct  *ui_info )

@@ -12,6 +12,7 @@ typedef  enum
 Volume_widgets;
 
 static  int  widget_indices[N_VOLUME_WIDGETS];
+static  int  colour_bar_start_index;
 
 public  DEFINE_WIDGET_CALLBACK( reset_view_callback ) /* ARGSUSED */
 {
@@ -53,8 +54,8 @@ public  void  add_volume_widgets(
     x = Volume_menu_x_offset;
     y = Volume_menu_y_offset;
 
-    ui_info->colour_bar_start_index[volume_index] =
-             add_colour_bar_widgets( ui_info, viewport_index, x, y, &height );
+    colour_bar_start_index = add_colour_bar_widgets( ui_info, viewport_index,
+                                                     x, y, &height );
 
     y += height + Interface_y_spacing;
 
@@ -96,8 +97,8 @@ public  void  add_volume_widgets(
     y += Volume_button_height + Interface_y_spacing;
 
     ui_info->position_text_start_index[volume_index] =
-                      add_cursor_position_widgets(
-                               ui_info, viewport_index, x, y, &height );
+                             add_cursor_position_widgets(
+                                   ui_info, viewport_index, x, y, &height );
 }
 
 public  void  set_load_activity(
@@ -162,8 +163,7 @@ public  void  set_volume_widgets_activity(
                               viewport_index, NORMAL_PLANES );
 
     set_colour_bar_widgets_activity( ui_info, viewport_index,
-                           ui_info->colour_bar_start_index[volume_index],
-                           activity );
+                           colour_bar_start_index, activity );
 
     set_voxel_position_widgets_activity( ui_info, viewport_index,
                            ui_info->position_text_start_index[volume_index],

@@ -189,7 +189,6 @@ public  void  set_volume_voxel_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
-    int               start_widget_index,
     Real              value )
 {
     String          string;
@@ -202,7 +201,7 @@ public  void  set_volume_voxel_text(
     set_text_entry_string( ui_info,
                            ui_info->widget_list
                            [viewport_index].widgets
-                           [start_widget_index+
+                           [ui_info->position_text_start_index[volume_index]+
                             widget_indices[X_VOXEL_TEXT+view_index]],
                            string );
 }
@@ -211,7 +210,6 @@ public  void  set_volume_world_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
-    int               start_widget_index,
     Real              value )
 {
     String          string;
@@ -224,7 +222,7 @@ public  void  set_volume_world_text(
     set_text_entry_string( ui_info,
                            ui_info->widget_list
                            [viewport_index].widgets
-                           [start_widget_index+
+                           [ui_info->position_text_start_index[volume_index]+
                             widget_indices[X_WORLD_TEXT+view_index]],
                            string );
 }
