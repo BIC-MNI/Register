@@ -53,10 +53,11 @@ public  void  create_merged_pixels(
     int              x_size, y_size, axis;
     Pixel_types      pixel_type;
     Real             x_translation1, y_translation1, x_scale, y_scale;
-    Real             x_translation2, y_translation2;
+    Real             x_translation2, y_translation2, trans;
     volume_struct    *volume1, *volume2;
     Real             tmp[N_DIMENSIONS];
     Real             *position1, position2[N_DIMENSIONS];
+    Real             x_voxel2, y_voxel2;
 
     volume1 = get_slice_volume( main, 0 );
     volume2 = get_slice_volume( main, 1 );
@@ -100,14 +101,39 @@ public  void  create_merged_pixels(
     }
     else
     {
-        x_translation2 = x_translation1 +
+        if( volume2->flip_axis[x_axis_index] )
+            x_voxel2 = (Real) (volume2->sizes[x_axis_index]-1) -
+                       position2[x_axis_index];
+        else
+            x_voxel2 = position2[x_axis_index];
+
+        if( volume1->flip_axis[x_axis_index] )
+            trans = x_translation1 + x_scale *
+                           (Real) volume1->sizes[x_axis_index] *
+                           (Real) volume1->thickness[x_axis_index];
+        else
+            trans = x_translation1;
+
+        x_translation2 = trans +
           0.5 * x_scale * volume1->thickness[x_axis_index] -
-          (position2[x_axis_index] + 0.5) * x_scale *
-                                     volume2->thickness[x_axis_index];
-        y_translation2 = y_translation1 +
+          (x_voxel2 + 0.5) * x_scale * volume2->thickness[x_axis_index];
+
+        if( volume2->flip_axis[y_axis_index] )
+            y_voxel2 = (Real) (volume2->sizes[y_axis_index]-1) -
+                       position2[y_axis_index];
+        else
+            y_voxel2 = position2[y_axis_index];
+
+        if( volume1->flip_axis[y_axis_index] )
+            trans = y_translation1 + y_scale *
+                           (Real) volume1->sizes[y_axis_index] *
+                           (Real) volume1->thickness[y_axis_index];
+        else
+            trans = y_translation1;
+
+        y_translation2 = trans +
           0.5 * y_scale * volume1->thickness[y_axis_index] -
-          (position2[y_axis_index] + 0.5) * y_scale *
-                                     volume2->thickness[y_axis_index];
+          (y_voxel2 + 0.5) * y_scale * volume2->thickness[y_axis_index];
 
         create_volume_slice(
                     volume1, position1[axis],

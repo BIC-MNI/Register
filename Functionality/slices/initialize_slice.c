@@ -1,66 +1,90 @@
 #include  <def_register.h>
 
+private  void  initialize_slice( main_struct *, int, int );
+
 public  void  initialize_slices( main_struct  *main )
 {
-    int      view, volume;
+    int            view, volume;
 
     for_less( volume, 0, N_VOLUMES )
     {
         main->trislice[volume].input_flag = FALSE;
-
-        for_less( view, 0, N_VIEWS )
-        {
-            main->trislice[volume].slices[view].pixels_are_up_to_date = FALSE;
-            main->trislice[volume].slices[view].n_pixels_alloced = 0;
-            main->trislice[volume].slices[view].x_translation = 0.0;
-            main->trislice[volume].slices[view].y_translation = 0.0;
-            main->trislice[volume].slices[view].x_scale = 1.0;
-            main->trislice[volume].slices[view].y_scale = 1.0;
-        }
+        initialize_colour_coding( &main->trislice[volume].colour_coding,
+                                  GRAY_SCALE,
+                                  Initial_under_colour,
+                                  Initial_over_colour,
+                                  -0.5, (Real) N_VOXEL_VALUES - 0.5 );
     }
+
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    {
+        for_less( view, 0, N_VIEWS )
+            initialize_slice( main, volume, view );
+    }
+
+    main->merged.active_flag = FALSE;
+
+    ALLOC2D( main->merged.cmode_colour_map, N_VOXEL_VALUES, N_VOXEL_VALUES );
+
+    ALLOC2D( main->merged.rgb_colour_map, N_VOXEL_VALUES, N_VOXEL_VALUES );
+
+    for_less( volume, 0, N_MERGED )
+    {
+        initialize_colour_coding( &main->merged.colour_coding[volume],
+                                  GRAY_SCALE,
+                                  Initial_under_colour, Initial_over_colour,
+                                  -0.5, (Real) N_VOXEL_VALUES - 0.5 );
+    }
+
+    main->merged.opacity[0] = Initial_merged_1_weight;
+    main->merged.opacity[1] = Initial_merged_2_weight;
+
+    main->merged.merge_method = (Merge_methods) Initial_merge_method;
+}
+
+private  void  initialize_slice(
+    main_struct   *main,
+    int           volume,
+    int           view )
+{
+    object_struct   *object;
+    slice_struct    *slice;
+
+    slice = get_slice_struct( main, volume, view );
+
+    slice->pixels_are_up_to_date = FALSE;
+    slice->n_pixels_alloced = 0;
+    slice->x_translation = 0.0;
+    slice->y_translation = 0.0;
+    slice->x_scale = 1.0;
+    slice->y_scale = 1.0;
+
+    set_graphics_viewport_background( &main->graphics,
+                                      get_slice_viewport_index(volume,view),
+                                      Slice_background_colour, 0 );
+
+    /* create pixels */
+
+    object = create_object( PIXELS );
+
+    add_object_to_viewport( &main->graphics,
+                            get_slice_viewport_index(volume,view),
+                            NORMAL_PLANES, object );
+
+    slice->pixels = (pixels_struct *) get_object_pointer( object );
+
+    /* create cursor */
+
+    slice->cursor_lines = create_cursor( main, volume, view );
+
+    set_viewport_objects_visibility( &main->graphics,
+                                     get_slice_viewport_index(volume,view),
+                                     OFF );
 }
 
 public  void  terminate_slices( main_struct  *main )    /* ARGSUSED */
 {
-}
+    FREE2D( main->merged.cmode_colour_map );
 
-public  void  reset_slice_view(
-    main_struct  *main,
-    int          volume,
-    int          view )
-{
-    int      x_min, x_max, y_min, y_max;
-    int      x_axis_index, y_axis_index, x_viewport_size, y_viewport_size;
-    Real     x_pixel_width, y_pixel_width, x_factor, y_factor, scale_factor;
-
-    get_slice_axes( view, &x_axis_index, &y_axis_index );
-
-    x_pixel_width = (Real) main->trislice[volume].volume.sizes[x_axis_index] *
-                    main->trislice[volume].volume.thickness[x_axis_index];
-
-    y_pixel_width = (Real) main->trislice[volume].volume.sizes[y_axis_index] *
-                    main->trislice[volume].volume.thickness[y_axis_index];
-
-    get_slice_viewport( main, volume, view, &x_min, &x_max, &y_min, &y_max );
-
-    x_viewport_size = (Real) (x_max - x_min + 1);
-    y_viewport_size = (Real) (y_max - y_min + 1);
-
-    x_factor = x_viewport_size / x_pixel_width;
-    y_factor = y_viewport_size / y_pixel_width;
-
-    scale_factor = MIN( x_factor, y_factor );
-
-    scale_factor *= Slice_fit_size;
-
-    main->trislice[volume].slices[view].x_translation =
-              ROUND( (x_viewport_size - scale_factor * x_pixel_width) / 2.0 );
-    main->trislice[volume].slices[view].y_translation =
-              ROUND( (y_viewport_size - scale_factor * y_pixel_width) / 2.0 );
-
-    main->trislice[volume].slices[view].x_scale = scale_factor;
-    main->trislice[volume].slices[view].y_scale = scale_factor;
-
-    set_recreate_slice_flag( main, volume, view );
-    update_volume_cursor( main, volume, view );
+    FREE2D( main->merged.rgb_colour_map );
 }

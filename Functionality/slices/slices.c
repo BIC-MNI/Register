@@ -172,48 +172,6 @@ public  void  get_volume_voxel_position(
     position[Z] = cursor_ptr[Z];
 }
 
-public  void  set_volume_world_position(
-    main_struct    *main,
-    int            volume_index,
-    Real           world_position[N_DIMENSIONS] )
-{
-    Real           voxel_position[N_DIMENSIONS];
-    volume_struct  *volume;
-
-    volume = get_slice_volume( main, volume_index );
-
-    convert_world_to_voxel( volume,
-                            world_position[X],
-                            world_position[Y],
-                            world_position[Z],
-                            &voxel_position[X],
-                            &voxel_position[Y],
-                            &voxel_position[Z] );
-
-    set_volume_voxel_position( main, volume_index, voxel_position );
-}
-
-public  void  get_volume_world_position(
-    main_struct   *main,
-    int           volume_index,
-    Real          world_position[N_DIMENSIONS] )
-{
-    Real           voxel_position[N_DIMENSIONS];
-    volume_struct  *volume;
-
-    volume = get_slice_volume( main, volume_index );
-
-    get_volume_voxel_position( main, volume_index, voxel_position );
-
-    convert_voxel_to_world( volume,
-                            voxel_position[X],
-                            voxel_position[Y],
-                            voxel_position[Z],
-                            &world_position[X],
-                            &world_position[Y],
-                            &world_position[Z] );
-}
-
 private  void  convert_original_world_to_world(
     main_struct    *main,
     int            volume_index,
@@ -227,18 +185,8 @@ private  void  convert_original_world_to_world(
     Point      original_world, world;
     Transform  *inverse, *transform;
 
-    if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
-    {
-        fill_Point( original_world, x_original, y_original, z_original );
-        transform_point( &main->resampling_transform, &original_world, &world );
-
-        *x_world = Point_x(world);
-        *y_world = Point_y(world);
-        *z_world = Point_z(world);
-    }
-    else if( volume_index == RESAMPLED_VOLUME_INDEX &&
-             !main->resampled_file_loaded &&
-             get_tag_point_transform( main, &transform, &inverse ) )
+    if( volume_index == RESAMPLED_VOLUME_INDEX &&
+        get_tag_point_transform( main, &transform, &inverse ) )
     {
         fill_Point( original_world, x_original, y_original, z_original );
         transform_point( transform, &original_world, &world );
@@ -255,7 +203,7 @@ private  void  convert_original_world_to_world(
     }
 }
 
-private  void  convert_world_to_original_world(
+public  void  convert_world_to_original_world(
     main_struct    *main,
     int            volume_index,
     Real           x_world,
@@ -268,19 +216,8 @@ private  void  convert_world_to_original_world(
     Point      original_world, world;
     Transform  *inverse, *transform;
 
-    if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
-    {
-        fill_Point( world, x_world, y_world, z_world );
-        transform_point( &main->inverse_resampling_transform,
-                         &world, &original_world );
-
-        *x_original = Point_x(original_world);
-        *y_original = Point_y(original_world);
-        *z_original = Point_z(original_world);
-    }
-    else if( volume_index == RESAMPLED_VOLUME_INDEX &&
-             !main->resampled_file_loaded &&
-             get_tag_point_transform( main, &transform, &inverse ) )
+    if( volume_index == RESAMPLED_VOLUME_INDEX &&
+        get_tag_point_transform( main, &transform, &inverse ) )
     {
         fill_Point( world, x_world, y_world, z_world );
         transform_point( inverse, &world, &original_world );
@@ -297,6 +234,58 @@ private  void  convert_world_to_original_world(
     }
 }
 
+public  void  set_volume_world_position(
+    main_struct    *main,
+    int            volume_index,
+    Real           world_position[N_DIMENSIONS] )
+{
+    Real           original_world[N_DIMENSIONS];
+    Real           voxel_position[N_DIMENSIONS];
+
+    convert_world_to_original_world( main, volume_index,
+                                     world_position[X],
+                                     world_position[Y],
+                                     world_position[Z],
+                                     &original_world[X],
+                                     &original_world[Y],
+                                     &original_world[Z] );
+    convert_original_world_to_voxel( main, volume_index,
+                                     original_world[X],
+                                     original_world[Y],
+                                     original_world[Z],
+                                     &voxel_position[X],
+                                     &voxel_position[Y],
+                                     &voxel_position[Z] );
+
+    set_volume_voxel_position( main, volume_index, voxel_position );
+}
+
+public  void  get_volume_world_position(
+    main_struct   *main,
+    int           volume_index,
+    Real          world_position[N_DIMENSIONS] )
+{
+    Real           voxel_position[N_DIMENSIONS];
+    Real           original_world[N_DIMENSIONS];
+
+    get_volume_voxel_position( main, volume_index, voxel_position );
+
+    convert_voxel_to_original_world( main, volume_index,
+                                     voxel_position[X],
+                                     voxel_position[Y],
+                                     voxel_position[Z],
+                                     &original_world[X],
+                                     &original_world[Y],
+                                     &original_world[Z] );
+    convert_original_world_to_world( main, volume_index,
+                                     original_world[X],
+                                     original_world[Y],
+                                     original_world[Z],
+                                     &world_position[X],
+                                     &world_position[Y],
+                                     &world_position[Z] );
+}
+
 public  void  convert_original_world_to_voxel(
     main_struct    *main,
     int            volume_index,
@@ -307,23 +296,28 @@ public  void  convert_original_world_to_voxel(
     Real           *y_voxel,
     Real           *z_voxel )
 {
-    Real   world_position[N_DIMENSIONS];
+    Point  original_world, world;
+    Real   x_world, y_world, z_world;
 
-    convert_original_world_to_world( main, volume_index,
-                                     x_original,
-                                     y_original,
-                                     z_original,
-                                     &world_position[X],
-                                     &world_position[Y],
-                                     &world_position[Z] );
+    if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
+    {
+        fill_Point( original_world, x_original, y_original, z_original );
+        transform_point( &main->resampling_transform, &original_world, &world );
+
+        x_world = Point_x(world);
+        y_world = Point_y(world);
+        z_world = Point_z(world);
+    }
+    else
+    {
+        x_world = x_original;
+        y_world = y_original;
+        z_world = z_original;
+    }
 
     convert_world_to_voxel( get_slice_volume(main,volume_index),
-                            world_position[X],
-                            world_position[Y],
-                            world_position[Z],
-                            x_voxel,
-                            y_voxel,
-                            z_voxel );
+                            x_world, y_world, z_world,
+                            x_voxel, y_voxel, z_voxel );
 }
 
 public  void  convert_voxel_to_original_world(
@@ -336,23 +330,31 @@ public  void  convert_voxel_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
+    Point  world, original;
     Real   world_position[N_DIMENSIONS];
 
     convert_voxel_to_world( get_slice_volume(main,volume_index),
-                            x_voxel,
-                            y_voxel,
-                            z_voxel,
+                            x_voxel, y_voxel, z_voxel,
                             &world_position[X],
                             &world_position[Y],
                             &world_position[Z] );
 
-    convert_world_to_original_world( main, volume_index,
-                                     world_position[X],
-                                     world_position[Y],
-                                     world_position[Z],
-                                     x_original,
-                                     y_original,
-                                     z_original );
+    if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
+    {
+        fill_Point( world,
+                    world_position[X], world_position[Y], world_position[Z] );
+        transform_point( &main->inverse_resampling_transform,
+                         &world, &original );
+        *x_original = Point_x(original);
+        *y_original = Point_y(original);
+        *z_original = Point_z(original);
+    }
+    else
+    {
+        *x_original = world_position[X];
+        *y_original = world_position[Y];
+        *z_original = world_position[Z];
+    }
 }
 
 public  void  set_volume_original_world_position(
