@@ -1,3 +1,11 @@
+2000-12-01  Steve Robbins  <Steven Michael Robbins <steven.robbins@videotron.ca>>
+
+	* README.CVS: Remove erroneous instructions.
+
+	* acinclude.m4: New.  Concatenation of the two m4 files
+	distributed from "smr_macros-0.2.4"
+	[from www.cs.mcgill.ca/~stever/software].
+
 2000-11-12  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 	* User_interface/main/main.c:
