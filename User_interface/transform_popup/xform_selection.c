@@ -72,9 +72,13 @@ public  void  popup_transform_dialog(
     {
         if( choices[i].transform_type == TRANS_LSQ9 ||
             choices[i].transform_type == TRANS_LSQ10 )
-            activity = OFF;
+        {
+            activity = Activity_9_10;
+        }
         else
+        {
             activity = ON;
+        }
 
         radio_widgets[i] = create_button( &popup->graphics, 0,
                                    x, y, Transform_button_width, Button_height,

@@ -186,4 +186,6 @@ START_GLOBALS
     DEF_GLOBAL_STRING( Readout_values_format, "%g" )
 
     DEF_GLOBAL( Seconds_per_resample, Real, 0.1 )
+
+    DEF_GLOBAL( Activity_9_10, BOOLEAN, FALSE )
 END_GLOBALS
