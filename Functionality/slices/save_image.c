@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.9 2004-09-01 19:35:27 bert Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.10 2005-02-28 21:07:36 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -31,7 +31,8 @@ private  void  save_rgb_image(
 {
     char   command[EXTREMELY_LARGE_STRING_SIZE];
 
-    (void) sprintf( command, "import -window root -crop %dx%d+%d+%d %s ", x_max-x_min, y_max-y_min, x_min, y_min, filename );
+    (void) sprintf( command, "import -window root -crop %dx%d+%d+%d %s ", 
+                    x_max-x_min, y_max-y_min, x_min, y_min, filename );
     (void) printf( "%s", command );
     (void) flush_file( stdout );
     (void) system( command );
@@ -43,8 +44,8 @@ public  void  save_image(
     int           volume_index,
     int           view_index )
 {
-    int     axis, sizes[N_DIMENSIONS];
-    Real    *position, voxel[N_DIMENSIONS];
+    int     axis, sizes[MAX_DIMENSIONS];
+    Real    *position, voxel[MAX_DIMENSIONS];
     Volume  volume;
     Real    x_min_real, y_min_real, x_max_real, y_max_real;
     int     x_min, y_min, x_max, y_max;
@@ -81,10 +82,23 @@ public  void  save_image(
     get_slice_viewport_size( main_info, volume_index, view_index,
                              &x_size, &y_size );
 
-    x_min = (int) x_min_real + 1;
-    x_max = (int) x_max_real;
-    y_min = (int) y_min_real + 1;
-    y_max = (int) y_max_real;
+    if (x_min_real < x_max_real) {
+        x_min = (int) x_min_real + 1;
+        x_max = (int) x_max_real;
+    }
+    else {
+        x_min = (int) x_max_real + 1;
+        x_max = (int) x_min_real;
+    }
+
+    if (y_min_real < y_max_real) {
+        y_min = (int) y_min_real + 1;
+        y_max = (int) y_max_real;
+    }
+    else {
+        y_min = (int) y_max_real + 1;
+        y_max = (int) y_min_real;
+    }
 
     if( x_min < 0 )
         x_min = 0;
@@ -96,10 +110,14 @@ public  void  save_image(
         y_max = y_size-1;
 
     G_get_window_position( main_info->window, &x_origin, &y_origin );
+    G_get_window_size(main_info->window, &x_size, &y_size );
 
     get_slice_viewport( main_info, volume_index, view_index,
                         &viewport_x_min, &viewport_x_max,
                         &viewport_y_min, &viewport_y_max );
+
+    /* Now invert the sense of the viewport w.r.t. the Y axis */
+    viewport_y_min = y_size - viewport_y_max;
 
     do
     {
