@@ -96,8 +96,7 @@ public  void  set_tag_world_text(
 
     (void) sprintf( string, Position_values_format, value );
 
-    set_text_entry_string( ui_info,
-                           ui_info->widget_list
+    set_text_entry_string( ui_info->widget_list
                            [viewport_index].widgets
                            [position_widgets_indices[volume_index][tag_index]
                             [WORLD_X_POSITION_TEXT+axis_index]],
@@ -158,12 +157,14 @@ public  void  add_tag_point_widgets(
     x = x_left;
     y = y_top;
 
-    rms_tag_index = create_label( ui_info, rms_viewport_index,
+    rms_tag_index = add_widget_to_list(
+                  &ui_info->widget_list[rms_viewport_index],
+                  create_label( &ui_info->graphics_window, rms_viewport_index,
                   x, y, Avg_rms_label_width, Text_entry_height,
                   "Avg RMS:", OFF, LABEL_ACTIVE_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size );
+                  Label_text_font, Label_text_font_size ) );
 
     y -= Volume_button_height + Interface_y_spacing;
 
@@ -172,27 +173,33 @@ public  void  add_tag_point_widgets(
         x = x_left;
 
         rms_widget_indices[tag][RMS_ERROR] =
-                   create_label( ui_info,
+                   add_widget_to_list(
+                  &ui_info->widget_list[rms_viewport_index],
+                   create_label( &ui_info->graphics_window,
                    rms_viewport_index, x, y,
                    Rms_label_width, Tag_point_height,
                    "RMS Error:", OFF, LABEL_ACTIVE_COLOUR,
                    LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size );
+                   Label_text_font, Label_text_font_size ) );
 
         position_widgets_indices[0][tag][WORLD_POSITION_LABEL] =
-                   create_label( ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume1_viewport_index],
+                   create_label( &ui_info->graphics_window,
                    volume1_viewport_index, x, y,
                    Tag_position_label_width, Tag_point_height,
                    "World:", OFF, LABEL_ACTIVE_COLOUR,
                    LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size );
+                   Label_text_font, Label_text_font_size ) );
 
         x += Tag_position_label_width + Position_values_separation;
 
         position_widgets_indices[0][tag][WORLD_X_POSITION_TEXT] =
-                   create_text_entry(ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume1_viewport_index],
+                   create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
@@ -203,12 +210,14 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       world_x_position1_callback );
+                       world_x_position1_callback, (void *) NULL ) );
 
         x += Tag_position_width + Position_values_separation;
 
         position_widgets_indices[0][tag][WORLD_Y_POSITION_TEXT] =
-                   create_text_entry(ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume1_viewport_index],
+                   create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
@@ -219,12 +228,14 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       world_y_position1_callback );
+                       world_y_position1_callback, (void *) NULL ) );
 
         x += Tag_position_width + Position_values_separation;
 
         position_widgets_indices[0][tag][WORLD_Z_POSITION_TEXT] =
-                   create_text_entry(ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume1_viewport_index],
+                   create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
@@ -235,22 +246,26 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       world_z_position1_callback );
+                       world_z_position1_callback, (void *) NULL ) );
 
         x = x_left;
         position_widgets_indices[1][tag][WORLD_POSITION_LABEL] =
-                   create_label( ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume2_viewport_index],
+                   create_label( &ui_info->graphics_window,
                    volume2_viewport_index, x, y,
                    Tag_position_label_width, Tag_point_height,
                    "World:", OFF, LABEL_ACTIVE_COLOUR,
                    LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size );
+                   Label_text_font, Label_text_font_size ) );
 
         x += Tag_position_label_width + Position_values_separation;
 
         position_widgets_indices[1][tag][WORLD_X_POSITION_TEXT] =
-                   create_text_entry(ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume2_viewport_index],
+                   create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
@@ -261,12 +276,14 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       world_x_position2_callback );
+                       world_x_position2_callback, (void *) NULL ) );
 
         x += Tag_position_width + Position_values_separation;
 
         position_widgets_indices[1][tag][WORLD_Y_POSITION_TEXT] =
-                   create_text_entry(ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume2_viewport_index],
+                   create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
@@ -277,12 +294,14 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       world_y_position2_callback );
+                       world_y_position2_callback, (void *) NULL ) );
 
         x += Tag_position_width + Position_values_separation;
 
         position_widgets_indices[1][tag][WORLD_Z_POSITION_TEXT] =
-                   create_text_entry(ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume2_viewport_index],
+                   create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
@@ -293,12 +312,14 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       world_z_position2_callback );
+                       world_z_position2_callback, (void *) NULL ) );
 
         x = x_left;
 
         tag_name_widget_indices[tag][TAG_ACTIVITY_BUTTON] =
-                   create_toggle_button( ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[names_viewport_index],
+                   create_toggle_button( &ui_info->graphics_window,
                    names_viewport_index,
                    x, y, Tag_activity_width, Tag_point_height,
                    "Ignore", "On",
@@ -307,12 +328,14 @@ public  void  add_tag_point_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   tag_activity_callback );
+                   tag_activity_callback, (void *) NULL ) );
 
         x += Tag_activity_width + Interface_x_spacing;
 
         tag_name_widget_indices[tag][TAG_POINT_NAME] =
-                   create_text_entry( ui_info,
+                   add_widget_to_list(
+                   &ui_info->widget_list[names_viewport_index],
+                   create_text_entry( &ui_info->graphics_window,
                        names_viewport_index, x, y,
                        Tag_name_width, Tag_point_height,
                        "", OFF,
@@ -323,10 +346,17 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       tag_name_callback );
+                       tag_name_callback, (void *) NULL ) );
 
         y -= Tag_point_height + Interface_y_spacing;
     }
+}
+
+public  void  delete_tag_point_widgets_indices()
+{
+    FREE2D( rms_widget_indices );
+    FREE3D( position_widgets_indices );
+    FREE2D( tag_name_widget_indices );
 }
 
 public  void  set_tag_widgets_activity(
@@ -335,45 +365,35 @@ public  void  set_tag_widgets_activity(
 {
     int         widget_index, tag;
 
-    set_widget_activity_and_update( ui_info,
-                             ui_info->widget_list[RMS_error_viewport].widgets
+    set_widget_activity( ui_info->widget_list[RMS_error_viewport].widgets
                                          [rms_tag_index],
-                             activity );
+                         activity );
 
     for_less( tag, 0, ui_info->tag_points.n_tag_points )
     {
         for_enum( widget_index, N_RMS_WIDGETS, Rms_widgets )
         {
-            set_widget_activity_and_update( ui_info,
+            set_widget_activity( 
                    ui_info->widget_list[RMS_error_viewport].widgets
                             [rms_widget_indices[tag][widget_index]], activity );
         }
 
         for_enum( widget_index, N_POSITION_WIDGETS, Position_widgets )
         {
-            set_widget_activity_and_update( ui_info,
+            set_widget_activity(
                    ui_info->widget_list[Volume_1_tags_viewport].widgets
                    [position_widgets_indices[0][tag][widget_index]], activity );
 
-            set_widget_activity_and_update( ui_info,
+            set_widget_activity(
                    ui_info->widget_list[Volume_2_tags_viewport].widgets
                    [position_widgets_indices[1][tag][widget_index]], activity );
         }
 
         for_enum( widget_index, N_TAG_NAME_WIDGETS, Tag_name_widgets )
         {
-            set_widget_activity_and_update( ui_info,
+            set_widget_activity(
                    ui_info->widget_list[Tag_names_viewport].widgets
                             [rms_widget_indices[tag][widget_index]], activity );
         }
     }
-
-    set_viewport_update_flag( &ui_info->graphics_window.graphics,
-                              RMS_error_viewport, NORMAL_PLANES );
-    set_viewport_update_flag( &ui_info->graphics_window.graphics,
-                              Volume_1_tags_viewport, NORMAL_PLANES );
-    set_viewport_update_flag( &ui_info->graphics_window.graphics,
-                              Volume_2_tags_viewport, NORMAL_PLANES );
-    set_viewport_update_flag( &ui_info->graphics_window.graphics,
-                              Tag_names_viewport, NORMAL_PLANES );
 }
