@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/window_events.c,v 1.10 1995-10-02 18:34:49 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/window_events.c,v 1.11 1998-02-16 16:02:17 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -22,37 +22,44 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 
 private  DEFINE_EVENT_FUNCTION( redraw_overlay_callback )
 {
-    set_clear_and_update_flags( get_ui_struct() );
+    UI_struct  *ui = (UI_struct *) callback_data;
+
+    set_clear_and_update_flags( ui );
 }
 
 /* ARGSUSED */
 
 private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
 {
-    set_clear_and_update_flags( get_ui_struct() );
+    UI_struct  *ui = (UI_struct *) callback_data;
+
+    set_clear_and_update_flags( ui );
 }
 
 /* ARGSUSED */
 
 private  DEFINE_EVENT_FUNCTION( resize_window_callback )
 {
-    resize_layout( get_ui_struct() );
+    UI_struct  *ui = (UI_struct *) callback_data;
 
-    position_main_widgets( get_ui_struct() );
+    resize_layout( ui );
+
+    position_main_widgets( ui );
 
     set_recreate_all_slice_flags();
 
-    set_clear_and_update_flags( get_ui_struct() );
+    set_clear_and_update_flags( ui );
 }
 
 /* ARGSUSED */
 
 private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
+    UI_struct  *ui = (UI_struct *) callback_data;
 #ifdef DEBUG
     set_quit_program_flag();
 #else
-    popup_quit_confirm( get_ui_struct() );
+    popup_quit_confirm( ui );
 #endif
 }
 
@@ -63,7 +70,9 @@ private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 
 private  DEFINE_EVENT_FUNCTION( deiconize_window_callback )
 {
-    set_window_colours( get_ui_struct()->graphics_window.window );
+    UI_struct  *ui = (UI_struct *) callback_data;
+
+    set_window_colours( ui->graphics_window.window );
 }
 
 public  void  install_window_events(
@@ -76,29 +85,29 @@ public  void  install_window_events(
                                  Whole_window_event_viewport,
                                  REDRAW_OVERLAY_EVENT, -1, -1, -1, -1,
                                  redraw_overlay_callback, ANY_MODIFIER,
-                                 (void *) NULL );
+                                 (void *) ui );
 
     add_event_viewport_callback( &ui->graphics_window.event_viewports,
                                  Whole_window_event_viewport,
                                  WINDOW_REDRAW_EVENT, -1, -1, -1, -1,
                                  redraw_window_callback, ANY_MODIFIER,
-                                 (void *) NULL );
+                                 (void *) ui );
 
     add_event_viewport_callback( &ui->graphics_window.event_viewports,
                                  Whole_window_event_viewport,
                                  WINDOW_RESIZE_EVENT, -1, -1, -1, -1,
                                  resize_window_callback, ANY_MODIFIER,
-                                 (void *) NULL );
+                                 (void *) ui );
 
     add_event_viewport_callback( &ui->graphics_window.event_viewports,
                                  Whole_window_event_viewport,
                                  WINDOW_QUIT_EVENT, -1, -1, -1, -1,
                                  quit_window_callback, ANY_MODIFIER,
-                                 (void *) NULL );
+                                 (void *) ui );
 
     add_event_viewport_callback( &ui->graphics_window.event_viewports,
                                  Whole_window_event_viewport,
                                  WINDOW_DEICONIZED_EVENT, -1, -1, -1, -1,
                                  deiconize_window_callback, ANY_MODIFIER,
-                                 (void *) NULL );
+                                 (void *) ui );
 }

@@ -16,7 +16,7 @@
 #define  DEF_VIEWPORTS
 
 #ifndef lint
-static char viewports_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/viewports.h,v 1.1 1997-12-11 19:44:09 david Exp $";
+static char viewports_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/viewports.h,v 1.2 1998-02-16 16:02:15 david Exp $";
 #endif
 
 typedef  enum

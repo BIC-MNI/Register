@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/lookup.c,v 1.6 1996-12-09 20:22:06 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/lookup.c,v 1.7 1998-02-16 16:02:23 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -30,7 +30,7 @@ public  void  record_graphics_window(
 
 private  int  get_window_index( window_struct  *window )
 {
-    static   current_index = -1;
+    static   int  current_index = -1;
     int      i;
 
     if( current_index >= 0 && current_index < n_windows &&
@@ -83,20 +83,23 @@ public  BOOLEAN   lookup_event_viewports(
     return( i >= 0 );
 }
 
+public  void  update_window(
+    graphics_window_struct   *window )
+{
+    if( make_window_up_to_date( window->window, &window->graphics,
+                                window->current_buffer ) )
+    {
+        if( G_get_double_buffer_state( window->window ) )
+            window->current_buffer = 1 - window->current_buffer;
+    }
+}
+
 public  void  make_windows_up_to_date( void )
 {
     int   i;
 
     for_less( i, 0, n_windows )
-    {
-        if( make_window_up_to_date( windows[i]->window,
-                                    &windows[i]->graphics,
-                                    windows[i]->current_buffer ) )
-        {
-            if( G_get_double_buffer_state( windows[i]->window ) )
-                windows[i]->current_buffer = 1 - windows[i]->current_buffer;
-        }
-    }
+        update_window( windows[i] );
 }
 
 public  void  delete_all_graphics_windows( void )

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample.c,v 1.8 1995-10-02 18:34:57 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample.c,v 1.9 1998-02-16 16:02:21 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -34,7 +34,7 @@ public  void  do_resampling(
 
     print( "Please wait 2 minutes for the resampling.\n" );
     
-    force_update_all_windows();
+    make_windows_up_to_date();
 
     if( IF_do_resampling( resampled_filename ) == OK )
     {

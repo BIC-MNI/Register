@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/delete_tags_popup/delete_tags.c,v 1.6 1996-12-09 20:21:46 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/delete_tags_popup/delete_tags.c,v 1.7 1998-02-16 16:02:16 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -91,7 +91,7 @@ public  void  popup_delete_tags(
 
     y -= Button_height;
 
-    widget = create_button( &popup->graphics, 0,
+    widget = create_button( &popup->graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
                             "Delete", ON, TRUE,
                             BUTTON_ACTIVE_COLOUR,
@@ -105,7 +105,7 @@ public  void  popup_delete_tags(
 
     x += Button_width + Interface_x_spacing;
 
-    widget = create_button( &popup->graphics, 0,
+    widget = create_button( &popup->graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
                             "Cancel", ON, TRUE,
                             BUTTON_ACTIVE_COLOUR,

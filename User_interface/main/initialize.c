@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.17 1996-12-09 20:21:54 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.18 1998-02-16 16:02:20 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -41,22 +41,7 @@ public  Status   initialize_user_interface(
                               Initial_double_buffer_state,
                               FALSE, 2, &ui->graphics_window.window );
 
-    if( status != OK ||
-        (!Initial_rgb_state &&
-         G_get_n_colour_map_entries(ui->graphics_window.window) <
-         Min_colour_map_size) )
-    {
-        print_error( "Not enough colours, reopening in RGB mode.\n" );
-
-        (void) G_delete_window( ui->graphics_window.window );
-
-        status = G_create_window( Main_window_name, -1, -1,
-                                  Initial_window_x_size,
-                                  Initial_window_y_size,
-                                  FALSE,
-                                  Initial_double_buffer_state,
-                                  FALSE, 2, &ui->graphics_window.window );
-    }
+    set_window_event_callbacks( &ui->graphics_window );
 
     IF_initialize_register( ui->graphics_window.window, executable_name );
 

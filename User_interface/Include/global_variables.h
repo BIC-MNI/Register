@@ -5,9 +5,11 @@ START_GLOBALS
     DEF_GLOBAL( Initial_double_buffer_state, BOOLEAN, TRUE )
     DEF_GLOBAL( Initial_interpolation_state, BOOLEAN, FALSE )
 
-    DEF_GLOBAL( Min_colour_map_size, int, 256 )
+    DEF_GLOBAL( Timer_interval, Real, 0.017 )
+
+    DEF_GLOBAL( Min_colours_needed, int, 64 )
     DEF_GLOBAL( Colour_table_start, int, 256 )
-    DEF_GLOBAL( Colour_table_8bit_start, int, 32 )
+    DEF_GLOBAL( Colour_table_8bit_start, int, 16 )
     DEF_GLOBAL_COLOUR( Default_UI_background_colour )
     DEF_GLOBAL_COLOUR( Default_divider_colour )
     DEF_GLOBAL_COLOUR( Default_button_active_colour )

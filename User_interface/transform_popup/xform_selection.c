@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.8 1996-12-09 20:22:08 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.9 1998-02-16 16:02:25 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -105,7 +105,7 @@ public  void  popup_transform_dialog(
             activity = ON;
         }
 
-        radio_widgets[i] = create_button( &popup->graphics, 0,
+        radio_widgets[i] = create_button( &popup->graphics, Main_menu_viewport,
                                    x, y, Transform_button_width, Button_height,
                                    choices[i].name, activity, FALSE,
                                    get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),
@@ -134,7 +134,7 @@ public  void  popup_transform_dialog(
 
     y -= Interface_y_spacing;
 
-    widget = create_button( &popup->graphics, 0,
+    widget = create_button( &popup->graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
                             "Close", ON, FALSE,
                             get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),

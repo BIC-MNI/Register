@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.9 1996-12-09 20:21:45 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.10 1998-02-16 16:02:16 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -105,7 +105,8 @@ public  void  popup_colour_selection(
     {
         colour = convert_string_to_colour( colours[i] );
 
-        widget = create_button( &popup->popup_window.graphics, 0,
+        widget = create_button( &popup->popup_window.graphics,
+                                Main_menu_viewport,
                                 x, y, Button_width, Button_height,
                                 colours[i], ON, FALSE, colour,
                                 get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
@@ -127,7 +128,7 @@ public  void  popup_colour_selection(
         }
     }
 
-    widget = create_button( &popup->popup_window.graphics, 0,
+    widget = create_button( &popup->popup_window.graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
                             "Cancel", ON, FALSE,
                             get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),

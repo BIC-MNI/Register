@@ -16,11 +16,34 @@
 #define  DEF_EVENTS
 
 #ifndef lint
-static char ui_events_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/events.h,v 1.6 1996-12-09 20:21:44 david Exp $";
+static char ui_events_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/events.h,v 1.7 1998-02-16 16:02:15 david Exp $";
 #endif
 
 #include  <graphics.h>
 #include  <viewports.h>
+
+typedef  enum  {
+                   NO_EVENT,
+                   TERMINATE_INTERACTION_EVENT,
+                   KEY_DOWN_EVENT,
+                   KEY_UP_EVENT,
+                   MOUSE_MOVEMENT_EVENT,
+                   LEFT_MOUSE_DOWN_EVENT,
+                   LEFT_MOUSE_UP_EVENT,
+                   MIDDLE_MOUSE_DOWN_EVENT,
+                   MIDDLE_MOUSE_UP_EVENT,
+                   RIGHT_MOUSE_DOWN_EVENT,
+                   RIGHT_MOUSE_UP_EVENT,
+                   REDRAW_OVERLAY_EVENT,
+                   WINDOW_REDRAW_EVENT,
+                   WINDOW_RESIZE_EVENT,
+                   WINDOW_ICONIZED_EVENT,
+                   WINDOW_DEICONIZED_EVENT,
+                   WINDOW_QUIT_EVENT,
+                   WINDOW_LEAVE_EVENT,
+                   WINDOW_ENTER_EVENT,
+                   N_EVENT_TYPES
+               } Event_types;
 
 typedef  void  (*event_function_type) ( Viewport_types, int, void * );
 

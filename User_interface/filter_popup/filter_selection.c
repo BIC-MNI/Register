@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.6 1996-12-09 20:22:07 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.7 1998-02-16 16:02:24 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -140,7 +140,7 @@ private  int  add_filter_widgets(
 
     start_index = add_widget_to_list(
                    &popup->widgets,
-                   create_button( &popup->graphics, 0, 
+                   create_button( &popup->graphics, Main_menu_viewport, 
                    x, y, Filter_button_width, Filter_button_height,
                    "Nearest",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
@@ -154,7 +154,7 @@ private  int  add_filter_widgets(
 
     widget_indices[LINEAR_BUTTON] = add_widget_to_list(
                    &popup->widgets,
-                   create_button( &popup->graphics, 0, 
+                   create_button( &popup->graphics, Main_menu_viewport, 
                    x + dx, y, Filter_button_width, Filter_button_height,
                    "Linear",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
@@ -166,7 +166,7 @@ private  int  add_filter_widgets(
 
     widget_indices[BOX_BUTTON] = add_widget_to_list(
                    &popup->widgets,
-                   create_button( &popup->graphics, 0, 
+                   create_button( &popup->graphics, Main_menu_viewport, 
                    x + 2 * dx, y, Filter_button_width, Filter_button_height,
                    "Box",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
@@ -178,7 +178,7 @@ private  int  add_filter_widgets(
 
     widget_indices[TRIANGLE_BUTTON] = add_widget_to_list(
                    &popup->widgets,
-                   create_button( &popup->graphics, 0, 
+                   create_button( &popup->graphics, Main_menu_viewport, 
                    x + 3 * dx, y, Filter_button_width, Filter_button_height,
                    "Triangle",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
@@ -190,7 +190,7 @@ private  int  add_filter_widgets(
 
     widget_indices[GAUSSIAN_BUTTON] = add_widget_to_list(
                    &popup->widgets,
-                   create_button( &popup->graphics, 0, 
+                   create_button( &popup->graphics, Main_menu_viewport, 
                    x + 4 * dx, y, Filter_button_width, Filter_button_height,
                    "Gaussian",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
@@ -204,7 +204,7 @@ private  int  add_filter_widgets(
 
     widget_indices[FILTER_WIDTH_LABEL] = add_widget_to_list(
                    &popup->widgets,
-                   create_label( &popup->graphics, 0,
+                   create_label( &popup->graphics, Main_menu_viewport,
                    x, y, Full_width_label_width, Filter_button_height,
                    "Full Width Half Max", ON, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
@@ -214,7 +214,7 @@ private  int  add_filter_widgets(
 
     widget_indices[FILTER_WIDTH_TEXT] = add_widget_to_list(
                    &popup->widgets,
-                   create_text_entry( &popup->graphics, 0,
+                   create_text_entry( &popup->graphics, Main_menu_viewport,
                    x + Full_width_label_width + Interface_x_spacing, y,
                    Full_width_text_width, Filter_button_height,
                    FALSE, "", ON,
@@ -273,7 +273,8 @@ public  void  popup_filter_selection(
     UI_struct   *ui,
     int         volume )
 {
-    int                       x, y, view_index;
+    int                       x, y;
+    Viewport_types            view_index;
     filter_selection_struct   *popup;
     int                       view_start_index, height;
     Filter_types              filter_type;
@@ -305,10 +306,11 @@ public  void  popup_filter_selection(
     y = Filter_selection_y_size - 1 - Interface_y_spacing -
         Filter_button_height;
 
-    for_less( view_index, 0, N_VIEWS )
+    for_less( view_index, (Viewport_types) 0, N_VIEWS )
     {
         (void) add_widget_to_list( &popup->popup_window.widgets,
-                   create_label( &popup->popup_window.graphics, 0,
+                   create_label( &popup->popup_window.graphics,
+                                 Main_menu_viewport,
                    x, y, Filter_view_label_width, Filter_button_height,
                    view_names[view_index], ON, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
@@ -318,26 +320,27 @@ public  void  popup_filter_selection(
         y -= Filter_button_height + Filter_y_spacing;
 
         popup->callback_data[view_index].volume = volume;
-        popup->callback_data[view_index].view = view_index;
+        popup->callback_data[view_index].view = (int) view_index;
         view_start_index = add_filter_widgets( &popup->popup_window, x, y,
                                  &popup->callback_data[view_index], &height );
 
         y -= height + Filter_button_height + 5 * Filter_y_spacing;
 
-        filter_type = IF_get_slice_filter_type( volume, view_index );
+        filter_type = IF_get_slice_filter_type( volume, (int) view_index );
         set_widget_selected(
                      popup->popup_window.widgets.widgets
                      [view_start_index + widget_indices[
                            get_filter_widget_index(filter_type)]], ON );
 
-        filter_width = IF_get_slice_filter_width( volume, view_index );
+        filter_width = IF_get_slice_filter_width( volume, (int) view_index );
         set_text_entry_real_value( popup->popup_window.widgets.widgets
            [view_start_index + widget_indices[FILTER_WIDTH_TEXT]],
            "%g", filter_width );
     }
 
     (void) add_widget_to_list( &popup->popup_window.widgets,
-                               create_button( &popup->popup_window.graphics, 0,
+                               create_button( &popup->popup_window.graphics,
+                                              Main_menu_viewport,
                                 x, y, Button_width, Button_height,
                                 "Close", ON, TRUE, BUTTON_ACTIVE_COLOUR,
                                 BUTTON_SELECTED_COLOUR,

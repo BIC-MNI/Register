@@ -13,70 +13,47 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.8 1996-12-09 20:21:50 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.9 1998-02-16 16:02:18 david Exp $";
 #endif
 
 #include  <user_interface.h>
-
-private  void   handle_event(
-    Event_types        event_type,
-    window_struct      *event_window,
-    int                key_pressed );
 
 private  BOOLEAN   quit_flag = FALSE;
 
 public  void  set_quit_program_flag( void )
 {
-    quit_flag = TRUE;
+    exit( 0 );
+}
+
+private  void  timer_function(
+    void  *data )
+{
+    handle_event( NO_EVENT, NULL, 0 );
+    make_windows_up_to_date();
+    G_add_timer_function( Timer_interval, timer_function, NULL );
 }
 
 public  void  event_loop( void )
 {
-    int                     key_pressed;
-    Event_types             event_type;
-    window_struct           *event_window;
+    G_add_timer_function( Timer_interval, timer_function, NULL );
 
-    do
-    {
-        event_type = G_get_event( &event_window, &key_pressed );
-
-        handle_event( event_type, event_window, key_pressed );
-
-        if( event_type == NO_EVENT )
-            make_windows_up_to_date();
-    }
-    while( !quit_flag );
+    G_main_loop();
 }
 
-public  void  force_update_all_windows( void )
+public  void   handle_event(
+    Event_types       event_type,
+    Gwindow           event_window,
+    int               key_pressed )
 {
-    handle_event( NO_EVENT, (window_struct *) NULL, 0 );
-    make_windows_up_to_date();
-}
-
-private  void   handle_event(
-    Event_types              event_type,
-    window_struct            *event_window,
-    int                      key_pressed )
-{
-    static                  shift_state = OFF;
+    int                     shift_state;
     int                     x_mouse, y_mouse;
     event_viewports_struct  *event_viewports;
 
-    if( (event_type == KEY_DOWN_EVENT || event_type == KEY_UP_EVENT) &&
-        (key_pressed == LEFT_SHIFT_KEY ||
-         key_pressed == RIGHT_SHIFT_KEY ||
-         key_pressed == LEFT_CTRL_KEY ||
-         key_pressed == RIGHT_CTRL_KEY ||
-         key_pressed == LEFT_ALT_KEY ||
-         key_pressed == RIGHT_ALT_KEY) )
-    {
-        shift_state = (event_type == KEY_DOWN_EVENT);
-    }
-    else if( event_type == WINDOW_LEAVE_EVENT )
-        shift_state = FALSE;
-    else if( !execute_global_event_callbacks( shift_state, event_type,
-                                              key_pressed ) &&
+    shift_state = G_get_shift_key_state() || G_get_ctrl_key_state() ||
+                  G_get_alt_key_state();
+
+    if( !execute_global_event_callbacks( shift_state, event_type,
+                                         key_pressed ) &&
         event_is_allowable( event_type ) &&
         (!mouse_must_be_in_window(event_type) ||
          G_get_mouse_position( event_window, &x_mouse, &y_mouse )) &&

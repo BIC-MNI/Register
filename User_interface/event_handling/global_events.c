@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/global_events.c,v 1.7 1995-10-02 18:34:51 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/global_events.c,v 1.8 1998-02-16 16:02:18 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -113,7 +113,7 @@ public  BOOLEAN  execute_global_event_callbacks(
 {
     return( execute_event_callback_functions( shift_state,
                                               &global_event_table[event_type],
-                                              0, 0, 0,
+                                              0, 0, Main_menu_viewport,
                                               key_pressed ) );
 }
 

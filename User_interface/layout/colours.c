@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/layout/colours.c,v 1.10 1996-12-09 20:21:52 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/layout/colours.c,v 1.11 1998-02-16 16:02:19 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -54,8 +54,7 @@ private  int  start_colour_table = 0;
 public  void  set_start_colour_table(
     UI_struct  *ui )
 {
-    if( G_get_n_colour_map_entries(ui->graphics_window.window) -
-        Colour_table_start < Min_colour_map_size )
+    if( G_get_n_colour_map_entries(ui->graphics_window.window) <= 256 )
         start_colour_table = Colour_table_8bit_start;
     else
         start_colour_table = Colour_table_start;

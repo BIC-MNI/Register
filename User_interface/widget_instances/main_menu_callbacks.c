@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.35 1996-12-09 20:21:59 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.36 1998-02-16 16:02:22 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -114,6 +114,20 @@ private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback )
     state = get_toggle_button_state( widget );
 
     G_set_colour_map_state( get_ui_struct()->graphics_window.window, state );
+
+    if( G_get_colour_map_state( get_ui_struct()->graphics_window.window )
+        != state )
+    {
+        set_toggle_button_state( widget, !state );
+    }
+
+    if( G_get_colour_map_state( get_ui_struct()->graphics_window.window ) &&
+        G_get_n_colour_map_entries( get_ui_struct()->graphics_window.window )
+                        < Min_colours_needed )
+    {
+        set_toggle_button_state( widget, OFF );
+        G_set_colour_map_state( get_ui_struct()->graphics_window.window, OFF );
+    }
 
     colour_map_state_has_changed( get_ui_struct() );
 
@@ -682,9 +696,7 @@ public  void  update_colour_map_toggle_activity(
 {
     BOOLEAN   activity;
 
-    activity = IF_can_switch_colour_modes() &&
-             (G_get_n_colour_map_entries(
-             ui_info->graphics_window.window) >= Min_colour_map_size);
+    activity = IF_can_switch_colour_modes();
 
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[COLOUR_MODE_BUTTON]], activity );

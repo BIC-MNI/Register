@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.8 1995-10-02 18:35:04 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.9 1998-02-16 16:02:23 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -32,6 +32,8 @@ private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
         set_bitplanes_clear_flag( &popup->graphics.graphics, bitplane );
         set_viewport_update_flag( &popup->graphics.graphics, 0, bitplane );
     }
+
+    update_window( &popup->graphics );
 }
 
 /* ARGSUSED */
@@ -66,6 +68,8 @@ public  void   create_popup_window(
                             x_size, y_size, FALSE, TRUE,
                             FALSE, 0, &popup->graphics.window );
 
+    set_window_event_callbacks( &popup->graphics );
+
     initialize_graphics_struct( &popup->graphics.graphics );
     initialize_event_viewports( &popup->graphics.event_viewports );
     initialize_widget_list( &popup->widgets );
@@ -86,20 +90,24 @@ public  void   create_popup_window(
     set_graphics_viewport_background( &popup->graphics.graphics, 0,
                                       Popup_background_colour, 0 );
 
-    set_event_viewport( &popup->graphics.event_viewports, 0, -1, -1, -1, -1 );
+    set_event_viewport( &popup->graphics.event_viewports, Main_menu_viewport,
+                        -1, -1, -1, -1 );
 
     add_event_viewport_callback( &popup->graphics.event_viewports,
-                                 0, WINDOW_REDRAW_EVENT, -1, -1, -1, -1,
+                                 Main_menu_viewport,
+                                 WINDOW_REDRAW_EVENT, -1, -1, -1, -1,
                                  redraw_window_callback, ANY_MODIFIER,
                                  (void *) popup );
 
     add_event_viewport_callback( &popup->graphics.event_viewports,
-                                 0, WINDOW_RESIZE_EVENT, -1, -1, -1, -1,
+                                 Main_menu_viewport,
+                                 WINDOW_RESIZE_EVENT, -1, -1, -1, -1,
                                  resize_window_callback, ANY_MODIFIER,
                                  (void *) popup );
 
     add_event_viewport_callback( &popup->graphics.event_viewports,
-                                 0, WINDOW_QUIT_EVENT, -1, -1, -1, -1,
+                                 Main_menu_viewport,
+                                 WINDOW_QUIT_EVENT, -1, -1, -1, -1,
                                  quit_popup_callback, ANY_MODIFIER,
                                  quit_callback_data );
 
