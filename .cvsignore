@@ -1,0 +1,14 @@
+aclocal.m4
+configure
+config.log
+config.h
+config.cache
+config.status
+stamp-h
+config.h.in
+stamp-h.in
+Makefile.in
+Makefile
+.deps
+dummy.c
+register

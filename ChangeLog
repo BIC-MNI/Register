@@ -1,5 +1,31 @@
 2001-05-22  Steve M. Robbins  <steve@nyongwa.montreal.qc.ca>
 
+	* branch-1_3 merge: Many files added for autoconfig.
+
+	* acinclude.m4: New.  Concatenation of the two m4 files
+	distributed from "smr_macros-0.2.4"
+	[from www.cs.mcgill.ca/~stever/software].
+
+	* User_interface/main/main.c:
+	* User_interface/Include/user_interface.h:
+	* Tagtoxfm/tagtoxfm.c:
+	* Functionality/initialize/initialize.c:
+	* Functionality/Include/register.h: Change include from "foo.h" to
+	"bicpl/foo.h", to match current practice of the "bicpl" library
+	(formerly known as BIC_PL).
+
+	* configure.in: New.  Added infrastructure for autoconf-generated
+	build procedure.  The subdirectories Functionality, Graphics, 
+	UI_calls_F, and User_interface do not yet have automake-generated
+	makefiles; they include "Makefile.include", however, which now
+	*is* generated, so some of the variable definitions are generated
+	there automatically.
+
+	* common_include.h: Change include from "internal_volue_io.h" to
+	"volume_io/internal_volume_io.h", to match recent MINC practice.
+
+2001-05-22  Steve M. Robbins  <steve@nyongwa.montreal.qc.ca>
+
 	* User_interface/event_callbacks/tag_events.c:	Rolled back
 	to version 1.7.
 
