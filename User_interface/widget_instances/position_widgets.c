@@ -252,18 +252,18 @@ private  void   set_voxel_position_callback(
     volume_index = get_viewport_volume_index( widget->viewport_index );
     start_widget_index = ui_info->position_text_start_index[volume_index];
 
+    IF_get_volume_voxel_position( volume_index, position );
+
     if( get_text_entry_real_value( ui_info->widget_list
                                      [widget->viewport_index].widgets
                                      [start_widget_index+
                                       widget_indices[X_VOXEL_TEXT+axis]],
                                    &value ) )
     {
-        IF_get_volume_voxel_position( volume_index, position );
         position[axis] = value;
-        IF_set_volume_voxel_position( volume_index, position );
     }
 
-    update_position_counters( ui_info, volume_index );
+    ui_set_volume_voxel_position( ui_info, volume_index, position );
 }
 
 private  void   set_world_position_callback(
@@ -281,16 +281,16 @@ private  void   set_world_position_callback(
 
     volume_index = get_viewport_volume_index( widget->viewport_index );
 
+    IF_get_volume_world_position( volume_index, position );
+
     if( get_text_entry_real_value( ui_info->widget_list
                                      [widget->viewport_index].widgets
                                      [start_widget_index+
                                       widget_indices[X_WORLD_TEXT+axis]],
                                    &value ) )
     {
-        IF_get_volume_world_position( volume_index, position );
         position[axis] = value;
-        IF_set_volume_world_position( volume_index, position );
     }
 
-    update_position_counters( ui_info, volume_index );
+    ui_set_volume_world_position( ui_info, volume_index, position );
 }

@@ -64,7 +64,7 @@ public  void  add_volume_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Volume_button_width, Volume_button_height,
                    "Reset View",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -78,7 +78,7 @@ public  void  add_volume_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Volume_button_width, Volume_button_height,
                    "Load",
-                   ON, BUTTON_ACTIVE_COLOUR, BUTTON_SELECTED_COLOUR,
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR, BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -162,4 +162,9 @@ public  void  set_volume_widgets_activity(
     set_voxel_position_widgets_activity( ui_info, viewport_index,
                            ui_info->position_text_start_index[volume_index],
                            activity );
+}
+
+public  int  get_colour_bar_start_index()
+{
+    return( colour_bar_start_index );
 }

@@ -2,51 +2,33 @@
 
 private  Real  convert_position_to_slider_value( slider_struct *, int, int );
 
-private  void  change_slider_value(
-    widget_struct  *widget,
-    int            ind,
-    Real           value )
-{
-    Real            values[2];
-    slider_struct   *slider;
-
-    slider = get_widget_slider( widget );
-
-    values[0] = slider->values[0];
-    values[1] = slider->values[1];
-
-    if( slider->colour_bar_flag )
-    {
-        if( ind == 0 && value > slider->values[1] )
-            value = slider->values[1];
-        else if( ind == 1 && value < slider->values[0] )
-            value = slider->values[0];
-    }
-
-    values[ind] = value;
-
-    if( set_slider_values( widget, values[0], values[1] ) )
-    {
-        set_viewport_update_flag( &widget->graphics->graphics,
-                                  widget->viewport_index, NORMAL_PLANES );
-
-        slider->value_changed_callback[ind]( widget,
-                                             slider->callback_data[ind] );
-    }
-}
+private  int  convert_slider_value_to_position( slider_struct *, int, Real );
 
 private  void  update_value_from_text(
     widget_struct  *widget,
     int            ind )
 {
-    Real            value;
+    Real            value, values[2];
     slider_struct   *slider;
 
     slider = get_widget_slider( widget );
 
     if( get_text_entry_real_value( slider->text_widgets[ind], &value ) )
     {
-        change_slider_value( widget, ind, value );
+        values[0] = slider->values[0];
+        values[1] = slider->values[1];
+
+        values[ind] = value;
+
+        if( slider->colour_bar_flag )
+        {
+            if( ind == 0 && value > values[1] )
+                values[0] = values[1];
+            else if( ind == 1 && value < values[0] )
+                values[1] = values[0];
+        }
+
+        set_slider_values( widget, values[0], values[1] );
     }
 }
 
@@ -64,7 +46,7 @@ private  void  update_slider_position_from_mouse(
     widget_struct  *widget )
 {
     int             ind, x_mouse, y_mouse;
-    Real            value;
+    Real            values[2];
     slider_struct   *slider;
 
     slider = get_widget_slider( widget );
@@ -74,10 +56,44 @@ private  void  update_slider_position_from_mouse(
     get_viewport_mouse_position( widget->graphics, widget->viewport_index,
                                  &x_mouse, &y_mouse);
 
-    value = convert_position_to_slider_value( slider, x_mouse - widget->x,
-                                              widget->x_size );
+    values[0] = slider->values[0];
 
-    change_slider_value( widget, ind, value );
+    if( slider->colour_bar_flag )
+        values[1] = slider->values[1];
+
+    values[ind] = convert_position_to_slider_value( slider, x_mouse - widget->x,
+                                                    widget->x_size );
+
+    set_slider_values( widget, values[0], values[1] );
+}
+
+private  void  update_both_slider_position_from_mouse(
+    widget_struct  *widget )
+{
+    int             x_mouse, y_mouse;
+    Real            value, diff;
+    slider_struct   *slider;
+
+    slider = get_widget_slider( widget );
+
+    get_viewport_mouse_position( widget->graphics, widget->viewport_index,
+                                 &x_mouse, &y_mouse);
+
+    value = convert_position_to_slider_value( slider,
+                      x_mouse - widget->x + slider->middle_mouse_offset,
+                      widget->x_size );
+
+    diff = slider->values[1] - slider->values[0];
+
+    if( value < slider->min_value )
+        value = slider->min_value;
+    else if( value > slider->max_value )
+        value = slider->max_value;
+
+    if( value + diff > slider->max_value )
+        value = slider->max_value - diff;
+
+    set_slider_values( widget, value, value + diff );
 }
 
 private  DEFINE_EVENT_FUNCTION( update_slider_position_event )   /* ARGSUSED */
@@ -93,6 +109,25 @@ private  DEFINE_EVENT_FUNCTION( done_moving_slider )   /* ARGSUSED */
                                   callback_data );
 
     remove_global_event_callback( NO_EVENT, update_slider_position_event,
+                                  callback_data );
+
+    set_interaction_in_progress( FALSE );
+}
+
+private  DEFINE_EVENT_FUNCTION( update_both_position_event )   /* ARGSUSED */
+{
+    update_both_slider_position_from_mouse( (widget_struct *) callback_data );
+}
+
+private  DEFINE_EVENT_FUNCTION( done_moving_both_sliders )   /* ARGSUSED */
+{
+    update_both_slider_position_from_mouse( (widget_struct *) callback_data );
+
+    remove_global_event_callback( MIDDLE_MOUSE_UP_EVENT,
+                                  done_moving_both_sliders,
+                                  callback_data );
+
+    remove_global_event_callback( NO_EVENT, update_both_position_event,
                                   callback_data );
 
     set_interaction_in_progress( FALSE );
@@ -125,6 +160,34 @@ private  DEFINE_EVENT_FUNCTION( select_upper_slider )   /* ARGSUSED */
 private  DEFINE_EVENT_FUNCTION( select_lower_slider )   /* ARGSUSED */
 {
     select_slider( (widget_struct *) callback_data, 0 );
+}
+
+private  void  select_colour_bar_sliders(
+    widget_struct   *widget )
+{
+    int             x_mouse, y_mouse;
+    slider_struct   *slider;
+
+    slider = get_widget_slider( widget );
+
+    get_viewport_mouse_position( widget->graphics, widget->viewport_index,
+                                 &x_mouse, &y_mouse);
+
+    slider->middle_mouse_offset = convert_slider_value_to_position( slider,
+           widget->x_size, slider->values[0] ) - (x_mouse - widget->x);
+
+    add_global_event_callback( MIDDLE_MOUSE_UP_EVENT, done_moving_both_sliders,
+                               ANY_MODIFIER, (void *) widget );
+
+    add_global_event_callback( NO_EVENT, update_both_position_event,
+                               ANY_MODIFIER, (void *) widget );
+
+    set_interaction_in_progress( TRUE );
+}
+
+private  DEFINE_EVENT_FUNCTION( select_both_sliders )   /* ARGSUSED */
+{
+    select_colour_bar_sliders( (widget_struct *) callback_data );
 }
 
 private  void  update_one_slider_colours(
@@ -272,15 +335,16 @@ public  void  get_slider_values(
         *high_value = slider->values[1];
 }
 
-public  Boolean  set_slider_values(
+public  void  set_slider_values(
     widget_struct           *widget,
     Real                    low_value,
     Real                    high_value )
 {
-    Boolean          changed;
+    Boolean          changed[2];
     slider_struct    *slider;
 
-    changed = FALSE;
+    changed[0] = FALSE;
+    changed[1] = FALSE;
 
     slider = get_widget_slider( widget );
 
@@ -292,7 +356,7 @@ public  Boolean  set_slider_values(
     if( low_value != slider->values[0] )
     {
         slider->values[0] = low_value;
-        changed = TRUE;
+        changed[0] = TRUE;
     }
 
     if( slider->colour_bar_flag )
@@ -308,13 +372,23 @@ public  Boolean  set_slider_values(
         if( high_value != slider->values[1] )
         {
             slider->values[1] = high_value;
-            changed = TRUE;
+            changed[1] = TRUE;
         }
     }
 
-    update_slider_position( widget );
+    if( changed[0] || changed[1] )
+    {
+        update_slider_position( widget );
 
-    return( changed );
+        set_viewport_update_flag( &widget->graphics->graphics,
+                                  widget->viewport_index, NORMAL_PLANES );
+    }
+
+    if( changed[0] )
+        slider->value_changed_callback[0]( widget, slider->callback_data[0] );
+
+    if( changed[1] )
+        slider->value_changed_callback[1]( widget, slider->callback_data[1] );
 }
 
 public  void  update_slider_activity(
@@ -340,6 +414,12 @@ public  void  update_slider_activity(
                            &widget->graphics->event_viewports,
                            widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
                            select_upper_slider, (void *) widget,
+                           widget->active_flag );
+
+        set_event_viewport_callback_enabled(
+                           &widget->graphics->event_viewports,
+                           widget->viewport_index, MIDDLE_MOUSE_DOWN_EVENT,
+                           select_both_sliders, (void *) widget,
                            widget->active_flag );
 
         set_widget_activity( slider->text_widgets[1], widget->active_flag );
@@ -497,6 +577,14 @@ private  widget_struct  *create_a_slider(
                        Slider_text_font, Slider_text_font_size,
                        upper_value_hit_return_callback,
                        (void *) widget );
+
+        add_event_viewport_callback( &graphics->event_viewports,
+                                     viewport_index,
+                                     MIDDLE_MOUSE_DOWN_EVENT,
+                                     x, x + x_size - 1, y, y + y_size - 1,
+                                     select_both_sliders, ANY_MODIFIER,
+                                     (void *) widget );
+
     }
 
     create_slider_graphics( widget );

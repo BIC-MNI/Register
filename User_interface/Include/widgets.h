@@ -30,6 +30,7 @@ typedef  struct
     text_struct              *text;
 
     UI_colours               active_colour;
+    UI_colours               selected_colour;
     UI_colours               inactive_colour;
     UI_colours               pushed_colour;
     UI_colours               text_colour;
@@ -52,6 +53,7 @@ typedef  struct
     text_struct              *text;
 
     UI_colours               active_colour;
+    UI_colours               selected_colour;
     UI_colours               inactive_colour;
     UI_colours               text_colour;
     UI_colours               edit_colour;
@@ -64,8 +66,10 @@ typedef  struct
     Boolean                  colour_bar_flag;
     Real                     min_value, max_value;
     Real                     values[2];
+    String                   format_string;
 
     int                      peg_being_moved;
+    int                      middle_mouse_offset;
 
     UI_colours               active_colour;
     UI_colours               inactive_colour;
@@ -88,6 +92,8 @@ typedef  struct  widget_struct
     int                      viewport_index;
     int                      x, y, x_size, y_size;
     Boolean                  active_flag;
+    Boolean                  selected_flag;
+    Boolean                  use_ui_colours;
     union
     {
     button_struct            button;

@@ -80,11 +80,35 @@ private  DEFINE_WIDGET_CALLBACK( world_z_position2_callback ) /* ARGSUSED */
                                      (int) callback_data, 1, Z );
 }
 
+private  void  set_and_jump_to_tag(
+     int  tag_index )
+{
+    Real  position[N_DIMENSIONS];
+    int   volume_index, tag_volume;
+
+    set_current_tag_index( get_ui_struct(), tag_index );
+
+    for_less( volume_index, 0, N_VOLUMES_DISPLAYED )
+    {
+        if( volume_index == MERGED_VOLUME_INDEX )
+            tag_volume = 0;
+        else
+            tag_volume = volume_index;
+
+        if( IF_volume_is_loaded( volume_index ) &&
+            IF_get_tag_point_position( get_tag_index(get_ui_struct(),tag_index),
+                                       tag_volume, position ) )
+        {
+            ui_set_volume_world_position( get_ui_struct(), volume_index,
+                                          position );
+        }
+    }
+}
+
 private  void  set_current_tag_from_button(
     void           *callback_data )
 {
-    set_current_tag_index( get_ui_struct(),
-                           get_tag_index(get_ui_struct(), (int)callback_data) );
+    set_and_jump_to_tag( get_tag_index(get_ui_struct(), (int) callback_data) );
 }
 
 private  DEFINE_WIDGET_CALLBACK( tag_name_callback ) /* ARGSUSED */
@@ -96,7 +120,7 @@ private  DEFINE_WIDGET_CALLBACK( tag_name_callback ) /* ARGSUSED */
     tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
 
     IF_set_tag_point_name( tag_index, name );
-    set_current_tag_index( get_ui_struct(), tag_index );
+    set_and_jump_to_tag( tag_index );
 }
 
 private  DEFINE_WIDGET_CALLBACK( tag_number_button_callback ) /* ARGSUSED */
@@ -132,7 +156,7 @@ private  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback ) /* ARGSUSED */
     if( tag_index > 0 )
     {
         --tag_index;
-        set_current_tag_index( get_ui_struct(), tag_index );
+        set_and_jump_to_tag( tag_index );
     }
 }
 
@@ -145,7 +169,7 @@ private  DEFINE_WIDGET_CALLBACK( next_tag_button_callback ) /* ARGSUSED */
     if( tag_index < IF_get_n_tag_points() )
     {
         ++tag_index;
-        set_current_tag_index( get_ui_struct(), tag_index );
+        set_and_jump_to_tag( tag_index );
     }
 }
 
@@ -720,7 +744,7 @@ private  void   type_in_world_position_callback(
         (void) IF_get_tag_point_position( tag_index, volume_index, position );
         position[axis] = value;
         IF_set_tag_point_position( tag_index, volume_index, position );
-        set_current_tag_index( ui_info, tag_index );
+        set_and_jump_to_tag( tag_index );
     }
 }
 

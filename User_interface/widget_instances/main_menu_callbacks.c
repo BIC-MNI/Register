@@ -22,7 +22,7 @@ private  int  widget_indices[N_MAIN_WIDGETS];
 
 private  DEFINE_WIDGET_CALLBACK( quit_button_callback ) /* ARGSUSED */
 {
-    set_quit_program_flag();
+    popup_quit_confirm( get_ui_struct() );
 }
 
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED */
@@ -31,6 +31,12 @@ private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED
 
 private  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback ) /* ARGSUSED */
 {
+    get_ui_struct()->volumes_synced = !get_ui_struct()->volumes_synced;
+
+    if( get_ui_struct()->volumes_synced )
+    {
+        update_other_volume_positions( get_ui_struct(), 0 );
+    }
 }
 
 private  DEFINE_WIDGET_CALLBACK( interpolation_button_callback ) /* ARGSUSED */
@@ -72,6 +78,9 @@ private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback ) /* ARGSUSED */
                                  [widget_indices[TAGS_FILENAME_ENTRY]] );
 
     IF_load_tags_file( filename );
+
+    get_ui_struct()->tag_points.first_tag_displayed = 0;   
+    set_current_tag_index( get_ui_struct(), 0 );
 }
 
 private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback ) /* ARGSUSED */
@@ -179,7 +188,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Not Synced",
                    "Synced",
-                   OFF, OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   ui_info->volumes_synced, ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -336,7 +345,8 @@ public  void  position_main_widgets(
 
     for_enum( widget, N_MAIN_WIDGETS, Main_widgets )
     {
-        if( widget == TAGS_FILENAME_ENTRY )
+        if( widget == TAGS_FILENAME_ENTRY ||
+            widget == TRANSFORM_FILENAME_ENTRY )
             x_pos = Tags_filename_x_offset;
         else
             x_pos = x;
@@ -359,4 +369,12 @@ public  void  set_transform_buttons_activity(
                          [widget_indices[SAVE_TRANSFORM_BUTTON]], activity );
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[RESAMPLE_BUTTON]], activity );
+}
+
+public  void  set_quit_button_activity(
+    UI_struct         *ui_info,
+    Boolean           activity )
+{
+    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
+                         [widget_indices[QUIT_BUTTON]], activity );
 }

@@ -336,14 +336,24 @@ public  void  update_text_entry_colours(
     }
 
     colour_map_state = G_get_colour_map_state( widget->graphics->window );
-
-    text_entry->polygons->colours[0] = get_ui_colour( colour_map_state,
-                                                      rectangle_colour );
-    text_entry->text->colour = get_ui_colour( colour_map_state, text_colour );
     cursor_polygons = (polygons_struct *) get_object_pointer(
                                          text_entry->cursor );
-    cursor_polygons->colours[0] = get_ui_colour( colour_map_state,
-                                                    text_entry->cursor_colour );
+
+    if( widget->use_ui_colours )
+    {
+        text_entry->polygons->colours[0] = get_ui_colour( colour_map_state,
+                                                      rectangle_colour );
+        text_entry->text->colour = get_ui_colour( colour_map_state,
+                                                  text_colour );
+        cursor_polygons->colours[0] = get_ui_colour( colour_map_state,
+                                                   text_entry->cursor_colour );
+    }
+    else
+    {
+        text_entry->polygons->colours[0] = rectangle_colour;
+        text_entry->text->colour = text_colour;
+        cursor_polygons->colours[0] = text_entry->cursor_colour;
+    }
 }
 
 public  void  update_text_entry_activity(
@@ -372,7 +382,7 @@ private  void  create_text_entry_graphics(
 
     /*  create background rectangle */
 
-    object = create_rectangle( get_ui_colour(text_entry->active_colour,FALSE) );
+    object = create_rectangle( BLACK );
     text_entry->polygons = (polygons_struct *) get_object_pointer( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
@@ -380,7 +390,7 @@ private  void  create_text_entry_graphics(
 
     /*  create cursor rectangle */
 
-    object = create_rectangle( get_ui_colour(text_entry->cursor_colour,FALSE) );
+    object = create_rectangle( BLACK );
     set_object_visibility( object, OFF );
     text_entry->cursor = object;
 
@@ -389,8 +399,7 @@ private  void  create_text_entry_graphics(
 
     /*  create text object */
 
-    object = create_text( get_ui_colour(text_entry->text_colour,FALSE),
-                          text_font, font_size );
+    object = create_text( BLACK, text_font, font_size );
 
     text_entry->text = (text_struct *) get_object_pointer( object );
 
@@ -433,7 +442,7 @@ private  widget_struct  *create_a_text_entry(
     text_entry_struct   *text_entry;
 
     widget = create_widget( TEXT_ENTRY, x, y, x_size, y_size,
-                            initial_activity, graphics, viewport_index );
+                            initial_activity, TRUE, graphics, viewport_index );
 
     text_entry = get_widget_text_entry( widget );
 
