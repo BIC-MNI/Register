@@ -5,9 +5,9 @@ START_GLOBALS
     DEF_GLOBAL( Default_transform_type, int, (int) TRANS_LSQ6 )
 
     DEF_GLOBAL( Use_overlay_planes, BOOLEAN, FALSE )
-    DEF_GLOBAL( Overlay_colour_1, Colour, RED )
-    DEF_GLOBAL( Overlay_colour_2, Colour, GREEN )
-    DEF_GLOBAL( Overlay_colour_3, Colour, BLUE )
+    DEF_GLOBAL_COLOUR( Overlay_colour_1 )
+    DEF_GLOBAL_COLOUR( Overlay_colour_2 )
+    DEF_GLOBAL_COLOUR( Overlay_colour_3 )
 
     DEF_GLOBAL( Slice_1_x_axis_index, int, X )
     DEF_GLOBAL( Slice_1_y_axis_index, int, Y )
@@ -23,25 +23,25 @@ START_GLOBALS
     DEF_GLOBAL( Slice_3_x_axis_flip, BOOLEAN, FALSE )
     DEF_GLOBAL( Slice_3_y_axis_flip, BOOLEAN, FALSE )
     DEF_GLOBAL( Slice_fit_size, Real, 0.9 )
-    DEF_GLOBAL( Slice_background_colour, Colour, DARK_SLATE_GREY )
+    DEF_GLOBAL_COLOUR( Slice_background_colour )
 
     DEF_GLOBAL( Slice_cursor_offset, int, 4 )
     DEF_GLOBAL( Slice_cursor_size, int, 10 )
 
-    DEF_GLOBAL( Cursor_inside_colour, Colour, RED )
-    DEF_GLOBAL( Cursor_outside_colour, Colour, BLUE )
+    DEF_GLOBAL_COLOUR( Cursor_inside_colour )
+    DEF_GLOBAL_COLOUR( Cursor_outside_colour )
 
-    DEF_GLOBAL( Tag_inside_colour, Colour, CYAN )
-    DEF_GLOBAL( Tag_outside_colour, Colour, MAGENTA )
-    DEF_GLOBAL( Tag_inside_inactive_colour, Colour, WHITE )
-    DEF_GLOBAL( Tag_outside_inactive_colour, Colour, GRAY )
+    DEF_GLOBAL_COLOUR( Tag_inside_colour )
+    DEF_GLOBAL_COLOUR( Tag_outside_colour )
+    DEF_GLOBAL_COLOUR( Tag_inside_inactive_colour )
+    DEF_GLOBAL_COLOUR( Tag_outside_inactive_colour )
     DEF_GLOBAL( Tag_circle_resolution, int, 8 )
     DEF_GLOBAL( Tag_radius_pixels, int, 5 )
 
     DEF_GLOBAL( Merged_colour_table_fraction, Real, 0.75 )
 
-    DEF_GLOBAL( Initial_under_colour, Colour, BLACK )
-    DEF_GLOBAL( Initial_over_colour, Colour, WHITE )
+    DEF_GLOBAL_COLOUR( Initial_under_colour )
+    DEF_GLOBAL_COLOUR( Initial_over_colour )
 
     DEF_GLOBAL( Initial_tags_visible, BOOLEAN, TRUE )
 

@@ -3,7 +3,6 @@
 public  Status   initialize_user_interface( UI_struct  *ui )
 {
     Status      status;
-    BOOLEAN     initial_rgb;
 
     ui->volumes_synced = Initial_volumes_synced;
 
@@ -13,20 +12,36 @@ public  Status   initialize_user_interface( UI_struct  *ui )
 
     initialize_print_popup();
 
-    initial_rgb = Initial_rgb_state;
-
     status = G_create_window( Main_window_name, -1, -1,
                               Initial_window_x_size,
                               Initial_window_y_size,
-                              !initial_rgb,
+                              !Initial_rgb_state,
                               Initial_double_buffer_state,
                               FALSE, 2, &ui->graphics_window.window );
+
+    if( status != OK ||
+        (!Initial_rgb_state &&
+         G_get_n_colour_map_entries(ui->graphics_window.window) <
+         Min_colour_map_size) )
+    {
+        print_error( "Not enough colours, reopening in RGB mode.\n" );
+
+        G_delete_window( ui->graphics_window.window );
+
+        status = G_create_window( Main_window_name, -1, -1,
+                                  Initial_window_x_size,
+                                  Initial_window_y_size,
+                                  FALSE,
+                                  Initial_double_buffer_state,
+                                  FALSE, 2, &ui->graphics_window.window );
+    }
 
     IF_initialize_register( ui->graphics_window.window );
 
     IF_set_interpolation_flag( Initial_interpolation_state );
 
     G_set_zbuffer_state( ui->graphics_window.window, OFF );
+    G_set_lighting_state( ui->graphics_window.window, OFF );
     G_set_transparency_state( ui->graphics_window.window, OFF );
 
     set_start_colour_table( ui );

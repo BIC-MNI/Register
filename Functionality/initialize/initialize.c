@@ -7,6 +7,8 @@
 
 private   main_struct      main_info;
 
+private  void    initialize_global_colours();
+
 public  main_struct  *get_main_struct()
 {
     return( &main_info );
@@ -18,6 +20,8 @@ public  Status   initialize_register( window_struct  *window )
     int             volume, view;
     Bitplane_types  bitplane;
     STRING          home_filename;
+
+    initialize_global_colours();
 
     (void) sprintf( home_filename, "$HOME/%s", REGISTER_GLOBALS_FILENAME );
 
@@ -87,4 +91,20 @@ public  void   terminate_register()
     delete_graphics_struct( &main_info.graphics );
 
     delete_render_storage( main_info.render_storage );
+}
+
+private  void    initialize_global_colours()
+{
+    Overlay_colour_1 = RED;
+    Overlay_colour_2 = GREEN;
+    Overlay_colour_3 = BLUE;
+    Slice_background_colour = DARK_SLATE_GREY;
+    Cursor_inside_colour = RED;
+    Cursor_outside_colour = BLUE;
+    Tag_inside_colour = CYAN;
+    Tag_outside_colour = MAGENTA;
+    Tag_inside_inactive_colour = WHITE;
+    Tag_outside_inactive_colour = GRAY;
+    Initial_under_colour = BLACK;
+    Initial_over_colour = WHITE;
 }

@@ -34,11 +34,11 @@ public  void  initialize_ui_colours()
 
 private  int  start_colour_table = 0;
 
-public  int  set_start_colour_table(
+public  void  set_start_colour_table(
     UI_struct  *ui )
 {
-    if( G_get_n_colour_map_entries(ui->graphics_window.window) <=
-                Min_colour_map_size )
+    if( G_get_n_colour_map_entries(ui->graphics_window.window) -
+        Colour_table_start < Min_colour_map_size )
         start_colour_table = Colour_table_8bit_start;
     else
         start_colour_table = Colour_table_start;

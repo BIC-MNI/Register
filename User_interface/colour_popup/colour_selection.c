@@ -50,9 +50,11 @@ public  void  popup_colour_selection(
     colour_selection_struct   *popup;
     static  char              *over_under_names[] = { "Under", "Over" };
     STRING                    window_name;
-    STRING                    colour_name;
-    static  Colour            colours[] = { BLACK, WHITE, RED, GREEN, BLUE,
-                                            CYAN, MAGENTA, YELLOW, ORANGE };
+    Colour                    colour;
+    static  char              *colours[] = { "BLACK", "WHITE",
+                                            "RED", "GREEN", "BLUE",
+                                            "CYAN", "MAGENTA", "YELLOW",
+                                            "ORANGE" };
 
     set_over_under_colour_activity( ui, volume, over_or_under, OFF );
 
@@ -77,11 +79,11 @@ public  void  popup_colour_selection(
 
     for_less( i, 0, SIZEOF_STATIC_ARRAY( colours ) )
     {
-        convert_colour_to_string( colours[i], colour_name );
+        colour = convert_string_to_colour( colours[i] );
 
         widget = create_button( &popup->popup_window.graphics, 0,
                                 x, y, Button_width, Button_height,
-                                colour_name, ON, FALSE, colours[i],
+                                colours[i], ON, FALSE, colour,
                                 get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                                 get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),
                                 get_ui_rgb_colour(BUTTON_PUSHED_COLOUR),

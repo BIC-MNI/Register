@@ -5,6 +5,7 @@
 
 #define   UI_GLOBALS_FILENAME   "register_UI.globals"
 
+private  void     initialize_global_colours();
 
 private  UI_struct  ui_struct;
 
@@ -21,6 +22,8 @@ int  main(
     char             *filename;
     STRING           home_filename;
     Status           status;
+
+    initialize_global_colours();
 
     (void) sprintf( home_filename, "$HOME/%s", UI_GLOBALS_FILENAME );
 
@@ -60,4 +63,39 @@ int  main(
     output_alloc_to_file( ".register.alloc_debug" );
 
     return( status != OK );
+}
+
+private  void     initialize_global_colours()
+{
+    Default_UI_background_colour = DARK_SLATE_BLUE;
+    Default_divider_colour = WHITE;
+    Default_button_active_colour = YELLOW;
+    Default_button_selected_colour = RED;
+    Default_button_inactive_colour = DIM_GRAY;
+    Default_button_pushed_colour = BLACK;
+    Default_button_text_colour = BLACK;
+    Default_text_entry_active_colour = WHITE;
+    Default_text_entry_selected_colour = RED;
+    Default_text_entry_inactive_colour = DIM_GRAY;
+    Default_text_entry_edit_colour = BLACK;
+    Default_text_entry_edit_text_colour = YELLOW;
+    Default_text_entry_text_colour = BLACK;
+    Default_text_entry_cursor_colour = GREEN;
+    Default_label_active_colour = LIGHT_BLUE;
+    Default_label_selected_colour = RED;
+    Default_label_inactive_colour = DIM_GRAY;
+    Default_label_text_colour = BLACK;
+    Default_slider_active_colour = HOT_PINK;
+    Default_slider_inactive_colour = DIM_GRAY;
+    Default_slider_peg_colour = GREEN;
+    Default_volume1_under_colour = BLACK;
+    Default_volume1_over_colour = WHITE;
+    Default_volume2_under_colour = BLACK;
+    Default_volume2_over_colour = WHITE;
+    Load_meter_background_colour = WHITE;
+    Load_meter_colour = BLUE;
+    Resample_meter_background_colour = WHITE;
+    Resample_meter_colour = BLUE;
+    Popup_background_colour = DIM_GREY;
+    Message_text_colour = WHITE;
 }

@@ -76,6 +76,10 @@ a new tag point.
 .I Delete Tag:
 Deletes the current tag point.
 .P
+.I Transform Type:
+Pops up a dialog to select 6 parameter, 7 parameter, 12 parameter, or
+thin-plate spline non-linear fitting.
+.P
 .I Avg Error:
 Displays the average RMS error of the tag points, if a transform exists.
 
@@ -174,23 +178,15 @@ David MacDonald
 .SH BUGS
 Sometimes turning the tags visibilities off does not turn them off.
 .P
-On Indigo systems the colour maps can get screwed up, especially when
+On Indigo systems, the colour maps can get screwed up, especially when
 sliding the colour bar limits.  In this case, iconize then deiconize the
 window to restore the colour maps.  To avoid this altogether, switch to
-RGB mode.
+RGB mode.  Current releases have minimized the occurrence of this bug.
 .P
 Sometimes you have to hit the over-colour or under-colour button twice
 for it to notice.
-.SH MISSING FEATURES
-The resample and load as a subprocess is not yet complete.  Currently, it
-simply calls "system" and waits for the resampling to be done.
-When enough tag points have been created to generate a transform, this
-transform is used to display the merged image.  However, only the translation
-and scaling aspects are used in the display, rotation is not used.  To actually
-see the correct merged image, the user must press the resample button and
-create and resampled volume which is automatically loaded in.
 .SH BUG REPORTS TO
-David MacDonald	david@cs.mcgill.ca
+David MacDonald	      david@pet.mni.mcgill.ca
 .SH COPYRIGHTS
 .ps 18
 \fB\(co\fR\s12 Copyright 1993 by David MacDonald
