@@ -1,5 +1,7 @@
 #include  <def_register.h>
 
+typedef  enum  { UNDER_RANGE, WITHIN_RANGE, OVER_RANGE } Range_flags;
+
 private  Colour  merge_colours(
     Real      alpha1,
     Colour    col1,
@@ -20,24 +22,104 @@ private  Colour  merge_colours(
     return( make_Colour( r, g, b ) );
 }
 
+private  Colour  get_merged_colour(
+    Merge_methods  method,
+    Colour         under_colour,
+    Colour         over_colour,
+    Range_flags    range_flag1,
+    Real           alpha1,
+    Colour         col1,
+    Range_flags    range_flag2,
+    Real           alpha2,
+    Colour         col2 )
+{
+    if( range_flag1 != WITHIN_RANGE && range_flag2 != WITHIN_RANGE )
+    {
+        if( range_flag1 == UNDER_RANGE )
+            return( under_colour );
+        else
+            return( over_colour );
+    }
+
+    switch( method )
+    {
+    case ONE_ON_TWO:
+        if( range_flag1 == WITHIN_RANGE )
+            return( col1 );
+        else
+            return( col2 );
+
+    case TWO_ON_ONE:
+        if( range_flag2 == WITHIN_RANGE )
+            return( col2 );
+        else
+            return( col1 );
+
+    case BLEND_VOLUMES:
+        if( range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
+            return( merge_colours( alpha1, col1, 1.0-alpha1, col2 ) );
+        else if( range_flag1 != WITHIN_RANGE )
+            return( merge_colours( 0.0, col1, 1.0-alpha1, col2 ) );
+        else
+            return( merge_colours( alpha1, col1, 0.0, col2 ) );
+
+    case WEIGHTED_VOLUMES:
+        if( range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
+            return( merge_colours( alpha1, col1, alpha2, col2 ) );
+        else if( range_flag1 != WITHIN_RANGE )
+            return( merge_colours( 0.0, col1, alpha2, col2 ) );
+        else
+            return( merge_colours( alpha1, col1, 0.0, col2 ) );
+    }
+
+    return( BLACK );
+}
+
+private  Range_flags  get_colour_coding_flag(
+    colour_coding_struct  *colour_coding,
+    Real                  value,
+    Colour                *col )
+{
+    Range_flags   flag;
+
+    *col = get_colour_code( colour_coding, value );
+    if( value < colour_coding->min_value )
+        flag = UNDER_RANGE;
+    else if( value > colour_coding->max_value )
+        flag = OVER_RANGE;
+    else
+        flag = WITHIN_RANGE;
+
+    return( flag );
+}
+
 private  void  update_merged_rgb_colour_maps(
     main_struct  *main )
 {
-    int     i, j;
-    Colour  col1, col2[N_VOXEL_VALUES];
+    int             i, j;
+    Colour          col1, col2[N_VOXEL_VALUES];
+    Range_flags     flag1, flags2[N_VOXEL_VALUES];
 
     for_less( j, 0, N_VOXEL_VALUES )
-        col2[j] = get_colour_code( &main->merged.colour_coding[1], (Real) j );
+    {
+        flags2[j] = get_colour_coding_flag( &main->merged.colour_coding[1],
+                                            (Real) j, &col2[j] );
+    }
 
     for_less( i, 0, N_VOXEL_VALUES )
     {
-        col1 = get_colour_code( &main->merged.colour_coding[0], (Real) i );
+        flag1 = get_colour_coding_flag( &main->merged.colour_coding[0],
+                                        (Real) i, &col1 );
 
         for_less( j, 0, N_VOXEL_VALUES )
         {
             main->merged.rgb_colour_map[i][j] = 
-                    merge_colours( main->merged.opacity[0], col1,
-                                   main->merged.opacity[1], col2[j] );
+                    get_merged_colour( main->merged.merge_method,
+                                   main->merged.colour_coding[0].under_colour,
+                                   main->merged.colour_coding[0].over_colour,
+                                   flag1, main->merged.opacity[0], col1,
+                                   flags2[j], main->merged.opacity[1],
+                                   col2[j] );
         }
     }
 }
@@ -65,8 +147,9 @@ private  void  update_merged_cmode_indices(
 private  void  update_merged_cmode_maps(
     main_struct  *main )
 {
-    int     i, j, n1, n2, min_ind, val;
-    Colour  col1, col2[N_VOXEL_VALUES];
+    int             i, j, n1, n2, min_ind, val;
+    Colour          col1, col2[N_VOXEL_VALUES];
+    Range_flags     flag1, flags2[N_VOXEL_VALUES];
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
@@ -77,18 +160,24 @@ private  void  update_merged_cmode_maps(
     for_less( j, 0, n2 )
     {
         val = CONVERT_INTEGER_RANGE( j, 0, n2-1, 0, N_VOXEL_VALUES-1 );
-        col2[j] = get_colour_code( &main->merged.colour_coding[1], (Real) val);
+        flags2[j] = get_colour_coding_flag( &main->merged.colour_coding[1],
+                                            (Real) val, &col2[j] );
     }
 
     for_less( i, 0, n1 )
     {
         val = CONVERT_INTEGER_RANGE( i, 0, n1-1, 0, N_VOXEL_VALUES-1 );
         col1 = get_colour_code( &main->merged.colour_coding[0], (Real) val );
+        flag1 = get_colour_coding_flag( &main->merged.colour_coding[0],
+                                        (Real) val, &col1 );
         for_less( j, 0, n2 )
         {
             G_set_colour_map_entry( main->window, min_ind + IJ(i,j,n2), 
-                    merge_colours( main->merged.opacity[0], col1,
-                                   main->merged.opacity[1], col2[j] ) );
+                get_merged_colour( main->merged.merge_method,
+                               main->merged.colour_coding[0].under_colour,
+                               main->merged.colour_coding[0].over_colour,
+                               flag1, main->merged.opacity[0], col1,
+                               flags2[j], main->merged.opacity[1], col2[j] ) );
         }
     }
 }
@@ -314,6 +403,28 @@ public  void  set_merged_volume_opacity(
     main->merged.opacity[which_volume] = opacity;
 
     colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
+}
+
+public  Real  get_merged_volume_opacity(
+    main_struct          *main,
+    int                  which_volume )
+{
+    return( main->merged.opacity[which_volume] );
+}
+
+public  void  set_merged_method(
+    main_struct       *main,
+    Merge_methods     method )
+{
+    main->merged.merge_method = method;
+
+    colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
+}
+
+public  Merge_methods  get_merged_method(
+    main_struct       *main )
+{
+    return( main->merged.merge_method );
 }
 
 public  void   set_volume_under_colour( 
