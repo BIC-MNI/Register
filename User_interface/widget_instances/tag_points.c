@@ -2,14 +2,14 @@
 
 typedef enum
 {
-    RMS_ERROR_LABEL,
+    RMS_ERROR_BUTTON,
     RMS_ERROR_NUMBER,
     N_RMS_WIDGETS
 } Rms_widgets;
 
 typedef enum
 {
-    WORLD_POSITION_LABEL,
+    WORLD_POSITION_BUTTON,
     WORLD_X_POSITION_TEXT,
     WORLD_Y_POSITION_TEXT,
     WORLD_Z_POSITION_TEXT,
@@ -18,7 +18,7 @@ typedef enum
 
 typedef enum
 {
-    TAG_NUMBER_LABEL,
+    TAG_NUMBER_BUTTON,
     TAG_ACTIVITY_BUTTON,
     TAG_POINT_NAME,
     N_TAG_NAME_WIDGETS
@@ -66,7 +66,23 @@ private  DEFINE_WIDGET_CALLBACK( world_z_position2_callback ) /* ARGSUSED */
     type_in_world_position_callback( get_ui_struct(), widget, 1, Z );
 }
 
+private  DEFINE_WIDGET_CALLBACK( tag_number_button_callback ) /* ARGSUSED */
+{
+}
+
 private  DEFINE_WIDGET_CALLBACK( tag_activity_callback ) /* ARGSUSED */
+{
+}
+
+private  DEFINE_WIDGET_CALLBACK( world1_button_callback ) /* ARGSUSED */
+{
+}
+
+private  DEFINE_WIDGET_CALLBACK( world2_button_callback ) /* ARGSUSED */
+{
+}
+
+private  DEFINE_WIDGET_CALLBACK( rms_error_callback ) /* ARGSUSED */
 {
 }
 
@@ -112,8 +128,6 @@ private  void   type_in_world_position_callback(
     int            volume_index,
     int            axis )
 {
-/*
-    int    volume_index;
     int    start_widget_index;
     Real   value;
     Real   position[N_DIMENSIONS];
@@ -127,13 +141,10 @@ private  void   type_in_world_position_callback(
                                       widget_indices[X_VOXEL_TEXT+axis]],
                                    &value ) )
     {
-        IF_get_volume_voxel_position( volume_index, position );
+        (void) IF_get_tag_position( volume_index, position );
         position[axis] = value;
-        IF_set_volume_voxel_position( volume_index, position );
+        IF_set_tag_position( volume_index, position );
     }
-
-    update_position_counters( ui_info, volume_index );
-*/
 }
 
 public  void  add_tag_point_widgets(
@@ -164,7 +175,7 @@ public  void  add_tag_point_widgets(
                   &ui_info->widget_list[rms_viewport_index],
                   create_label( &ui_info->graphics_window, rms_viewport_index,
                   x, y, Avg_rms_label_width, Text_entry_height,
-                  "Avg:", OFF, LABEL_ACTIVE_COLOUR,
+                  "Avg:", OFF, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   Label_text_font, Label_text_font_size ) );
@@ -174,7 +185,7 @@ public  void  add_tag_point_widgets(
                   create_label( &ui_info->graphics_window, rms_viewport_index,
                   x + Interface_x_spacing + Avg_rms_label_width, y,
                   Avg_rms_number_width, Text_entry_height,
-                  "", OFF, LABEL_ACTIVE_COLOUR,
+                  "", OFF, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   Label_text_font, Label_text_font_size ) );
@@ -185,16 +196,18 @@ public  void  add_tag_point_widgets(
     {
         x = x_left;
 
-        rms_widget_indices[tag][RMS_ERROR_LABEL] =
+        rms_widget_indices[tag][RMS_ERROR_BUTTON] =
                    add_widget_to_list(
                    &ui_info->widget_list[rms_viewport_index],
-                   create_label( &ui_info->graphics_window,
-                   rms_viewport_index, x, y,
-                   Rms_label_width, Tag_point_height,
-                   "RMS:", OFF, LABEL_ACTIVE_COLOUR,
-                   LABEL_INACTIVE_COLOUR,
-                   LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   create_button( &ui_info->graphics_window, rms_viewport_index,
+                   x, y, Rms_button_width, Tag_point_height,
+                   "RMS:",
+                   OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   rms_error_callback, (void *) NULL ) );
 
         rms_widget_indices[tag][RMS_ERROR_NUMBER] =
                    add_widget_to_list(
@@ -203,21 +216,25 @@ public  void  add_tag_point_widgets(
                    rms_viewport_index,
                    x + Interface_x_spacing + Rms_label_width, y,
                    Rms_number_width, Tag_point_height,
-                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   "", OFF, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                    LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
                    Label_text_font, Label_text_font_size ) );
 
-        position_widgets_indices[0][tag][WORLD_POSITION_LABEL] =
+        position_widgets_indices[0][tag][WORLD_POSITION_BUTTON] =
                    add_widget_to_list(
                    &ui_info->widget_list[volume1_viewport_index],
-                   create_label( &ui_info->graphics_window,
-                   volume1_viewport_index, x, y,
-                   Tag_position_label_width, Tag_point_height,
-                   "World:", OFF, LABEL_ACTIVE_COLOUR,
-                   LABEL_INACTIVE_COLOUR,
-                   LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   create_button( &ui_info->graphics_window,
+                   volume1_viewport_index,
+                   x, y, Tag_world_button_width, Tag_point_height,
+                   "World:",
+                   OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   world1_button_callback, (void *) NULL ) );
+
 
         x += Tag_position_label_width + Position_values_separation;
 
@@ -228,7 +245,7 @@ public  void  add_tag_point_widgets(
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
@@ -246,7 +263,7 @@ public  void  add_tag_point_widgets(
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
@@ -264,7 +281,7 @@ public  void  add_tag_point_widgets(
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
@@ -274,16 +291,21 @@ public  void  add_tag_point_widgets(
                        world_z_position1_callback, (void *) NULL ) );
 
         x = x_left;
-        position_widgets_indices[1][tag][WORLD_POSITION_LABEL] =
+        position_widgets_indices[1][tag][WORLD_POSITION_BUTTON] =
                    add_widget_to_list(
                    &ui_info->widget_list[volume2_viewport_index],
-                   create_label( &ui_info->graphics_window,
-                   volume2_viewport_index, x, y,
-                   Tag_position_label_width, Tag_point_height,
-                   "World:", OFF, LABEL_ACTIVE_COLOUR,
-                   LABEL_INACTIVE_COLOUR,
-                   LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   create_button( &ui_info->graphics_window,
+                   volume2_viewport_index,
+                   x, y, Tag_world_button_width, Tag_point_height,
+                   "World:",
+                   OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   world2_button_callback, (void *) NULL ) );
+
+
 
         x += Tag_position_label_width + Position_values_separation;
 
@@ -294,7 +316,7 @@ public  void  add_tag_point_widgets(
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
@@ -312,7 +334,7 @@ public  void  add_tag_point_widgets(
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
@@ -330,7 +352,7 @@ public  void  add_tag_point_widgets(
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
@@ -341,16 +363,20 @@ public  void  add_tag_point_widgets(
 
         x = x_left;
 
-        position_widgets_indices[1][tag][TAG_NUMBER_LABEL] =
+        position_widgets_indices[1][tag][TAG_NUMBER_BUTTON] =
                    add_widget_to_list(
                    &ui_info->widget_list[names_viewport_index],
-                   create_label( &ui_info->graphics_window,
-                   names_viewport_index, x, y,
-                   Tag_number_width, Tag_point_height,
-                   "", OFF, LABEL_ACTIVE_COLOUR,
-                   LABEL_INACTIVE_COLOUR,
-                   LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   create_button( &ui_info->graphics_window,
+                   names_viewport_index,
+                   x, y, Tag_number_button_width, Tag_point_height,
+                   "",
+                   OFF, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   tag_number_button_callback, (void *) NULL ) );
+
 
         x += Tag_number_width + Interface_x_spacing;
 
@@ -377,7 +403,7 @@ public  void  add_tag_point_widgets(
                        names_viewport_index, x, y,
                        Tag_name_width, Tag_point_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
