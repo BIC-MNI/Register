@@ -41,6 +41,7 @@ public  Status  initialize_loading_volume(
     load_struct   *data;
     int           x_window, y_window;
     int           x_min, y_min, x_max, y_max;
+    static String dim_names[] = { MIxspace, MIyspace, MIzspace };
 
     ALLOC( data, 1 );
 
@@ -48,7 +49,8 @@ public  Status  initialize_loading_volume(
     (void) strcpy( data->filename, filename );
     data->this_is_resampled_volume = this_is_resampled_volume;
 
-    status = start_volume_input( filename, TRUE, &data->volume, &data->input );
+    status = start_volume_input( filename, dim_names, TRUE,
+                                 &data->volume, &data->input );
 
     if( status == OK )
     {

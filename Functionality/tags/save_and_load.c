@@ -1,5 +1,4 @@
 #include  <def_register.h>
-#include  <def_tag_io.h>
 
 private  void   create_tags_array(
     int                n_valid_tags,
@@ -146,9 +145,9 @@ public  Status   save_tag_points(
     {
         create_comments( main, comments );
 
-        (void) output_tag_points( file, comments, n_volumes,
-                                  n_valid_tags,
-                                  tags_volume1, tags_volume2, labels );
+        status = output_tag_points( file, comments, n_volumes,
+                                    n_valid_tags,
+                                    tags_volume1, tags_volume2, labels );
     }
 
     if( n_valid_tags > 0 )
@@ -190,8 +189,8 @@ public  Status   load_tag_points(
     status = file_status;
 
     if( status == OK &&
-        !input_tag_points( file, &n_volumes, &n_tag_points, &tags_volume1,
-                           &tags_volume2, &labels ) )
+        input_tag_points( file, &n_volumes, &n_tag_points, &tags_volume1,
+                          &tags_volume2, &labels ) != OK )
     {
         status = ERROR;
     }
