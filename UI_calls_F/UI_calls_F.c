@@ -102,6 +102,12 @@ public  void  IF_get_volume_world_position(
     get_volume_world_position( get_main_struct(), volume, position );
 }
 
+public  int   IF_get_slice_axis(
+    int   view )
+{
+    return( get_slice_axis( view ) );
+}
+
 public  void  IF_translate_slice(
     int       volume,
     int       view,
@@ -154,6 +160,17 @@ public  void  IF_set_under_colour(
     Colour     colour )
 {
     set_volume_under_colour( get_main_struct(), volume_index, colour );
+}
+
+public  void  IF_set_merge_method(
+    Merge_methods     method )
+{
+    set_merged_method( get_main_struct(), method );
+}
+
+public  Merge_methods  IF_get_merge_method()
+{
+    return( get_merged_method( get_main_struct() ) );
 }
 
 public  void  IF_set_over_colour(
@@ -278,4 +295,20 @@ public  void  IF_load_tags_file(
     char   filename[] )
 {
     (void) load_tag_points( get_main_struct(), filename );
+}
+
+public  void  IF_save_transform(
+    char   filename[] )
+{
+    (void) save_transform( get_main_struct(), filename );
+}
+
+public  Boolean  IF_does_transform_exist()
+{
+    return( get_tag_point_transform( get_main_struct(), (Transform *) NULL ) );
+}
+
+public  Boolean  IF_tag_points_have_been_saved()
+{
+    return( get_tag_points_saved( get_main_struct() ) );
 }
