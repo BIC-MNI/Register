@@ -1,1 +1,3 @@
 * probe for GLUT in configure
+* do something sensible with *.globals
+

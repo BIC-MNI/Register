@@ -1,3 +1,8 @@
+2001-07-09  Steve M. Robbins  <steve@nyongwa.montreal.qc.ca>
+
+	* acinclude.m4 (AC_HELP_STRING): Disable the too-clever pretty
+	formatter.
+
 2001-05-22  Steve M. Robbins  <steve@nyongwa.montreal.qc.ca>
 
 	* branch-1_3 merge: Many files added for autoconfig.
