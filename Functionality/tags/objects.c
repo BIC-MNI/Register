@@ -199,6 +199,69 @@ private  void  position_tag_circle(
                            &lines->points[lines->n_points / 2] );
 }
 
+private  Boolean  assigned = FALSE;
+private  Real  x_c, y_c;
+private  lines_struct  *tag_lines;
+
+public  void  check_tag_integrity()
+{
+    viewport_struct  *viewport;
+    lines_struct     *lines;
+    main_struct      *main = get_main_struct();
+    Real  x, y, z;
+    int   i;
+
+    if( assigned )
+    {
+        if( tag_lines->n_points != 28 )
+            abort();
+
+        for_less( i, 0, tag_lines->n_points )
+        {
+            x = Point_x(tag_lines->points[i]);
+            y = Point_y(tag_lines->points[i]);
+            z = Point_z(tag_lines->points[i]);
+
+            if( x < x_c - 20.0 || x > x_c + 20 ||
+                y < y_c - 20.0 || y > y_c + 20 ||
+                z != 0.0 )
+            {
+                (void) printf( "check_tag_integrity" );
+                abort();
+            }
+        }
+    }
+
+    viewport = &main->graphics.viewports[get_slice_viewport_index(2,0)];
+    for_less( i, 0, viewport->bitplanes[NORMAL_PLANES].n_objects )
+    {
+        if( viewport->bitplanes[NORMAL_PLANES].objects[i]->visibility &&
+            viewport->bitplanes[NORMAL_PLANES].objects[i]->object_type ==
+            LINES )
+        {
+            lines = (lines_struct *) get_object_pointer(
+                viewport->bitplanes[NORMAL_PLANES].objects[i]);
+
+            if( lines->n_points < 0 || lines->n_items < 0 )
+                abort();
+
+            for_less( i, 0, lines->n_points )
+            {
+                x = Point_x(lines->points[i]);
+                y = Point_y(lines->points[i]);
+                z = Point_z(lines->points[i]);
+
+                if( x < 20.0 || x > 1000.0 ||
+                    y < 20.0 || y > 1000.0 || z != 0.0 )
+                {
+                    (void) printf( "check_tag_integrity" );
+                    abort();
+                }
+            }
+        }
+    }
+}
+
 public  void  update_tag_object(
     main_struct       *main,
     int               volume,
@@ -218,6 +281,14 @@ public  void  update_tag_object(
         position_tag_circle( lines, x, y, radius );
         update_slice_tag_colours( main, volume, view, tag );
         visibility = ON;
+
+if( !assigned && volume == 2 && view == 0 )
+{
+    assigned = TRUE;
+    x_c = (Real) x;
+    y_c = (Real) y;
+    tag_lines = lines;
+}
     }
     else
     {
@@ -254,17 +325,26 @@ public  void  update_slice_tag_objects(
         update_tag_object( main, volume, view, &main->tags.tag_points[i] );
 }
 
+public   void  update_volume_tag_objects(
+    main_struct        *main,
+    int                volume )
+{
+    int  view;
+
+    for_less( view, 0, N_VIEWS )
+    {
+        update_slice_tag_objects( main, volume, view );
+    }
+}
+
 public   void  update_all_tag_objects(
     main_struct        *main )
 {
-    int             volume, view;
+    int             volume;
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
     {
-        for_less( view, 0, N_VIEWS )
-        {
-            update_slice_tag_objects( main, volume, view );
-        }
+        update_volume_tag_objects( main, volume );
     }
 }
 
