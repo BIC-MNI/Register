@@ -75,7 +75,7 @@ public  void  add_merged_widgets(
                viewport_index, x, y,
                Volume_button_width, Volume_button_height,
                "Reset View",
-               OFF, BUTTON_ACTIVE_COLOUR,
+               OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                BUTTON_SELECTED_COLOUR,
                BUTTON_INACTIVE_COLOUR,
                BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
