@@ -6,20 +6,28 @@ private  Colour  merge_colours(
     Real      alpha2,
     Colour    col2 )
 {
-    Real   r, g, b;
+    int   r, g, b;
 
-    r = alpha1 * get_Colour_r_0_1(col1) + alpha2 * get_Colour_r_0_1(col2);
-    g = alpha1 * get_Colour_g_0_1(col1) + alpha2 * get_Colour_g_0_1(col2);
-    b = alpha1 * get_Colour_b_0_1(col1) + alpha2 * get_Colour_b_0_1(col2);
+    r = alpha1 * (Real) get_Colour_r(col1) + alpha2 * (Real) get_Colour_r(col2);
+    if( r > 255 ) r = 255;
 
-    return( make_Colour_0_1( r, g, b ) );
+    g = alpha1 * (Real) get_Colour_g(col1) + alpha2 * (Real) get_Colour_g(col2);
+    if( g > 255 ) g = 255;
+
+    b = alpha1 * (Real) get_Colour_b(col1) + alpha2 * (Real) get_Colour_b(col2);
+    if( b > 255 ) b = 255;
+
+    return( make_Colour( r, g, b ) );
 }
 
 private  void  update_merged_rgb_colour_maps(
     main_struct  *main )
 {
     int     i, j;
-    Colour  col1, col2;
+    Colour  col1, col2[N_VOXEL_VALUES];
+
+    for_less( j, 0, N_VOXEL_VALUES )
+        col2[j] = get_colour_code( &main->merged.colour_coding[1], (Real) j );
 
     for_less( i, 0, N_VOXEL_VALUES )
     {
@@ -27,11 +35,9 @@ private  void  update_merged_rgb_colour_maps(
 
         for_less( j, 0, N_VOXEL_VALUES )
         {
-            col2 = get_colour_code( &main->merged.colour_coding[1], (Real) j );
-
             main->merged.rgb_colour_map[i][j] = 
                     merge_colours( main->merged.opacity[0], col1,
-                                   main->merged.opacity[1], col2 );
+                                   main->merged.opacity[1], col2[j] );
         }
     }
 }
@@ -39,25 +45,30 @@ private  void  update_merged_rgb_colour_maps(
 private  void  update_merged_cmode_maps(
     main_struct  *main )
 {
-    int     i, j, n1, n2, min_ind, i1, i2, val;
-    Colour  col1, col2;
+    int     i, j, n1, n2, min_ind, i1, i2[N_VOXEL_VALUES], val;
+    Colour  col1, col2[N_VOXEL_VALUES];
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
     n2 = main->merged.n_colour_entries2;
 
+    for_less( j, 0, N_VOXEL_VALUES )
+        i2[j] = CONVERT_INTEGER_RANGE( j, 0, N_VOXEL_VALUES-1, 0, n2-1 );
+
     for_less( i, 0, N_VOXEL_VALUES )
     {
         i1 = CONVERT_INTEGER_RANGE( i, 0, N_VOXEL_VALUES-1, 0, n1-1 );
         for_less( j, 0, N_VOXEL_VALUES )
-        {
-            i2 = CONVERT_INTEGER_RANGE( j, 0, N_VOXEL_VALUES-1, 0, n1-1 );
-
-            main->merged.cmode_colour_map[i][j] = min_ind + IJ(i1,i2,n2);
-        }
+            main->merged.cmode_colour_map[i][j] = min_ind + IJ(i1,i2[j],n2);
     }
 
     G_set_bitplanes( main->window, NORMAL_PLANES );
+
+    for_less( j, 0, n2 )
+    {
+        val = CONVERT_INTEGER_RANGE( j, 0, n2-1, 0, N_VOXEL_VALUES-1 );
+        col2[j] = get_colour_code( &main->merged.colour_coding[1], (Real) val);
+    }
 
     for_less( i, 0, n1 )
     {
@@ -65,12 +76,9 @@ private  void  update_merged_cmode_maps(
         col1 = get_colour_code( &main->merged.colour_coding[0], (Real) val );
         for_less( j, 0, n2 )
         {
-            val = CONVERT_INTEGER_RANGE( j, 0, n1-1, 0, N_VOXEL_VALUES-1 );
-            col2 = get_colour_code( &main->merged.colour_coding[1], (Real) val);
-
             G_set_colour_map_entry( main->window, min_ind + IJ(i,j,n2), 
                     merge_colours( main->merged.opacity[0], col1,
-                                   main->merged.opacity[1], col2 ) );
+                                   main->merged.opacity[1], col2[j] ) );
         }
     }
 }
@@ -168,8 +176,13 @@ public  void  colour_mode_has_toggled(
 
         main->merged.start_colour_map = start_index + 2 * n_volume;
         main->merged.n_colour_entries1 = (int) sqrt( (double) n_merged );
+        if( main->merged.n_colour_entries1 > N_VOXEL_VALUES )
+            main->merged.n_colour_entries1 = N_VOXEL_VALUES;
+
         main->merged.n_colour_entries2 = n_merged /
                                          main->merged.n_colour_entries1;
+        if( main->merged.n_colour_entries2 > N_VOXEL_VALUES )
+            main->merged.n_colour_entries2 = N_VOXEL_VALUES;
     }
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
