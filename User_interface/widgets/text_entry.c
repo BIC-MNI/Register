@@ -174,12 +174,11 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )   /* ARGSUSED */
     if( keyboard_character == RETURN_KEY )
     {
         text_entry->in_edit_mode = FALSE;
-        update_text_entry_colours( widget,
-             G_get_colour_map_state(get_ui_struct()->graphics_window.window) );
+        update_text_entry_colours( widget );
         set_object_visibility( text_entry->cursor, FALSE );
 
         set_event_viewport_callback_enabled(
-                           &get_ui_struct()->graphics_window.event_viewports,
+                           &widget->graphics->event_viewports,
                            widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
                            select_text_entry_event_callback, (void *) widget,
                            TRUE );
@@ -189,7 +188,7 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )   /* ARGSUSED */
 
         set_interaction_in_progress( FALSE );
 
-        text_entry->hit_return_callback( text_entry->callback_widget );
+        text_entry->hit_return_callback( widget, text_entry->callback_data );
     }
     else
     {
@@ -197,7 +196,7 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )   /* ARGSUSED */
         recreate_text_entry_text( widget );
     }
 
-    set_viewport_update_flag( &get_ui_struct()->graphics_window.graphics,
+    set_viewport_update_flag( &widget->graphics->graphics,
                               widget->viewport_index, NORMAL_PLANES );
 }
 
@@ -218,27 +217,24 @@ private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )/* ARGSUSED */
 
     recreate_text_entry_text( widget );
 
-    update_text_entry_colours( widget,  G_get_colour_map_state(get_ui_struct()->
-                                              graphics_window.window) );
+    update_text_entry_colours( widget );
 
-    set_viewport_update_flag( &get_ui_struct()->graphics_window.graphics,
+    set_viewport_update_flag( &widget->graphics->graphics,
                               widget->viewport_index, NORMAL_PLANES );
 
     set_event_viewport_callback_enabled(
-                       &get_ui_struct()->graphics_window.event_viewports,
+                       &widget->graphics->event_viewports,
                        widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
                        select_text_entry_event_callback, (void *) widget,
                        FALSE );
 
     set_interaction_in_progress( TRUE );
 
-    add_global_event_callback( KEY_DOWN_EVENT, key_hit_event,
-                               (void *) widget );
+    add_global_event_callback( KEY_DOWN_EVENT, key_hit_event, (void *) widget );
 }
 
 public  void  position_text_entry(
     widget_struct                 *widget,
-    event_viewports_struct        *event_viewports,
     int                           x,
     int                           y )
 {
@@ -258,7 +254,7 @@ public  void  position_text_entry(
         y1 = MAX( y, 0 );
         y2 = MAX( y + widget->y_size - 1, 0 );
         set_event_viewport_callback_viewport(
-                   event_viewports,
+                   &widget->graphics->event_viewports,
                    widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
                    select_text_entry_event_callback,
                    (void *) widget,
@@ -275,7 +271,7 @@ public  char  *get_text_entry_string(
     return( text_entry->string );
 }
 
-public  void  set_text_entry_text(
+public  void  set_text_entry_string(
     widget_struct  *widget,
     char           string[] )
 {
@@ -288,12 +284,15 @@ public  void  set_text_entry_text(
     text_entry->left_index = 0;
 
     recreate_text_entry_text( widget );
+
+    set_viewport_update_flag( &widget->graphics->graphics,
+                              widget->viewport_index, NORMAL_PLANES );
 }
 
 public  void  update_text_entry_colours(
-    widget_struct  *widget,
-    Boolean        colour_map_state )
+    widget_struct  *widget )
 {
+    Boolean            colour_map_state;
     polygons_struct    *cursor_polygons;
     text_entry_struct  *text_entry;
     UI_colours         rectangle_colour, text_colour;
@@ -319,6 +318,8 @@ public  void  update_text_entry_colours(
         text_colour = text_entry->text_colour;
     }
 
+    colour_map_state = G_get_colour_map_state( widget->graphics->window );
+
     text_entry->polygons->colours[0] = get_ui_colour( colour_map_state,
                                                       rectangle_colour );
     text_entry->text->colour = get_ui_colour( colour_map_state, text_colour );
@@ -329,15 +330,13 @@ public  void  update_text_entry_colours(
 }
 
 public  void  update_text_entry_activity(
-    widget_struct           *widget,
-    event_viewports_struct  *event_viewports,
-    Boolean                 colour_map_state )
+    widget_struct           *widget )
 {
-    update_text_entry_colours( widget, colour_map_state );
+    update_text_entry_colours( widget );
 
     if( !get_widget_text_entry(widget)->label_only_flag )
     {
-        set_event_viewport_callback_enabled( event_viewports,
+        set_event_viewport_callback_enabled( &widget->graphics->event_viewports,
                            widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
                            select_text_entry_event_callback, (void *) widget,
                            widget->active_flag );
@@ -345,8 +344,6 @@ public  void  update_text_entry_activity(
 }
 
 private  void  create_text_entry_graphics(
-    UI_struct            *ui_info,
-    int                  viewport_index,
     widget_struct        *widget,
     Font_types           text_font,
     Real                 font_size )
@@ -361,8 +358,8 @@ private  void  create_text_entry_graphics(
     object = create_rectangle( get_ui_colour(text_entry->active_colour,FALSE) );
     text_entry->polygons = (polygons_struct *) get_object_pointer( object );
 
-    add_object_to_viewport( &ui_info->graphics_window.graphics,
-                            viewport_index, NORMAL_PLANES, object );
+    add_object_to_viewport( &widget->graphics->graphics,
+                            widget->viewport_index, NORMAL_PLANES, object );
 
     /*  create cursor rectangle */
 
@@ -370,8 +367,8 @@ private  void  create_text_entry_graphics(
     set_object_visibility( object, OFF );
     text_entry->cursor = object;
 
-    add_object_to_viewport( &ui_info->graphics_window.graphics,
-                            viewport_index, NORMAL_PLANES, object );
+    add_object_to_viewport( &widget->graphics->graphics,
+                            widget->viewport_index, NORMAL_PLANES, object );
 
     /*  create text object */
 
@@ -382,15 +379,19 @@ private  void  create_text_entry_graphics(
 
     recreate_text_entry_text( widget );
 
-    update_text_entry_colours( widget,
-                  G_get_colour_map_state(ui_info->graphics_window.window) ); 
+    update_text_entry_colours( widget ); 
 
-    add_object_to_viewport( &ui_info->graphics_window.graphics,
-                            viewport_index, NORMAL_PLANES, object );
+    add_object_to_viewport( &widget->graphics->graphics,
+                            widget->viewport_index, NORMAL_PLANES, object );
 }
 
-public  widget_struct  *create_text_entry_widget(
-    UI_struct                  *ui_info,
+public  void  delete_text_entry(
+    widget_struct  *widget )      /* ARGSUSED */
+{
+}
+
+private  widget_struct  *create_a_text_entry(
+    graphics_window_struct     *graphics,
     int                        viewport_index,
     int                        x,
     int                        y,
@@ -408,13 +409,13 @@ public  widget_struct  *create_text_entry_widget(
     Font_types                 text_font,
     Real                       font_size,
     widget_callback_type       hit_return_callback,
-    widget_struct              *callback_widget )
+    void                       *callback_data )
 {
     widget_struct       *widget;
     text_entry_struct   *text_entry;
 
     widget = create_widget( TEXT_ENTRY, x, y, x_size, y_size,
-                            initial_activity, viewport_index );
+                            initial_activity, graphics, viewport_index );
 
     text_entry = get_widget_text_entry( widget );
 
@@ -436,12 +437,9 @@ public  widget_struct  *create_text_entry_widget(
     if( !text_entry->label_only_flag )
     {
         text_entry->hit_return_callback = hit_return_callback;
-        if( callback_widget != (widget_struct *) NULL )
-            text_entry->callback_widget = callback_widget;
-        else
-            text_entry->callback_widget = widget;
+        text_entry->callback_data = callback_data;
 
-        add_event_viewport_callback( &ui_info->graphics_window.event_viewports,
+        add_event_viewport_callback( &graphics->event_viewports,
                                      viewport_index,
                                      LEFT_MOUSE_DOWN_EVENT,
                                      x, x + x_size - 1, y, y + y_size - 1,
@@ -449,64 +447,19 @@ public  widget_struct  *create_text_entry_widget(
                                      (void *) widget );
     }
 
-    create_text_entry_graphics( ui_info, viewport_index, widget,
-                                text_font, font_size );
+    create_text_entry_graphics( widget, text_font, font_size );
 
-    update_text_entry_activity( widget,
-                                &ui_info->graphics_window.event_viewports,
-                                G_get_colour_map_state(ui_info->
-                                             graphics_window.window) );
+    update_text_entry_activity( widget );
 
-    update_text_entry_colours( widget, G_get_colour_map_state(ui_info->
-                                             graphics_window.window) );
+    update_text_entry_colours( widget );
 
-    position_text_entry( widget, &ui_info->graphics_window.event_viewports,
-                         x, y );
+    position_text_entry( widget, x, y );
 
     return( widget );
 }
 
-private  int  create_a_text_entry(
-    UI_struct                  *ui_info,
-    int                        viewport_index,
-    int                        x,
-    int                        y,
-    int                        x_size,
-    int                        y_size,
-    Boolean                    label_only_flag,
-    char                       initial_text[],
-    Boolean                    initial_activity,
-    UI_colours                 active_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 text_colour,
-    UI_colours                 edit_colour,
-    UI_colours                 text_edit_colour,
-    UI_colours                 cursor_colour,
-    Font_types                 text_font,
-    Real                       font_size,
-    widget_callback_type       hit_return_callback )
-{
-    int                 widget_index;
-    widget_struct       *widget;
-
-    widget = create_text_entry_widget( ui_info, viewport_index, x, y,
-                                       x_size, y_size, label_only_flag,
-                                       initial_text, initial_activity,
-                                       active_colour, inactive_colour,
-                                       text_colour, edit_colour,
-                                       text_edit_colour, cursor_colour,
-                                       text_font, font_size,
-                                       hit_return_callback,
-                                       (widget_struct *) NULL );
-
-    widget_index = add_widget_to_list( &ui_info->widget_list[viewport_index],
-                                       widget );
-
-    return( widget_index );
-}
-
-public  int  create_text_entry(
-    UI_struct                  *ui_info,
+public  widget_struct  *create_text_entry(
+    graphics_window_struct     *graphics,
     int                        viewport_index,
     int                        x,
     int                        y,
@@ -522,18 +475,19 @@ public  int  create_text_entry(
     UI_colours                 cursor_colour,
     Font_types                 text_font,
     Real                       font_size,
-    widget_callback_type       hit_return_callback )
+    widget_callback_type       hit_return_callback,
+    void                       *callback_data )
 {
-    return( create_a_text_entry( ui_info, viewport_index, x, y, x_size, y_size,
+    return( create_a_text_entry( graphics, viewport_index, x, y, x_size, y_size,
                          FALSE, initial_text, initial_activity, active_colour,
                          inactive_colour, text_colour, edit_colour,
                          text_edit_colour, cursor_colour,
                          text_font, font_size,
-                         hit_return_callback ) );
+                         hit_return_callback, callback_data ) );
 }
 
-public  int  create_label(
-    UI_struct                  *ui_info,
+public  widget_struct  *create_label(
+    graphics_window_struct     *graphics,
     int                        viewport_index,
     int                        x,
     int                        y,
@@ -547,10 +501,10 @@ public  int  create_label(
     Font_types                 text_font,
     Real                       font_size )
 {
-    return( create_a_text_entry( ui_info, viewport_index, x, y, x_size, y_size,
+    return( create_a_text_entry( graphics, viewport_index, x, y, x_size, y_size,
                          TRUE, initial_text, initial_activity, active_colour,
                          inactive_colour, text_colour,
                          (UI_colours) 0, (UI_colours) 0, (UI_colours) 0,
                          text_font, font_size,
-                         (widget_callback_type) 0 ) );
+                         (widget_callback_type) 0, (void *) NULL ) );
 }
