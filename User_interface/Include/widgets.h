@@ -1,5 +1,23 @@
+/* ----------------------------------------------------------------------------
+@COPYRIGHT  :
+              Copyright 1993,1994,1995 David MacDonald,
+              McConnell Brain Imaging Centre,
+              Montreal Neurological Institute, McGill University.
+              Permission to use, copy, modify, and distribute this
+              software and its documentation for any purpose and without
+              fee is hereby granted, provided that the above copyright
+              notice appear in all copies.  The author and McGill University
+              make no representations about the suitability of this
+              software for any purpose.  It is provided "as is" without
+              express or implied warranty.
+---------------------------------------------------------------------------- */
+
 #ifndef  DEF_WIDGETS
 #define  DEF_WIDGETS
+
+#ifndef lint
+static char widgets_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/widgets.h,v 1.6 1995-07-31 19:54:18 david Exp $";
+#endif
 
 #include  <events.h>
 #include  <graphics_window.h>

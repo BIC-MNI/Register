@@ -1,7 +1,25 @@
 #ifndef  DEF_MAIN_STRUCT
 #define  DEF_MAIN_STRUCT
 
+/* ----------------------------------------------------------------------------
+@COPYRIGHT  :
+              Copyright 1993,1994,1995 David MacDonald,
+              McConnell Brain Imaging Centre,
+              Montreal Neurological Institute, McGill University.
+              Permission to use, copy, modify, and distribute this
+              software and its documentation for any purpose and without
+              fee is hereby granted, provided that the above copyright
+              notice appear in all copies.  The author and McGill University
+              make no representations about the suitability of this
+              software for any purpose.  It is provided "as is" without
+              express or implied warranty.
+---------------------------------------------------------------------------- */
+
 #include  <common_include.h>
+
+#ifndef lint
+static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.18 1995-07-31 19:54:09 david Exp $";
+#endif
 
 #define  TWO_BUFFERS            2
 #define  N_VOXEL_VALUES       256
