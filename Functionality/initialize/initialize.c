@@ -24,6 +24,10 @@ public  Status   initialize_register( window_struct  *window )
                           functional_globals, REGISTER_GLOBALS_FILENAME );
     }
 
+    G_set_overlay_colour_map( window, 1, Overlay_colour_1 );
+    G_set_overlay_colour_map( window, 2, Overlay_colour_2 );
+    G_set_overlay_colour_map( window, 3, Overlay_colour_3 );
+
     main_info.window = window;
 
     initialize_slices( &main_info );
@@ -32,11 +36,17 @@ public  Status   initialize_register( window_struct  *window )
 
     for_less( volume, 0, N_VOLUMES )
     {
+        initialize_colour_coding( &main_info.trislice[volume].colour_coding,
+                                  GRAY_SCALE,
+                                  -0.5, (Real) N_VOXEL_VALUES - 0.5 );
+
         for_less( view, 0, N_VIEWS )
         {
             set_graphics_viewport_background( &main_info.graphics,
                                 get_slice_viewport_index(volume,view),
                                 Slice_background_colour, 0 );
+
+            /* create pixels */
 
             object = create_object( PIXELS );
 
@@ -47,6 +57,11 @@ public  Status   initialize_register( window_struct  *window )
             main_info.trislice[volume].slices[view].pixels =
                              (pixels_struct *) get_object_pointer( object );
 
+            /* create cursor */
+
+            main_info.trislice[volume].slices[view].cursor_lines =
+                          create_cursor( &main_info, volume, view );
+
             set_viewport_objects_visibility( &main_info.graphics,
                                     get_slice_viewport_index(volume,view),
                                     OFF );
@@ -54,4 +69,10 @@ public  Status   initialize_register( window_struct  *window )
     }
 
     return( status );
+}
+
+public  void   terminate_register()
+{
+    terminate_slices( &main_info );
+    delete_graphics_struct( &main_info.graphics );
 }
