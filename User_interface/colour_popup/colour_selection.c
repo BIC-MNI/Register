@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.8 1995-10-02 18:34:47 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.9 1996-12-09 20:21:45 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -110,9 +110,9 @@ public  void  popup_colour_selection(
                                 colours[i], ON, FALSE, colour,
                                 get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                                 get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),
-                                get_ui_rgb_colour(BUTTON_PUSHED_COLOUR),
                                 get_ui_rgb_colour(BUTTON_TEXT_COLOUR),
-                                Button_text_font, Button_text_font_size,
+                                (Font_types) Button_text_font,
+                                Button_text_font_size,
                                 colour_button_callback, (void *) popup );
 
         (void) add_widget_to_list( &popup->popup_window.widgets, widget );
@@ -133,9 +133,9 @@ public  void  popup_colour_selection(
                             get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),
                             get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                             get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),
-                            get_ui_rgb_colour(BUTTON_PUSHED_COLOUR),
                             get_ui_rgb_colour(BUTTON_TEXT_COLOUR),
-                            Button_text_font, Button_text_font_size,
+                            (Font_types) Button_text_font,
+                            Button_text_font_size,
                             cancel_callback, (void *) popup );
 
     (void) add_widget_to_list( &popup->popup_window.widgets, widget );

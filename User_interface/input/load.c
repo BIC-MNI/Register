@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.21 1995-12-19 15:47:03 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.22 1996-12-09 20:21:51 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -91,7 +91,7 @@ public  Status  initialize_loading_volume(
                                    (void *) data );
 
         get_graphics_viewport( &ui_info->graphics_window.graphics, 
-                               get_volume_menu_viewport_index(volume),
+                               (int) get_volume_menu_viewport_index(volume),
                                &x_min, &x_max, &y_min, &y_max );
 
         G_get_window_position( ui_info->graphics_window.window,

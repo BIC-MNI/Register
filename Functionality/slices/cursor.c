@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/cursor.c,v 1.10 1995-12-11 19:31:29 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/cursor.c,v 1.11 1996-12-09 20:21:31 david Exp $";
 #endif
 
 #include  <register.h>
@@ -24,7 +24,7 @@ private  void  set_cursor_colours(
     main_struct    *main,
     lines_struct   *lines );
 
-private  Bitplane_types  get_cursor_bitplane()
+private  Bitplane_types  get_cursor_bitplane( void )
 {
     if( G_has_overlay_planes() && Use_overlay_planes )
         return( OVERLAY_PLANES );
@@ -107,65 +107,57 @@ public  void  position_cursor(
     int            offset,
     int            length )
 {
-    Point_x(lines->points[0]) = x;
-    Point_y(lines->points[0]) = y + offset;
-    Point_x(lines->points[1]) = x;
-    Point_y(lines->points[1]) = y + offset + length;
+    fill_Point( lines->points[0], x, y + offset, 0.0 );
+    fill_Point( lines->points[1], x, y + offset + length, 0.0 );
 
-    Point_x(lines->points[2]) = x;
-    Point_y(lines->points[2]) = y - offset;
-    Point_x(lines->points[3]) = x;
-    Point_y(lines->points[3]) = y - offset - length;
+    fill_Point( lines->points[2], x, y - offset, 0.0 );
+    fill_Point( lines->points[3], x, y - offset - length, 0.0 );
 
-    Point_x(lines->points[4]) = x + offset;
-    Point_y(lines->points[4]) = y;
-    Point_x(lines->points[5]) = x + offset + length;
-    Point_y(lines->points[5]) = y;
+    fill_Point( lines->points[4], x + offset, y, 0.0 );
+    fill_Point( lines->points[5], x + offset + length, y, 0.0 );
 
-    Point_x(lines->points[6]) = x - offset;
-    Point_y(lines->points[6]) = y;
-    Point_x(lines->points[7]) = x - offset - length;
-    Point_y(lines->points[7]) = y;
+    fill_Point( lines->points[6], x - offset, y, 0.0 );
+    fill_Point( lines->points[7], x - offset - length, y, 0.0 );
 
-    Point_x(lines->points[8]) = Point_x(lines->points[0]) - 1;
-    Point_y(lines->points[8]) = Point_y(lines->points[0]);
-    Point_x(lines->points[9]) = Point_x(lines->points[1]) - 1;
-    Point_y(lines->points[9]) = Point_y(lines->points[1]);
+    fill_Point( lines->points[8], (Real) Point_x(lines->points[0]) - 1.0,
+                                         Point_y(lines->points[0]), 0.0 );
+    fill_Point( lines->points[9], (Real) Point_x(lines->points[1]) - 1.0,
+                                         Point_y(lines->points[1]), 0.0 );
 
-    Point_x(lines->points[10]) = Point_x(lines->points[0]) + 1;
-    Point_y(lines->points[10]) = Point_y(lines->points[0]);
-    Point_x(lines->points[11]) = Point_x(lines->points[1]) + 1;
-    Point_y(lines->points[11]) = Point_y(lines->points[1]);
+    fill_Point( lines->points[10], (Real) Point_x(lines->points[0]) + 1.0,
+                                          Point_y(lines->points[0]), 0.0 );
+    fill_Point( lines->points[11], (Real) Point_x(lines->points[1]) + 1.0,
+                                          Point_y(lines->points[1]), 0.0 );
 
-    Point_x(lines->points[12]) = Point_x(lines->points[2]) - 1;
-    Point_y(lines->points[12]) = Point_y(lines->points[2]);
-    Point_x(lines->points[13]) = Point_x(lines->points[3]) - 1;
-    Point_y(lines->points[13]) = Point_y(lines->points[3]);
+    fill_Point( lines->points[12], (Real) Point_x(lines->points[2]) - 1.0,
+                                          Point_y(lines->points[2]), 0.0 );
+    fill_Point( lines->points[13], (Real) Point_x(lines->points[3]) - 1.0,
+                                          Point_y(lines->points[3]), 0.0 );
 
-    Point_x(lines->points[14]) = Point_x(lines->points[2]) + 1;
-    Point_y(lines->points[14]) = Point_y(lines->points[2]);
-    Point_x(lines->points[15]) = Point_x(lines->points[3]) + 1;
-    Point_y(lines->points[15]) = Point_y(lines->points[3]);
+    fill_Point( lines->points[14], (Real) Point_x(lines->points[2]) + 1.0,
+                                          Point_y(lines->points[2]), 0.0 );
+    fill_Point( lines->points[15], (Real) Point_x(lines->points[3]) + 1.0,
+                                          Point_y(lines->points[3]), 0.0 );
 
-    Point_x(lines->points[16]) = Point_x(lines->points[4]);
-    Point_y(lines->points[16]) = Point_y(lines->points[4]) - 1;
-    Point_x(lines->points[17]) = Point_x(lines->points[5]);
-    Point_y(lines->points[17]) = Point_y(lines->points[5]) - 1;
+    fill_Point( lines->points[16],        Point_x(lines->points[4]),
+                                (Real) Point_y(lines->points[4]) - 1.0, 0.0 );
+    fill_Point( lines->points[17],        Point_x(lines->points[5]),
+                                (Real) Point_y(lines->points[5]) - 1.0, 0.0 );
 
-    Point_x(lines->points[18]) = Point_x(lines->points[4]);
-    Point_y(lines->points[18]) = Point_y(lines->points[4]) + 1;
-    Point_x(lines->points[19]) = Point_x(lines->points[5]);
-    Point_y(lines->points[19]) = Point_y(lines->points[5]) + 1;
+    fill_Point( lines->points[18],        Point_x(lines->points[4]),
+                                (Real) Point_y(lines->points[4]) + 1.0, 0.0 );
+    fill_Point( lines->points[19],        Point_x(lines->points[5]),
+                                (Real) Point_y(lines->points[5]) + 1.0, 0.0 );
 
-    Point_x(lines->points[20]) = Point_x(lines->points[6]);
-    Point_y(lines->points[20]) = Point_y(lines->points[6]) - 1;
-    Point_x(lines->points[21]) = Point_x(lines->points[7]);
-    Point_y(lines->points[21]) = Point_y(lines->points[7]) - 1;
+    fill_Point( lines->points[20],        Point_x(lines->points[6]),
+                                (Real) Point_y(lines->points[6]) - 1.0, 0.0 );
+    fill_Point( lines->points[21],        Point_x(lines->points[7]),
+                                (Real) Point_y(lines->points[7]) - 1.0, 0.0 );
 
-    Point_x(lines->points[22]) = Point_x(lines->points[6]);
-    Point_y(lines->points[22]) = Point_y(lines->points[6]) + 1;
-    Point_x(lines->points[23]) = Point_x(lines->points[7]);
-    Point_y(lines->points[23]) = Point_y(lines->points[7]) + 1;
+    fill_Point( lines->points[22],        Point_x(lines->points[6]),
+                                (Real) Point_y(lines->points[6]) + 1.0, 0.0 );
+    fill_Point( lines->points[23],        Point_x(lines->points[7]),
+                                (Real) Point_y(lines->points[7]) + 1.0, 0.0 );
 }
 
 private  object_struct  *get_cursor_lines(
@@ -196,8 +188,8 @@ private  void  set_cursor_colours(
     }
     else if( G_get_colour_map_state( main->window ) )
     {
-        inside = main->start_colour_index + CURSOR_INSIDE_COLOUR;
-        outside = main->start_colour_index + CURSOR_OUTSIDE_COLOUR;
+        inside = (Colour) (main->start_colour_index + CURSOR_INSIDE_COLOUR);
+        outside = (Colour) (main->start_colour_index + CURSOR_OUTSIDE_COLOUR);
     }
     else
     {

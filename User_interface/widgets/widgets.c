@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/widgets.c,v 1.10 1995-10-02 18:35:04 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/widgets.c,v 1.11 1996-12-09 20:22:05 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -69,7 +69,7 @@ public  widget_struct  *create_widget(
     BOOLEAN                 initial_activity,
     BOOLEAN                 use_ui_colours,
     graphics_window_struct  *graphics,
-    int                     viewport_index )
+    Viewport_types          viewport_index )
 {
     widget_struct   *widget;
 
@@ -236,7 +236,7 @@ public  void  set_widget_activity(
     widget_functions[widget->widget_type].update_activity( widget );
 
     set_viewport_update_flag( &widget->graphics->graphics,
-                              widget->viewport_index, NORMAL_PLANES );
+                              (int) widget->viewport_index, NORMAL_PLANES );
 }
 
 public  void  set_widget_selected(

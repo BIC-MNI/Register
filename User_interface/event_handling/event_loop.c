@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.7 1995-10-02 18:34:50 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.8 1996-12-09 20:21:50 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -25,12 +25,12 @@ private  void   handle_event(
 
 private  BOOLEAN   quit_flag = FALSE;
 
-public  void  set_quit_program_flag()
+public  void  set_quit_program_flag( void )
 {
     quit_flag = TRUE;
 }
 
-public  void  event_loop()
+public  void  event_loop( void )
 {
     int                     key_pressed;
     Event_types             event_type;
@@ -48,7 +48,7 @@ public  void  event_loop()
     while( !quit_flag );
 }
 
-public  void  force_update_all_windows()
+public  void  force_update_all_windows( void )
 {
     handle_event( NO_EVENT, (window_struct *) NULL, 0 );
     make_windows_up_to_date();

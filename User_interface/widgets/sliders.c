@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/sliders.c,v 1.14 1995-10-02 18:35:02 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/sliders.c,v 1.15 1996-12-09 20:22:03 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -241,7 +241,7 @@ private  void  update_one_slider_colours(
     if( use_ui_colours )
     {
         slider->pegs[ind]->colours[0] = get_ui_colour(colour_map_state,
-                                                      slider->peg_colour);
+                                      (UI_colours) slider->peg_colour);
     }
     else
     {
@@ -254,7 +254,7 @@ private  void  update_one_slider_colours(
 public  void  update_slider_colours(
     widget_struct   *widget )
 {
-    UI_colours     rectangle_colour;
+    Colour         rectangle_colour;
     BOOLEAN        colour_map_state;
     slider_struct  *slider;
 
@@ -269,7 +269,7 @@ public  void  update_slider_colours(
 
     if( widget->use_ui_colours )
         slider->polygons->colours[0] = get_ui_colour(colour_map_state,
-                                                     rectangle_colour);
+                                               (UI_colours) rectangle_colour);
     else
         slider->polygons->colours[0] = rectangle_colour;
 
@@ -321,7 +321,7 @@ private  void  update_one_slider_position(
 {
     int                   x, peg_x1, peg_x2, text_entry_pos;
     slider_struct         *slider;
-    widget_callback_type  callback;
+    event_function_type   callback;
 
     slider = get_widget_slider( widget );
 
@@ -329,11 +329,11 @@ private  void  update_one_slider_position(
         convert_slider_value_to_position( slider, widget->x_size,
                                           slider->values[ind] );
 
-    peg_x1 = x - slider->peg_width / 2;
-    peg_x2 = peg_x1 + slider->peg_width - 1;
+    peg_x1 = x - ROUND( slider->peg_width / 2.0 );
+    peg_x2 = peg_x1 + (int) slider->peg_width - 1;
 
     position_rectangle( slider->pegs[ind], peg_x1, widget->y,
-                        slider->peg_width, widget->y_size );
+                        (int) slider->peg_width, widget->y_size );
 
     if( ind == 0 )
     {
@@ -437,7 +437,7 @@ public  void  set_slider_values(
         update_slider_position( widget );
 
         set_viewport_update_flag( &widget->graphics->graphics,
-                                  widget->viewport_index, NORMAL_PLANES );
+                                  (int) widget->viewport_index, NORMAL_PLANES );
     }
 
     if( changed[0] )
@@ -524,13 +524,15 @@ private  void  create_slider_graphics(
     slider->polygons = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
-                            widget->viewport_index, NORMAL_PLANES, object );
+                            (int) widget->viewport_index, NORMAL_PLANES,
+                            object );
 
     object = create_rectangle( slider->peg_colour );
     slider->pegs[0] = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
-                            widget->viewport_index, NORMAL_PLANES, object );
+                            (int) widget->viewport_index, NORMAL_PLANES,
+                            object );
 
     if( slider->colour_bar_flag )
     {
@@ -538,7 +540,8 @@ private  void  create_slider_graphics(
         slider->pegs[1] = get_polygons_ptr( object );
 
         add_object_to_viewport( &widget->graphics->graphics,
-                                widget->viewport_index, NORMAL_PLANES, object );
+                                (int) widget->viewport_index, NORMAL_PLANES,
+                                object );
     }
 }
 
@@ -561,7 +564,7 @@ public  void  delete_slider(
 
 private  widget_struct  *create_a_slider(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -574,9 +577,9 @@ private  widget_struct  *create_a_slider(
     BOOLEAN                    values_allowed_outside_range,
     STRING                     format_string,
     BOOLEAN                    initial_activity,
-    UI_colours                 active_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 peg_colour,
+    Colour                     active_colour,
+    Colour                     inactive_colour,
+    Colour                     peg_colour,
     widget_callback_type       lower_value_callback,
     void                       *lower_value_callback_data,
     widget_callback_type       upper_value_callback,
@@ -590,7 +593,7 @@ private  widget_struct  *create_a_slider(
 
     slider = get_widget_slider( widget );
 
-    slider->peg_width = Slider_text_peg_width;
+    slider->peg_width = (Real) Slider_text_peg_width;
 
     slider->active_colour = active_colour;
     slider->inactive_colour = inactive_colour;
@@ -624,7 +627,7 @@ private  widget_struct  *create_a_slider(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Slider_text_font, Slider_text_font_size,
+                       (Font_types) Slider_text_font, Slider_text_font_size,
                        lower_value_hit_return_callback,
                        (void *) widget );
 
@@ -651,7 +654,7 @@ private  widget_struct  *create_a_slider(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Slider_text_font, Slider_text_font_size,
+                       (Font_types) Slider_text_font, Slider_text_font_size,
                        upper_value_hit_return_callback,
                        (void *) widget );
 
@@ -677,7 +680,7 @@ private  widget_struct  *create_a_slider(
 
 public  widget_struct  *create_slider(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -687,9 +690,9 @@ public  widget_struct  *create_slider(
     Real                       max_value,
     STRING                     format_string,
     BOOLEAN                    initial_activity,
-    UI_colours                 active_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 peg_colour,
+    Colour                     active_colour,
+    Colour                     inactive_colour,
+    Colour                     peg_colour,
     widget_callback_type       value_changed_callback,
     void                       *value_changed_data )
 {
@@ -704,7 +707,7 @@ public  widget_struct  *create_slider(
 
 public  widget_struct  *create_colour_bar_slider(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -715,9 +718,9 @@ public  widget_struct  *create_colour_bar_slider(
     Real                       max_value,
     STRING                     format_string,
     BOOLEAN                    initial_activity,
-    UI_colours                 active_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 peg_colour,
+    Colour                     active_colour,
+    Colour                     inactive_colour,
+    Colour                     peg_colour,
     widget_callback_type       lower_value_changed_callback,
     void                       *lower_value_callback_data,
     widget_callback_type       upper_value_changed_callback,

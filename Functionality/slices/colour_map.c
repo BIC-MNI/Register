@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.27 1995-12-19 15:46:56 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.28 1996-12-09 20:21:30 david Exp $";
 #endif
 
 #include  <register.h>
@@ -28,13 +28,16 @@ private  Colour  merge_colours(
 {
     int   r, g, b;
 
-    r = alpha1 * (Real) get_Colour_r(col1) + alpha2 * (Real) get_Colour_r(col2);
+    r = (int) (alpha1 * (Real) get_Colour_r(col1) +
+               alpha2 * (Real) get_Colour_r(col2));
     if( r > 255 ) r = 255;
 
-    g = alpha1 * (Real) get_Colour_g(col1) + alpha2 * (Real) get_Colour_g(col2);
+    g = (int) (alpha1 * (Real) get_Colour_g(col1) +
+               alpha2 * (Real) get_Colour_g(col2));
     if( g > 255 ) g = 255;
 
-    b = alpha1 * (Real) get_Colour_b(col1) + alpha2 * (Real) get_Colour_b(col2);
+    b = (int) (alpha1 * (Real) get_Colour_b(col1) +
+               alpha2 * (Real) get_Colour_b(col2));
     if( b > 255 ) b = 255;
 
     return( make_Colour( r, g, b ) );
@@ -101,7 +104,7 @@ private  Range_flags  lookup_colour_code(
     Real          value;
     Range_flags   flag;
 
-    value = CONVERT_VOXEL_TO_VALUE( volume, voxel );
+    value = CONVERT_VOXEL_TO_VALUE( volume, (Real) voxel );
 
     *col = get_colour_code( colour_coding, value );
     if( value < colour_coding->min_value )
@@ -173,7 +176,8 @@ private  void  update_merged_cmode_indices(
     {
         i1 = CONVERT_INTEGER_RANGE( i, min_value1, max_value1, 0, n1-1 );
         for_inclusive( j, min_value2, max_value2 )
-            main->merged.cmode_colour_map[i][j] = min_ind + IJ(i1,i2[j],n2);
+            main->merged.cmode_colour_map[i][j] = (unsigned short)
+                                                (min_ind + IJ(i1,i2[j],n2));
     }
 }
 
@@ -238,7 +242,7 @@ private  void  update_rgb_colour_maps(
         main->trislice[volume_index].rgb_colour_map[i] =
                     get_colour_code(
                         &main->trislice[volume_index].colour_coding,
-                        CONVERT_VOXEL_TO_VALUE(volume,i) );
+                        CONVERT_VOXEL_TO_VALUE(volume,(Real) i) );
     }
 }
 
@@ -257,8 +261,9 @@ private  void  update_cmode_indices(
     for_inclusive( voxel_value, min_value, max_value )
     {
         main->trislice[volume].cmode_colour_map[voxel_value] = 
-                    CONVERT_INTEGER_RANGE( voxel_value, min_value, max_value,
-                                           min_ind, max_ind );
+           (unsigned short) CONVERT_INTEGER_RANGE( voxel_value,
+                                                   min_value, max_value,
+                                                   min_ind, max_ind );
     }
 }
 
@@ -284,7 +289,7 @@ private  void  update_cmode_colour_maps(
         G_set_colour_map_entry( main->window, i, 
                     get_colour_code(
                          &main->trislice[volume_index].colour_coding,
-                         CONVERT_VOXEL_TO_VALUE(volume,voxel_value) ) );
+                         CONVERT_VOXEL_TO_VALUE(volume,(Real) voxel_value) ) );
     }
 }
 
@@ -333,7 +338,7 @@ public  void  repartition_colour_maps(
 
     max_colours_merged = max_colours_1 * max_colours_2;
 
-    n_merged = Merged_colour_table_fraction * total_colours;
+    n_merged = ROUND( Merged_colour_table_fraction * (Real) total_colours );
 
     if( n_merged > max_colours_merged )
         n_merged = max_colours_merged;
@@ -660,9 +665,9 @@ public  void  composite_merged_pixels(
         g2 = get_Colour_g( col2 );
         b2 = get_Colour_b( col2 );
 
-        r = (int) (a1 * r1 + a2 * r2);
-        g = (int) (a1 * g1 + a2 * g2);
-        b = (int) (a1 * b1 + a2 * b2);
+        r = (int) (a1 * (Real) r1 + a2 * (Real) r2);
+        g = (int) (a1 * (Real) g1 + a2 * (Real) g2);
+        b = (int) (a1 * (Real) b1 + a2 * (Real) b2);
 
         if( r < 0 )
             r = 0;

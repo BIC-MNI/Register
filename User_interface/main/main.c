@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.16 1996-05-24 18:43:41 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.17 1996-12-09 20:21:54 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -28,13 +28,13 @@ private  STRING  version = "1.0      Dec. 19, 1995";
 
 #define   UI_GLOBALS_FILENAME   "register_UI.globals"
 
-private  void     initialize_global_colours();
+private  void     initialize_global_colours( void );
 private  void  read_global_files(
     STRING  executable_name );
 
 private  UI_struct  ui_struct;
 
-public  UI_struct  *get_ui_struct()
+public  UI_struct  *get_ui_struct( void )
 {
     return( &ui_struct );
 }
@@ -162,14 +162,13 @@ int  main(
     return( status != OK );
 }
 
-private  void     initialize_global_colours()
+private  void     initialize_global_colours( void )
 {
     Default_UI_background_colour = DARK_SLATE_BLUE;
     Default_divider_colour = WHITE;
     Default_button_active_colour = YELLOW;
     Default_button_selected_colour = RED;
     Default_button_inactive_colour = DIM_GRAY;
-    Default_button_pushed_colour = BLACK;
     Default_button_text_colour = BLACK;
     Default_text_entry_active_colour = WHITE;
     Default_text_entry_selected_colour = RED;
@@ -206,6 +205,7 @@ private  void  read_global_files(
     runtime_directory = extract_directory( executable_name );
 
     n_directories = 0;
+    directories = NULL;
 
     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
                           HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );

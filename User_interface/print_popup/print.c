@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.8 1995-10-02 18:34:55 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.9 1996-12-09 20:21:55 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -31,12 +31,12 @@ private  void  output_chars( STRING );
 private  void  create_message_popup( STRING );
 private  DEFINE_EVENT_FUNCTION( check_to_expire_popup );
 
-public  void  initialize_print_popup()
+public  void  initialize_print_popup( void )
 {
     set_print_function( output_chars );
 }
 
-public  void  disable_print_popup()
+public  void  disable_print_popup( void )
 {
     set_print_function( 0 );
 }
@@ -133,6 +133,7 @@ private  void  create_message_popup(
     fill_Point( point, Message_x_offset, 0.0, 0.0 );
 
     n_lines = 0;
+    text_objects = NULL;
     ptr = string;
     max_length = 0.0;
 
@@ -141,7 +142,7 @@ private  void  create_message_popup(
         object = create_object( TEXT );
         text = get_text_ptr( object );
         initialize_text( text, &point, Message_text_colour,
-                         Message_font, Message_font_size );
+                         (Font_types) Message_font, Message_font_size );
         ADD_ELEMENT_TO_ARRAY( text_objects, n_lines, object,
                               DEFAULT_CHUNK_SIZE );
 
@@ -162,9 +163,10 @@ private  void  create_message_popup(
 
     G_get_mouse_screen_position( &x, &y );
 
-    x_size = max_length + 2 * Message_x_offset;
-    y_size = 2 * Message_y_offset + n_lines * Message_text_y_offset +
-             Message_ok_button_height;
+    x_size = ROUND( max_length + 2.0 * Message_x_offset );
+    y_size = ROUND( 2.0 * Message_y_offset +
+                    (Real) n_lines * Message_text_y_offset +
+                    Message_ok_button_height );
 
     create_popup_window( &popup->popup_window, "Register Message",
                          x, y, x_size, y_size, quit_window_callback,
@@ -176,8 +178,9 @@ private  void  create_message_popup(
     for_less( i, 0, n_lines )
     {
         text = get_text_ptr( text_objects[i] );
-        Point_y( text->origin ) = y_size-1-Message_y_offset -
-                                    i * Message_text_y_offset;
+        Point_y( text->origin ) = (Point_coord_type)
+                                  ((Real) y_size - 1.0 - Message_y_offset -
+                                   (Real) i * Message_text_y_offset);
         
         add_object_to_viewport( &popup->popup_window.graphics.graphics, 0,
                                 NORMAL_PLANES, text_objects[i] );
@@ -195,8 +198,9 @@ private  void  create_message_popup(
                             ON, TRUE, BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,
-                            BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                            Button_text_font, Button_text_font_size,
+                            BUTTON_TEXT_COLOUR,
+                            (Font_types) Button_text_font,
+                            Button_text_font_size,
                             acknowledge_callback, (void *) popup );
 
     (void) add_widget_to_list( &popup->popup_window.widgets,

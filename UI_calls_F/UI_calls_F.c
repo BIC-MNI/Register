@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.18 1996-04-11 19:01:38 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.19 1996-12-09 20:21:41 david Exp $";
 #endif
 
 #include  <UI_calls_F.h>
@@ -29,10 +29,10 @@ public  Status   UI_set_global_variable(
     STRING  variable_name,
     STRING  value_to_set )
 {
-    set_functional_global_variable( variable_name, value_to_set );
+    return( set_functional_global_variable( variable_name, value_to_set ) );
 }
 
-public  void  IF_terminate_register()
+public  void  IF_terminate_register( void )
 {
     terminate_register();
 }
@@ -71,7 +71,7 @@ public  BOOLEAN  IF_is_an_rgb_volume(
     return( is_volume_rgb( get_main_struct(), volume_index ) );
 }
 
-public  BOOLEAN  IF_is_resampled_volume_loaded()
+public  BOOLEAN  IF_is_resampled_volume_loaded( void )
 {
     return( is_resampled_volume_loaded( get_main_struct() ) );
 }
@@ -95,7 +95,7 @@ public  void  IF_save_image(
     save_image( get_main_struct(), volume, view );
 }
 
-public  BOOLEAN  IF_get_merged_slice_visibility()
+public  BOOLEAN  IF_get_merged_slice_visibility( void )
 {
     return( get_merged_volume_activity(get_main_struct()) );
 }
@@ -148,7 +148,7 @@ public  void  IF_delete_volume(
     delete_register_volume( get_main_struct(), volume_index );
 }
 
-public  BOOLEAN  IF_get_interpolation_flag()
+public  BOOLEAN  IF_get_interpolation_flag( void )
 {
     return( get_interpolation_mode( get_main_struct() ) );
 }
@@ -282,7 +282,7 @@ public  BOOLEAN  IF_convert_pixel_to_voxel(
                                     x_pixel, y_pixel, voxel_position ) );
 }
 
-public  BOOLEAN  IF_can_switch_colour_modes()
+public  BOOLEAN  IF_can_switch_colour_modes( void )
 {
     return( can_switch_colour_modes( get_main_struct() ) );
 }
@@ -306,7 +306,7 @@ public  void  IF_set_merge_method(
     set_merged_method( get_main_struct(), method );
 }
 
-public  Merge_methods  IF_get_merge_method()
+public  Merge_methods  IF_get_merge_method( void )
 {
     return( get_merged_method( get_main_struct() ) );
 }
@@ -418,7 +418,7 @@ public  void  IF_delete_tag_point(
     delete_tag_point( get_main_struct(), ind );
 }
 
-public  int  IF_get_n_tag_points()
+public  int  IF_get_n_tag_points( void )
 {
     return( get_n_tag_points( get_main_struct() ) );
 }
@@ -498,7 +498,7 @@ public  void  IF_save_transform(
     (void) save_transform( get_main_struct(), filename );
 }
 
-public  BOOLEAN  IF_does_transform_exist()
+public  BOOLEAN  IF_does_transform_exist( void )
 {
     return( get_tag_point_transform( get_main_struct(),
                                      (General_transform **) NULL ) );
@@ -510,12 +510,12 @@ public  BOOLEAN  IF_get_resampling_transform(
     return( get_tag_point_transform( get_main_struct(), transform ) );
 }
 
-public  BOOLEAN  IF_tag_points_have_been_saved()
+public  BOOLEAN  IF_tag_points_have_been_saved( void )
 {
     return( get_tag_points_saved( get_main_struct() ) );
 }
 
-public  Trans_type  IF_get_transform_type()
+public  Trans_type  IF_get_transform_type( void )
 {
     return( get_tag_transform_type( get_main_struct() ) );
 }

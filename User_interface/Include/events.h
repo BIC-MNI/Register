@@ -16,18 +16,19 @@
 #define  DEF_EVENTS
 
 #ifndef lint
-static char ui_events_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/events.h,v 1.5 1995-07-31 19:54:19 david Exp $";
+static char ui_events_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/events.h,v 1.6 1996-12-09 20:21:44 david Exp $";
 #endif
 
 #include  <graphics.h>
+#include  <viewports.h>
 
-typedef  void  (*event_function_type) ( int, int, void * );
+typedef  void  (*event_function_type) ( Viewport_types, int, void * );
 
 #define  DEFINE_EVENT_FUNCTION( name )                                        \
                                                 /* ARGSUSED */                \
-         void   name( int          event_viewport_index,                      \
-                      int          keyboard_character,                        \
-                      void         *callback_data )
+         void   name( Viewport_types  event_viewport_index,                   \
+                      int             keyboard_character,                     \
+                      void            *callback_data )
 
 typedef  enum  { ANY_MODIFIER, NO_SHIFT_ONLY, SHIFT_ONLY } Event_modifiers;
 

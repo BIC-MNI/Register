@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.15 1995-12-19 15:47:06 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.16 1996-12-09 20:22:02 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -62,8 +62,8 @@ public  DEFINE_WIDGET_CALLBACK( popup_filter_callback )
 
 private  DEFINE_WIDGET_CALLBACK( load_volume_callback )
 {
-    STRING     filename;
-    int        viewport_index;
+    STRING                filename;
+    Viewport_types        viewport_index;
 
     viewport_index = widget->viewport_index;
     filename = get_text_entry_string( 
@@ -111,7 +111,7 @@ public  void  add_volume_widgets(
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   (Font_types) Label_text_font, Label_text_font_size ) );
 
     y += Volume_button_height + Volume_y_spacing;
 
@@ -122,8 +122,8 @@ public  void  add_volume_widgets(
                    "Load",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR, BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    load_volume_callback, (void *) NULL ) );
 
     widget_indices[LOAD_FILENAME_TEXT] = add_widget_to_list(
@@ -139,7 +139,7 @@ public  void  add_volume_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        volume_filename_callback, (void *) NULL ) );
 
     y += Text_entry_height + Volume_y_spacing;
@@ -152,8 +152,8 @@ public  void  add_volume_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    reset_view_callback, (void *) NULL ) );
 
     widget_indices[POPUP_FILTER_BUTTON] = add_widget_to_list(
@@ -165,8 +165,8 @@ public  void  add_volume_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    popup_filter_callback, (void *) NULL ) );
 
     widget_indices[VALUE_READOUT_TEXT] =
@@ -180,7 +180,7 @@ public  void  add_volume_widgets(
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   (Font_types) Label_text_font, Label_text_font_size ) );
 
 
     ui_info->position_text_start_index[volume_index] =
@@ -262,7 +262,7 @@ public  void  set_volume_widgets_activity(
                            activity );
 }
 
-public  int  get_colour_bar_start_index()
+public  int  get_colour_bar_start_index( void )
 {
     return( colour_bar_start_index );
 }

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.5 1995-10-02 18:35:06 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.6 1996-12-09 20:22:07 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -146,8 +146,8 @@ private  int  add_filter_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    nearest_callback, (void *) callback ) );
 
     widget_indices[NEAREST_BUTTON] = 0;
@@ -160,8 +160,8 @@ private  int  add_filter_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    linear_callback, (void *) callback ) ) - start_index;
 
     widget_indices[BOX_BUTTON] = add_widget_to_list(
@@ -172,8 +172,8 @@ private  int  add_filter_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    box_callback, (void *) callback ) ) - start_index;
 
     widget_indices[TRIANGLE_BUTTON] = add_widget_to_list(
@@ -184,8 +184,8 @@ private  int  add_filter_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    triangle_callback, (void *) callback ) ) - start_index;
 
     widget_indices[GAUSSIAN_BUTTON] = add_widget_to_list(
@@ -196,8 +196,8 @@ private  int  add_filter_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    gaussian_callback, (void *) callback ) ) - start_index;
 
     y -= Filter_button_height + Interface_y_spacing;
@@ -208,7 +208,8 @@ private  int  add_filter_widgets(
                    x, y, Full_width_label_width, Filter_button_height,
                    "Full Width Half Max", ON, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
-                   LABEL_TEXT_COLOUR, Label_text_font, Label_text_font_size ) )
+                   LABEL_TEXT_COLOUR, (Font_types) Label_text_font,
+                   Label_text_font_size ) )
                       - start_index;
 
     widget_indices[FILTER_WIDTH_TEXT] = add_widget_to_list(
@@ -221,7 +222,7 @@ private  int  add_filter_widgets(
                    TEXT_ENTRY_INACTIVE_COLOUR, TEXT_ENTRY_TEXT_COLOUR,
                    TEXT_ENTRY_EDIT_COLOUR, TEXT_ENTRY_EDIT_TEXT_COLOUR,
                    TEXT_ENTRY_CURSOR_COLOUR,
-                   Text_entry_font, Text_entry_font_size,
+                   (Font_types) Text_entry_font, Text_entry_font_size,
                    filter_width_callback, (void *) callback ) ) - start_index;
 
     *height = y_start - y;
@@ -312,7 +313,7 @@ public  void  popup_filter_selection(
                    view_names[view_index], ON, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   (Font_types) Label_text_font, Label_text_font_size ) );
 
         y -= Filter_button_height + Filter_y_spacing;
 
@@ -341,8 +342,8 @@ public  void  popup_filter_selection(
                                 "Close", ON, TRUE, BUTTON_ACTIVE_COLOUR,
                                 BUTTON_SELECTED_COLOUR,
                                 BUTTON_INACTIVE_COLOUR,
-                                BUTTON_PUSHED_COLOUR,
                                 BUTTON_TEXT_COLOUR,
-                                Button_text_font, Button_text_font_size,
+                                (Font_types) Button_text_font,
+                                Button_text_font_size,
                                 close_callback, (void *) popup ) );
 }

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.15 1996-04-11 19:01:36 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.16 1996-12-09 20:21:37 david Exp $";
 #endif
 
 #include  <register.h>
@@ -45,7 +45,7 @@ private  void   create_tags_array(
             {
                 for_less( d, 0, N_DIMENSIONS )
                 {
-                    (*tag_array)[tag_index][d] = Point_coord
+                    (*tag_array)[tag_index][d] = (Real) Point_coord
                                     (tag_points[i].position[which_volume], d );
                 }
 

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.17 1995-12-11 19:31:36 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.18 1996-12-09 20:22:03 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -110,7 +110,7 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
     }
 
     set_viewport_update_flag( &widget->graphics->graphics,
-                              widget->viewport_index, NORMAL_PLANES );
+                              (int) widget->viewport_index, NORMAL_PLANES );
 
     button->update_counter = 0;
     add_global_event_callback( NO_EVENT, check_unpush_button,
@@ -143,7 +143,7 @@ public  void  update_button_colours(
     widget_struct   *widget )
 {
     BOOLEAN        colour_map_state;
-    UI_colours     rectangle_colour;
+    Colour         rectangle_colour;
     button_struct  *button;
 
     button = get_widget_button( widget );
@@ -170,10 +170,10 @@ public  void  update_button_colours(
     if( widget->use_ui_colours )
     {
         button->polygons->colours[0] = get_ui_colour(colour_map_state,
-                                                     rectangle_colour);
+                                            (UI_colours) rectangle_colour);
 
-        button->text->colour =
-                    get_ui_colour(colour_map_state,button->text_colour);
+        button->text->colour = get_ui_colour( colour_map_state,
+                                             (UI_colours) button->text_colour );
     }
     else
     {
@@ -254,7 +254,7 @@ public  void  set_button_text(
                            widget->x_size, widget->y_size );
 
     set_viewport_update_flag( &widget->graphics->graphics,
-                              widget->viewport_index, NORMAL_PLANES );
+                              (int) widget->viewport_index, NORMAL_PLANES );
 }
 
 private  void  create_button_graphics(
@@ -272,7 +272,8 @@ private  void  create_button_graphics(
     button->polygons = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
-                            widget->viewport_index, NORMAL_PLANES, object );
+                            (int) widget->viewport_index, NORMAL_PLANES,
+                            object );
 
     object = create_text( BLACK, text_font, font_size );
 
@@ -284,7 +285,8 @@ private  void  create_button_graphics(
         set_button_text( widget, label );
 
     add_object_to_viewport( &widget->graphics->graphics,
-                            widget->viewport_index, NORMAL_PLANES, object );
+                            (int) widget->viewport_index, NORMAL_PLANES,
+                            object );
 }
 
 /* ARGSUSED */
@@ -309,7 +311,7 @@ public  void  delete_button(
 
 private  widget_struct  *create_a_button(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -320,11 +322,10 @@ private  widget_struct  *create_a_button(
     STRING                     text2,
     BOOLEAN                    initial_activity,
     BOOLEAN                    use_ui_colours,
-    UI_colours                 active_colour,
-    UI_colours                 selected_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 pushed_colour,
-    UI_colours                 text_colour,
+    Colour                     active_colour,
+    Colour                     selected_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
     Font_types                 text_font,
     Real                       font_size,
     widget_callback_type       push_callback,
@@ -340,7 +341,6 @@ private  widget_struct  *create_a_button(
 
     button->active_colour = active_colour;
     button->inactive_colour = inactive_colour;
-    button->pushed_colour = pushed_colour;
     button->text_colour = text_colour;
 
     button->next_radio_button = (widget_struct *) 0;
@@ -384,7 +384,7 @@ private  widget_struct  *create_a_button(
 
 public  widget_struct *create_button(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -392,11 +392,10 @@ public  widget_struct *create_button(
     STRING                     label,
     BOOLEAN                    initial_activity,
     BOOLEAN                    use_ui_colours,
-    UI_colours                 active_colour,
-    UI_colours                 selected_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 pushed_colour,
-    UI_colours                 text_colour,
+    Colour                     active_colour,
+    Colour                     selected_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
     Font_types                 text_font,
     Real                       font_size,
     widget_callback_type       push_callback,
@@ -407,13 +406,13 @@ public  widget_struct *create_button(
                      FALSE, FALSE, label, NULL,
                      initial_activity, use_ui_colours, active_colour,
                      selected_colour, inactive_colour,
-                     pushed_colour, text_colour,
+                     text_colour,
                      text_font, font_size, push_callback, callback_data ) );
 }
 
 public  widget_struct  *create_toggle_button(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -423,10 +422,9 @@ public  widget_struct  *create_toggle_button(
     BOOLEAN                    initial_state,
     BOOLEAN                    initial_activity,
     BOOLEAN                    use_ui_colours,
-    UI_colours                 active_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 pushed_colour,
-    UI_colours                 text_colour,
+    Colour                     active_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
     Font_types                 text_font,
     Real                       font_size,
     widget_callback_type       push_callback,
@@ -436,6 +434,6 @@ public  widget_struct  *create_toggle_button(
                      x, y, x_size, y_size,
                      TRUE, initial_state, off_text, on_text,
                      initial_activity, use_ui_colours, active_colour, BLACK,
-                     inactive_colour, pushed_colour, text_colour,
+                     inactive_colour, text_colour,
                      text_font, font_size, push_callback, callback_data ) );
 }

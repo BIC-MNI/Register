@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/lookup.c,v 1.5 1995-10-02 18:35:04 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/lookup.c,v 1.6 1996-12-09 20:22:06 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -83,7 +83,7 @@ public  BOOLEAN   lookup_event_viewports(
     return( i >= 0 );
 }
 
-public  void  make_windows_up_to_date()
+public  void  make_windows_up_to_date( void )
 {
     int   i;
 
@@ -99,7 +99,7 @@ public  void  make_windows_up_to_date()
     }
 }
 
-public  void  delete_all_graphics_windows()
+public  void  delete_all_graphics_windows( void )
 {
     int   i;
 

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_transform.c,v 1.11 1995-10-02 18:34:45 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_transform.c,v 1.12 1996-12-09 20:21:39 david Exp $";
 #endif
 
 #include  <register.h>
@@ -46,10 +46,10 @@ private  void  recompute_tag_rms_errors(
     for_less( i, 0, tags->n_tag_points )
     {
         general_transform_point( &tags->v2_to_v1_transform,
-                                 Point_x(tags->tag_points[i].position[1]),
-                                 Point_y(tags->tag_points[i].position[1]),
-                                 Point_z(tags->tag_points[i].position[1]),
-                                 &x, &y, &z );
+                               (Real) Point_x(tags->tag_points[i].position[1]),
+                               (Real) Point_y(tags->tag_points[i].position[1]),
+                               (Real) Point_z(tags->tag_points[i].position[1]),
+                               &x, &y, &z );
 
         fill_Point( transformed, x, y, z );
 
@@ -99,10 +99,10 @@ public  void  recompute_tag_transform(
         {
             for_less( c, 0, N_DIMENSIONS )
             {
-                Apoints[n_valid][c] =
-                    Point_coord(tags->tag_points[i].position[0],c);
-                Bpoints[n_valid][c] =
-                    Point_coord(tags->tag_points[i].position[1],c);
+                Apoints[n_valid][c] = (Real) Point_coord(tags->tag_points[i]
+                                                         .position[0],c);
+                Bpoints[n_valid][c] = (Real) Point_coord(tags->tag_points[i]
+                                                         .position[1],c);
             }
             ++n_valid;
         }

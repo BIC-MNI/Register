@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_viewports.c,v 1.6 1995-10-02 18:34:51 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_viewports.c,v 1.7 1996-12-09 20:21:50 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -43,18 +43,18 @@ public  void  delete_event_viewports(
 
 private  void  check_event_viewport_exists(
     event_viewports_struct  *event_viewports,
-    int                     event_viewport_index )
+    Viewport_types          event_viewport_index )
 {
     int      i, prev_size;
 
-    if( event_viewport_index >= event_viewports->n_event_viewports )
+    if( (int) event_viewport_index >= event_viewports->n_event_viewports )
     {
         prev_size = event_viewports->n_event_viewports;
         SET_ARRAY_SIZE( event_viewports->event_viewports,
                         event_viewports->n_event_viewports,
-                        event_viewport_index+1, DEFAULT_CHUNK_SIZE );
+                        (int) event_viewport_index+1, DEFAULT_CHUNK_SIZE );
         event_viewports->n_event_viewports = event_viewport_index + 1;
-        for_less( i, prev_size, event_viewport_index+1 )
+        for_less( i, prev_size, (int) event_viewport_index+1 )
         {
             initialize_event_table( event_viewports->event_viewports[i].table );
         }
@@ -63,7 +63,7 @@ private  void  check_event_viewport_exists(
 
 public  void  set_event_viewport(
     event_viewports_struct  *event_viewports,
-    int                     event_viewport_index,
+    Viewport_types          event_viewport_index,
     int                     x_min,
     int                     x_max,
     int                     y_min,
@@ -79,7 +79,7 @@ public  void  set_event_viewport(
 
 public  void  get_event_viewport(
     event_viewports_struct  *event_viewports,
-    int                     event_viewport_index,
+    Viewport_types          event_viewport_index,
     int                     *x_min,
     int                     *x_max,
     int                     *y_min,
@@ -95,7 +95,7 @@ public  void  get_event_viewport(
 
 public  void  set_event_viewport_callback_enabled(
     event_viewports_struct  *event_viewports,
-    int                     event_viewport_index,
+    Viewport_types          event_viewport_index,
     Event_types             event_type,
     event_function_type     callback_function,
     void                    *callback_data,
@@ -110,7 +110,7 @@ public  void  set_event_viewport_callback_enabled(
 
 public  void  set_event_viewport_callback_viewport(
     event_viewports_struct  *event_viewports,
-    int                     event_viewport_index,
+    Viewport_types          event_viewport_index,
     Event_types             event_type,
     event_function_type     callback_function,
     void                    *callback_data,
@@ -129,7 +129,7 @@ public  void  set_event_viewport_callback_viewport(
 
 public  void  add_event_viewport_callback(
     event_viewports_struct  *event_viewports,
-    int                     event_viewport_index,
+    Viewport_types          event_viewport_index,
     Event_types             event_type,
     int                     x_min,
     int                     x_max,
@@ -148,7 +148,7 @@ public  void  add_event_viewport_callback(
 
 public  void  remove_event_viewport_callback(
     event_viewports_struct  *event_viewports,
-    int                     event_viewport_index,
+    Viewport_types          event_viewport_index,
     Event_types             event_type,
     event_function_type     callback_function,
     void                    *callback_data )
@@ -187,7 +187,8 @@ public  void  execute_event_viewport_events(
                                event_viewports->event_viewports[i].y_min;
             found = execute_event_callback_functions( shift_state,
                      &event_viewports->event_viewports[i].table[event_type],
-                     x_mouse_viewport, y_mouse_viewport, i, key_pressed );
+                     x_mouse_viewport, y_mouse_viewport,
+                     (Viewport_types) i, key_pressed );
 
             if( found )
                 break;
@@ -199,7 +200,7 @@ public  BOOLEAN  find_viewport_containing_mouse(
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,
-    int                     *viewport_index )
+    Viewport_types          *viewport_index )
 {
     int      i;
     BOOLEAN  found;
@@ -215,7 +216,7 @@ public  BOOLEAN  find_viewport_containing_mouse(
             y_mouse <= event_viewports->event_viewports[i].y_max )
         {
             found = TRUE;
-            *viewport_index = i;
+            *viewport_index = (Viewport_types) i;
             break;
         }
     }

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.7 1995-12-11 19:31:37 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.8 1996-12-09 20:22:08 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -111,9 +111,9 @@ public  void  popup_transform_dialog(
                                    get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),
                                    get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                                    get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),
-                                   get_ui_rgb_colour(BUTTON_PUSHED_COLOUR),
                                    get_ui_rgb_colour(BUTTON_TEXT_COLOUR),
-                                   Button_text_font, Button_text_font_size,
+                                   (Font_types) Button_text_font,
+                                   Button_text_font_size,
                                    transform_callback,
                                    (void *) &choices[i].transform_type );
 
@@ -140,9 +140,9 @@ public  void  popup_transform_dialog(
                             get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),
                             get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                             get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),
-                            get_ui_rgb_colour(BUTTON_PUSHED_COLOUR),
                             get_ui_rgb_colour(BUTTON_TEXT_COLOUR),
-                            Button_text_font, Button_text_font_size,
+                            (Font_types) Button_text_font,
+                            Button_text_font_size,
                             close_callback, (void *) popup );
 
     (void) add_widget_to_list( &popup->widgets, widget );

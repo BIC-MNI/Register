@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.27 1995-12-19 15:46:56 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.28 1996-12-09 20:21:31 david Exp $";
 #endif
 
 #include  <register.h>
@@ -334,7 +334,8 @@ public  BOOLEAN   convert_pixel_to_voxel(
                          &x_translation, &y_translation, &x_scale, &y_scale );
 
     in_volume = convert_slice_pixel_to_voxel(
-                    volume, x_pixel, y_pixel, origin, x_axis, y_axis,
+                    volume, (Real) x_pixel, (Real) y_pixel,
+                    origin, x_axis, y_axis,
                     x_translation, y_translation, x_scale, y_scale,
                     voxel_position );
 

@@ -16,7 +16,7 @@
 #define  DEF_UI_COLOURS
 
 #ifndef lint
-static char ui_colours_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_colours.h,v 1.5 1995-07-31 19:54:17 david Exp $";
+static char ui_colours_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_colours.h,v 1.6 1996-12-09 20:21:42 david Exp $";
 #endif
 
 typedef  enum
@@ -26,7 +26,6 @@ typedef  enum
     BUTTON_ACTIVE_COLOUR,
     BUTTON_SELECTED_COLOUR,
     BUTTON_INACTIVE_COLOUR,
-    BUTTON_PUSHED_COLOUR,
     BUTTON_TEXT_COLOUR,
     TEXT_ENTRY_ACTIVE_COLOUR,
     TEXT_ENTRY_SELECTED_COLOUR,

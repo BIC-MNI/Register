@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/slices/slices.c,v 1.4 1995-10-02 18:34:57 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/slices/slices.c,v 1.5 1996-12-09 20:21:57 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -138,10 +138,10 @@ public  void  set_merged_activity(
 }
 
 public  BOOLEAN   get_voxel_under_mouse(
-    UI_struct     *ui_info,
-    int           event_viewport_index,
-    int           *volume,
-    Real          voxel_position[N_DIMENSIONS] )
+    UI_struct        *ui_info,
+    Viewport_types   event_viewport_index,
+    int              *volume,
+    Real             voxel_position[N_DIMENSIONS] )
 {
     int        view, x_mouse, y_mouse;
 

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_callbacks.c,v 1.6 1995-10-02 18:34:50 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_callbacks.c,v 1.7 1996-12-09 20:21:49 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -162,7 +162,7 @@ public  BOOLEAN  execute_event_callback_functions(
     event_callback_list_struct   *callback_list,
     int                          mouse_x,
     int                          mouse_y,
-    int                          event_viewport_index,
+    Viewport_types               event_viewport_index,
     int                          key_pressed )
 {
     event_callback_struct          *callback;

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample_popup.c,v 1.6 1995-10-02 18:34:57 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample_popup.c,v 1.7 1996-12-09 20:21:56 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -59,8 +59,8 @@ public  void  initialize_resample_popup(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    cancel_button_callback, (void *) data );
 
     (void) add_widget_to_list( &data->popup.widgets, widget );

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/utilities.c,v 1.7 1995-10-02 18:35:03 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/utilities.c,v 1.8 1996-12-09 20:22:05 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -46,17 +46,10 @@ public  void  position_rectangle(
     int                x_size,
     int                y_size )
 {
-    Point_x(polygons->points[0]) = x;
-    Point_y(polygons->points[0]) = y;
-
-    Point_x(polygons->points[1]) = x + x_size - 1;
-    Point_y(polygons->points[1]) = y;
-
-    Point_x(polygons->points[2]) = x + x_size - 1;
-    Point_y(polygons->points[2]) = y + y_size - 1;
-
-    Point_x(polygons->points[3]) = x;
-    Point_y(polygons->points[3]) = y + y_size - 1;
+    fill_Point( polygons->points[0], x, y, 0.0 );
+    fill_Point( polygons->points[1], x + x_size - 1, y, 0.0 );
+    fill_Point( polygons->points[2], x + x_size - 1, y + y_size - 1, 0.0 );
+    fill_Point( polygons->points[3], x, y + y_size - 1, 0.0 );
 }
 
 public  object_struct  *create_text(
@@ -90,10 +83,9 @@ public  void  position_text(
     height = G_get_text_height( text->font, text->size );
 
     x = x;
-    y = y + (y_size - height) / 2.0;
+    y = y + ROUND( ((Real) y_size - height) / 2.0 );
 
-    Point_x(text->origin) = x;
-    Point_y(text->origin) = y;
+    fill_Point( text->origin, x, y, 0.0 );
 }
 
 public  void  position_text_centred(
@@ -108,11 +100,8 @@ public  void  position_text_centred(
     width = G_get_text_length( text->string, text->font, text->size );
     height = G_get_text_height( text->font, text->size );
 
-    x = x + (x_size - width) / 2.0;
-    y = y + (y_size - height) / 2.0;
-
-    Point_x(text->origin) = x;
-    Point_y(text->origin) = y;
+    fill_Point( text->origin, (Real) x + ((Real) x_size - width) / 2.0,
+                              (Real) y + ((Real) y_size - height) / 2.0, 0 );
 }
 
 public  BOOLEAN  get_toggle_button_state(

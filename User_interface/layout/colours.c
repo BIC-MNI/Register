@@ -13,21 +13,20 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/layout/colours.c,v 1.9 1995-10-02 18:34:53 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/layout/colours.c,v 1.10 1996-12-09 20:21:52 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 static  Colour  colours[N_UI_COLOURS];
 
-public  void  initialize_ui_colours()
+public  void  initialize_ui_colours( void )
 {
     colours[BACKGROUND_COLOUR]          = Default_UI_background_colour;
     colours[DIVIDER_COLOUR]             = Default_divider_colour;
     colours[BUTTON_ACTIVE_COLOUR]       = Default_button_active_colour;
     colours[BUTTON_INACTIVE_COLOUR]     = Default_button_inactive_colour;
     colours[BUTTON_SELECTED_COLOUR]     = Default_button_selected_colour;
-    colours[BUTTON_PUSHED_COLOUR]       = Default_button_pushed_colour;
     colours[BUTTON_TEXT_COLOUR]         = Default_button_text_colour;
     colours[TEXT_ENTRY_ACTIVE_COLOUR]   = Default_text_entry_active_colour;
     colours[TEXT_ENTRY_SELECTED_COLOUR] = Default_text_entry_selected_colour;
@@ -116,6 +115,7 @@ public  void  set_window_colours( window_struct *window )
     if( G_get_colour_map_state(window) )
     {
         G_set_background_colour( window,
+                                 (Colour)
                                  get_ui_colour_index(BACKGROUND_COLOUR) );
     }
     else

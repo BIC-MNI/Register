@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/utilities.c,v 1.7 1995-10-02 18:34:49 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/utilities.c,v 1.8 1996-12-09 20:21:47 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 public  void  start_interaction(
     UI_struct              *ui_info,
-    int                    event_viewport_index,
+    Viewport_types         event_viewport_index,
     Event_types            terminate_event,
     event_function_type    terminate_callback,
     event_function_type    no_event_callback )
@@ -71,7 +71,7 @@ public  void  restore_mouse_position(
 
 public  void  get_viewport_mouse_position(
     graphics_window_struct    *graphics_window,
-    int                       event_viewport_index,
+    Viewport_types            event_viewport_index,
     int                       *x_mouse,
     int                       *y_mouse )
 {

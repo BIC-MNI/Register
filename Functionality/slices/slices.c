@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.19 1995-12-19 15:46:58 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.20 1996-12-09 20:21:34 david Exp $";
 #endif
 
 #include  <register.h>
@@ -23,7 +23,7 @@ private   int         y_axes[] = { Z, Z, Y };
 private   BOOLEAN     x_axes_flip[] = { FALSE, FALSE, FALSE };
 private   BOOLEAN     y_axes_flip[] = { FALSE, FALSE, FALSE };
 
-private  void  check_axes_assigned()
+private  void  check_axes_assigned( void )
 {
     private  BOOLEAN  first = TRUE;
 
@@ -119,14 +119,14 @@ public  void  get_slice_plane(
     origin[axis] = slice_position[axis];
 
     if( x_flip )
-        x_axis[x_index] = -SIGN(separations[x_index]);
+        x_axis[x_index] = -FSIGN(separations[x_index]);
     else
-        x_axis[x_index] = SIGN(separations[x_index]);
+        x_axis[x_index] = FSIGN(separations[x_index]);
 
     if( y_flip )
-        y_axis[y_index] = -SIGN(separations[y_index]);
+        y_axis[y_index] = -FSIGN(separations[y_index]);
     else
-        y_axis[y_index] = SIGN(separations[y_index]);
+        y_axis[y_index] = FSIGN(separations[y_index]);
 }
 
 public  int  get_slice_viewport_index( int volume, int view )

@@ -16,34 +16,13 @@
 #define  DEF_UI_STRUCT
 
 #ifndef lint
-static char ui_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_struct.h,v 1.13 1995-12-11 19:31:32 david Exp $";
+static char ui_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_struct.h,v 1.14 1996-12-09 20:21:43 david Exp $";
 #endif
 
 #include  <common_include.h>
 #include  <graphics_window.h>
 #include  <widgets.h>
-
-typedef  enum
-{
-    Main_menu_viewport,
-    RMS_error_viewport,
-    Volume_1_tags_viewport,
-    Volume_2_tags_viewport,
-    Tag_names_viewport,
-    Volume_1_menu_viewport,
-    Volume_2_menu_viewport,
-    Merged_menu_viewport,
-    Main_volume_1_separator_viewport,
-    Volume_1_2_separator_viewport,
-    Volume_2_merged_separator_viewport,
-    Slice_1_2_separator_viewport,
-    Slice_2_3_separator_viewport,
-    Slice_3_menu_separator_viewport,
-    Tag_volume_menu_separator_viewport,
-    N_UI_viewports,
-    Whole_window_event_viewport = N_UI_viewports,
-    N_VIEWPORT_TYPES
-} Viewport_types;
+#include  <viewports.h>
 
 typedef struct
 {
@@ -70,7 +49,7 @@ typedef  struct
     int                      volume_panel_height;
     int                      divider_width;
 
-    int                      interaction_viewport_index;
+    Viewport_types           interaction_viewport_index;
     int                      x_mouse_start;
     int                      y_mouse_start;
     int                      prev_y_mouse;

@@ -16,7 +16,7 @@
 #define  DEF_WIDGETS
 
 #ifndef lint
-static char widgets_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/widgets.h,v 1.6 1995-07-31 19:54:18 david Exp $";
+static char widgets_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/widgets.h,v 1.7 1996-12-09 20:21:44 david Exp $";
 #endif
 
 #include  <events.h>
@@ -29,11 +29,13 @@ typedef  enum { BUTTON,
                 N_WIDGET_TYPES } Widget_types;
 
 
-typedef  void  (*widget_callback_type) ();
+struct  widget_struct;
+
+typedef  void  (*widget_callback_type) ( struct  widget_struct *, void * );
 
 #define  DEFINE_WIDGET_CALLBACK( name )                                        \
                                                            /* ARGSUSED */      \
-         void   name( widget_struct           *widget,                         \
+         void   name( struct  widget_struct   *widget,                         \
                       void                    *callback_data )
 
 typedef  struct
@@ -48,11 +50,10 @@ typedef  struct
     text_struct              *text;
     int                      update_counter;
 
-    UI_colours               active_colour;
-    UI_colours               selected_colour;
-    UI_colours               inactive_colour;
-    UI_colours               pushed_colour;
-    UI_colours               text_colour;
+    Colour                   active_colour;
+    Colour                   selected_colour;
+    Colour                   inactive_colour;
+    Colour                   text_colour;
 
     struct  widget_struct    *next_radio_button;
 } button_struct;
@@ -72,13 +73,13 @@ typedef  struct
     object_struct            *cursor;
     text_struct              *text;
 
-    UI_colours               active_colour;
-    UI_colours               selected_colour;
-    UI_colours               inactive_colour;
-    UI_colours               text_colour;
-    UI_colours               edit_colour;
-    UI_colours               text_edit_colour;
-    UI_colours               cursor_colour;
+    Colour                   active_colour;
+    Colour                   selected_colour;
+    Colour                   inactive_colour;
+    Colour                   text_colour;
+    Colour                   edit_colour;
+    Colour                   text_edit_colour;
+    Colour                   cursor_colour;
 } text_entry_struct;
 
 typedef  struct
@@ -92,9 +93,9 @@ typedef  struct
     int                      peg_being_moved;
     int                      middle_mouse_offset;
 
-    UI_colours               active_colour;
-    UI_colours               inactive_colour;
-    UI_colours               peg_colour;
+    Colour                   active_colour;
+    Colour                   inactive_colour;
+    Colour                   peg_colour;
     Real                     peg_width;
 
     widget_callback_type     value_changed_callback[2];
@@ -110,7 +111,7 @@ typedef  struct  widget_struct
 {
     Widget_types             widget_type;
     graphics_window_struct   *graphics;
-    int                      viewport_index;
+    Viewport_types           viewport_index;
     int                      x, y, x_size, y_size;
     BOOLEAN                  active_flag;
     BOOLEAN                  selected_flag;

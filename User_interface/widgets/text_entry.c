@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/text_entry.c,v 1.16 1995-10-02 18:35:03 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/text_entry.c,v 1.17 1996-12-09 20:22:04 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -109,8 +109,8 @@ private  void      recreate_text_entry_text(
         if( get_object_visibility( text_entry->cursor ))
         {
             position_rectangle( get_polygons_ptr( text_entry->cursor),
-                                widget->x + cursor_pos, widget->y,
-                                Text_entry_cursor_size, widget->y_size );
+                                widget->x + (int) cursor_pos, widget->y,
+                                (int) Text_entry_cursor_size, widget->y_size );
         }
     }
 }
@@ -190,6 +190,7 @@ private  void  add_character_to_text_entry(
     case DELETE_KEY:
     case BACKSPACE_KEY:
         delete_character_in_text_entry( text_entry );
+        break;
 
     default:
         if( key >= ' ' && key < 127 )
@@ -239,7 +240,7 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )
     }
 
     set_viewport_update_flag( &widget->graphics->graphics,
-                              widget->viewport_index, NORMAL_PLANES );
+                              (int) widget->viewport_index, NORMAL_PLANES );
 }
 
 /* ARGSUSED */
@@ -269,7 +270,7 @@ private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
     update_text_entry_colours( widget );
 
     set_viewport_update_flag( &widget->graphics->graphics,
-                              widget->viewport_index, NORMAL_PLANES );
+                              (int) widget->viewport_index, NORMAL_PLANES );
 
     set_event_viewport_callback_enabled(
                        &widget->graphics->event_viewports,
@@ -337,7 +338,7 @@ public  void  set_text_entry_string(
     recreate_text_entry_text( widget );
 
     set_viewport_update_flag( &widget->graphics->graphics,
-                              widget->viewport_index, NORMAL_PLANES );
+                              (int) widget->viewport_index, NORMAL_PLANES );
 }
 
 public  void  restore_text_entry_string(
@@ -355,7 +356,7 @@ public  void  update_text_entry_colours(
     BOOLEAN            colour_map_state;
     polygons_struct    *cursor_polygons;
     text_entry_struct  *text_entry;
-    UI_colours         rectangle_colour, text_colour;
+    Colour             rectangle_colour, text_colour;
 
     text_entry = get_widget_text_entry( widget );
 
@@ -387,11 +388,11 @@ public  void  update_text_entry_colours(
     if( widget->use_ui_colours )
     {
         text_entry->polygons->colours[0] = get_ui_colour( colour_map_state,
-                                                      rectangle_colour );
+                                              (UI_colours) rectangle_colour );
         text_entry->text->colour = get_ui_colour( colour_map_state,
-                                                  text_colour );
+                                                  (UI_colours) text_colour );
         cursor_polygons->colours[0] = get_ui_colour( colour_map_state,
-                                                   text_entry->cursor_colour );
+                                   (UI_colours) text_entry->cursor_colour );
     }
     else
     {
@@ -431,7 +432,8 @@ private  void  create_text_entry_graphics(
     text_entry->polygons = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
-                            widget->viewport_index, NORMAL_PLANES, object );
+                            (int) widget->viewport_index, NORMAL_PLANES,
+                            object );
 
     /*  create cursor rectangle */
 
@@ -440,7 +442,8 @@ private  void  create_text_entry_graphics(
     text_entry->cursor = object;
 
     add_object_to_viewport( &widget->graphics->graphics,
-                            widget->viewport_index, NORMAL_PLANES, object );
+                            (int) widget->viewport_index, NORMAL_PLANES,
+                            object );
 
     /*  create text object */
 
@@ -453,7 +456,8 @@ private  void  create_text_entry_graphics(
     update_text_entry_colours( widget ); 
 
     add_object_to_viewport( &widget->graphics->graphics,
-                            widget->viewport_index, NORMAL_PLANES, object );
+                            (int) widget->viewport_index, NORMAL_PLANES,
+                            object );
 }
 
 /* ARGSUSED */
@@ -471,7 +475,7 @@ public  void  delete_text_entry(
 
 private  widget_struct  *create_a_text_entry(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -480,13 +484,13 @@ private  widget_struct  *create_a_text_entry(
     BOOLEAN                    clear_text_when_selected,
     STRING                     initial_text,
     BOOLEAN                    initial_activity,
-    UI_colours                 active_colour,
-    UI_colours                 selected_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 text_colour,
-    UI_colours                 edit_colour,
-    UI_colours                 text_edit_colour,
-    UI_colours                 cursor_colour,
+    Colour                     active_colour,
+    Colour                     selected_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
+    Colour                     edit_colour,
+    Colour                     text_edit_colour,
+    Colour                     cursor_colour,
     Font_types                 text_font,
     Real                       font_size,
     widget_callback_type       hit_return_callback,
@@ -544,7 +548,7 @@ private  widget_struct  *create_a_text_entry(
 
 public  widget_struct  *create_text_entry(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
@@ -552,13 +556,13 @@ public  widget_struct  *create_text_entry(
     BOOLEAN                    clear_text_when_selected,
     STRING                     initial_text,
     BOOLEAN                    initial_activity,
-    UI_colours                 active_colour,
-    UI_colours                 selected_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 text_colour,
-    UI_colours                 edit_colour,
-    UI_colours                 text_edit_colour,
-    UI_colours                 cursor_colour,
+    Colour                     active_colour,
+    Colour                     selected_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
+    Colour                     edit_colour,
+    Colour                     text_edit_colour,
+    Colour                     cursor_colour,
     Font_types                 text_font,
     Real                       font_size,
     widget_callback_type       hit_return_callback,
@@ -576,17 +580,17 @@ public  widget_struct  *create_text_entry(
 
 public  widget_struct  *create_label(
     graphics_window_struct     *graphics,
-    int                        viewport_index,
+    Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
     int                        y_size,
     STRING                     initial_text,
     BOOLEAN                    initial_activity,
-    UI_colours                 active_colour,
-    UI_colours                 selected_colour,
-    UI_colours                 inactive_colour,
-    UI_colours                 text_colour,
+    Colour                     active_colour,
+    Colour                     selected_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
     Font_types                 text_font,
     Real                       font_size )
 {
@@ -594,7 +598,7 @@ public  widget_struct  *create_label(
                          TRUE, FALSE,
                          initial_text, initial_activity, active_colour,
                          selected_colour, inactive_colour, text_colour,
-                         (UI_colours) 0, (UI_colours) 0, (UI_colours) 0,
+                         0, 0, 0,
                          text_font, font_size,
                          (widget_callback_type) 0, (void *) NULL ) );
 }

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/position_widgets.c,v 1.9 1995-10-02 18:35:00 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/position_widgets.c,v 1.10 1996-12-09 20:22:01 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -91,7 +91,8 @@ public  int  add_cursor_position_widgets(
     int           x_min, x_max, y_min, y_max;
 
     get_graphics_viewport( &ui_info->graphics_window.graphics,
-                           viewport_index, &x_min, &x_max, &y_min, &y_max );
+                           (int) viewport_index,
+                           &x_min, &x_max, &y_min, &y_max );
 
     x = Interface_x_spacing;
     y = y_max - y_min - 1 - Interface_y_spacing - Text_entry_height;;
@@ -103,7 +104,7 @@ public  int  add_cursor_position_widgets(
                   "V:", OFF, LABEL_ACTIVE_COLOUR,
                   LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size ) );
+                  (Font_types) Label_text_font, Label_text_font_size ) );
 
     widget_indices[VOXEL_LABEL] = 0;
 
@@ -123,7 +124,7 @@ public  int  add_cursor_position_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_x_voxel_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[Y_VOXEL_TEXT] = add_widget_to_list(
@@ -138,7 +139,7 @@ public  int  add_cursor_position_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_y_voxel_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[Z_VOXEL_TEXT] = add_widget_to_list(
@@ -153,7 +154,7 @@ public  int  add_cursor_position_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_z_voxel_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[WORLD_LABEL] = add_widget_to_list(
@@ -164,7 +165,8 @@ public  int  add_cursor_position_widgets(
                   "W:", OFF, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size ) ) - start_index;
+                  (Font_types) Label_text_font, Label_text_font_size ) ) -
+                  start_index;
 
     x_start = x_start + 3 * dx + Position_values_separation +
               Position_label_width + Position_values_separation;
@@ -181,7 +183,7 @@ public  int  add_cursor_position_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_x_world_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[Y_WORLD_TEXT] = add_widget_to_list(
@@ -196,7 +198,7 @@ public  int  add_cursor_position_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_y_world_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[Z_WORLD_TEXT] = add_widget_to_list(
@@ -211,7 +213,7 @@ public  int  add_cursor_position_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_z_world_callback, (void *) NULL ) ) - start_index;
 
     *height = Text_entry_height;

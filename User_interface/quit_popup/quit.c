@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/quit_popup/quit.c,v 1.7 1995-10-02 18:34:56 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/quit_popup/quit.c,v 1.8 1996-12-09 20:21:55 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -77,9 +77,9 @@ public  void  popup_quit_confirm(
     {
         object = create_object( TEXT );
         text = get_text_ptr( object );
-        fill_Point( point, x, y - Message_font_size, 0.0);
+        fill_Point( point, x, (Real) y - Message_font_size, 0.0);
         initialize_text( text, &point, Message_text_colour,
-                         Message_font, Message_font_size );
+                         (Font_types) Message_font, Message_font_size );
 
         replace_string( &text->string,
                         create_string("The tag points have not been saved.") );
@@ -87,21 +87,21 @@ public  void  popup_quit_confirm(
         add_object_to_viewport( &popup->graphics.graphics, 0, NORMAL_PLANES,
                                 object );
 
-        y -= Message_font_size + Interface_y_spacing;
+        y -= (int) Message_font_size + (int) Interface_y_spacing;
     }
 
     object = create_object( TEXT );
     text = get_text_ptr( object );
-    fill_Point( point, x, y - Message_font_size, 0.0);
+    fill_Point( point, x, (Real) y - Message_font_size, 0.0);
     initialize_text( text, &point, Message_text_colour,
-                     Message_font, Message_font_size );
+                     (Font_types) Message_font, Message_font_size );
 
     replace_string( &text->string, create_string("Do you want to quit?") );
 
     add_object_to_viewport( &popup->graphics.graphics, 0, NORMAL_PLANES,
                             object );
 
-    y -= Message_font_size + Interface_y_spacing;
+    y -= (int) Message_font_size + (int) Interface_y_spacing;
 
     initialize_widget_list( &popup->widgets );
 
@@ -113,9 +113,9 @@ public  void  popup_quit_confirm(
                             BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,
-                            BUTTON_PUSHED_COLOUR,
                             BUTTON_TEXT_COLOUR,
-                            Button_text_font, Button_text_font_size,
+                            (Font_types) Button_text_font,
+                            Button_text_font_size,
                             quit_button_callback, (void *) popup );
     (void) add_widget_to_list( &popup->widgets, widget );
 
@@ -127,9 +127,9 @@ public  void  popup_quit_confirm(
                             BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,
-                            BUTTON_PUSHED_COLOUR,
                             BUTTON_TEXT_COLOUR,
-                            Button_text_font, Button_text_font_size,
+                            (Font_types) Button_text_font,
+                            Button_text_font_size,
                             dont_quit_button_callback, (void *) popup );
     (void) add_widget_to_list( &popup->widgets, widget );
 }

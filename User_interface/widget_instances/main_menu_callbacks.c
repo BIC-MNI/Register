@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.34 1995-12-19 15:47:05 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.35 1996-12-09 20:21:59 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -304,8 +304,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    quit_button_callback, (void *) 0 ) );
 
     widget_indices[RESAMPLE_BUTTON] = add_widget_to_list(
@@ -317,8 +317,8 @@ public  void  add_main_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    resample_and_load_button_callback, (void *) 0 ) );
 
     widget_indices[RESAMPLE_FILENAME_ENTRY] = add_widget_to_list(
@@ -333,7 +333,7 @@ public  void  add_main_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        resample_filename_callback, (void *) 0 ) );
 
     widget_indices[SYNC_VOLUMES_BUTTON] = add_widget_to_list(
@@ -345,8 +345,8 @@ public  void  add_main_widgets(
                    "Synced",
                    ui_info->volumes_synced, ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    sync_volumes_button_callback, (void *) 0 ) );
 
 
@@ -359,8 +359,8 @@ public  void  add_main_widgets(
                    G_get_colour_map_state(ui_info->graphics_window.window),
                    FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    colour_mode_button_callback, (void *) 0 ) );
 
     widget_indices[DOUBLE_BUFFER_BUTTON] = add_widget_to_list(
@@ -372,8 +372,8 @@ public  void  add_main_widgets(
                    G_get_double_buffer_state(ui_info->graphics_window.window),
                    G_can_switch_double_buffering(), TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    double_buffer_button_callback, (void *) 0 ) );
 
     widget_indices[LOAD_TAGS_BUTTON] = add_widget_to_list(
@@ -385,8 +385,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    load_tags_button_callback, (void *) 0 ) );
 
     widget_indices[TAGS_FILENAME_ENTRY] = add_widget_to_list(
@@ -401,7 +401,7 @@ public  void  add_main_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        tags_filename_hit_return_callback, (void *) 0 ) );
 
     widget_indices[SAVE_TAGS_BUTTON] = add_widget_to_list(
@@ -413,8 +413,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    save_tags_button_callback, (void *) 0 ) );
 
     widget_indices[SAVE_TRANSFORM_BUTTON] = add_widget_to_list(
@@ -426,8 +426,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    save_transform_button_callback, (void *) 0 ) );
 
     widget_indices[TRANSFORM_FILENAME_ENTRY] = add_widget_to_list(
@@ -442,7 +442,7 @@ public  void  add_main_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        transform_filename_hit_return_callback, (void *) 0 ) );
 
     widget_indices[RECORD_TAG_BUTTON] = add_widget_to_list(
@@ -454,8 +454,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    record_tag_button_callback, (void *) 0 ) );
 
     widget_indices[DELETE_TAG_BUTTON] = add_widget_to_list(
@@ -467,8 +467,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    delete_tag_button_callback, (void *) 0 ) );
 
     widget_indices[DELETE_ALL_TAGS_BUTTON] = add_widget_to_list(
@@ -480,8 +480,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    delete_all_tags_button_callback, (void *) 0 ) );
 
     widget_indices[TRANSFORM_TYPE_BUTTON] = add_widget_to_list(
@@ -493,8 +493,8 @@ public  void  add_main_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    transform_type_callback, (void *) 0 ) );
 
     widget_indices[TAG_VISIBILITY_BUTTON] = add_widget_to_list(
@@ -507,8 +507,8 @@ public  void  add_main_widgets(
                    IF_get_tags_visibility(),
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    tag_visibility_button_callback, (void *) 0 ) );
 
     widget_indices[CURSOR_VISIBILITY_BUTTON] = add_widget_to_list(
@@ -521,8 +521,8 @@ public  void  add_main_widgets(
                    IF_get_cursor_visibility(),
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    cursor_visibility_button_callback, (void *) 0 ) );
 
     widget_indices[INTERPOLATION_BUTTON] = add_widget_to_list(
@@ -535,8 +535,8 @@ public  void  add_main_widgets(
                    IF_get_interpolation_flag(),
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    interpolation_button_callback, (void *) 0 ) );
 
     widget_indices[AVG_RMS_LABEL] = add_widget_to_list(
@@ -546,7 +546,7 @@ public  void  add_main_widgets(
                   "RMS:", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size ) );
+                  (Font_types) Label_text_font, Label_text_font_size ) );
 
     widget_indices[AVG_RMS_ERROR] = add_widget_to_list(
                   &ui_info->widget_list[Main_menu_viewport],
@@ -556,7 +556,7 @@ public  void  add_main_widgets(
                   "", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size ) );
+                  (Font_types) Label_text_font, Label_text_font_size ) );
 
     position_main_widgets( ui_info );
 

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/meter.c,v 1.6 1995-10-02 18:35:00 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/meter.c,v 1.7 1996-12-09 20:22:00 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -72,7 +72,7 @@ public  void  set_meter_position(
     x_size = (int) Point_x(meter_background->points[1]) - x + 1;
     y_size = (int) Point_y(meter_background->points[2]) - y + 1;
 
-    new_pos = ROUND( fraction_done * x_size );
+    new_pos = ROUND( fraction_done * (Real) x_size );
 
     if( new_pos != (int) Point_x(meter->points[0]) )
     {

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.18 1996-04-11 19:01:35 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.19 1996-12-09 20:21:29 david Exp $";
 #endif
 
 #include  <register.h>
@@ -32,9 +32,9 @@ private  void  read_global_files(
 
 private   main_struct      main_info;
 
-private  void    initialize_global_colours();
+private  void    initialize_global_colours( void );
 
-public  main_struct  *get_main_struct()
+public  main_struct  *get_main_struct( void )
 {
     return( &main_info );
 }
@@ -43,7 +43,6 @@ public  Status   initialize_register(
     Gwindow   window,
     STRING    executable_name )
 {
-    Status          status;
     int             volume, view;
     Bitplane_types  bitplane;
 
@@ -94,10 +93,10 @@ public  Status   initialize_register(
 
     main_info.render_storage = initialize_render_storage();
 
-    return( status );
+    return( OK );
 }
 
-public  void   terminate_register()
+public  void   terminate_register( void )
 {
     int   volume;
 
@@ -119,7 +118,7 @@ public  void   terminate_register()
     delete_general_transform( &main_info.resampling_transform );
 }
 
-private  void    initialize_global_colours()
+private  void    initialize_global_colours( void )
 {
     Overlay_colour_1 = RED;
     Overlay_colour_2 = GREEN;
@@ -144,6 +143,7 @@ private  void  read_global_files(
     runtime_directory = extract_directory( executable_name );
 
     n_directories = 0;
+    directories = NULL;
 
     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
                           HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );

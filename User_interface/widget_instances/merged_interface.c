@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/merged_interface.c,v 1.13 1995-10-02 18:34:59 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/merged_interface.c,v 1.14 1996-12-09 20:22:00 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -175,8 +175,8 @@ public  void  add_merged_widgets(
                        OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
-                       BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                       Button_text_font, Button_text_font_size,
+                       BUTTON_TEXT_COLOUR,
+                       (Font_types) Button_text_font, Button_text_font_size,
                        one_on_two_callback, (void *) NULL ) );
 
     x += Colour_bar_button_width + Interface_x_spacing;
@@ -190,8 +190,8 @@ public  void  add_merged_widgets(
                        OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
-                       BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                       Button_text_font, Button_text_font_size,
+                       BUTTON_TEXT_COLOUR,
+                       (Font_types) Button_text_font, Button_text_font_size,
                        two_on_one_callback, (void *) NULL ) );
 
     x = Volume_menu_x_offset;
@@ -222,8 +222,8 @@ public  void  add_merged_widgets(
                        OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
-                       BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                       Button_text_font, Button_text_font_size,
+                       BUTTON_TEXT_COLOUR,
+                       (Font_types) Button_text_font, Button_text_font_size,
                        blend_callback, (void *) NULL ) );
 
     x += Colour_bar_button_width + Interface_x_spacing;
@@ -237,8 +237,8 @@ public  void  add_merged_widgets(
                        OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
-                       BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                       Button_text_font, Button_text_font_size,
+                       BUTTON_TEXT_COLOUR,
+                       (Font_types) Button_text_font, Button_text_font_size,
                        weight_callback, (void *) NULL ) );
 
     x = Volume_menu_x_offset;
@@ -255,8 +255,8 @@ public  void  add_merged_widgets(
                OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                BUTTON_SELECTED_COLOUR,
                BUTTON_INACTIVE_COLOUR,
-               BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-               Button_text_font, Button_text_font_size,
+               BUTTON_TEXT_COLOUR,
+               (Font_types) Button_text_font, Button_text_font_size,
                reset_view_callback, (void *) NULL ) );
 
     widget_indices[VALUE1_READOUT_TEXT] =
@@ -269,7 +269,7 @@ public  void  add_merged_widgets(
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   (Font_types) Label_text_font, Label_text_font_size ) );
 
     widget_indices[VALUE2_READOUT_TEXT] =
                    add_widget_to_list(
@@ -282,7 +282,7 @@ public  void  add_merged_widgets(
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   (Font_types) Label_text_font, Label_text_font_size ) );
 
     y += Volume_button_height + Interface_y_spacing;
 

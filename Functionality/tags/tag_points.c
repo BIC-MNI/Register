@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.9 1995-10-02 18:34:44 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.10 1996-12-09 20:21:38 david Exp $";
 #endif
 
 #include  <register.h>
@@ -131,8 +131,8 @@ public  BOOLEAN  get_tag_point_position(
     {
         for_less( dim, 0, N_DIMENSIONS )
         {
-            position[dim] =
-            Point_coord(main->tags.tag_points[ind].position[volume_index],dim);
+            position[dim] = (Real) Point_coord(main->tags.tag_points[ind]
+                                               .position[volume_index],dim);
         }
         exists = TRUE;
     }

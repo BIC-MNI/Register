@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/tag_points.c,v 1.19 1995-10-02 18:35:00 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/tag_points.c,v 1.20 1996-12-09 20:22:01 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -306,7 +306,7 @@ public  void  add_tag_point_widgets(
     ALLOC2D( tag_name_widget_indices, n_tag_points, N_TAG_NAME_WIDGETS );
 
     get_graphics_viewport( &ui_info->graphics_window.graphics,
-                           rms_viewport_index,
+                           (int) rms_viewport_index,
                            &x_min, &x_max, &y_min, &y_max );
 
     x_left = Tags_x_spacing;
@@ -328,8 +328,8 @@ public  void  add_tag_point_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    rms_error_callback, (void *) tag ) );
 
         rms_widget_indices[tag][RMS_ERROR_NUMBER] =
@@ -343,7 +343,7 @@ public  void  add_tag_point_widgets(
                    LABEL_SELECTED_COLOUR,
                    LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
-                   Label_text_font, Label_text_font_size ) );
+                   (Font_types) Label_text_font, Label_text_font_size ) );
 
         position_widgets_indices[0][tag][WORLD_POSITION_BUTTON] =
                    add_widget_to_list(
@@ -355,8 +355,8 @@ public  void  add_tag_point_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    world1_button_callback, (void *) tag ) );
 
 
@@ -375,7 +375,7 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        world_x_position1_callback, (void *) tag ) );
 
         x += Tag_position_width + Position_values_separation;
@@ -393,7 +393,7 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        world_y_position1_callback, (void *) tag ) );
 
         x += Tag_position_width + Position_values_separation;
@@ -411,7 +411,7 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        world_z_position1_callback, (void *) tag ) );
 
         x = x_left;
@@ -425,8 +425,8 @@ public  void  add_tag_point_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    world2_button_callback, (void *) tag ) );
 
 
@@ -446,7 +446,7 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        world_x_position2_callback, (void *) tag ) );
 
         x += Tag_position_width + Position_values_separation;
@@ -464,7 +464,7 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        world_y_position2_callback, (void *) tag ) );
 
         x += Tag_position_width + Position_values_separation;
@@ -482,7 +482,7 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        world_z_position2_callback, (void *) tag ) );
 
         x = x_left;
@@ -497,8 +497,8 @@ public  void  add_tag_point_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    tag_number_button_callback, (void *) tag ) );
 
         x += Tag_number_button_width + Interface_x_spacing;
@@ -513,8 +513,8 @@ public  void  add_tag_point_widgets(
                    ON,
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    tag_activity_callback, (void *) tag ) );
 
         x += Tag_activity_width + Interface_x_spacing;
@@ -532,7 +532,7 @@ public  void  add_tag_point_widgets(
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
-                       Text_entry_font, Text_entry_font_size,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
                        tag_name_callback, (void *) tag ) );
 
         x += Tag_name_width + Interface_x_spacing;
@@ -548,8 +548,8 @@ public  void  add_tag_point_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    start_tags_button_callback, (void *) NULL ) );
         }
         else if( tag == 1 )
@@ -563,8 +563,8 @@ public  void  add_tag_point_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    prev_tag_button_callback, (void *) NULL ) );
         }
         else if( tag == 2 )
@@ -578,8 +578,8 @@ public  void  add_tag_point_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    next_tag_button_callback, (void *) NULL ) );
         }
         else if( tag == n_tag_points-1 )
@@ -593,8 +593,8 @@ public  void  add_tag_point_widgets(
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    end_tags_button_callback, (void *) NULL ) );
         }
 
@@ -604,7 +604,7 @@ public  void  add_tag_point_widgets(
     update_all_tag_widgets( ui_info );
 }
 
-public  void  delete_tag_point_widgets_indices()
+public  void  delete_tag_point_widgets_indices( void )
 {
     FREE2D( rms_widget_indices );
     FREE3D( position_widgets_indices );
@@ -721,8 +721,11 @@ public  void  update_tag_widgets(
     UI_struct         *ui_info,
     int               tag )
 {
-    int      widget_index, tag_index;
-    BOOLEAN  exists, selected;
+    int              tag_index;
+    Rms_widgets      rms_widget_index;
+    Position_widgets pos_widget_index;
+    Tag_name_widgets tag_widget_index;
+    BOOLEAN          exists, selected;
 
     exists = (ui_info->tag_points.first_tag_displayed + tag <=
               IF_get_n_tag_points());
@@ -730,31 +733,31 @@ public  void  update_tag_widgets(
     tag_index = get_tag_index(ui_info,tag);
     selected = tag_index == ui_info->tag_points.current_tag_index;
 
-    for_enum( widget_index, N_RMS_WIDGETS, Rms_widgets )
+    for_enum( rms_widget_index, N_RMS_WIDGETS, Rms_widgets )
     {
         set_widget_activity_and_selected(
                 ui_info->widget_list[RMS_error_viewport].widgets
-                             [rms_widget_indices[tag][widget_index]], exists,
-                 selected );
+                             [rms_widget_indices[tag][rms_widget_index]],
+                 exists, selected );
     }
 
-    for_enum( widget_index, N_POSITION_WIDGETS, Position_widgets )
+    for_enum( pos_widget_index, N_POSITION_WIDGETS, Position_widgets )
     {
         set_widget_activity_and_selected(
               ui_info->widget_list[Volume_1_tags_viewport].
-              widgets[position_widgets_indices[0][tag][widget_index]], exists,
-              selected );
+              widgets[position_widgets_indices[0][tag][pos_widget_index]],
+              exists, selected );
         set_widget_activity_and_selected(
               ui_info->widget_list[Volume_2_tags_viewport].
-              widgets[position_widgets_indices[1][tag][widget_index]], exists,
-              selected );
+              widgets[position_widgets_indices[1][tag][pos_widget_index]],
+              exists, selected );
     }
 
-    for_enum( widget_index, N_TAG_NAME_WIDGETS, Tag_name_widgets )
+    for_enum( tag_widget_index, N_TAG_NAME_WIDGETS, Tag_name_widgets )
     {
         set_widget_activity_and_selected(
               ui_info->widget_list[Tag_names_viewport].widgets
-                     [tag_name_widget_indices[tag][widget_index]], exists,
+                     [tag_name_widget_indices[tag][tag_widget_index]], exists,
               selected );
     }
 

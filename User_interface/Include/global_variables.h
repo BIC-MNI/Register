@@ -13,7 +13,6 @@ START_GLOBALS
     DEF_GLOBAL_COLOUR( Default_button_active_colour )
     DEF_GLOBAL_COLOUR( Default_button_selected_colour )
     DEF_GLOBAL_COLOUR( Default_button_inactive_colour )
-    DEF_GLOBAL_COLOUR( Default_button_pushed_colour )
     DEF_GLOBAL_COLOUR( Default_button_text_colour )
     DEF_GLOBAL_COLOUR( Default_text_entry_active_colour )
     DEF_GLOBAL_COLOUR( Default_text_entry_selected_colour )

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/colour_bar.c,v 1.11 1995-10-02 18:34:58 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/colour_bar.c,v 1.12 1996-12-09 20:21:58 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -182,8 +182,8 @@ public  int  add_colour_bar_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    gray_scale_callback, (void *) NULL ) );
 
     widget_indices[GRAY_SCALE_BUTTON] = 0;
@@ -196,8 +196,8 @@ public  int  add_colour_bar_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    hot_metal_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[SPECTRAL_BUTTON] = add_widget_to_list(
@@ -208,8 +208,8 @@ public  int  add_colour_bar_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    spectral_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[RED_BUTTON] = add_widget_to_list(
@@ -220,8 +220,8 @@ public  int  add_colour_bar_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    red_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[GREEN_BUTTON] = add_widget_to_list(
@@ -232,8 +232,8 @@ public  int  add_colour_bar_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    green_callback, (void *) NULL ) ) - start_index;
 
     widget_indices[BLUE_BUTTON] = add_widget_to_list(
@@ -244,8 +244,8 @@ public  int  add_colour_bar_widgets(
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    blue_callback, (void *) NULL ) ) - start_index;
 
     y += Volume_button_height + Interface_y_spacing;
@@ -256,11 +256,12 @@ public  int  add_colour_bar_widgets(
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Under",
                    OFF, TRUE,
-                   volume == 0 ? VOLUME1_UNDER_COLOUR : VOLUME2_UNDER_COLOUR,
+                   (Colour) (volume == 0 ? VOLUME1_UNDER_COLOUR :
+                                           VOLUME2_UNDER_COLOUR),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    under_button_callback, (void *) NULL ) ) - start_index;
 
     x += Colour_bar_button_width + Interface_x_spacing;
@@ -285,11 +286,12 @@ public  int  add_colour_bar_widgets(
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Over",
                    OFF, TRUE,
-                   volume == 0 ? VOLUME1_OVER_COLOUR : VOLUME2_OVER_COLOUR,
+                   (Colour) (volume == 0 ? VOLUME1_OVER_COLOUR :
+                                           VOLUME2_OVER_COLOUR),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
+                   BUTTON_TEXT_COLOUR,
+                   (Font_types) Button_text_font, Button_text_font_size,
                    over_button_callback, (void *) NULL ) ) - start_index;
 
     *height = y + Colour_bar_slider_height;

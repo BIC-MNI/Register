@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/update.c,v 1.7 1995-10-02 18:35:05 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/update.c,v 1.8 1996-12-09 20:22:06 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -62,7 +62,7 @@ public  void  set_clear_and_update_flags( UI_struct  *ui_struct )
         for_enum( viewport, N_UI_viewports, Viewport_types )
         {
             set_viewport_update_flag( &ui_struct->graphics_window.graphics,
-                                      viewport, bitplane );
+                                      (int) viewport, bitplane );
         }
     }
 
@@ -78,7 +78,7 @@ public  void  set_clear_and_update_flags( UI_struct  *ui_struct )
     ui_struct->graphics_window.current_buffer = 0;
 }
 
-public  void  set_recreate_all_slice_flags()
+public  void  set_recreate_all_slice_flags( void )
 {
     int             volume, view;
 

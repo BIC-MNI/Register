@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/objects.c,v 1.8 1995-10-02 18:34:43 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/objects.c,v 1.9 1996-12-09 20:21:37 david Exp $";
 #endif
 
 #include  <register.h>
@@ -82,14 +82,17 @@ public  void  update_slice_tag_colours(
     {
         if( tag->activity )
         {
-            inside_colour = main->start_colour_index+TAG_INSIDE_COLOUR;
-            outside_colour = main->start_colour_index+TAG_OUTSIDE_COLOUR;
+            inside_colour = (Colour) (main->start_colour_index +
+                                      TAG_INSIDE_COLOUR);
+            outside_colour = (Colour) (main->start_colour_index +
+                                       TAG_OUTSIDE_COLOUR);
         }
         else
         {
-            inside_colour = main->start_colour_index+TAG_INSIDE_INACTIVE_COLOUR;
-            outside_colour = main->start_colour_index+
-                                           TAG_OUTSIDE_INACTIVE_COLOUR;
+            inside_colour = (Colour) (main->start_colour_index +
+                                      TAG_INSIDE_INACTIVE_COLOUR);
+            outside_colour = (Colour) (main->start_colour_index+
+                                       TAG_OUTSIDE_INACTIVE_COLOUR);
         }
     }
     else
@@ -159,12 +162,12 @@ private  BOOLEAN  convert_tag_to_pixel(
     if( tag->position_exists[which_volume] )
     {
         convert_original_world_to_voxel( main, which_volume,
-                                         Point_x(tag->position[which_volume]),
-                                         Point_y(tag->position[which_volume]),
-                                         Point_z(tag->position[which_volume]),
-                                         &voxel_position[X],
-                                         &voxel_position[Y],
-                                         &voxel_position[Z] );
+                                 (Real) Point_x(tag->position[which_volume]),
+                                 (Real) Point_y(tag->position[which_volume]),
+                                 (Real) Point_z(tag->position[which_volume]),
+                                 &voxel_position[X],
+                                 &voxel_position[Y],
+                                 &voxel_position[Z] );
 
         get_volume_separations( get_slice_volume(main,which_volume),
                                 separations );
@@ -174,13 +177,13 @@ private  BOOLEAN  convert_tag_to_pixel(
 
         cursor_ptr = get_volume_cursor( main, volume );
 
-        diff = ABS( voxel_position[axis] - cursor_ptr[axis] ) *
-               x_scale * ABS( separations[axis] );
+        diff = FABS( voxel_position[axis] - cursor_ptr[axis] ) *
+               x_scale * FABS( separations[axis] );
 
-        if( diff < Tag_radius_pixels )
+        if( diff < (Real) Tag_radius_pixels )
         {
             convert_voxel_to_pixel( main, volume, view, voxel_position, x, y );
-            *radius = sqrt( Tag_radius_pixels * Tag_radius_pixels -
+            *radius = sqrt( (Real) Tag_radius_pixels * (Real) Tag_radius_pixels-
                             diff * diff );
             visible = TRUE;
         }
