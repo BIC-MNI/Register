@@ -4,6 +4,7 @@ typedef  enum
 {
     QUIT_BUTTON,
     RESAMPLE_BUTTON,
+    RESAMPLE_FILENAME_ENTRY,
     SYNC_VOLUMES_BUTTON,
     INTERPOLATION_BUTTON,
     COLOUR_MODE_BUTTON,
@@ -15,6 +16,7 @@ typedef  enum
     TRANSFORM_FILENAME_ENTRY,
     RECORD_TAG_BUTTON,
     DELETE_TAG_BUTTON,
+    TAG_VISIBILITY_BUTTON,
     AVG_RMS_LABEL,
     AVG_RMS_ERROR,
     N_MAIN_WIDGETS
@@ -28,6 +30,28 @@ private  DEFINE_WIDGET_CALLBACK( quit_button_callback ) /* ARGSUSED */
 }
 
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED */
+{
+    Transform  *transform;
+    char       *filename;
+
+    filename = get_text_entry_string(
+                     get_ui_struct()->widget_list[Main_menu_viewport].widgets
+                                 [widget_indices[RESAMPLE_FILENAME_ENTRY]] );
+
+    if( blank_string( filename ) )
+        print( "You must enter a filename before pressing save.\n" );
+    else if( !IF_get_resampling_transform(&transform) )
+    {
+        print( "There are not enough tag points\n" );
+        print( "to have a resampling transformation.\n" );
+    }
+    else
+    {
+        start_resampling( get_ui_struct(), transform, filename );
+    }
+}
+
+private  DEFINE_WIDGET_CALLBACK( resample_filename_callback ) /* ARGSUSED */
 {
 }
 
@@ -79,10 +103,15 @@ private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback ) /* ARGSUSED */
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
                                  [widget_indices[TAGS_FILENAME_ENTRY]] );
 
-    IF_load_tags_file( filename );
+    if( blank_string( filename ) )
+        print( "You must enter a filename before pressing load.\n" );
+    else
+    {
+        IF_load_tags_file( filename );
 
-    get_ui_struct()->tag_points.first_tag_displayed = 0;   
-    set_current_tag_index( get_ui_struct(), 0 );
+        get_ui_struct()->tag_points.first_tag_displayed = 0;   
+        set_current_tag_index( get_ui_struct(), 0 );
+    }
 }
 
 private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback ) /* ARGSUSED */
@@ -97,7 +126,10 @@ private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback ) /* ARGSUSED */
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
                                  [widget_indices[TAGS_FILENAME_ENTRY]] );
 
-    IF_save_tags_file( filename );
+    if( blank_string( filename ) )
+        print( "You must enter a filename before pressing save.\n" );
+    else
+        IF_save_tags_file( filename );
 }
 
 private  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback ) /* ARGSUSED */
@@ -112,15 +144,18 @@ private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback ) /* ARGSUSED */
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
                                  [widget_indices[TRANSFORM_FILENAME_ENTRY]] );
 
-    IF_save_transform( filename );
+    if( blank_string( filename ) )
+        print( "You must enter a filename before pressing save.\n" );
+    else
+        IF_save_transform( filename );
 }
 
-private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
+public  void  record_tag(
+    UI_struct  *ui,
+    int        tag_index )
 {
-    int      volume, tag_index;
+    int      volume;
     Real     position[N_DIMENSIONS];
-
-    tag_index = get_current_tag_index( get_ui_struct() );
 
     if( tag_index >= IF_get_n_tag_points() )
         IF_create_new_tag_point();
@@ -129,7 +164,7 @@ private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
     {
         if( IF_volume_is_loaded( volume ) )
         {
-            IF_get_volume_world_position( volume, position );
+            IF_get_volume_original_world_position( volume, position );
             IF_set_tag_point_position( tag_index, volume, position );
         }
     }
@@ -137,7 +172,12 @@ private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
     if( tag_index == IF_get_n_tag_points() - 1 )
         ++tag_index;
 
-    set_current_tag_index( get_ui_struct(), tag_index );
+    set_current_tag_index( ui, tag_index );
+}
+
+private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
+{
+    record_tag( get_ui_struct(), get_current_tag_index(get_ui_struct()) );
 }
 
 private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback ) /* ARGSUSED */
@@ -153,6 +193,15 @@ private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback ) /* ARGSUSED */
             --tag_index;
         set_current_tag_index( get_ui_struct(), tag_index );
     }
+}
+
+private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback ) /* ARGSUSED */
+{
+    Boolean   visibility;
+
+    visibility = get_toggle_button_state( widget );
+
+    IF_set_tags_visibility( visibility );
 }
 
 public  void  add_main_widgets(
@@ -182,6 +231,21 @@ public  void  add_main_widgets(
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    resample_and_load_button_callback, (void *) 0 ) );
+
+    widget_indices[RESAMPLE_FILENAME_ENTRY] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_text_entry( &ui_info->graphics_window,
+                       Main_menu_viewport, 
+                       0, 0, Tags_filename_width, Text_entry_height,
+                       FALSE, "", ON,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
+                       TEXT_ENTRY_INACTIVE_COLOUR,
+                       TEXT_ENTRY_TEXT_COLOUR,
+                       TEXT_ENTRY_EDIT_COLOUR,
+                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
+                       TEXT_ENTRY_CURSOR_COLOUR,
+                       Text_entry_font, Text_entry_font_size,
+                       resample_filename_callback, (void *) 0 ) );
 
     widget_indices[SYNC_VOLUMES_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
@@ -329,6 +393,20 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    delete_tag_button_callback, (void *) 0 ) );
 
+    widget_indices[TAG_VISIBILITY_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_toggle_button( &ui_info->graphics_window,
+                   Main_menu_viewport, 
+                   0, 0, Button_width, Button_height,
+                   "Tags Hidden",
+                   "Tags Displayed",
+                   IF_get_tags_visibility(),
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   tag_visibility_button_callback, (void *) 0 ) );
+
     widget_indices[AVG_RMS_LABEL] = add_widget_to_list(
                   &ui_info->widget_list[Main_menu_viewport],
                   create_label( &ui_info->graphics_window, Main_menu_viewport,
@@ -369,7 +447,8 @@ public  void  position_main_widgets(
     for_enum( widget, N_MAIN_WIDGETS, Main_widgets )
     {
         if( widget == TAGS_FILENAME_ENTRY ||
-            widget == TRANSFORM_FILENAME_ENTRY )
+            widget == TRANSFORM_FILENAME_ENTRY ||
+            widget == RESAMPLE_FILENAME_ENTRY )
             x_pos = Tags_filename_x_offset;
         else
             x_pos = x;
@@ -381,6 +460,15 @@ public  void  position_main_widgets(
         y_pos -= get_widget_height( ui_info->widget_list[Main_menu_viewport].
                                                       widgets[widget] ) +
                  Interface_y_spacing;
+
+        if( widget == QUIT_BUTTON ||
+            widget == RESAMPLE_FILENAME_ENTRY ||
+            widget == DOUBLE_BUFFER_BUTTON ||
+            widget == SAVE_TAGS_BUTTON ||
+            widget == TRANSFORM_FILENAME_ENTRY )
+        {
+            y_pos -= Interface_y_spacing;
+        }
     }
 
     y_pos = Main_menu_y_offset;
@@ -413,6 +501,14 @@ public  void  set_quit_button_activity(
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[QUIT_BUTTON]], activity );
+}
+
+public  void  set_resample_button_activity(
+    UI_struct         *ui_info,
+    Boolean           activity )
+{
+    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
+                         [widget_indices[RESAMPLE_BUTTON]], activity );
 }
 
 public  void  update_avg_rms_error(
