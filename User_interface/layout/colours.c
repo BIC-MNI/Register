@@ -24,6 +24,11 @@ public  void  initialize_ui_colours()
     colours[SLIDER_ACTIVE_COLOUR]       = Default_slider_active_colour;
     colours[SLIDER_INACTIVE_COLOUR]     = Default_slider_inactive_colour;
     colours[SLIDER_PEG_COLOUR]          = Default_slider_peg_colour;
+
+    colours[VOLUME1_UNDER_COLOUR]       = Default_volume1_under_colour;
+    colours[VOLUME1_OVER_COLOUR]        = Default_volume1_over_colour;
+    colours[VOLUME2_UNDER_COLOUR]       = Default_volume2_under_colour;
+    colours[VOLUME2_OVER_COLOUR]        = Default_volume2_over_colour;
 }
 
 public  int  get_ui_colour_index(
@@ -48,13 +53,28 @@ public  Colour  get_ui_colour(
         return( get_ui_rgb_colour(colour_name) );
 }
 
+public  void  set_ui_colour(
+    UI_struct    *ui,
+    UI_colours   colour_name,
+    Colour       colour )
+{
+    colours[colour_name] = colour;
+
+    if( G_get_colour_map_state(ui->graphics_window.window) )
+    {
+        G_set_colour_map_entry( ui->graphics_window.window,
+                                get_ui_colour_index(colour_name),
+                                colour );
+    }
+}
+
 private  void  set_window_colours( window_struct *window )
 {
     UI_colours  colour_name;
 
-    for_enum( colour_name, N_UI_COLOURS, UI_colours )
+    if( G_get_colour_map_state(window) )
     {
-        if( G_get_colour_map_state(window) )
+        for_enum( colour_name, N_UI_COLOURS, UI_colours )
         {
             G_set_colour_map_entry( window,
                                     get_ui_colour_index(colour_name),
