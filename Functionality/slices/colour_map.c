@@ -280,7 +280,7 @@ public  void   update_colour_maps(
                 update_merged_rgb_colour_maps( main );
         }
     }
-    else
+    else if( is_volume_active( main, volume ) )
     {
         if( G_get_colour_map_state( main->window ) )
             update_cmode_colour_maps( main, volume );
@@ -308,6 +308,7 @@ public  void  repartition_colour_maps(
 
     max_colours_1 = max_value1 - min_value1 + 1;
     max_colours_2 = max_value2 - min_value2 + 1;
+
     max_colours_merged = max_colours_1 * max_colours_2;
 
     n_merged = Merged_colour_table_fraction * total_colours;
@@ -380,9 +381,13 @@ public  void  repartition_colour_maps(
     main->merged.n_colour_entries2 = n_merged_2;
 
     for_less( volume, 0, N_VOLUMES )
-        update_cmode_indices( main, volume );
+    {
+        if( is_volume_active( main, volume ) )
+            update_cmode_indices( main, volume );
+    }
 
-    update_merged_cmode_indices( main );
+    if( main->merged.active_flag )
+        update_merged_cmode_indices( main );
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
         set_recreate_3_slices_flags( main, volume );

@@ -267,8 +267,11 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    sync_volumes_button_callback, (void *) 0 ) );
 
+/*
     colour_map_toggle_activity = (G_get_n_colour_map_entries(
              ui_info->graphics_window.window) >= Min_colour_map_size);
+*/
+    colour_map_toggle_activity = TRUE;
 
     widget_indices[COLOUR_MODE_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],

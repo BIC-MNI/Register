@@ -135,7 +135,7 @@ private  void  volume_has_been_loaded(
 public  void  cancel_loading(
     load_struct    *data )
 {
-    cancel_volume_input( data->volume, &data->input );
+    delete_volume( data->volume );
 
     delete_popup_interaction( data );
 }

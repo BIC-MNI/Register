@@ -36,6 +36,8 @@ public  Status   initialize_user_interface( UI_struct  *ui )
 
     G_set_colour_map_state( ui->graphics_window.window, !initial_rgb );
 
+    set_start_colour_table( ui );
+
     G_set_automatic_clear_state( ui->graphics_window.window, OFF );
 
     initialize_graphics_struct( &ui->graphics_window.graphics );

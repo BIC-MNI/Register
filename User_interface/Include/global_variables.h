@@ -7,6 +7,7 @@ START_GLOBALS
     DEF_GLOBAL( Initial_interpolation_state, BOOLEAN, FALSE )
 
     DEF_GLOBAL( Colour_table_start, int, 256 )
+    DEF_GLOBAL( Colour_table_8bit_start, int, 32 )
     DEF_GLOBAL( Default_UI_background_colour, Colour, DARK_SLATE_BLUE )
     DEF_GLOBAL( Default_divider_colour, Colour, WHITE )
     DEF_GLOBAL( Default_button_active_colour, Colour, YELLOW )

@@ -32,10 +32,22 @@ public  void  initialize_ui_colours()
     colours[VOLUME2_OVER_COLOUR]        = Default_volume2_over_colour;
 }
 
+private  int  start_colour_table = 0;
+
+public  int  set_start_colour_table(
+    UI_struct  *ui )
+{
+    if( G_get_n_colour_map_entries(ui->graphics_window.window) <=
+                Min_colour_map_size )
+        start_colour_table = Colour_table_8bit_start;
+    else
+        start_colour_table = Colour_table_start;
+}
+
 public  int  get_ui_colour_index(
     UI_colours  colour_name )
 {
-    return( colour_name + Colour_table_start );
+    return( colour_name + start_colour_table );
 }
 
 public  Colour  get_ui_rgb_colour(
@@ -97,9 +109,11 @@ public  void  set_window_colours( window_struct *window )
 
 public  void  colour_map_state_has_changed( UI_struct  *ui )
 {
+    set_start_colour_table( ui );
+
     set_window_colours( ui->graphics_window.window );
 
-    IF_colour_mode_has_toggled( Colour_table_start + N_UI_COLOURS );
+    IF_colour_mode_has_toggled( start_colour_table + N_UI_COLOURS );
 
     update_all_widget_colours( ui );
 
