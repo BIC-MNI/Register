@@ -445,7 +445,7 @@ public  void  add_main_widgets(
                   &ui_info->widget_list[Main_menu_viewport],
                   create_label( &ui_info->graphics_window, Main_menu_viewport,
                   0, 0, Avg_rms_label_width, Text_entry_height,
-                  "Avg:", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
+                  "RMS:", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   Label_text_font, Label_text_font_size ) );

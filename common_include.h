@@ -12,4 +12,6 @@
 typedef  enum  { ONE_ON_TWO, TWO_ON_ONE, BLEND_VOLUMES, WEIGHTED_VOLUMES }
                  Merge_methods;
 
+#include  <compute_xfm.h>
+
 #endif

@@ -15,6 +15,11 @@ private  DEFINE_EVENT_FUNCTION( more_input )
     }
     else
     {
+        /*  --- the following printf line seems to fix a memory leak
+            error that occurs when reading an rgb MINC file */
+            
+        printf( "" );
+
         volume_has_been_loaded( get_ui_struct(), data );
     }
 }

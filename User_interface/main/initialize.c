@@ -88,5 +88,7 @@ public  void   terminate_user_interface( UI_struct  *ui )
 
     delete_global_events();
 
+    delete_general_transform( &ui->resampling_transform );
+
     G_terminate();
 }

@@ -15,6 +15,7 @@ private  BOOLEAN  check_update_transform_and_rms_error(
 public  void  initialize_tag_points(
     main_struct      *main )
 {
+    main->tags.transform_type = (Trans_type) Default_transform_type;
     main->tags.n_tag_points = 0;
     main->tags.transform_out_of_date = TRUE;
     main->tags.transform_exists = FALSE;

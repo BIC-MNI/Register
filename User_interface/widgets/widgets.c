@@ -233,8 +233,7 @@ public  void  set_widget_selected(
 public  void  update_widget_colours(
     widget_struct  *widget )
 {
-    if( widget->use_ui_colours )
-        widget_functions[widget->widget_type].update_colours( widget );
+    widget_functions[widget->widget_type].update_colours( widget );
 }
 
 public  void  update_widget_list_colours(

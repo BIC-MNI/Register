@@ -278,7 +278,7 @@ public  void  add_tag_point_widgets(
                    &ui_info->widget_list[rms_viewport_index],
                    create_button( &ui_info->graphics_window, rms_viewport_index,
                    x, y, Rms_button_width, Tag_point_height,
-                   "RMS:",
+                   "Dst:",
                    OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,

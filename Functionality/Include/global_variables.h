@@ -2,7 +2,7 @@ START_GLOBALS
     DEF_GLOBAL( Disable_alloc_checking, BOOLEAN, TRUE )
     DEF_GLOBAL( Alloc_debugging, BOOLEAN, FALSE )
 
-    DEF_GLOBAL( Scaling_allowed, BOOLEAN, FALSE )
+    DEF_GLOBAL( Default_transform_type, int, (int) TRANS_LSQ6 )
 
     DEF_GLOBAL( Use_overlay_planes, BOOLEAN, FALSE )
     DEF_GLOBAL( Overlay_colour_1, Colour, RED )

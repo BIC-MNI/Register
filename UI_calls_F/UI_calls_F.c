@@ -449,3 +449,14 @@ public  BOOLEAN  IF_tag_points_have_been_saved()
 {
     return( get_tag_points_saved( get_main_struct() ) );
 }
+
+public  Trans_type  IF_get_transform_type()
+{
+    return( get_tag_transform_type( get_main_struct() ) );
+}
+
+public  void  IF_set_transform_type(
+    Trans_type  type )
+{
+    set_tag_transform_type( get_main_struct(), type );
+}

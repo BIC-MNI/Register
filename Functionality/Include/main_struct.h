@@ -75,6 +75,7 @@ typedef  struct
 
 typedef  struct
 {
+    Trans_type             transform_type;
     int                    n_tag_points;
     tag_point_struct       *tag_points;
     BOOLEAN                transform_out_of_date;

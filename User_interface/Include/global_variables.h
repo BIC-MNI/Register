@@ -172,6 +172,10 @@ START_GLOBALS
 
     DEF_GLOBAL( Initial_volumes_synced, BOOLEAN, FALSE )
 
+    DEF_GLOBAL( Transform_selection_x_size, int, 350 )
+    DEF_GLOBAL( Transform_selection_y_size, int, 200 )
+    DEF_GLOBAL( Transform_button_width, int, 320 )
+
     DEF_GLOBAL( Quit_x_size, int, 350 )
     DEF_GLOBAL( Quit_y_size, int, 100 )
 

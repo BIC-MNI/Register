@@ -40,9 +40,12 @@ public  Status   initialize_register( window_struct  *window )
     set_alloc_debug( Alloc_debugging );
 */
 
-    G_set_overlay_colour_map( window, 1, Overlay_colour_1 );
-    G_set_overlay_colour_map( window, 2, Overlay_colour_2 );
-    G_set_overlay_colour_map( window, 3, Overlay_colour_3 );
+    if( G_has_overlay_planes() && Use_overlay_planes )
+    {
+        G_set_overlay_colour_map( window, 1, Overlay_colour_1 );
+        G_set_overlay_colour_map( window, 2, Overlay_colour_2 );
+        G_set_overlay_colour_map( window, 3, Overlay_colour_3 );
+    }
 
     main_info.window = window;
 

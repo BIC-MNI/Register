@@ -55,6 +55,8 @@ private  void   handle_event(
     {
         shift_state = (event_type == KEY_DOWN_EVENT);
     }
+    else if( event_type == WINDOW_LEAVE_EVENT )
+        shift_state = FALSE;
     else if( !execute_global_event_callbacks( shift_state, event_type,
                                               key_pressed ) &&
         event_is_allowable( event_type ) &&

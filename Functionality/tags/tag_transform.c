@@ -19,10 +19,10 @@ private  void  recompute_tag_rms_errors(
     tag_list_struct   *tags )
 {
     int    i, n_active;
-    Real   sum, rms_error, x, y, z;
+    Real   dist, rms_error, x, y, z;
     Point  transformed;
 
-    sum = 0.0;
+    rms_error = 0.0;
     n_active = 0;
 
     for_less( i, 0, tags->n_tag_points )
@@ -35,19 +35,22 @@ private  void  recompute_tag_rms_errors(
 
         fill_Point( transformed, x, y, z );
 
-        rms_error = distance_between_points( &transformed,
+        dist = distance_between_points( &transformed,
                                              &tags->tag_points[i].position[0] );
 
-        tags->tag_points[i].rms_error = rms_error;
+        tags->tag_points[i].rms_error = dist;
 
         if( tags->tag_points[i].activity )
         {
             ++n_active;
-            sum += rms_error;
+            rms_error += dist * dist;
         }
     }
 
-    tags->avg_rms_error = sum / (Real) n_active;
+    if( n_active == 0 )
+        tags->avg_rms_error = 0.0;
+    else
+        tags->avg_rms_error = sqrt( rms_error / (Real) n_active );
 }
 
 public  void  recompute_tag_transform(
@@ -89,9 +92,9 @@ public  void  recompute_tag_transform(
 
     if( n_valid >= 4 )
     {
-        compute_transform_from_tags( n_valid, Apoints, Bpoints,
-                                     tags->transform_type,
-                                     &tags->v2_to_v1_transform );
+        safe_compute_transform_from_tags( n_valid, Apoints, Bpoints,
+                                          tags->transform_type,
+                                          &tags->v2_to_v1_transform );
         tags->transform_exists = TRUE;
         recompute_tag_rms_errors( tags );
     }

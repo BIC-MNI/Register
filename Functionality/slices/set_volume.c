@@ -148,7 +148,7 @@ public  void  set_merged_volume_activity(
     int     view, axis, sizes[N_DIMENSIONS];
     Real    position[N_DIMENSIONS];
 
-    if( activity && !main->merged.active_flag )
+    if( activity )
     {
         for_less( view, 0, N_VIEWS )
             initialize_slice_view( main, MERGED_VOLUME_INDEX, view );
@@ -156,9 +156,7 @@ public  void  set_merged_volume_activity(
         get_volume_sizes( get_slice_volume(main,0), sizes );
 
         for_less( axis, 0, N_DIMENSIONS )
-        {
             position[axis] = (Real) (sizes[axis]-1) / 2.0;
-        }
 
         set_volume_voxel_position( main, MERGED_VOLUME_INDEX, position );
     }
