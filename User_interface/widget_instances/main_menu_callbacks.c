@@ -89,16 +89,20 @@ private  DEFINE_WIDGET_CALLBACK( goto_end_tags_button_callback ) /* ARGSUSED */
 public  void  add_main_widgets(
     UI_struct         *ui_info )
 {
-    widget_indices[QUIT_BUTTON] = create_button( ui_info, Main_menu_viewport, 
+    widget_indices[QUIT_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window, Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Quit",
                    ON, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   quit_button_callback );
+                   quit_button_callback, (void *) 0 ) );
 
-    widget_indices[RESAMPLE_BUTTON] = create_button( ui_info,
+    widget_indices[RESAMPLE_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Resample", 
@@ -106,9 +110,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   resample_and_load_button_callback );
+                   resample_and_load_button_callback, (void *) 0 ) );
 
-    widget_indices[SYNC_VOLUMES_BUTTON] = create_button( ui_info,
+    widget_indices[SYNC_VOLUMES_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Sync Volumes", 
@@ -116,9 +122,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   sync_volumes_button_callback );
+                   sync_volumes_button_callback, (void *) 0 ) );
 
-    widget_indices[INTERPOLATION_BUTTON] = create_toggle_button( ui_info,
+    widget_indices[INTERPOLATION_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_toggle_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Flat", "Smooth", FALSE,
@@ -126,9 +134,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   interpolation_button_callback );
+                   interpolation_button_callback, (void *) 0 ) );
 
-    widget_indices[COLOUR_MODE_BUTTON] = create_toggle_button( ui_info,
+    widget_indices[COLOUR_MODE_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_toggle_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "RGB", "Colour Map",
@@ -137,9 +147,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   colour_mode_button_callback );
+                   colour_mode_button_callback, (void *) 0 ) );
 
-    widget_indices[DOUBLE_BUFFER_BUTTON] = create_toggle_button( ui_info,
+    widget_indices[DOUBLE_BUFFER_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_toggle_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Single", "Double",
@@ -148,9 +160,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   double_buffer_button_callback );
+                   double_buffer_button_callback, (void *) 0 ) );
 
-    widget_indices[LOAD_TAGS_BUTTON] = create_button( ui_info,
+    widget_indices[LOAD_TAGS_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Load Tags",
@@ -158,9 +172,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   load_tags_button_callback );
+                   load_tags_button_callback, (void *) 0 ) );
 
-    widget_indices[TAGS_FILENAME_ENTRY] = create_text_entry( ui_info,
+    widget_indices[TAGS_FILENAME_ENTRY] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_text_entry( &ui_info->graphics_window,
                        Main_menu_viewport, 
                        0, 0, Tags_filename_width, Text_entry_height,
                        "", ON,
@@ -171,9 +187,11 @@ public  void  add_main_widgets(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       tags_filename_hit_return_callback );
+                       tags_filename_hit_return_callback, (void *) 0 ) );
 
-    widget_indices[SAVE_TAGS_BUTTON] = create_button( ui_info,
+    widget_indices[SAVE_TAGS_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Save Tags",
@@ -181,9 +199,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   save_tags_button_callback );
+                   save_tags_button_callback, (void *) 0 ) );
 
-    widget_indices[RECORD_TAG_BUTTON] = create_button( ui_info,
+    widget_indices[RECORD_TAG_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Record Tag",
@@ -191,9 +211,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   record_tag_button_callback );
+                   record_tag_button_callback, (void *) 0 ) );
 
-    widget_indices[DELETE_TAG_BUTTON] = create_button( ui_info,
+    widget_indices[DELETE_TAG_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Delete Tag",
@@ -201,9 +223,11 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   delete_tag_button_callback );
+                   delete_tag_button_callback, (void *) 0 ) );
 
-    widget_indices[GOTO_END_TAGS_BUTTON] = create_button( ui_info,
+    widget_indices[GOTO_END_TAGS_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Goto End Tags",
@@ -211,7 +235,7 @@ public  void  add_main_widgets(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
-                   goto_end_tags_button_callback );
+                   goto_end_tags_button_callback, (void *) 0 ) );
 
     position_main_widgets( ui_info );
 }
@@ -236,9 +260,8 @@ public  void  position_main_widgets(
         else
             x_pos = x;
 
-        position_widget( ui_info->widget_list[Main_menu_viewport].widgets
-                                                             [widget],
-                         &ui_info->graphics_window.event_viewports,
+        position_widget( ui_info->
+                         widget_list[Main_menu_viewport].widgets[widget],
                          x_pos, y_pos );
 
         y_pos -= get_widget_height( ui_info->widget_list[Main_menu_viewport].

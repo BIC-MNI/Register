@@ -2,7 +2,8 @@
 
 typedef enum
 {
-    RMS_ERROR,
+    RMS_ERROR_LABEL,
+    RMS_ERROR_NUMBER,
     N_RMS_WIDGETS
 } Rms_widgets;
 
@@ -17,12 +18,14 @@ typedef enum
 
 typedef enum
 {
+    TAG_NUMBER_LABEL,
     TAG_ACTIVITY_BUTTON,
     TAG_POINT_NAME,
     N_TAG_NAME_WIDGETS
 } Tag_name_widgets;
 
-static  int  rms_tag_index;
+static  int  rms_label_index;
+static  int  rms_error_index;
 static  int  **rms_widget_indices;
 static  int  ***position_widgets_indices;
 static  int  **tag_name_widget_indices;
@@ -152,16 +155,26 @@ public  void  add_tag_point_widgets(
                            &x_min, &x_max, &y_min, &y_max );
 
     x_left = Interface_x_spacing;
-    y_top = y_max - Interface_y_spacing;
+    y_top = y_max - y_min - 1 - Interface_y_spacing;
 
     x = x_left;
     y = y_top;
 
-    rms_tag_index = add_widget_to_list(
+    rms_label_index = add_widget_to_list(
                   &ui_info->widget_list[rms_viewport_index],
                   create_label( &ui_info->graphics_window, rms_viewport_index,
                   x, y, Avg_rms_label_width, Text_entry_height,
-                  "Avg RMS:", OFF, LABEL_ACTIVE_COLOUR,
+                  "Avg:", OFF, LABEL_ACTIVE_COLOUR,
+                  LABEL_INACTIVE_COLOUR,
+                  LABEL_TEXT_COLOUR,
+                  Label_text_font, Label_text_font_size ) );
+
+    rms_label_index = add_widget_to_list(
+                  &ui_info->widget_list[rms_viewport_index],
+                  create_label( &ui_info->graphics_window, rms_viewport_index,
+                  x + Interface_x_spacing + Avg_rms_label_width, y,
+                  Avg_rms_number_width, Text_entry_height,
+                  "", OFF, LABEL_ACTIVE_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   Label_text_font, Label_text_font_size ) );
@@ -172,13 +185,25 @@ public  void  add_tag_point_widgets(
     {
         x = x_left;
 
-        rms_widget_indices[tag][RMS_ERROR] =
+        rms_widget_indices[tag][RMS_ERROR_LABEL] =
                    add_widget_to_list(
-                  &ui_info->widget_list[rms_viewport_index],
+                   &ui_info->widget_list[rms_viewport_index],
                    create_label( &ui_info->graphics_window,
                    rms_viewport_index, x, y,
                    Rms_label_width, Tag_point_height,
-                   "RMS Error:", OFF, LABEL_ACTIVE_COLOUR,
+                   "RMS:", OFF, LABEL_ACTIVE_COLOUR,
+                   LABEL_INACTIVE_COLOUR,
+                   LABEL_TEXT_COLOUR,
+                   Label_text_font, Label_text_font_size ) );
+
+        rms_widget_indices[tag][RMS_ERROR_NUMBER] =
+                   add_widget_to_list(
+                   &ui_info->widget_list[rms_viewport_index],
+                   create_label( &ui_info->graphics_window,
+                   rms_viewport_index,
+                   x + Interface_x_spacing + Rms_label_width, y,
+                   Rms_number_width, Tag_point_height,
+                   "", OFF, LABEL_ACTIVE_COLOUR,
                    LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
                    Label_text_font, Label_text_font_size ) );
@@ -316,6 +341,19 @@ public  void  add_tag_point_widgets(
 
         x = x_left;
 
+        position_widgets_indices[1][tag][TAG_NUMBER_LABEL] =
+                   add_widget_to_list(
+                   &ui_info->widget_list[names_viewport_index],
+                   create_label( &ui_info->graphics_window,
+                   names_viewport_index, x, y,
+                   Tag_number_width, Tag_point_height,
+                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   LABEL_INACTIVE_COLOUR,
+                   LABEL_TEXT_COLOUR,
+                   Label_text_font, Label_text_font_size ) );
+
+        x += Tag_number_width + Interface_x_spacing;
+
         tag_name_widget_indices[tag][TAG_ACTIVITY_BUTTON] =
                    add_widget_to_list(
                    &ui_info->widget_list[names_viewport_index],
@@ -366,8 +404,9 @@ public  void  set_tag_widgets_activity(
     int         widget_index, tag;
 
     set_widget_activity( ui_info->widget_list[RMS_error_viewport].widgets
-                                         [rms_tag_index],
-                         activity );
+                                         [rms_label_index], activity );
+    set_widget_activity( ui_info->widget_list[RMS_error_viewport].widgets
+                                         [rms_error_index], activity );
 
     for_less( tag, 0, ui_info->tag_points.n_tag_points )
     {
