@@ -14,7 +14,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.13 1995-10-02 18:34:41 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.14 1995-12-11 19:25:30 david Exp $";
 #endif
 
 #include  <register.h>
@@ -104,10 +104,11 @@ private  void   record_register_volume(
 public  void   set_register_volume(
     main_struct    *main,
     int            volume_index,
-    Volume         volume,
     STRING         filename )
 {
-    record_register_volume( main, volume_index, volume, filename );
+    record_register_volume( main, volume_index,
+                            main->trislice[volume_index].volume_being_input,
+                            filename );
 
     if( volume_index == RESAMPLED_VOLUME_INDEX )
         main->resampled_file_loaded = FALSE;
@@ -115,12 +116,14 @@ public  void   set_register_volume(
 
 public  void   set_register_resampled_volume(
     main_struct            *main,
-    Volume                 volume,
+    int                    volume_index,
     STRING                 filename,
     STRING                 original_filename,
     General_transform      *resampling_transform )
 {
-    record_register_volume( main, RESAMPLED_VOLUME_INDEX, volume, filename );
+    record_register_volume( main, RESAMPLED_VOLUME_INDEX,
+                            main->trislice[volume_index].volume_being_input,
+                            filename );
 
     main->resampled_file_loaded = TRUE;
 
@@ -197,4 +200,56 @@ public  BOOLEAN  get_merged_volume_activity(
     main_struct    *main )
 {
     return( main->merged.active_flag );
+}
+
+public  Status  start_loading_volume(
+    main_struct    *main,
+    int            volume_index,
+    STRING         filename )
+{
+    Status   status;
+
+    status = start_volume_input( filename, 3, XYZ_dimension_names,
+                              NC_BYTE, FALSE, 0.0, 0.0, TRUE,
+                              &main->trislice[volume_index].volume_being_input,
+                              (minc_input_options *) NULL,
+                              &main->trislice[volume_index].volume_input );
+
+    return( status );
+}
+
+public  BOOLEAN  load_more_of_volume(
+    main_struct    *main,
+    int            volume_index,
+    Real           max_time,
+    Real           *fraction_done )
+{
+    BOOLEAN       done_loading;
+    Real          end_time;
+
+    end_time = current_realtime_seconds() + max_time;
+
+    do
+    {
+        done_loading = !input_more_of_volume(
+                              main->trislice[volume_index].volume_being_input,
+                              &main->trislice[volume_index].volume_input,
+                              fraction_done );
+    }
+    while( !done_loading && current_realtime_seconds() < end_time );
+
+    if( done_loading )
+    {
+        delete_volume_input( &main->trislice[volume_index].volume_input );
+    }
+
+    return( done_loading );
+}
+
+public  void  cancel_loading_volume(
+    main_struct    *main,
+    int            volume_index )
+{
+    delete_volume_input( &main->trislice[volume_index].volume_input );
+    delete_volume( main->trislice[volume_index].volume_being_input );
 }

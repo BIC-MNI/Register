@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.14 1995-10-02 18:34:39 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.15 1995-12-11 19:24:27 david Exp $";
 #endif
 
 #include  <register.h>
@@ -97,6 +97,7 @@ public  Status   initialize_register( window_struct  *window )
     }
 
     main_info.resampled_file_loaded = FALSE;
+    main_info.cursor_visibility = ON;
     main_info.degrees_continuity = -1;
     create_linear_transform( &main_info.resampling_transform,
                              (Transform *) NULL );
