@@ -14,6 +14,6 @@
         if( "$n_objects" == "0" ) then
             echo $prefix/$object
         else
-            echo $prefix/$object \\
+            echo $prefix/$object \\\\
         endif
     end
