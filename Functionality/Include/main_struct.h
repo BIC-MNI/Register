@@ -22,6 +22,8 @@ typedef  struct
     Real            x_scale, y_scale;
     Real            lower_display_limits[N_DIMENSIONS-1];
     Real            upper_display_limits[N_DIMENSIONS-1];
+    Filter_types    filter_type;
+    Real            filter_width;
     Boolean         pixels_are_up_to_date;
     int             n_pixels_alloced;
     pixels_struct   *pixels;
