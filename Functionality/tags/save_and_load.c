@@ -147,7 +147,9 @@ public  Status   save_tag_points(
 
         status = output_tag_points( file, comments, n_volumes,
                                     n_valid_tags,
-                                    tags_volume1, tags_volume2, labels );
+                                    tags_volume1, tags_volume2,
+                                    (Real *) NULL, (int *) NULL, (int *) NULL,
+                                    labels );
     }
 
     if( n_valid_tags > 0 )
@@ -190,7 +192,8 @@ public  Status   load_tag_points(
 
     if( status == OK &&
         input_tag_points( file, &n_volumes, &n_tag_points, &tags_volume1,
-                          &tags_volume2, &labels ) != OK )
+                          &tags_volume2, (Real **) NULL, (int **) NULL,
+                          (int **) NULL, &labels ) != OK )
     {
         status = ERROR;
     }
@@ -221,7 +224,7 @@ public  Status   load_tag_points(
         }
 
         free_tag_points( n_volumes, n_tag_points, tags_volume1, tags_volume2,
-                         labels );
+                         (Real *) NULL, (int *) 0, (int *) 0, labels );
     }
 
     if( file_status == OK )
