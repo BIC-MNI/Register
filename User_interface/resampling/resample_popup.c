@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )  /* ARGSUSED */
 {

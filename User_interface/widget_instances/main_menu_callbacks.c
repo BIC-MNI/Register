@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 typedef  enum
 {
@@ -202,7 +202,7 @@ private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )/* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback ) /* ARGSUSED */
 {
-    Boolean   visibility;
+    BOOLEAN   visibility;
 
     visibility = get_toggle_button_state( widget );
 
@@ -212,7 +212,7 @@ private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback ) /* ARGSUSED */
 public  void  add_main_widgets(
     UI_struct         *ui_info )
 {
-    Boolean   colour_map_toggle_activity;
+    BOOLEAN   colour_map_toggle_activity;
 
     widget_indices[QUIT_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
@@ -498,7 +498,7 @@ public  void  position_main_widgets(
 
 public  void  set_transform_buttons_activity(
     UI_struct         *ui_info,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[SAVE_TRANSFORM_BUTTON]], activity );
@@ -508,7 +508,7 @@ public  void  set_transform_buttons_activity(
 
 public  void  set_quit_button_activity(
     UI_struct         *ui_info,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[QUIT_BUTTON]], activity );
@@ -516,7 +516,7 @@ public  void  set_quit_button_activity(
 
 public  void  set_resample_button_activity(
     UI_struct         *ui_info,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[RESAMPLE_BUTTON]], activity );
@@ -524,7 +524,7 @@ public  void  set_resample_button_activity(
 
 public  void  set_delete_tags_button_activity(
     UI_struct         *ui_info,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[DELETE_ALL_TAGS_BUTTON]], activity );

@@ -1,4 +1,4 @@
-#include  <def_register.h>
+#include  <register.h>
 
 public  Status  resample_the_volume(
     main_struct  *main,
@@ -7,7 +7,7 @@ public  Status  resample_the_volume(
     Status             status;
     FILE               *file;
     char               command_str[10000];
-    String             tmp_transform_filename;
+    STRING             tmp_transform_filename;
     General_transform  *transform;
 
     status = OK;

@@ -1,6 +1,6 @@
-#include  <def_register.h>
+#include  <register.h>
 
-public  Boolean  is_volume_active(
+public  BOOLEAN  is_volume_active(
     main_struct    *main,
     int            volume_index )
 {
@@ -10,7 +10,7 @@ public  Boolean  is_volume_active(
         return( main->trislice[volume_index].input_flag );
 }
 
-public  Boolean  is_resampled_volume_loaded(
+public  BOOLEAN  is_resampled_volume_loaded(
     main_struct    *main )
 {
     return( main->resampled_file_loaded );
@@ -128,7 +128,7 @@ public  void  delete_register_volume(
 
 private  void  set_merged_volume_visibility(
     main_struct    *main,
-    Boolean        visible )
+    BOOLEAN        visible )
 {
     int   view;
 
@@ -142,7 +142,7 @@ private  void  set_merged_volume_visibility(
 
 public  void  set_merged_volume_activity(
     main_struct    *main,
-    Boolean        activity )
+    BOOLEAN        activity )
 {
     int     view, axis, sizes[N_DIMENSIONS];
     Real    position[N_DIMENSIONS];
@@ -174,7 +174,7 @@ public  void  set_merged_volume_activity(
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
-public  Boolean  get_merged_volume_activity(
+public  BOOLEAN  get_merged_volume_activity(
     main_struct    *main )
 {
     return( main->merged.active_flag );

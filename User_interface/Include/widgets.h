@@ -1,9 +1,9 @@
 #ifndef  DEF_WIDGETS
 #define  DEF_WIDGETS
 
-#include  <def_events.h>
-#include  <def_graphics_window.h>
-#include  <def_ui_colours.h>
+#include  <events.h>
+#include  <graphics_window.h>
+#include  <ui_colours.h>
 
 typedef  enum { BUTTON,
                 TEXT_ENTRY,
@@ -20,9 +20,9 @@ typedef  void  (*widget_callback_type) ();
 
 typedef  struct
 {
-    Boolean                  toggle_flag;
-    Boolean                  state;
-    String                   toggle_text[2];
+    BOOLEAN                  toggle_flag;
+    BOOLEAN                  state;
+    STRING                   toggle_text[2];
     Real                     time_to_unpush;
     widget_callback_type     push_callback;
     void                     *callback_data;
@@ -41,11 +41,11 @@ typedef  struct
 
 typedef  struct
 {
-    Boolean                  label_only_flag;
-    Boolean                  in_edit_mode;
-    Boolean                  clear_text_when_selected;
-    String                   string;
-    String                   saved_string;
+    BOOLEAN                  label_only_flag;
+    BOOLEAN                  in_edit_mode;
+    BOOLEAN                  clear_text_when_selected;
+    STRING                   string;
+    STRING                   saved_string;
     int                      left_index;
     int                      string_index;
     widget_callback_type     hit_return_callback;
@@ -65,11 +65,11 @@ typedef  struct
 
 typedef  struct
 {
-    Boolean                  colour_bar_flag;
+    BOOLEAN                  colour_bar_flag;
     Real                     min_value, max_value;
-    Boolean                  values_allowed_outside_range;
+    BOOLEAN                  values_allowed_outside_range;
     Real                     values[2];
-    String                   format_string;
+    STRING                   format_string;
 
     int                      peg_being_moved;
     int                      middle_mouse_offset;
@@ -94,9 +94,9 @@ typedef  struct  widget_struct
     graphics_window_struct   *graphics;
     int                      viewport_index;
     int                      x, y, x_size, y_size;
-    Boolean                  active_flag;
-    Boolean                  selected_flag;
-    Boolean                  use_ui_colours;
+    BOOLEAN                  active_flag;
+    BOOLEAN                  selected_flag;
+    BOOLEAN                  use_ui_colours;
     union
     {
     button_struct            button;

@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  int                        n_windows = 0;
 private  graphics_window_struct     **windows;
@@ -49,7 +49,7 @@ public  void  unrecord_graphics_window(
     }
 }
 
-public  Boolean   lookup_event_viewports(
+public  BOOLEAN   lookup_event_viewports(
     window_struct           *window,
     event_viewports_struct  **event_viewports )
 {

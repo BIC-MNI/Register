@@ -1,7 +1,7 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
-#include  <def_globals.h>
+#include  <globals.h>
 
 #define   UI_GLOBALS_FILENAME   "register_UI.globals"
 
@@ -19,7 +19,7 @@ int  main(
 {
     int              n_volumes;
     char             *filename;
-    String           home_filename;
+    STRING           home_filename;
     Status           status;
 
     (void) sprintf( home_filename, "$HOME/%s", UI_GLOBALS_FILENAME );

@@ -1,14 +1,14 @@
 
-#include  <def_register.h>
+#include  <register.h>
 
 private   int         x_axes[] = { Y, X, X };
 private   int         y_axes[] = { Z, Z, Y };
-private   Boolean     x_axes_flip[] = { FALSE, FALSE, FALSE };
-private   Boolean     y_axes_flip[] = { FALSE, FALSE, FALSE };
+private   BOOLEAN     x_axes_flip[] = { FALSE, FALSE, FALSE };
+private   BOOLEAN     y_axes_flip[] = { FALSE, FALSE, FALSE };
 
 private  void  check_axes_assigned()
 {
-    private  Boolean  first = TRUE;
+    private  BOOLEAN  first = TRUE;
 
     if( first )
     {
@@ -41,8 +41,8 @@ public  void  get_slice_axes(
 
 public  void  get_slice_axes_flip(
     int       view_index,
-    Boolean   *x_axis_flip,
-    Boolean   *y_axis_flip )
+    BOOLEAN   *x_axis_flip,
+    BOOLEAN   *y_axis_flip )
 {
     check_axes_assigned();
 
@@ -135,7 +135,7 @@ public  void  set_volume_voxel_position(
     int            volume_index,
     Real           position[N_DIMENSIONS] )
 {
-    Boolean        changed;
+    BOOLEAN        changed;
     Volume         volume;
     int            view, axis, sizes[N_DIMENSIONS];
     Real           pos;
@@ -305,7 +305,7 @@ public  void  convert_original_world_to_voxel(
     Real           *y_voxel,
     Real           *z_voxel )
 {
-    Real   x_world, y_world, z_world;
+    Real   x_world, y_world, z_world, voxel[MAX_DIMENSIONS];
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
@@ -321,8 +321,11 @@ public  void  convert_original_world_to_voxel(
     }
 
     convert_world_to_voxel( get_slice_volume(main,volume_index),
-                            x_world, y_world, z_world,
-                            x_voxel, y_voxel, z_voxel );
+                            x_world, y_world, z_world, voxel );
+
+    *x_voxel = voxel[X];
+    *y_voxel = voxel[Y];
+    *z_voxel = voxel[Z];
 }
 
 public  void  convert_voxel_to_original_world(
@@ -335,10 +338,14 @@ public  void  convert_voxel_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
-    Real   world_position[N_DIMENSIONS];
+    Real   voxel[MAX_DIMENSIONS], world_position[N_DIMENSIONS];
+
+    voxel[X] = x_voxel;
+    voxel[Y] = y_voxel;
+    voxel[Z] = z_voxel;
 
     convert_voxel_to_world( get_slice_volume(main,volume_index),
-                            x_voxel, y_voxel, z_voxel,
+                            voxel,
                             &world_position[X],
                             &world_position[Y],
                             &world_position[Z] );

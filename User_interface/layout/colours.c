@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 static  Colour  colours[N_UI_COLOURS];
 
@@ -45,7 +45,7 @@ public  Colour  get_ui_rgb_colour(
 }
 
 public  Colour  get_ui_colour(
-    Boolean        colour_map_state,
+    BOOLEAN        colour_map_state,
     UI_colours     colour_name )
 {
     if( colour_map_state )

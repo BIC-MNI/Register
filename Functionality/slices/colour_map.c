@@ -1,4 +1,4 @@
-#include  <def_register.h>
+#include  <register.h>
 
 typedef  enum  { UNDER_RANGE, WITHIN_RANGE, OVER_RANGE } Range_flags;
 
@@ -24,7 +24,7 @@ private  Colour  merge_colours(
 
 private  Colour  get_merged_colour(
     Merge_methods  method,
-    Boolean        use_under_over_colour_with_weights,
+    BOOLEAN        use_under_over_colour_with_weights,
     Colour         under_colour,
     Colour         over_colour,
     Range_flags    range_flag1,

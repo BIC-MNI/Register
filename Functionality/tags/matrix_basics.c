@@ -13,7 +13,7 @@
 @CREATED    : January 31, 1992 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-#include <def_mni.h>
+#include <mni.h>
 #include <recipes.h>
 
 /* Routines defined in this file */

@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  void    set_voxel_position_callback( UI_struct *, widget_struct *,
                                               int );
@@ -193,7 +193,7 @@ public  void  set_voxel_position_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     Position_widgets       widget_index;
 

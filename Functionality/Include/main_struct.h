@@ -1,7 +1,7 @@
 #ifndef  DEF_MAIN_STRUCT
 #define  DEF_MAIN_STRUCT
 
-#include  <def_common_include.h>
+#include  <common_include.h>
 
 #define  TWO_BUFFERS            2
 #define  N_VOXEL_VALUES       256
@@ -24,7 +24,7 @@ typedef  struct
     Real            upper_display_limits[N_DIMENSIONS-1];
     Filter_types    filter_type;
     Real            filter_width;
-    Boolean         pixels_are_up_to_date;
+    BOOLEAN         pixels_are_up_to_date;
     int             n_pixels_alloced;
     pixels_struct   *pixels;
     lines_struct    *cursor_lines;
@@ -32,9 +32,9 @@ typedef  struct
 
 typedef struct
 {
-    Boolean                    input_flag;
+    BOOLEAN                    input_flag;
     Volume                     volume;
-    String                     filename;
+    STRING                     filename;
     slice_struct               slices[N_VIEWS];
     Real                       position[N_DIMENSIONS];
     unsigned short             cmode_colour_map[N_VOXEL_VALUES];
@@ -47,7 +47,7 @@ trislice_struct;
 
 typedef  struct
 {
-    Boolean                active_flag;
+    BOOLEAN                active_flag;
     slice_struct           slices[N_VIEWS];
     Real                   position[N_DIMENSIONS];
     unsigned short         **cmode_colour_map;
@@ -64,10 +64,10 @@ merged_struct;
 typedef  struct
 {
     Real                   rms_error;
-    Boolean                position_exists[N_VOLUMES];
+    BOOLEAN                position_exists[N_VOLUMES];
     Point                  position[N_VOLUMES];
-    String                 name;
-    Boolean                activity;
+    STRING                 name;
+    BOOLEAN                activity;
     object_struct          *objects[N_VOLUMES_DISPLAYED][N_VIEWS];
 } tag_point_struct;
 
@@ -75,24 +75,24 @@ typedef  struct
 {
     int                    n_tag_points;
     tag_point_struct       *tag_points;
-    Boolean                transform_out_of_date;
+    BOOLEAN                transform_out_of_date;
     General_transform      v2_to_v1_transform;
     Real                   avg_rms_error;
-    Boolean                transform_exists;
-    Boolean                saved_flag;
-    Boolean                tags_visible;
+    BOOLEAN                transform_exists;
+    BOOLEAN                saved_flag;
+    BOOLEAN                tags_visible;
 } tag_list_struct;
 
 typedef  struct
 {
     window_struct            *window;
     graphics_struct          graphics;
-    Boolean                  interpolation_flag;
+    BOOLEAN                  interpolation_flag;
     trislice_struct          trislice[N_VOLUMES];
     merged_struct            merged;
 
-    Boolean                  resampled_file_loaded;
-    String                   original_volume_filename;
+    BOOLEAN                  resampled_file_loaded;
+    STRING                   original_volume_filename;
     General_transform        resampling_transform;
 
     int                      start_colour_index;

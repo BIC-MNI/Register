@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 typedef struct
 {
@@ -243,7 +243,7 @@ public  void  popup_filter_selection(
     int                       view_start_index, height;
     Filter_types              filter_type;
     Real                      filter_width;
-    String                    window_name;
+    STRING                    window_name;
     static char               *view_names[] =
                                  { Filter_name1, Filter_name2, Filter_name3 };
 

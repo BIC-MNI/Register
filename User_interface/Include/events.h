@@ -1,7 +1,7 @@
 #ifndef  DEF_EVENTS
 #define  DEF_EVENTS
 
-#include  <def_graphics.h>
+#include  <graphics.h>
 
 typedef  void  (*event_function_type) ( int, int, void * );
 
@@ -15,7 +15,7 @@ typedef  enum  { ANY_MODIFIER, NO_SHIFT_ONLY, SHIFT_ONLY } Event_modifiers;
 
 typedef  struct
 {
-    Boolean               enabled;
+    BOOLEAN               enabled;
     Event_modifiers       modifier;
     int                   x_min, x_max, y_min, y_max;
     event_function_type   callback;

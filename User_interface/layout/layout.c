@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 public  void  initialize_layout( UI_struct  *ui_info )
 {
@@ -223,7 +223,7 @@ public  void  resize_layout( UI_struct  *ui_info )
     }
 }
 
-public  Boolean  is_slice_viewport(
+public  BOOLEAN  is_slice_viewport(
     int   view_index )
 {
     return( view_index >= N_VIEWPORT_TYPES );

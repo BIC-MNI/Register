@@ -1,11 +1,11 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
-public  Boolean  make_window_up_to_date(
+public  BOOLEAN  make_window_up_to_date(
     window_struct    *window,
     graphics_struct  *graphics,
     int              current_buffer )
 {
-    Boolean          something_was_drawn;
+    BOOLEAN          something_was_drawn;
 
     something_was_drawn = redraw_out_of_date_viewports( graphics, window,
                                                         current_buffer );

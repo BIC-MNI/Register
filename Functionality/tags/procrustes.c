@@ -11,7 +11,7 @@
 @MODIFIED   : February 7, 1992 (Peter Neelin)
                  - added routine transformations_to_homogeneous
 ---------------------------------------------------------------------------- */
-#include <def_mni.h>
+#include <mni.h>
 #include <recipes.h>
 #include <matrix_basics.h>
 

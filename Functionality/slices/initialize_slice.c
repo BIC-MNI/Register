@@ -1,4 +1,4 @@
-#include  <def_register.h>
+#include  <register.h>
 
 private  void  initialize_slice( main_struct *, int, int );
 

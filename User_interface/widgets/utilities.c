@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 public  object_struct  *create_rectangle(
     Colour       colour )
@@ -97,10 +97,10 @@ public  void  position_text_centred(
     Point_y(text->origin) = y;
 }
 
-public  Boolean  get_toggle_button_state(
+public  BOOLEAN  get_toggle_button_state(
     widget_struct  *widget )
 {
-    Boolean        state;
+    BOOLEAN        state;
     button_struct  *button;
 
     state = FALSE;
@@ -124,11 +124,11 @@ public  Boolean  get_toggle_button_state(
     return( state );
 }
 
-public  Boolean  get_text_entry_real_value(
+public  BOOLEAN  get_text_entry_real_value(
     widget_struct  *widget,
     Real           *value )
 {
-    Boolean            found;
+    BOOLEAN            found;
     double             double_value;
 
     found = FALSE;
@@ -151,7 +151,7 @@ public  void  set_text_entry_real_value(
     char              format[],
     Real              value )
 {
-    String          string;
+    STRING          string;
 
     (void) sprintf( string, format, value );
 
@@ -163,7 +163,7 @@ public  void  set_button_int_value(
     char              format[],
     int               value )
 {
-    String          string;
+    STRING          string;
 
     (void) sprintf( string, format, value );
 

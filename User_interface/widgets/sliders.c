@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  Real  convert_position_to_slider_value( slider_struct *, int, int );
 
@@ -199,8 +199,8 @@ private  DEFINE_EVENT_FUNCTION( select_both_sliders )   /* ARGSUSED */
 private  void  update_one_slider_colours(
     slider_struct   *slider,
     int             ind,
-    Boolean         use_ui_colours,
-    Boolean         colour_map_state )
+    BOOLEAN         use_ui_colours,
+    BOOLEAN         colour_map_state )
 {
     if( use_ui_colours )
     {
@@ -219,7 +219,7 @@ public  void  update_slider_colours(
     widget_struct   *widget )
 {
     UI_colours     rectangle_colour;
-    Boolean        colour_map_state;
+    BOOLEAN        colour_map_state;
     slider_struct  *slider;
 
     colour_map_state = G_get_colour_map_state( widget->graphics->window );
@@ -354,7 +354,7 @@ public  void  set_slider_values(
     Real                    low_value,
     Real                    high_value )
 {
-    Boolean          changed[2];
+    BOOLEAN          changed[2];
     slider_struct    *slider;
 
     changed[0] = FALSE;
@@ -524,14 +524,14 @@ private  widget_struct  *create_a_slider(
     int                        y,
     int                        x_size,
     int                        y_size,
-    Boolean                    colour_bar_flag,
+    BOOLEAN                    colour_bar_flag,
     Real                       initial_low_value,
     Real                       initial_high_value,
     Real                       min_value,
     Real                       max_value,
-    Boolean                    values_allowed_outside_range,
+    BOOLEAN                    values_allowed_outside_range,
     char                       format_string[],
-    Boolean                    initial_activity,
+    BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
     UI_colours                 peg_colour,
@@ -644,7 +644,7 @@ public  widget_struct  *create_slider(
     Real                       min_value,
     Real                       max_value,
     char                       format_string[],
-    Boolean                    initial_activity,
+    BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
     UI_colours                 peg_colour,
@@ -672,7 +672,7 @@ public  widget_struct  *create_colour_bar_slider(
     Real                       min_value,
     Real                       max_value,
     char                       format_string[],
-    Boolean                    initial_activity,
+    BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
     UI_colours                 peg_colour,

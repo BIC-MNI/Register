@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  void  set_readout(
     UI_struct  *ui,
@@ -51,7 +51,7 @@ private  const  NO_VOLUME = -1;
 private  void  set_readout_activity(
     UI_struct  *ui,
     int        which_volume,
-    Boolean    activity )
+    BOOLEAN    activity )
 {
     if( which_volume < N_VOLUMES )
     {

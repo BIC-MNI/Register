@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 public  void  update_position_counters(
     UI_struct  *ui_info,
@@ -96,9 +96,9 @@ public  int  get_viewport_volume_index(
 
 public  void  set_merged_activity(
     UI_struct  *ui_info,
-    Boolean    activity )
+    BOOLEAN    activity )
 {
-    Boolean  changed;
+    BOOLEAN  changed;
 
     changed = ( activity != IF_get_merged_slice_visibility());
 
@@ -119,7 +119,7 @@ public  void  set_merged_activity(
     }
 }
 
-public  Boolean   get_voxel_under_mouse(
+public  BOOLEAN   get_voxel_under_mouse(
     UI_struct     *ui_info,
     int           event_viewport_index,
     int           *volume,

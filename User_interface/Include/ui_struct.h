@@ -1,9 +1,9 @@
 #ifndef  DEF_UI_STRUCT
 #define  DEF_UI_STRUCT
 
-#include  <def_common_include.h>
-#include  <def_graphics_window.h>
-#include  <def_widgets.h>
+#include  <common_include.h>
+#include  <graphics_window.h>
+#include  <widgets.h>
 
 typedef  enum
 {
@@ -38,7 +38,7 @@ typedef  struct
 {
     graphics_window_struct   graphics_window;
 
-    Boolean                  volumes_synced;
+    BOOLEAN                  volumes_synced;
 
     widgets_struct           widget_list[N_UI_viewports];
     int                      position_text_start_index[N_VOLUMES_DISPLAYED];
@@ -59,8 +59,8 @@ typedef  struct
     Real                     slice_position_start;
 
     General_transform        resampling_transform;
-    String                   original_filename_volume_2;
-    String                   resampled_filename;
+    STRING                   original_filename_volume_2;
+    STRING                   resampled_filename;
 
     int                      which_volume_readout;
     int                      x_mouse_readout;
@@ -76,8 +76,8 @@ popup_struct;
 
 typedef  struct
 {
-    Boolean                   this_is_resampled_volume;
-    String                    filename;
+    BOOLEAN                   this_is_resampled_volume;
+    STRING                    filename;
     int                       volume_index;
     volume_input_struct       input;
     Volume                    volume;

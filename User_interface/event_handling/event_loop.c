@@ -1,11 +1,11 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  void   handle_event(
     Event_types        event_type,
     window_struct      *event_window,
     int                key_pressed );
 
-private  Boolean   quit_flag = FALSE;
+private  BOOLEAN   quit_flag = FALSE;
 
 public  void  set_quit_program_flag()
 {

@@ -1,8 +1,8 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  event_callback_list_struct    global_event_table[N_EVENT_TYPES];
 
-private  Boolean   interaction_in_progress = FALSE;
+private  BOOLEAN   interaction_in_progress = FALSE;
 
 private  Event_types  interaction_starting_events[] = {
                             LEFT_MOUSE_DOWN_EVENT,
@@ -10,12 +10,12 @@ private  Event_types  interaction_starting_events[] = {
                             RIGHT_MOUSE_DOWN_EVENT
                          };
 
-private  Boolean      event_can_start_interaction[N_EVENT_TYPES];
+private  BOOLEAN      event_can_start_interaction[N_EVENT_TYPES];
 
-public  Boolean  event_is_allowable(
+public  BOOLEAN  event_is_allowable(
     Event_types     event_type )
 {
-    static  Boolean  first = TRUE;
+    static  BOOLEAN  first = TRUE;
     int              i;
     Event_types      type;
 
@@ -33,7 +33,7 @@ public  Boolean  event_is_allowable(
 }
 
 public  void  set_interaction_in_progress(
-    Boolean  state )
+    BOOLEAN  state )
 {
     interaction_in_progress = state;
 }
@@ -47,12 +47,12 @@ private  Event_types  in_window_events[] = {
                             RIGHT_MOUSE_DOWN_EVENT
                          };
 
-private  Boolean      event_must_be_in_window[N_EVENT_TYPES];
+private  BOOLEAN      event_must_be_in_window[N_EVENT_TYPES];
 
-public  Boolean  mouse_must_be_in_window(
+public  BOOLEAN  mouse_must_be_in_window(
     Event_types     event_type )
 {
-    static  Boolean  first = TRUE;
+    static  BOOLEAN  first = TRUE;
     int              i;
     Event_types      type;
 
@@ -88,8 +88,8 @@ public  void  remove_global_event_callback(
                                     callback_data );
 }
 
-public  Boolean  execute_global_event_callbacks(
-    Boolean                 shift_state,
+public  BOOLEAN  execute_global_event_callbacks(
+    BOOLEAN                 shift_state,
     Event_types             event_type,
     int                     key_pressed )
 {

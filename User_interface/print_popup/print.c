@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 typedef  struct
 {
@@ -8,7 +8,7 @@ typedef  struct
 
 static  char     *output;
 static  int      n_chars = 0;
-static  Boolean  create_new_window = TRUE;
+static  BOOLEAN  create_new_window = TRUE;
 
 private  void  output_chars( char [] );
 private  void  create_message_popup( char [] );

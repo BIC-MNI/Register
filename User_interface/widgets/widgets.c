@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 public  void  initialize_widget_list(
     widgets_struct   *widget_list )
@@ -48,8 +48,8 @@ public  widget_struct  *create_widget(
     int                     y,
     int                     x_size,
     int                     y_size,
-    Boolean                 initial_activity,
-    Boolean                 use_ui_colours,
+    BOOLEAN                 initial_activity,
+    BOOLEAN                 use_ui_colours,
     graphics_window_struct  *graphics,
     int                     viewport_index )
 {
@@ -211,7 +211,7 @@ public  slider_struct  *get_widget_slider(
 
 public  void  set_widget_activity(
     widget_struct  *widget,
-    Boolean        activity )
+    BOOLEAN        activity )
 {
     widget->active_flag = activity;
 
@@ -223,7 +223,7 @@ public  void  set_widget_activity(
 
 public  void  set_widget_selected(
     widget_struct  *widget,
-    Boolean        selected )
+    BOOLEAN        selected )
 {
     widget->selected_flag = selected;
 

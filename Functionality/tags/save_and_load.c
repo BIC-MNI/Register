@@ -1,8 +1,8 @@
-#include  <def_register.h>
+#include  <register.h>
 
 private  void   create_tags_array(
     int                n_valid_tags,
-    Boolean            valid_tags[],
+    BOOLEAN            valid_tags[],
     int                n_tag_points,
     tag_point_struct   tag_points[],
     int                which_volume,
@@ -65,7 +65,7 @@ public  Status   save_tag_points(
     Real             **tags_volume1, **tags_volume2, ***ptr;
     char             **labels;
     tag_list_struct  *tags;
-    Boolean          *tag_is_valid, both_volumes_flag;
+    BOOLEAN          *tag_is_valid, both_volumes_flag;
     char             comments[1000];
 
     tags = &main->tags;

@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  void  volume_has_been_loaded( UI_struct  *, load_struct * );
 
@@ -37,13 +37,12 @@ public  Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
     char       filename[],
-    Boolean    this_is_resampled_volume )
+    BOOLEAN    this_is_resampled_volume )
 {
     Status        status;
     load_struct   *data;
     int           x_window, y_window;
     int           x_min, y_min, x_max, y_max;
-    static char   *dim_names[] = { MIxspace, MIyspace, MIzspace };
 
     ALLOC( data, 1 );
 
@@ -51,8 +50,10 @@ public  Status  initialize_loading_volume(
     (void) strcpy( data->filename, filename );
     data->this_is_resampled_volume = this_is_resampled_volume;
 
-    status = start_volume_input( filename, dim_names, TRUE,
-                                 &data->volume, &data->input );
+    status = start_volume_input( filename, 3, XYZ_dimension_names,
+                                 NC_BYTE, FALSE, 0.0, 0.0, TRUE,
+                                 &data->volume, (minc_input_options *) NULL,
+                                 &data->input );
 
     if( status == OK )
     {

@@ -1,4 +1,4 @@
-#include  <def_register.h>
+#include  <register.h>
 
 public  void  create_slice_pixels(
     main_struct   *main,
@@ -92,8 +92,7 @@ public  void  create_merged_pixels(
     tmp[y_axis_index] = (Real) (sizes1[y_axis_index]-1) / 2.0;
     tmp[axis] = position1[axis];
 
-    convert_voxel_to_world( volume1, tmp[X], tmp[Y], tmp[Z],
-                            &tmp[X], &tmp[Y], &tmp[Z] );
+    convert_voxel_to_world( volume1, tmp, &tmp[X], &tmp[Y], &tmp[Z] );
 
     convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
                                      tmp[X], tmp[Y], tmp[Z],
@@ -126,8 +125,7 @@ public  void  create_merged_pixels(
         convert_original_world_to_world( main, RESAMPLED_VOLUME_INDEX,
                                          tmp[X], tmp[Y], tmp[Z],
                                          &tmp[X], &tmp[Y], &tmp[Z] );
-        convert_world_to_voxel( volume1, tmp[X], tmp[Y], tmp[Z],
-                                         &tmp[X], &tmp[Y], &tmp[Z] );
+        convert_world_to_voxel( volume1, tmp[X], tmp[Y], tmp[Z], tmp );
         convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view,
                                 tmp, &x_pixel_min, &y_pixel_min );
         
@@ -144,8 +142,7 @@ public  void  create_merged_pixels(
         convert_original_world_to_world( main, RESAMPLED_VOLUME_INDEX,
                                          tmp[X], tmp[Y], tmp[Z],
                                          &tmp[X], &tmp[Y], &tmp[Z] );
-        convert_world_to_voxel( volume1, tmp[X], tmp[Y], tmp[Z],
-                                         &tmp[X], &tmp[Y], &tmp[Z] );
+        convert_world_to_voxel( volume1, tmp[X], tmp[Y], tmp[Z], tmp );
         convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view,
                                 tmp, &x_pixel_max, &y_pixel_max );
 
@@ -178,7 +175,7 @@ public  void  create_merged_pixels(
     }
 }
 
-public  Boolean   convert_pixel_to_voxel(
+public  BOOLEAN   convert_pixel_to_voxel(
     main_struct     *main,
     int             volume_index,
     int             view_index,
@@ -186,7 +183,7 @@ public  Boolean   convert_pixel_to_voxel(
     int             y_pixel,
     Real            voxel_position[N_DIMENSIONS] )
 {
-    Boolean        in_volume;
+    BOOLEAN        in_volume;
     int            x_axis_index, y_axis_index;
     Real           x_translation, y_translation, x_scale, y_scale;
     Volume         volume;
@@ -347,7 +344,7 @@ public  void  initialize_slice_view(
 {
     int            x_viewport_size, y_viewport_size;
     int            x_axis_index, y_axis_index;
-    Boolean        x_flip, y_flip;
+    BOOLEAN        x_flip, y_flip;
     Volume         volume;
     Real           x_trans, y_trans, x_scale, y_scale;
 

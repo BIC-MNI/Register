@@ -1,9 +1,9 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 public  Status   initialize_user_interface( UI_struct  *ui )
 {
     Status      status;
-    Boolean     initial_rgb;
+    BOOLEAN     initial_rgb;
 
     ui->volumes_synced = Initial_volumes_synced;
 

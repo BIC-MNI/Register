@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  void  deselect_other_radio_buttons(
     widget_struct           *widget )
@@ -19,7 +19,7 @@ private  void  deselect_other_radio_buttons(
     }
 }
 
-private  Boolean  is_radio_button(
+private  BOOLEAN  is_radio_button(
     button_struct  *button )
 {
     return( button->next_radio_button != (widget_struct *) NULL );
@@ -99,7 +99,7 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
 public  void  update_button_colours(
     widget_struct   *widget )
 {
-    Boolean        colour_map_state;
+    BOOLEAN        colour_map_state;
     UI_colours     rectangle_colour;
     button_struct  *button;
 
@@ -187,7 +187,7 @@ public  void  position_button(
 
 public  void  set_toggle_button_state(
     widget_struct    *widget,
-    Boolean          state )
+    BOOLEAN          state )
 {
     button_struct    *button;
 
@@ -277,12 +277,12 @@ private  widget_struct  *create_a_button(
     int                        y,
     int                        x_size,
     int                        y_size,
-    Boolean                    toggle_flag,
-    Boolean                    initial_state,
+    BOOLEAN                    toggle_flag,
+    BOOLEAN                    initial_state,
     char                       text1[],
     char                       text2[],
-    Boolean                    initial_activity,
-    Boolean                    use_ui_colours,
+    BOOLEAN                    initial_activity,
+    BOOLEAN                    use_ui_colours,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
@@ -351,8 +351,8 @@ public  widget_struct *create_button(
     int                        x_size,
     int                        y_size,
     char                       label[],
-    Boolean                    initial_activity,
-    Boolean                    use_ui_colours,
+    BOOLEAN                    initial_activity,
+    BOOLEAN                    use_ui_colours,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
@@ -381,9 +381,9 @@ public  widget_struct  *create_toggle_button(
     int                        y_size,
     char                       off_text[],
     char                       on_text[],
-    Boolean                    initial_state,
-    Boolean                    initial_activity,
-    Boolean                    use_ui_colours,
+    BOOLEAN                    initial_state,
+    BOOLEAN                    initial_activity,
+    BOOLEAN                    use_ui_colours,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
     UI_colours                 pushed_colour,

@@ -1,10 +1,10 @@
 START_GLOBALS
     DEF_GLOBAL_STRING( Main_window_name, "Register" )
 
-    DEF_GLOBAL( Initial_rgb_state, Boolean, FALSE )
+    DEF_GLOBAL( Initial_rgb_state, BOOLEAN, FALSE )
     DEF_GLOBAL( Min_colour_map_size, int, 1024 )
-    DEF_GLOBAL( Initial_double_buffer_state, Boolean, TRUE )
-    DEF_GLOBAL( Initial_interpolation_state, Boolean, FALSE )
+    DEF_GLOBAL( Initial_double_buffer_state, BOOLEAN, TRUE )
+    DEF_GLOBAL( Initial_interpolation_state, BOOLEAN, FALSE )
 
     DEF_GLOBAL( Colour_table_start, int, 256 )
     DEF_GLOBAL( Default_UI_background_colour, Colour, DARK_SLATE_BLUE )
@@ -169,7 +169,7 @@ START_GLOBALS
     DEF_GLOBAL( Colour_selection_y_size, int, 120 )
     DEF_GLOBAL( Colour_selection_n_across, int, 3 )
 
-    DEF_GLOBAL( Initial_volumes_synced, Boolean, FALSE )
+    DEF_GLOBAL( Initial_volumes_synced, BOOLEAN, FALSE )
 
     DEF_GLOBAL( Quit_x_size, int, 350 )
     DEF_GLOBAL( Quit_y_size, int, 100 )

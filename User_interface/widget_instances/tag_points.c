@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 typedef enum
 {
@@ -595,7 +595,7 @@ private  void  update_tag_position(
     int               volume_index,
     int               tag )
 {
-    Boolean        exists;
+    BOOLEAN        exists;
     int            i;
     Real           position[N_DIMENSIONS];
     widget_struct  *widget;
@@ -628,7 +628,7 @@ private  void  update_tag_name(
 {
     char           *name;
     int            tag_index;
-    Boolean        exists;
+    BOOLEAN        exists;
     widget_struct  *widget;
 
     tag_index = get_tag_index(ui_info,tag);
@@ -668,8 +668,8 @@ private  void  update_tag_name(
 
 private  void  set_widget_activity_and_selected(
     widget_struct  *widget,
-    Boolean        activity,
-    Boolean        selected )
+    BOOLEAN        activity,
+    BOOLEAN        selected )
 {
     set_widget_activity( widget, activity );
     set_widget_selected( widget, selected );
@@ -680,7 +680,7 @@ public  void  update_tag_widgets(
     int               tag )
 {
     int      widget_index, tag_index;
-    Boolean  exists, selected;
+    BOOLEAN  exists, selected;
 
     exists = (ui_info->tag_points.first_tag_displayed + tag <=
               IF_get_n_tag_points());

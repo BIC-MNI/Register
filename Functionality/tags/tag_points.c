@@ -1,6 +1,6 @@
-#include  <def_register.h>
+#include  <register.h>
 
-private  Boolean  check_update_transform_and_rms_error(
+private  BOOLEAN  check_update_transform_and_rms_error(
     main_struct   *main )
 {
     if( main->tags.transform_out_of_date )
@@ -22,7 +22,7 @@ public  void  initialize_tag_points(
     main->tags.tags_visible = Initial_tags_visible;
 }
 
-public  Boolean  get_tags_visibility(
+public  BOOLEAN  get_tags_visibility(
     main_struct      *main )
 {
     return( main->tags.tags_visible );
@@ -30,7 +30,7 @@ public  Boolean  get_tags_visibility(
 
 public  void  set_tags_visibility(
     main_struct      *main,
-    Boolean          visibility )
+    BOOLEAN          visibility )
 {
     main->tags.tags_visible = visibility;
     update_all_tag_objects( main );
@@ -91,13 +91,13 @@ public  int  get_n_tag_points(
     return( main->tags.n_tag_points );
 }
 
-public  Boolean  get_tag_point_position(
+public  BOOLEAN  get_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
     Real             position[] )
 {
-    Boolean  exists;
+    BOOLEAN  exists;
     int      dim;
 
     if( ind < main->tags.n_tag_points &&
@@ -167,11 +167,11 @@ public  void  set_tag_point_name(
     }
 }
 
-public  Boolean  get_tag_point_avg_rms_error(
+public  BOOLEAN  get_tag_point_avg_rms_error(
     main_struct      *main,
     Real             *error )
 {
-    Boolean  exists;
+    BOOLEAN  exists;
 
     if( check_update_transform_and_rms_error( main ) )
     {
@@ -187,12 +187,12 @@ public  Boolean  get_tag_point_avg_rms_error(
     return( exists );
 }
 
-public  Boolean  get_tag_point_rms_error(
+public  BOOLEAN  get_tag_point_rms_error(
     main_struct      *main,
     int              ind,
     Real             *error )
 {
-    Boolean  exists;
+    BOOLEAN  exists;
 
     if( ind < main->tags.n_tag_points &&
         check_update_transform_and_rms_error( main ) )
@@ -221,7 +221,7 @@ public  void  set_tag_point_rms_error(
 public  void  set_tag_point_activity(
     main_struct      *main,
     int              ind,
-    Boolean          activity )
+    BOOLEAN          activity )
 {
     if( ind < main->tags.n_tag_points )
     {
@@ -233,11 +233,11 @@ public  void  set_tag_point_activity(
     }
 }
 
-public  Boolean  get_tag_point_activity(
+public  BOOLEAN  get_tag_point_activity(
     main_struct      *main,
     int              ind )
 {
-    Boolean  activity;
+    BOOLEAN  activity;
 
     if( ind < main->tags.n_tag_points )
         activity = main->tags.tag_points[ind].activity;
@@ -247,11 +247,11 @@ public  Boolean  get_tag_point_activity(
     return( activity );
 }
 
-public  Boolean  get_tag_point_transform(
+public  BOOLEAN  get_tag_point_transform(
     main_struct           *main,
     General_transform     **transform )
 {
-    Boolean  exists;
+    BOOLEAN  exists;
 
     if( check_update_transform_and_rms_error( main ) )
     {
@@ -269,7 +269,7 @@ public  Boolean  get_tag_point_transform(
     return( exists );
 }
 
-public  Boolean  get_tag_points_saved(
+public  BOOLEAN  get_tag_points_saved(
     main_struct   *main )
 {
     return( main->tags.saved_flag );

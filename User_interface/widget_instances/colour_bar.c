@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  void   set_colour_coding_buttons_active( UI_struct *, int,
                                                   Colour_coding_types );
@@ -281,7 +281,7 @@ public  void  set_colour_bar_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     Colour_coding_types  type;
     Colour_bar_widgets   widget_index;
@@ -309,7 +309,7 @@ public  void  set_over_under_colour_activity(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     Viewport_types      viewport;
     Colour_bar_widgets  widget_index;

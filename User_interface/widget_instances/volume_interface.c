@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 typedef  enum
 {
@@ -165,7 +165,7 @@ public  void  add_volume_widgets(
 public  void  set_load_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    Boolean           state )
+    BOOLEAN           state )
 {
     Viewport_types   viewport_index;
 
@@ -198,7 +198,7 @@ public  void  set_load_filename(
 public  void  set_volume_widgets_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     Viewport_types       viewport_index;
     Volume_widgets       widget_index;
@@ -242,7 +242,7 @@ public  int  get_colour_bar_start_index()
 
 public  void  set_resampled_label_activity(
     UI_struct         *ui_info,
-    Boolean           state )
+    BOOLEAN           state )
 {
     Viewport_types       viewport_index;
 
@@ -269,7 +269,7 @@ public  widget_struct  *get_volume_readout_widget(
 public  void  set_filter_popup_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    Boolean           activity )
+    BOOLEAN           activity )
 {
     Viewport_types      viewport;
 

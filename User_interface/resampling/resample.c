@@ -1,11 +1,11 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 public  void  do_resampling(
     UI_struct           *ui,
     General_transform   *resampling_transform,
     char                resampled_filename[] )
 {
-    String                  output_filename;
+    STRING                  output_filename;
 
     (void) strcpy( ui->original_filename_volume_2,
                    IF_get_volume_filename(RESAMPLED_VOLUME_INDEX) );

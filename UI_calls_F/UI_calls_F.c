@@ -1,4 +1,4 @@
-#include  <def_UI_calls_F.h>
+#include  <UI_calls_F.h>
 
 public  void  IF_initialize_register( window_struct *window )
 {
@@ -10,13 +10,13 @@ public  void  IF_terminate_register()
     terminate_register();
 }
 
-public  Boolean  IF_volume_is_loaded(
+public  BOOLEAN  IF_volume_is_loaded(
     int            volume_index )
 {
     return( is_volume_active( get_main_struct(), volume_index ) );
 }
 
-public  Boolean  IF_is_resampled_volume_loaded()
+public  BOOLEAN  IF_is_resampled_volume_loaded()
 {
     return( is_resampled_volume_loaded( get_main_struct() ) );
 }
@@ -40,13 +40,13 @@ public  void  IF_save_image(
     save_image( get_main_struct(), volume, view );
 }
 
-public  Boolean  IF_get_merged_slice_visibility()
+public  BOOLEAN  IF_get_merged_slice_visibility()
 {
     return( get_merged_volume_activity(get_main_struct()) );
 }
 
 public  void  IF_set_merged_slice_visibility(
-    Boolean  visible )
+    BOOLEAN  visible )
 {
     set_merged_volume_activity( get_main_struct(), visible );
 }
@@ -94,7 +94,7 @@ public  void  IF_delete_volume(
     delete_register_volume( get_main_struct(), volume_index );
 }
 
-public  void  IF_set_interpolation_flag( Boolean  flag )
+public  void  IF_set_interpolation_flag( BOOLEAN  flag )
 {
 }
 
@@ -121,13 +121,13 @@ public  void  IF_set_update_slice_viewport_flag(
                                     bitplane );
 }
 
-public  Boolean  IF_slices_to_be_updated(
+public  BOOLEAN  IF_slices_to_be_updated(
     int   current_buffer )
 {
     return( slices_to_be_updated( get_main_struct(), current_buffer ) );
 }
 
-public  Boolean  IF_redraw_slices(
+public  BOOLEAN  IF_redraw_slices(
     int             current_buffer )
 {
     return( update_slice_display( get_main_struct(), current_buffer ) );
@@ -211,7 +211,7 @@ public  void  IF_set_slice_viewport(
                         x_min, x_max, y_min, y_max );
 }
 
-public  Boolean  IF_convert_pixel_to_voxel(
+public  BOOLEAN  IF_convert_pixel_to_voxel(
     int    volume,
     int    view,
     int    x_pixel,
@@ -332,12 +332,12 @@ public  Real  IF_get_slice_filter_width(
 
 /* ----------------------- tag points -------------------------------- */
 
-public  Boolean  IF_get_tags_visibility( void )
+public  BOOLEAN  IF_get_tags_visibility( void )
 {
     return( get_tags_visibility(get_main_struct()) );
 }
 
-public  void  IF_set_tags_visibility( Boolean  visibility )
+public  void  IF_set_tags_visibility( BOOLEAN  visibility )
 {
     set_tags_visibility( get_main_struct(), visibility );
 }
@@ -358,7 +358,7 @@ public  int  IF_get_n_tag_points()
     return( get_n_tag_points( get_main_struct() ) );
 }
 
-public  Boolean  IF_get_tag_point_position(
+public  BOOLEAN  IF_get_tag_point_position(
     int              ind,
     int              volume_index,
     Real             position[] )
@@ -389,20 +389,20 @@ public  void  IF_set_tag_point_name(
     set_tag_point_name( get_main_struct(), ind, name );
 }
 
-public  Boolean  IF_get_tag_point_rms_error(
+public  BOOLEAN  IF_get_tag_point_rms_error(
     int              ind,
     Real             *rms_error )
 {
     return( get_tag_point_rms_error( get_main_struct(), ind, rms_error ) );
 }
 
-public  Boolean  IF_get_tag_point_avg_rms_error(
+public  BOOLEAN  IF_get_tag_point_avg_rms_error(
     Real             *avg_rms_error )
 {
     return( get_tag_point_avg_rms_error( get_main_struct(), avg_rms_error ) );
 }
 
-public  Boolean  IF_get_tag_point_activity(
+public  BOOLEAN  IF_get_tag_point_activity(
     int              ind )
 {
     return( get_tag_point_activity( get_main_struct(), ind ) );
@@ -410,7 +410,7 @@ public  Boolean  IF_get_tag_point_activity(
 
 public  void  IF_set_tag_point_activity(
     int              ind,
-    Boolean          activity )
+    BOOLEAN          activity )
 {
     set_tag_point_activity( get_main_struct(), ind, activity );
 }
@@ -433,19 +433,19 @@ public  void  IF_save_transform(
     (void) save_transform( get_main_struct(), filename );
 }
 
-public  Boolean  IF_does_transform_exist()
+public  BOOLEAN  IF_does_transform_exist()
 {
     return( get_tag_point_transform( get_main_struct(),
                                      (General_transform **) NULL ) );
 }
 
-public  Boolean  IF_get_resampling_transform(
+public  BOOLEAN  IF_get_resampling_transform(
     General_transform  **transform )
 {
     return( get_tag_point_transform( get_main_struct(), transform ) );
 }
 
-public  Boolean  IF_tag_points_have_been_saved()
+public  BOOLEAN  IF_tag_points_have_been_saved()
 {
     return( get_tag_points_saved( get_main_struct() ) );
 }

@@ -1,4 +1,4 @@
-#include  <def_register.h>
+#include  <register.h>
 
 #define  PREFIX   "register_image_"
 
@@ -11,7 +11,7 @@ private  void  save_rgb_image(
     int    y_min,
     int    y_max )
 {
-    String   command;
+    STRING   command;
 
     (void) sprintf( command, "scrsave %s %d %d %d %d", filename, x_min, x_max,
                                                        y_min, y_max );
@@ -34,7 +34,7 @@ public  void  save_image(
     int     x_size, y_size;
     int     viewport_x_min, viewport_y_min, viewport_x_max, viewport_y_max;
     int     x_origin, y_origin;
-    String  filename;
+    STRING  filename;
 
     if( !is_volume_active( main_info, volume_index ) )
         return;

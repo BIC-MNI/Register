@@ -1,12 +1,12 @@
 #ifndef  DEF_REGISTER
 #define  DEF_REGISTER
 
-#include  <def_graphics.h>
+#include  <graphics.h>
 
-#include  <def_main_struct.h>
+#include  <main_struct.h>
 
-#include  <def_globals.h>
+#include  <globals.h>
 
-#include  <def_Functionality_prototypes.h>
+#include  <Functionality_prototypes.h>
 
 #endif

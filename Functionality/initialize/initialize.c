@@ -1,7 +1,7 @@
-#include  <def_register.h>
+#include  <register.h>
 
 #define  GLOBALS_LOOKUP_NAME  functional_globals
-#include  <def_globals.h>
+#include  <globals.h>
 
 #define   REGISTER_GLOBALS_FILENAME   "register.globals"
 
@@ -17,7 +17,7 @@ public  Status   initialize_register( window_struct  *window )
     Status          status;
     int             volume, view;
     Bitplane_types  bitplane;
-    String          home_filename;
+    STRING          home_filename;
 
     (void) sprintf( home_filename, "$HOME/%s", REGISTER_GLOBALS_FILENAME );
 

@@ -1,10 +1,10 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 #define  CONTROL_A    1
 #define  CONTROL_E    5
 #define  CONTROL_U    21
 
-private  Boolean  fit_text_within_widget(
+private  BOOLEAN  fit_text_within_widget(
     char         string[],
     Real         x_size,
     int          left_index,
@@ -328,7 +328,7 @@ public  void  restore_text_entry_string(
 public  void  update_text_entry_colours(
     widget_struct  *widget )
 {
-    Boolean            colour_map_state;
+    BOOLEAN            colour_map_state;
     polygons_struct    *cursor_polygons;
     text_entry_struct  *text_entry;
     UI_colours         rectangle_colour, text_colour;
@@ -444,10 +444,10 @@ private  widget_struct  *create_a_text_entry(
     int                        y,
     int                        x_size,
     int                        y_size,
-    Boolean                    label_only_flag,
-    Boolean                    clear_text_when_selected,
+    BOOLEAN                    label_only_flag,
+    BOOLEAN                    clear_text_when_selected,
     char                       initial_text[],
-    Boolean                    initial_activity,
+    BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
@@ -516,9 +516,9 @@ public  widget_struct  *create_text_entry(
     int                        y,
     int                        x_size,
     int                        y_size,
-    Boolean                    clear_text_when_selected,
+    BOOLEAN                    clear_text_when_selected,
     char                       initial_text[],
-    Boolean                    initial_activity,
+    BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
@@ -549,7 +549,7 @@ public  widget_struct  *create_label(
     int                        x_size,
     int                        y_size,
     char                       initial_text[],
-    Boolean                    initial_activity,
+    BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
     UI_colours                 inactive_colour,

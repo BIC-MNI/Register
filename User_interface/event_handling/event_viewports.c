@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 public  void  initialize_event_viewports(
     event_viewports_struct  *event_viewports )
@@ -81,7 +81,7 @@ public  void  set_event_viewport_callback_enabled(
     Event_types             event_type,
     event_function_type     callback_function,
     void                    *callback_data,
-    Boolean                 enabled )
+    BOOLEAN                 enabled )
 {
     check_event_viewport_exists( event_viewports, event_viewport_index );
 
@@ -143,7 +143,7 @@ public  void  remove_event_viewport_callback(
 }
 
 public  void  execute_event_viewport_events(
-    Boolean                 shift_state,
+    BOOLEAN                 shift_state,
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,
@@ -151,7 +151,7 @@ public  void  execute_event_viewport_events(
     int                     key_pressed )
 {
     int      i, x_mouse_viewport, y_mouse_viewport;
-    Boolean  found;
+    BOOLEAN  found;
 
     found = FALSE;
 
@@ -177,14 +177,14 @@ public  void  execute_event_viewport_events(
     }
 }
 
-public  Boolean  find_viewport_containing_mouse(
+public  BOOLEAN  find_viewport_containing_mouse(
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,
     int                     *viewport_index )
 {
     int      i;
-    Boolean  found;
+    BOOLEAN  found;
 
     found = FALSE;
 

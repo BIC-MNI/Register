@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 #define  EVENT_CHUNK_ALLOC_SIZE   10
 
@@ -47,7 +47,7 @@ public  void  set_event_callback_enabled(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data,
-    Boolean                      enabled )
+    BOOLEAN                      enabled )
 {
     int    i;
 
@@ -124,8 +124,8 @@ public  void  remove_event_callback_function(
     }
 }
 
-private  Boolean  is_correct_shift_modifier(
-    Boolean           shift_state,
+private  BOOLEAN  is_correct_shift_modifier(
+    BOOLEAN           shift_state,
     Event_modifiers   modifier )
 {
     switch( modifier )
@@ -139,8 +139,8 @@ private  Boolean  is_correct_shift_modifier(
 
 #define  STATIC_SIZE  20
 
-public  Boolean  execute_event_callback_functions(
-    Boolean                      shift_state,
+public  BOOLEAN  execute_event_callback_functions(
+    BOOLEAN                      shift_state,
     event_callback_list_struct   *callback_list,
     int                          mouse_x,
     int                          mouse_y,

@@ -1,4 +1,4 @@
-#include  <def_register.h>
+#include  <register.h>
 
 public  void  create_tag_objects(
     main_struct        *main,
@@ -116,7 +116,7 @@ public   void  update_all_tag_colours(
         update_tag_colours( main, &main->tags.tag_points[i] );
 }
 
-private  Boolean  convert_tag_to_pixel(
+private  BOOLEAN  convert_tag_to_pixel(
     main_struct       *main,
     int               volume,
     int               view,
@@ -125,7 +125,7 @@ private  Boolean  convert_tag_to_pixel(
     Real              *y,
     Real              *radius )
 {
-    Boolean  visible;
+    BOOLEAN  visible;
     int      which_volume, axis;
     Real     *cursor_ptr;
     Real     diff, voxel_position[N_DIMENSIONS];
@@ -206,7 +206,7 @@ public  void  update_tag_object(
 {
     Real            x, y;
     Real            radius;
-    Boolean         visibility;
+    BOOLEAN         visibility;
     lines_struct    *lines;
 
     if( main->tags.tags_visible &&

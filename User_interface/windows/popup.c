@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 private  DEFINE_EVENT_FUNCTION( redraw_window_callback )   /* ARGSUSED */
 {

@@ -1,4 +1,4 @@
-#include <def_register.h>
+#include <register.h>
 
 public  void  set_recreate_3_slices_flags(
     main_struct  *main,

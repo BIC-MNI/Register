@@ -1,10 +1,10 @@
-#include  <def_register.h>
+#include  <register.h>
 
-public  Boolean  update_slice_display(
+public  BOOLEAN  update_slice_display(
     main_struct     *main,
     int             current_buffer )
 {
-    Boolean   drawn;
+    BOOLEAN   drawn;
     int       volume, view;
 
     for_less( volume, 0, N_VOLUMES )
@@ -49,11 +49,11 @@ public  Boolean  update_slice_display(
     return( drawn );
 }
 
-public  Boolean  slices_to_be_updated(
+public  BOOLEAN  slices_to_be_updated(
     main_struct     *main,
     int             current_buffer )
 {
-    Boolean   update_required;
+    BOOLEAN   update_required;
     int       volume, view;
 
     update_required = FALSE;

@@ -1,4 +1,4 @@
-#include  <def_user_interface.h>
+#include  <user_interface.h>
 
 typedef  struct
 {
@@ -49,8 +49,8 @@ public  void  popup_colour_selection(
     widget_struct             *widget;
     colour_selection_struct   *popup;
     static  char              *over_under_names[] = { "Under", "Over" };
-    String                    window_name;
-    String                    colour_name;
+    STRING                    window_name;
+    STRING                    colour_name;
     static  Colour            colours[] = { BLACK, WHITE, RED, GREEN, BLUE,
                                             CYAN, MAGENTA, YELLOW, ORANGE };
 
