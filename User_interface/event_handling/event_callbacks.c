@@ -65,6 +65,7 @@ public  void  add_event_callback_function(
     int                          y_min,
     int                          y_max,
     event_function_type          callback_function,
+    Event_modifiers              modifier,
     void                         *callback_data )
 {
     event_callback_struct  callback;
@@ -75,6 +76,7 @@ public  void  add_event_callback_function(
     callback.y_min = y_min;
     callback.y_max = y_max;
     callback.callback = callback_function;
+    callback.modifier = modifier;
     callback.callback_data = callback_data;
 
     ADD_ELEMENT_TO_ARRAY( callback_list->callbacks, callback_list->n_callbacks,
@@ -122,7 +124,21 @@ public  void  remove_event_callback_function(
     }
 }
 
+private  Boolean  is_correct_shift_modifier(
+    Boolean           shift_state,
+    Event_modifiers   modifier )
+{
+    switch( modifier )
+    {
+    case ANY_MODIFIER:    return( TRUE );
+    case NO_SHIFT_ONLY:   return( !shift_state );
+    case SHIFT_ONLY:      return( shift_state );
+    default:              return( TRUE );
+    }
+}
+
 public  Boolean  execute_event_callback_functions(
+    Boolean                      shift_state,
     event_callback_list_struct   *callback_list,
     int                          mouse_x,
     int                          mouse_y,
@@ -143,7 +159,8 @@ public  Boolean  execute_event_callback_functions(
              mouse_x >= callback->x_min &&
              mouse_x <= callback->x_max &&
              mouse_y >= callback->y_min &&
-             mouse_y <= callback->y_max) )
+             mouse_y <= callback->y_max) &&
+             is_correct_shift_modifier( shift_state, callback->modifier) )
         {
             callback->callback( event_viewport_index, key_pressed,
                                 callback->callback_data );
