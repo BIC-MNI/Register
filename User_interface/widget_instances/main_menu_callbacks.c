@@ -17,6 +17,7 @@ typedef  enum
     DELETE_TAG_BUTTON,
     DELETE_ALL_TAGS_BUTTON,
     TAG_VISIBILITY_BUTTON,
+    TRANSFORM_TYPE_BUTTON,
     AVG_RMS_LABEL,
     AVG_RMS_ERROR,
     N_MAIN_WIDGETS
@@ -31,6 +32,11 @@ private  DEFINE_WIDGET_CALLBACK( quit_button_callback ) /* ARGSUSED */
 #else
     popup_quit_confirm( get_ui_struct() );
 #endif
+}
+
+private  DEFINE_WIDGET_CALLBACK( transform_type_callback ) /* ARGSUSED */
+{
+    popup_transform_dialog( get_ui_struct() );
 }
 
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED */
@@ -271,11 +277,8 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    sync_volumes_button_callback, (void *) 0 ) );
 
-/*
     colour_map_toggle_activity = (G_get_n_colour_map_entries(
              ui_info->graphics_window.window) >= Min_colour_map_size);
-*/
-    colour_map_toggle_activity = TRUE;
 
     widget_indices[COLOUR_MODE_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
@@ -410,6 +413,19 @@ public  void  add_main_widgets(
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    delete_all_tags_button_callback, (void *) 0 ) );
+
+    widget_indices[TRANSFORM_TYPE_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
+                   Main_menu_viewport, 
+                   0, 0, Button_width, Button_height,
+                   "Transform Type",
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   transform_type_callback, (void *) 0 ) );
 
     widget_indices[TAG_VISIBILITY_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
