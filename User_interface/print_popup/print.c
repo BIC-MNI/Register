@@ -122,7 +122,7 @@ private  void  create_message_popup(
     while( *ptr != (char) 0 )
     {
         object = create_object( TEXT );
-        text = (text_struct *) get_object_pointer( object );
+        text = get_text_ptr( object );
         initialize_text( text, &point, Message_text_colour,
                          Message_font, Message_font_size );
         ADD_ELEMENT_TO_ARRAY( text_objects, n_lines, object,
@@ -160,7 +160,7 @@ private  void  create_message_popup(
 
     for_less( i, 0, n_lines )
     {
-        text = (text_struct *) get_object_pointer( text_objects[i] );
+        text = get_text_ptr( text_objects[i] );
         Point_y( text->origin ) = y_size-1-Message_y_offset -
                                     i * Message_text_y_offset;
         

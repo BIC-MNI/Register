@@ -7,10 +7,12 @@ public  void  initialize_layout( UI_struct  *ui_info )
     ui_info->volume_panel_height = Default_volume_panel_height;
     ui_info->divider_width = Default_divider_width;
 
-    ui_info->x_slice_divider[0] = 0.333;
-    ui_info->x_slice_divider[1] = 0.666;
-    ui_info->y_slice_divider[0] = 0.333;
-    ui_info->y_slice_divider[1] = 0.666;
+    ui_info->x_slice_divider[0] = Slice_left_view_width;
+    ui_info->x_slice_divider[1] = Slice_left_view_width +
+                                  Slice_middle_view_width;
+    ui_info->y_slice_divider[0] = 1.0 - Slice_top_view_height -
+                                        Slice_middle_view_height;
+    ui_info->y_slice_divider[1] = 1.0 - Slice_top_view_height;
 
     resize_layout( ui_info );
 }
@@ -20,6 +22,7 @@ public  void  resize_layout( UI_struct  *ui_info )
     graphics_struct         *graphics;
     event_viewports_struct  *event_viewports;
     Viewport_types          viewport_index;
+    UI_colours              ui_colour;
     int  x_size, y_size, divider_width;
     int  divider1, divider2;
     int  x_min, x_max, y_min, y_max;
@@ -39,7 +42,7 @@ public  void  resize_layout( UI_struct  *ui_info )
 
     x_main_start = 0;
     x_main_end = ui_info->main_menu_width-1;
-    x_volume_1_start = x_main_end + 1;
+    x_volume_1_start = x_main_end + 1 + divider_width;
     x_merged_end = x_size - 1;
 
     divider1 = ROUND( x_volume_1_start + ui_info->x_slice_divider[0] *
@@ -48,18 +51,18 @@ public  void  resize_layout( UI_struct  *ui_info )
                       (x_merged_end - x_volume_1_start) );
 
     x_volume_1_end = divider1 - divider_width/2 - 1;
-    x_volume_2_start = divider1 + divider_width - divider_width/2;
+    x_volume_2_start = x_volume_1_end + divider_width + 1;
     x_volume_2_end = divider2 - divider_width/2 - 1;
-    x_merged_start = divider2 + divider_width - divider_width/2;
+    x_merged_start = x_volume_2_end + divider_width + 1;
 
 
     y_tag_start = 0;
     y_tag_end = ui_info->tag_panel_height-1;
-    y_main_start = y_tag_end+1;
+    y_main_start = y_tag_end+1 + divider_width;
     y_main_end = y_size-1;
-    y_volume_panel_start = y_tag_end + 1;
+    y_volume_panel_start = y_tag_end + 1 + divider_width;
     y_volume_panel_end = y_volume_panel_start + ui_info->volume_panel_height-1;
-    y_slice_3_start = y_volume_panel_end + 1;
+    y_slice_3_start = y_volume_panel_end + 1 + divider_width;
     y_slice_1_end = y_size - 1;
 
     divider1 = ROUND( y_slice_3_start + ui_info->y_slice_divider[0] *
@@ -68,9 +71,9 @@ public  void  resize_layout( UI_struct  *ui_info )
                       (y_slice_1_end - y_slice_3_start) );
 
     y_slice_3_end = divider1 - divider_width/2 - 1;
-    y_slice_2_start = divider1 + divider_width - divider_width/2;
+    y_slice_2_start = y_slice_3_end + divider_width + 1;
     y_slice_2_end = divider2 - divider_width/2 - 1;
-    y_slice_1_start = divider2 + divider_width - divider_width/2;
+    y_slice_1_start = y_slice_2_end + divider_width + 1;
 
     set_graphics_viewport( graphics, Main_menu_viewport,
                            x_main_start, x_main_end,
@@ -175,6 +178,9 @@ public  void  resize_layout( UI_struct  *ui_info )
 
     /* dividers */
 
+    set_graphics_viewport( graphics, Main_volume_1_separator_viewport,
+                           x_main_end+1, x_volume_1_start-1, 0, y_size-1 );
+
     set_graphics_viewport( graphics, Volume_1_2_separator_viewport,
                            x_volume_1_end+1, x_volume_2_start-1, 0, y_size-1 );
 
@@ -190,36 +196,37 @@ public  void  resize_layout( UI_struct  *ui_info )
                            x_volume_1_start+1, x_size-1,
                            y_slice_3_end+1, y_slice_2_start-1 );
 
+    set_graphics_viewport( graphics, Slice_3_menu_separator_viewport,
+                           x_volume_1_start+1, x_size-1,
+                           y_volume_panel_end+1, y_slice_3_start-1 );
+
+    set_graphics_viewport( graphics, Tag_volume_menu_separator_viewport,
+                           0, x_size-1,
+                           y_tag_end+1, y_volume_panel_start-1 );
+
     for_enum( viewport_index, N_UI_viewports, Viewport_types )
     {
         get_graphics_viewport( graphics, viewport_index,
                                &x_min, &x_max, &y_min, &y_max );
-        set_graphics_viewport_background( graphics,
-                                viewport_index,
-                                get_ui_rgb_colour(BACKGROUND_COLOUR),
-                                get_ui_colour_index(BACKGROUND_COLOUR) );
+
+        if( viewport_index < Main_volume_1_separator_viewport )
+            ui_colour = BACKGROUND_COLOUR;
+        else
+            ui_colour = DIVIDER_COLOUR;
+
+        set_graphics_viewport_background( graphics, viewport_index,
+                                          get_ui_rgb_colour(ui_colour),
+                                          get_ui_colour_index(ui_colour) );
 
         set_event_viewport( event_viewports, viewport_index,
                             x_min, x_max, y_min, y_max );
     }
 }
 
-public  Boolean   get_voxel_under_mouse(
-    UI_struct     *ui_info,
-    int           event_viewport_index,
-    int           *volume,
-    Real          voxel_position[N_DIMENSIONS] )
+public  Boolean  is_slice_viewport(
+    int   view_index )
 {
-    int        view, x_mouse, y_mouse;
-
-    get_viewport_mouse_position( &ui_info->graphics_window,
-                                 event_viewport_index,
-                                 &x_mouse, &y_mouse );
-
-    ui_get_volume_view_index( event_viewport_index, volume, &view);
-
-    return( IF_convert_pixel_to_voxel( *volume, view, x_mouse, y_mouse,
-                                       voxel_position ) );
+    return( view_index >= N_VIEWPORT_TYPES );
 }
 
 public  void  ui_get_volume_view_index(

@@ -5,6 +5,7 @@ static  Colour  colours[N_UI_COLOURS];
 public  void  initialize_ui_colours()
 {
     colours[BACKGROUND_COLOUR]          = Default_UI_background_colour;
+    colours[DIVIDER_COLOUR]             = Default_divider_colour;
     colours[BUTTON_ACTIVE_COLOUR]       = Default_button_active_colour;
     colours[BUTTON_INACTIVE_COLOUR]     = Default_button_inactive_colour;
     colours[BUTTON_SELECTED_COLOUR]     = Default_button_selected_colour;
@@ -68,7 +69,7 @@ public  void  set_ui_colour(
     }
 }
 
-private  void  set_window_colours( window_struct *window )
+public  void  set_window_colours( window_struct *window )
 {
     UI_colours  colour_name;
 
