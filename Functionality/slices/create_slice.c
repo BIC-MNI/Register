@@ -5,21 +5,18 @@ public  void  create_slice_pixels(
     int           volume_index,
     int           view )
 {
-    int              x_axis_index, y_axis_index;
-    int              x_size, y_size, axis;
+    int              x_size, y_size;
     Pixel_types      pixel_type;
     Filter_types     filter_type;
     Real             filter_width;
     Real             x_translation, y_translation, x_scale, y_scale;
+    Real             origin[MAX_DIMENSIONS];
+    Real             x_axis[MAX_DIMENSIONS], y_axis[MAX_DIMENSIONS];
     Volume           volume;
-    Real             *position;
     unsigned short   *cmode_colour_map;
     Colour           *rgb_colour_map;
 
     volume = get_slice_volume( main, volume_index );
-    position = get_volume_cursor( main, volume_index );
-    get_slice_axes( view, &x_axis_index, &y_axis_index );
-    axis = get_slice_axis( view );
     get_slice_transform( main, volume_index, view,
                          &x_translation, &y_translation, &x_scale, &y_scale );
     filter_type = get_slice_filter_type( main, volume_index, view );
@@ -35,16 +32,43 @@ public  void  create_slice_pixels(
     cmode_colour_map = main->trislice[volume_index].cmode_colour_map;
     rgb_colour_map = main->trislice[volume_index].rgb_colour_map;
 
-    create_volume_slice( filter_type, filter_width, volume, position[axis],
-                    x_translation, y_translation, x_scale, y_scale,
-                    (Volume) NULL, 0.0, 0.0, 0.0, 0.0, 0.0,
-                    x_axis_index, y_axis_index, axis,
-                    x_size, y_size, pixel_type,
-                    main->interpolation_flag,
-                    &cmode_colour_map,
-                    &rgb_colour_map,
+    get_slice_plane( main, volume_index, view, origin, x_axis, y_axis );
+
+    create_volume_slice( volume, filter_type, filter_width,
+                         origin, x_axis, y_axis,
+                         x_translation, y_translation, x_scale, y_scale,
+                         (Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
+                         (Real *) NULL, (Real *) NULL, (Real *) NULL,
+                         0.0, 0.0, 0.0, 0.0,
+                         x_size, y_size, pixel_type,
+                         main->interpolation_flag,
+                         &cmode_colour_map,
+                         &rgb_colour_map, make_rgba_Colour( 0, 0, 0, 0 ),
                     &main->trislice[volume_index].slices[view].n_pixels_alloced,
                     main->trislice[volume_index].slices[view].pixels );
+}
+
+private  void  convert_volume1_voxel_to_volume2(
+    main_struct   *main,
+    Real          voxel1[],
+    Real          voxel2[] )
+{
+    Volume  volume1;
+    Real    world[N_DIMENSIONS], original_world2[N_DIMENSIONS];
+
+    volume1 = get_slice_volume( main, 0 );
+
+    convert_voxel_to_world( volume1, voxel1, &world[X], &world[Y], &world[Z] );
+
+    convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
+                                     world[X], world[Y], world[Z],
+                                     &original_world2[X], &original_world2[Y],
+                                     &original_world2[Z] );
+
+    convert_original_world_to_voxel( main, RESAMPLED_VOLUME_INDEX,
+                                     original_world2[X], original_world2[Y],
+                                     original_world2[Z],
+                                     &voxel2[X], &voxel2[Y], &voxel2[Z] );
 }
 
 public  void  create_merged_pixels(
@@ -53,24 +77,79 @@ public  void  create_merged_pixels(
 {
     int              x_axis_index, y_axis_index;
     int              x_size, y_size, axis;
-    int              sizes1[N_DIMENSIONS], sizes2[N_DIMENSIONS];
-#ifdef OLD
+    int              c, sizes1[N_DIMENSIONS];
     Real             separations2[N_DIMENSIONS];
-#endif
     Pixel_types      pixel_type;
+    Filter_types     filter_type;
+    Real             filter_width;
     Real             x_scale1, y_scale1, x_scale2, y_scale2;
     Real             x_translation1, y_translation1;
     Real             x_translation2, y_translation2;
     Volume           volume1, volume2;
-    Real             tmp[N_DIMENSIONS];
-    Real             *position1, position2[N_DIMENSIONS];
-    Real             x_pixel_min, x_pixel_max, y_pixel_min, y_pixel_max;
+    Real             *position1, voxel1[MAX_DIMENSIONS];
+    Real             x_lower_left_pixel, y_lower_left_pixel;
+    Real             x_upper_left_pixel, y_upper_left_pixel;
+    Real             x_lower_right_pixel, y_lower_right_pixel;
+    Real             dx_pixel, dy_pixel;
+    Real             lower_left_voxel2[MAX_DIMENSIONS];
+    Real             upper_left_voxel2[MAX_DIMENSIONS];
+    Real             lower_right_voxel2[MAX_DIMENSIONS];
+    Real             origin1[MAX_DIMENSIONS];
+    Real             x_axis1[MAX_DIMENSIONS], y_axis1[MAX_DIMENSIONS];
+    Real             origin2[MAX_DIMENSIONS];
+    Real             x_axis2[MAX_DIMENSIONS], y_axis2[MAX_DIMENSIONS];
 
     volume1 = get_slice_volume( main, 0 );
     volume2 = get_slice_volume( main, 1 );
+    get_volume_sizes( volume1, sizes1 );
+    get_volume_separations( volume2, separations2 );
+
     position1 = get_volume_cursor( main, MERGED_VOLUME_INDEX );
+
     get_slice_axes( view, &x_axis_index, &y_axis_index );
     axis = get_slice_axis( view );
+
+    voxel1[X] = 0.0;
+    voxel1[Y] = 0.0;
+    voxel1[Z] = 0.0;
+    voxel1[axis] = position1[axis];
+    convert_volume1_voxel_to_volume2( main, voxel1, lower_left_voxel2 );
+    convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
+                            &x_lower_left_pixel, &y_lower_left_pixel );
+
+    voxel1[x_axis_index] = (Real) sizes1[x_axis_index] - 1.0;
+    convert_volume1_voxel_to_volume2( main, voxel1, lower_right_voxel2 );
+    convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
+                            &x_lower_right_pixel, &y_lower_right_pixel );
+    voxel1[x_axis_index] = 0.0;
+
+    voxel1[y_axis_index] = (Real) sizes1[y_axis_index] - 1.0;
+    convert_volume1_voxel_to_volume2( main, voxel1, upper_left_voxel2 );
+    convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
+                            &x_upper_left_pixel, &y_upper_left_pixel );
+    voxel1[y_axis_index] = 0.0;
+
+    dx_pixel = x_lower_right_pixel - x_lower_left_pixel;
+    if( dx_pixel == 0.0 )
+        dx_pixel = 1.0;
+    dy_pixel = y_lower_right_pixel - y_lower_left_pixel;
+    if( dy_pixel == 0.0 )
+        dy_pixel = 1.0;
+
+    for_less( c, 0, get_volume_n_dimensions(volume2) )
+    {
+        x_axis2[c] = (lower_right_voxel2[c] - lower_left_voxel2[c]) / dx_pixel /
+                     separations2[c];
+        y_axis2[c] = (upper_left_voxel2[c] - lower_left_voxel2[c]) / dy_pixel /
+                     separations2[c];
+        origin2[c] = lower_left_voxel2[c];
+    }
+
+    x_scale2 = 1.0;
+    y_scale2 = 1.0;
+    x_translation2 = x_lower_left_pixel;
+    y_translation2 = y_lower_left_pixel;
+
     get_slice_transform( main, MERGED_VOLUME_INDEX, view,
                          &x_translation1, &y_translation1,
                          &x_scale1, &y_scale1 );
@@ -82,97 +161,25 @@ public  void  create_merged_pixels(
 
     get_slice_viewport_size( main, MERGED_VOLUME_INDEX, view, &x_size, &y_size);
 
-    /* convert centre of volume 1 slice to volume 2 position, to
-       get the volume 2 slice */
+    get_slice_plane( main, MERGED_VOLUME_INDEX, view,
+                     origin1, x_axis1, y_axis1 );
 
-    get_volume_sizes( volume1, sizes1 );
-    get_volume_sizes( volume2, sizes2 );
+    filter_type = get_slice_filter_type( main, MERGED_VOLUME_INDEX, view );
+    filter_width = get_slice_filter_width( main, MERGED_VOLUME_INDEX, view );
 
-    tmp[x_axis_index] = (Real) (sizes1[x_axis_index]-1) / 2.0;
-    tmp[y_axis_index] = (Real) (sizes1[y_axis_index]-1) / 2.0;
-    tmp[axis] = position1[axis];
-
-    convert_voxel_to_world( volume1, tmp, &tmp[X], &tmp[Y], &tmp[Z] );
-
-    convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
-                                     tmp[X], tmp[Y], tmp[Z],
-                                     &position2[X], &position2[Y],
-                                     &position2[Z] );
-
-    convert_original_world_to_voxel( main, RESAMPLED_VOLUME_INDEX,
-                                     position2[X], position2[Y], position2[Z],
-                                     &position2[X], &position2[Y],
-                                     &position2[Z] );
-
-    if( position2[axis] < -0.5 ||
-        position2[axis] > (Real) sizes2[axis] - 0.5 )
-    {
-        modify_pixels_size( &main->merged.slices[view].n_pixels_alloced,
-                            main->merged.slices[view].pixels,
-                            0, 0, pixel_type );
-    }
-    else
-    {
-        /* determine which pixel that (0,0) voxel maps to */
-
-        tmp[x_axis_index] = 0.0;
-        tmp[y_axis_index] = 0.0;
-        tmp[axis] = position2[axis];
-
-        convert_voxel_to_original_world( main, RESAMPLED_VOLUME_INDEX,
-                                         tmp[X], tmp[Y], tmp[Z],
-                                         &tmp[X], &tmp[Y], &tmp[Z] );
-        convert_original_world_to_world( main, RESAMPLED_VOLUME_INDEX,
-                                         tmp[X], tmp[Y], tmp[Z],
-                                         &tmp[X], &tmp[Y], &tmp[Z] );
-        convert_world_to_voxel( volume1, tmp[X], tmp[Y], tmp[Z], tmp );
-        convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view,
-                                tmp, &x_pixel_min, &y_pixel_min );
-        
-#ifdef OLD
-        /* determine which pixel that (x_size,y_size) voxel maps to */
-
-        tmp[x_axis_index] = (Real) sizes2[x_axis_index];
-        tmp[y_axis_index] = (Real) sizes2[y_axis_index];
-        tmp[axis] = position2[axis];
-
-        convert_voxel_to_original_world( main, RESAMPLED_VOLUME_INDEX,
-                                         tmp[X], tmp[Y], tmp[Z],
-                                         &tmp[X], &tmp[Y], &tmp[Z] );
-        convert_original_world_to_world( main, RESAMPLED_VOLUME_INDEX,
-                                         tmp[X], tmp[Y], tmp[Z],
-                                         &tmp[X], &tmp[Y], &tmp[Z] );
-        convert_world_to_voxel( volume1, tmp[X], tmp[Y], tmp[Z], tmp );
-        convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view,
-                                tmp, &x_pixel_max, &y_pixel_max );
-
-        get_volume_separations( volume2, separations2 );
-        x_translation2 = x_pixel_min;
-        y_translation2 = y_pixel_min;
-        x_scale2 = (x_pixel_max - x_pixel_min) / (Real) sizes2[x_axis_index] /
-                   separations2[x_axis_index];
-        y_scale2 = (y_pixel_max - y_pixel_min) / (Real) sizes2[y_axis_index] /
-                   separations2[y_axis_index];
-#else
-        x_translation2 = x_pixel_min;
-        y_translation2 = y_pixel_min;
-        x_scale2 = x_scale1;
-        y_scale2 = y_scale1;
-#endif
-
-        create_volume_slice( NEAREST_NEIGHBOUR, 0.0,
-                    volume1, position1[axis],
+    create_volume_slice( volume1, filter_type, filter_width,
+                    origin1, x_axis1, y_axis1,
                     x_translation1, y_translation1, x_scale1, y_scale1,
-                    volume2, position2[axis],
+                    volume2, filter_type, filter_width,
+                    origin2, x_axis2, y_axis2,
                     x_translation2, y_translation2, x_scale2, y_scale2,
-                    x_axis_index, y_axis_index, axis,
                     x_size, y_size, pixel_type,
                     main->interpolation_flag,
                     main->merged.cmode_colour_map,
                     main->merged.rgb_colour_map,
+                    make_rgba_Colour( 0, 0, 0, 0 ),
                     &main->merged.slices[view].n_pixels_alloced,
                     main->merged.slices[view].pixels );
-    }
 }
 
 public  BOOLEAN   convert_pixel_to_voxel(
@@ -184,22 +191,20 @@ public  BOOLEAN   convert_pixel_to_voxel(
     Real            voxel_position[N_DIMENSIONS] )
 {
     BOOLEAN        in_volume;
-    int            x_axis_index, y_axis_index;
     Real           x_translation, y_translation, x_scale, y_scale;
     Volume         volume;
-    Real           *position;
+    Real           origin[MAX_DIMENSIONS];
+    Real           x_axis[MAX_DIMENSIONS], y_axis[MAX_DIMENSIONS];
 
     volume = get_slice_volume( main, volume_index );
-    position = get_volume_cursor( main, volume_index );
-    get_slice_axes( view_index, &x_axis_index, &y_axis_index );
+    get_slice_plane( main, volume_index, view_index, origin, x_axis, y_axis );
     get_slice_transform( main, volume_index, view_index,
                          &x_translation, &y_translation, &x_scale, &y_scale );
 
     in_volume = convert_slice_pixel_to_voxel(
-              volume, x_pixel, y_pixel, position,
-              x_axis_index, y_axis_index,
-              x_translation, y_translation, x_scale, y_scale,
-              voxel_position );
+                    volume, x_pixel, y_pixel, origin, x_axis, y_axis,
+                    x_translation, y_translation, x_scale, y_scale,
+                    voxel_position );
 
     return( in_volume );
 }
@@ -212,47 +217,36 @@ public  void   convert_voxel_to_pixel(
     Real            *x_pixel,
     Real            *y_pixel )
 {
-    int            x_axis_index, y_axis_index;
+    Real           origin[MAX_DIMENSIONS];
+    Real           x_axis[MAX_DIMENSIONS], y_axis[MAX_DIMENSIONS];
     Real           x_translation, y_translation, x_scale, y_scale;
     Volume         volume;
 
     volume = get_slice_volume( main, volume_index );
-    get_slice_axes( view_index, &x_axis_index, &y_axis_index );
+    get_slice_plane( main, volume_index, view_index, origin, x_axis, y_axis );
     get_slice_transform( main, volume_index, view_index,
                          &x_translation, &y_translation, &x_scale, &y_scale );
 
     convert_voxel_to_slice_pixel( volume, voxel_position,
-                                  x_axis_index, y_axis_index,
+                                  origin, x_axis, y_axis,
                                   x_translation, y_translation,
                                   x_scale, y_scale, x_pixel, y_pixel );
 }
 
-private  void  record_slice_display_limits(
+private  void  record_slice_viewport(
     main_struct  *main,
     int          volume,
     int          view )
 {
-    int            axis, x_viewport_size, y_viewport_size, axis_index[2];
+    int            x_viewport_size, y_viewport_size;
     slice_struct   *slice;
-    Real           voxel_position[N_DIMENSIONS];
 
     slice = get_slice_struct( main, volume, view );
     get_slice_viewport_size( main, volume, view,
                              &x_viewport_size, &y_viewport_size );
 
-    get_slice_axes( view, &axis_index[0], &axis_index[1] );
-
-    for_less( axis, 0, 2 )
-    {
-        (void) convert_pixel_to_voxel( main, volume, view, 0, 0,
-                                       voxel_position );
-        slice->lower_display_limits[axis] = voxel_position[axis_index[axis]];
-
-        (void) convert_pixel_to_voxel( main, volume, view,
-                                       x_viewport_size-1, y_viewport_size-1,
-                                       voxel_position );
-        slice->upper_display_limits[axis] = voxel_position[axis_index[axis]];
-    }
+    slice->prev_viewport_x_size = x_viewport_size;
+    slice->prev_viewport_y_size = y_viewport_size;
 }
 
 public  void  translate_slice(
@@ -271,7 +265,6 @@ public  void  translate_slice(
     y_translation += (Real) y_translation_offset;
 
     set_slice_translation( main, volume, view, x_translation, y_translation );
-    record_slice_display_limits( main, volume, view );
 
     update_volume_cursor( main, volume, view );
     set_recreate_slice_flag( main, volume, view );
@@ -297,40 +290,36 @@ public  void  scale_slice(
 
     set_slice_translation( main, volume, view, x_translation, y_translation );
     set_slice_scale( main, volume, view, x_scale, y_scale );
-    record_slice_display_limits( main, volume, view );
 
     update_volume_cursor( main, volume, view );
     set_recreate_slice_flag( main, volume, view );
     update_slice_tag_objects( main, volume, view );
 }
 
-public  void  fit_slice_to_view(
+public  void  resize_slice(
     main_struct  *main,
     int          volume_index,
     int          view )
 {
     int            x_viewport_size, y_viewport_size;
-    int            x_axis_index, y_axis_index;
     Real           x_scale, y_scale, x_trans, y_trans;
-    Volume         volume;
     slice_struct   *slice;
 
-    volume = get_slice_volume( main, volume_index );
     slice = get_slice_struct( main, volume_index, view );
-    get_slice_axes( view, &x_axis_index, &y_axis_index );
     get_slice_viewport_size( main, volume_index, view, &x_viewport_size,
                              &y_viewport_size );
+    get_slice_transform( main, volume_index, view,
+                         &x_trans, &y_trans, &x_scale, &y_scale );
 
-    fit_slice_voxel_range_to_viewport( volume, x_axis_index, y_axis_index,
-                                       slice->lower_display_limits[0],
-                                       slice->upper_display_limits[0],
-                                       slice->lower_display_limits[1],
-                                       slice->upper_display_limits[1],
-                                       x_viewport_size, y_viewport_size,
-                                       &x_scale, &y_scale, &x_trans, &y_trans );
-                       
+    resize_volume_slice( slice->prev_viewport_x_size,
+                         slice->prev_viewport_y_size,
+                         x_viewport_size, y_viewport_size,
+                         &x_scale, &y_scale, &x_trans, &y_trans );
+
     set_slice_translation( main, volume_index, view, x_trans, y_trans );
     set_slice_scale( main, volume_index, view, x_scale, y_scale );
+
+    record_slice_viewport( main, volume_index, view );
 
     update_volume_cursor( main, volume_index, view );
     set_recreate_slice_flag( main, volume_index, view );
@@ -343,26 +332,24 @@ public  void  initialize_slice_view(
     int          view )
 {
     int            x_viewport_size, y_viewport_size;
-    int            x_axis_index, y_axis_index;
-    BOOLEAN        x_flip, y_flip;
     Volume         volume;
     Real           x_trans, y_trans, x_scale, y_scale;
+    Real           origin[MAX_DIMENSIONS];
+    Real           x_axis[MAX_DIMENSIONS], y_axis[MAX_DIMENSIONS];
 
     volume = get_slice_volume( main, volume_index );
-    get_slice_axes( view, &x_axis_index, &y_axis_index );
-    get_slice_axes_flip( view, &x_flip, &y_flip );
+    get_slice_plane( main, volume_index, view, origin, x_axis, y_axis );
     get_slice_viewport_size( main, volume_index, view, &x_viewport_size,
                              &y_viewport_size );
 
-    fit_volume_slice_to_viewport( volume, x_axis_index, y_axis_index,
-                                  x_flip, y_flip,
+    fit_volume_slice_to_viewport( volume, origin, x_axis, y_axis,
                                   x_viewport_size, y_viewport_size,
                                   1.0 - Slice_fit_size,
                                   &x_scale, &y_scale, &x_trans, &y_trans );
 
     set_slice_translation( main, volume_index, view, x_trans, y_trans );
     set_slice_scale( main, volume_index, view, x_scale, y_scale );
-    record_slice_display_limits( main, volume_index, view );
+    record_slice_viewport( main, volume_index, view );
 
     update_volume_cursor( main, volume_index, view );
     set_recreate_slice_flag( main, volume_index, view );
