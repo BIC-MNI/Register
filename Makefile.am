@@ -10,7 +10,8 @@ EXTRA_DIST = INSTALL.register  \
 	register_UI.globals    \
 	m4/smr_OPTIONAL_LIB.m4 \
 	m4/smr_REQUIRED_LIB.m4 \
-	m4/smr_WITH_BUILD_PATH.m4
+	m4/smr_WITH_BUILD_PATH.m4 \
+	mni_Register.epm.header
 
 # Adding a dummy source file to register is a work-around for a bug in 
 # automake, which does not (in version 1.4) allow linking together
