@@ -316,7 +316,7 @@ public  void  repartition_colour_maps(
     if( n_merged + n_volume_1 + n_volume_2 > total_colours )
         HANDLE_INTERNAL_ERROR( "repartition_colour_maps" );
 
-    if( n_volume_1 * n_volume_2 >= n_merged )
+    if( n_volume_1 * n_volume_2 <= n_merged )
     {
         n_merged_1 = n_volume_1;
         n_merged_2 = n_volume_2;
