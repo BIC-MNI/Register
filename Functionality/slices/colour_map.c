@@ -177,12 +177,28 @@ public  void  colour_mode_has_toggled(
 
     if( G_get_colour_map_state(main->window) )
     {
-        bg_index = start_index;
+        main->start_colour_index = start_index;
+
+        bg_index = main->start_colour_index + BACKGROUND_COLOUR;
 
         G_set_colour_map_entry( main->window, bg_index,
                                 Slice_background_colour );
+        G_set_colour_map_entry( main->window,
+                                main->start_colour_index + TAG_INSIDE_COLOUR,
+                                Tag_inside_colour );
+        G_set_colour_map_entry( main->window,
+                                main->start_colour_index + TAG_OUTSIDE_COLOUR,
+                                Tag_outside_colour );
+        G_set_colour_map_entry( main->window,
+                                main->start_colour_index +
+                                      TAG_INSIDE_INACTIVE_COLOUR,
+                                Tag_inside_inactive_colour );
+        G_set_colour_map_entry( main->window,
+                                main->start_colour_index +
+                                      TAG_OUTSIDE_INACTIVE_COLOUR,
+                                Tag_outside_inactive_colour );
 
-        ++start_index;
+        start_index = main->start_colour_index + N_MAIN_COLOURS;
 
         total_colours = G_get_n_colour_map_entries( main->window )-start_index;
 
@@ -226,6 +242,8 @@ public  void  colour_mode_has_toggled(
             }
         }
     }
+
+    update_all_tag_colours( main );
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
         update_colour_maps( main, volume );
