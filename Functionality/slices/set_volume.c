@@ -90,7 +90,8 @@ public  void   set_register_volume(
 {
     record_register_volume( main, volume_index, volume, filename );
 
-    main->resampled_file_loaded = FALSE;
+    if( volume_index == RESAMPLED_VOLUME_INDEX )
+        main->resampled_file_loaded = FALSE;
 }
 
 public  void   set_register_resampled_volume(
