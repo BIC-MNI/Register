@@ -13,13 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/window_events.c,v 1.2 1998-06-29 15:01:57 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/window_events.c,v 1.3 1999-06-21 20:18:21 stever Exp $";
 #endif
 
 #include  <user_interface.h>
 
 private  void  update_callback(
     Gwindow   window,
+    BOOLEAN   full_update_required,
     void      *data )
 {
     handle_event( WINDOW_REDRAW_EVENT, window, 0 );

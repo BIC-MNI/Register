@@ -1,27 +1,71 @@
-def: tagtoxfm
+# --------------------------------------------------------------------
+#
+# MINC Makefile
+#
 
-OPT = -O
+# Executable names
+PROGS    = tagtoxfm
+EXTRA_OBJ = ParseArgv.o
+HEADERS  = tagtoxfm.h ParseArgv.h
 
 include $(SRC_DIRECTORY)/BIC_PL/Makefile.include
 
-INCLUDE = $(BIC_PL_INCLUDE)
-LIBS =  $(BIC_PL_LIBS)
-LIBS-O3 =  $(BIC_PL_LIBS-O3)
-LINT_LIBS = $(BIC_PL_LINT_LIBS)
+OPT      = $(OPT_O)
+INCLUDES = -I. $(BIC_PL_INCLUDE) -I/usr/local/include
+LINTFLAGS = -I. $(BIC_PL_INCLUDE) -I/usr/local/include
+CDEFINES = #                        cpp defines
+LDOPT    =  $(BIC_PL_LIBS) -lm
+LINT_LIBS    =  $(BIC_PL_LINT_LIBS)
 
-TAG_SRC = tagtoxfm.c
+RM = rm
+RMFLAGS = -f
 
-TAG_OBJ = $(TAG_SRC:.c=.o)
+# --------------------------------------------------------------------
 
-###########################################################################
+CFLAGS    = $(CDEFINES) $(INCLUDES) $(OPT)# CFLAGS and LINTFLAGS should
+LINTFLAGS = $(CDEFINES) $(INCLUDES)#        be same, except for -g/-O
 
-tagtoxfm: $(TAG_OBJ)
-	$(CC) $(LFLAGS) $(TAG_OBJ) $(LIBS) -o $@
+PROG_OBJ  = $(PROGS:=.o)#                 list of objects
+LINT_LIST = $(PROG_OBJ:.o=.ln)
+LINT_EXTRA = $(EXTRA_OBJ:.o=.ln)
+LINT_LIST_EXE = $(LINT_LIST:.ln=.)#       list of executable names to lint
 
-tagtoxfm-O3: $(TAG_OBJ:.o=.u)
-	$(CC) $(LFLAGS) -O3 $(TAG_OBJ:.o=.u) $(LIBS-O3) -o $@
+# --------------------------------------------------------------------
 
-lint_tagtoxfm: $(TAG_SRC:.c=.ln)
-	$(LINT) -x -u $(LINTFLAGS) $(TAG_SRC:.c=.ln) $(LINT_LIBS)
+.SUFFIXES: .ln
 
-###########################################################################
+default: build
+
+all: build lint
+
+build: $(PROGS)
+
+#Dependency on Makefile
+$(PROG_OBJ) $(EXTRA_OBJ) $(LINT_LIST) $(LINT_EXTRA): Makefile
+
+.c.ln:#                                   defines the rule for creating .ln
+	lint $(LINTFLAGS) -c $< -o $@
+
+.c.o:#                                    defines the rule for creating .o
+	$(CC) $(CFLAGS) -c $< -o $@
+
+#Dependency of .o and .ln on .h
+$(PROG_OBJ) $(EXTRA_OBJ): $(HEADERS)
+
+$(LINT_LIST) $(LINT_EXTRA): $(HEADERS)
+
+# How to make executables
+$(PROGS) : $$@.o $(EXTRA_OBJ) $(CC_PROG_LIB)
+	$(CC) $@.o $(EXTRA_OBJ) -o $@ $(LDOPT)
+
+#  how to lint the executable source
+lint: $(LINT_LIST_EXE)
+
+$(LINT_LIST_EXE) : $$@ln $(LINT_EXTRA)
+	lint -u $(LINTFLAGS) $@ln $(LINT_EXTRA) $(LINT_LIBS)
+
+# Remove all derived files in this directory
+clean:
+	$(RM) $(RM_FLAGS) $(LINT_LIST) $(PROGS) $(PROG_OBJ) \
+	            $(EXTRA_OBJ) $(LINT_EXTRA)
+

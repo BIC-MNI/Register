@@ -9,8 +9,10 @@
 
 /* Argument variables */
 
+/*  These are not needed?  - DMD, Aug. 25, 1998
 extern double ftol;
 extern double simplex_size;
+*/
 
 int 
   inverse = FALSE;
@@ -40,10 +42,12 @@ ArgvInfo argTable[] = {
        "Other options:"},
    {"-inverse", ARGV_CONSTANT, (char *) TRUE, (char *) &inverse,
        "Swap tags, then compute transform (default=FALSE)."},
+#ifdef NOT_NEEDED
    {"-tol", ARGV_FLOAT, (char *) 0,(char *) &ftol,
        "Stopping criteria tolerence"},
    {"-simplex", ARGV_FLOAT, (char *) 0, (char *) &simplex_size,
        "Radius of simplex volume."},
+#endif
    {"-clobber", ARGV_CONSTANT, (char *) TRUE, (char *) &clobber,
        "Overwrite any existing xfm file."},
    {"-noclobber", ARGV_CONSTANT, (char *) FALSE, (char *) &clobber,
