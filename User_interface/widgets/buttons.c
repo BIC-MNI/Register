@@ -117,10 +117,43 @@ public  void  update_button_colours(
 
     colour_map_state = G_get_colour_map_state(widget->graphics->window);
 
-    button->polygons->colours[0] = get_ui_colour(colour_map_state,
-                                                 rectangle_colour);
+    if( widget->use_ui_colours )
+    {
+        button->polygons->colours[0] = get_ui_colour(colour_map_state,
+                                                     rectangle_colour);
 
-    button->text->colour = get_ui_colour(colour_map_state,button->text_colour);
+        button->text->colour =
+                    get_ui_colour(colour_map_state,button->text_colour);
+    }
+    else
+    {
+        button->polygons->colours[0] = rectangle_colour;
+
+        button->text->colour = button->text_colour;
+    }
+}
+
+public  void  set_button_active_colour(
+    widget_struct   *widget,
+    Colour          col )
+{
+    button_struct  *button;
+
+    button = get_widget_button( widget );
+
+    button->active_colour = col;
+
+    update_widget_colours( widget );
+}
+
+public  Colour  get_button_colour(
+    widget_struct   *widget )
+{
+    button_struct  *button;
+
+    button = get_widget_button( widget );
+
+    return( button->active_colour );
 }
 
 public  void  position_button(
@@ -196,14 +229,13 @@ private  void  create_button_graphics(
 
     button = get_widget_button( widget );
 
-    object = create_rectangle( get_ui_colour(button->active_colour,FALSE) );
+    object = create_rectangle( BLACK );
     button->polygons = (polygons_struct *) get_object_pointer( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
                             widget->viewport_index, NORMAL_PLANES, object );
 
-    object = create_text( get_ui_colour(button->text_colour,FALSE),
-                          text_font, font_size );
+    object = create_text( BLACK, text_font, font_size );
 
     button->text = (text_struct *) get_object_pointer( object );
 
@@ -243,6 +275,7 @@ private  widget_struct  *create_a_button(
     char                       text1[],
     char                       text2[],
     Boolean                    initial_activity,
+    Boolean                    use_ui_colours,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
@@ -257,7 +290,7 @@ private  widget_struct  *create_a_button(
     button_struct   *button;
 
     widget = create_widget( BUTTON, x, y, x_size, y_size, initial_activity,
-                            graphics, viewport_index );
+                            use_ui_colours, graphics, viewport_index );
 
     button = get_widget_button( widget );
 
@@ -312,6 +345,7 @@ public  widget_struct *create_button(
     int                        y_size,
     char                       label[],
     Boolean                    initial_activity,
+    Boolean                    use_ui_colours,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
@@ -325,7 +359,7 @@ public  widget_struct *create_button(
     return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
                      FALSE, FALSE, label, (char *) 0,
-                     initial_activity, active_colour,
+                     initial_activity, use_ui_colours, active_colour,
                      selected_colour, inactive_colour,
                      pushed_colour, text_colour,
                      text_font, font_size, push_callback, callback_data ) );
@@ -342,6 +376,7 @@ public  widget_struct  *create_toggle_button(
     char                       on_text[],
     Boolean                    initial_state,
     Boolean                    initial_activity,
+    Boolean                    use_ui_colours,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
     UI_colours                 pushed_colour,
@@ -354,7 +389,7 @@ public  widget_struct  *create_toggle_button(
     return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
                      TRUE, initial_state, off_text, on_text,
-                     initial_activity, active_colour, BLACK,
+                     initial_activity, use_ui_colours, active_colour, BLACK,
                      inactive_colour, pushed_colour, text_colour,
                      text_font, font_size, push_callback, callback_data ) );
 }
