@@ -28,7 +28,12 @@ m4_files = \
 	m4/smr_CGAL_MAKEFILE.m4 \
 	m4/smr_OPTIONAL_LIB.m4 \
 	m4/smr_REQUIRED_LIB.m4 \
-	m4/smr_WITH_BUILD_PATH.m4
+	m4/smr_WITH_BUILD_PATH.m4 \
+	m4/acx_pthread.m4 \
+	m4/ax_check_gl.m4 \
+	m4/ax_check_glu.m4 \
+	m4/ax_check_glut.m4 \
+	m4/ax_lang_compiler_ms.m4
 
 # Adding a dummy source file to register is a work-around for a bug in 
 # automake, which does not (in version 1.4) allow linking together
