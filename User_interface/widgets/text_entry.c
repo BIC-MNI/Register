@@ -171,7 +171,7 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )   /* ARGSUSED */
     widget = (widget_struct *) callback_data;
     text_entry = get_widget_text_entry( widget );
 
-    if( keyboard_character == RETURN_KEY )
+    if( keyboard_character == RETURN_KEY || keyboard_character == '' )
     {
         text_entry->in_edit_mode = FALSE;
         update_text_entry_colours( widget );
@@ -188,7 +188,10 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )   /* ARGSUSED */
 
         set_interaction_in_progress( FALSE );
 
-        text_entry->hit_return_callback( widget, text_entry->callback_data );
+        if( keyboard_character == RETURN_KEY )
+            text_entry->hit_return_callback( widget, text_entry->callback_data);
+        else
+            restore_text_entry_string( widget );
     }
     else
     {
@@ -282,11 +285,21 @@ public  void  set_text_entry_string(
     (void) strncpy( text_entry->string, string, MAX_STRING_LENGTH );
     text_entry->string[MAX_STRING_LENGTH] = (char) 0;
     text_entry->left_index = 0;
+    text_entry->string_index = 0;
 
     recreate_text_entry_text( widget );
 
     set_viewport_update_flag( &widget->graphics->graphics,
                               widget->viewport_index, NORMAL_PLANES );
+}
+
+public  void  restore_text_entry_string(
+    widget_struct  *widget )
+{
+    text_entry_struct   *text_entry;
+
+    text_entry = get_widget_text_entry( widget );
+    set_text_entry_string( widget, text_entry->saved_string );
 }
 
 public  void  update_text_entry_colours(
@@ -308,7 +321,10 @@ public  void  update_text_entry_colours(
         }
         else
         {
-            rectangle_colour = text_entry->active_colour;
+            if( widget->selected_flag )
+                rectangle_colour = text_entry->selected_colour;
+            else
+                rectangle_colour = text_entry->active_colour;
             text_colour = text_entry->text_colour;
         }
     }
@@ -401,6 +417,7 @@ private  widget_struct  *create_a_text_entry(
     char                       initial_text[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
+    UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
     UI_colours                 text_colour,
     UI_colours                 edit_colour,
@@ -422,6 +439,7 @@ private  widget_struct  *create_a_text_entry(
     text_entry->in_edit_mode = FALSE;
 
     text_entry->active_colour = active_colour;
+    text_entry->selected_colour = selected_colour;
     text_entry->inactive_colour = inactive_colour;
     text_entry->text_colour = text_colour;
     text_entry->edit_colour = edit_colour;
@@ -468,6 +486,7 @@ public  widget_struct  *create_text_entry(
     char                       initial_text[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
+    UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
     UI_colours                 text_colour,
     UI_colours                 edit_colour,
@@ -480,7 +499,8 @@ public  widget_struct  *create_text_entry(
 {
     return( create_a_text_entry( graphics, viewport_index, x, y, x_size, y_size,
                          FALSE, initial_text, initial_activity, active_colour,
-                         inactive_colour, text_colour, edit_colour,
+                         selected_colour, inactive_colour,
+                         text_colour, edit_colour,
                          text_edit_colour, cursor_colour,
                          text_font, font_size,
                          hit_return_callback, callback_data ) );
@@ -496,6 +516,7 @@ public  widget_struct  *create_label(
     char                       initial_text[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
+    UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
     UI_colours                 text_colour,
     Font_types                 text_font,
@@ -503,7 +524,7 @@ public  widget_struct  *create_label(
 {
     return( create_a_text_entry( graphics, viewport_index, x, y, x_size, y_size,
                          TRUE, initial_text, initial_activity, active_colour,
-                         inactive_colour, text_colour,
+                         selected_colour, inactive_colour, text_colour,
                          (UI_colours) 0, (UI_colours) 0, (UI_colours) 0,
                          text_font, font_size,
                          (widget_callback_type) 0, (void *) NULL ) );

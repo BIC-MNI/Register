@@ -1,7 +1,5 @@
 #include  <def_user_interface.h>
 
-private  void  set_button_activity_colour( widget_struct * );
-
 private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
 {
     widget_struct   *widget;
@@ -12,14 +10,7 @@ private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
 
     if( current_realtime_seconds() >= button->time_to_unpush )
     {
-        if( !button->toggle_flag )
-        {
-            button->state = FALSE;
-            update_button_colours( widget );
-        }
-
-        set_viewport_update_flag( &widget->graphics->graphics,
-                                  widget->viewport_index, NORMAL_PLANES );
+        set_widget_activity( widget, ON );
 
         button->time_to_unpush = -1.0;
         remove_global_event_callback( NO_EVENT, check_unpush_button,
@@ -33,19 +24,23 @@ private  void  deselect_other_radio_buttons(
     widget_struct   *current_widget;
     button_struct   *button;
 
-    current_widget = widget;
     button = get_widget_button( widget );
+
+    current_widget = widget;
 
     while( button->next_radio_button != widget )
     {
         current_widget = button->next_radio_button;
+        set_widget_selected( current_widget, OFF );
+
         button = get_widget_button( current_widget );
-        if( button->state )
-        {
-            button->state = OFF;
-            update_button_colours( current_widget );
-        }
     }
+}
+
+private  Boolean  is_radio_button(
+    button_struct  *button )
+{
+    return( button->next_radio_button != (widget_struct *) NULL );
 }
 
 public  void  define_radio_buttons(
@@ -70,18 +65,17 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
     widget = (widget_struct *) callback_data;
     button = get_widget_button( widget );
 
+    set_widget_activity( widget, OFF );
+
     if( button->toggle_flag )
     {
-        button->state = !button->state;
-        set_button_text( widget, button->toggle_text[button->state] );
-
-        if( button->next_radio_button != (widget_struct *) 0 )
-            deselect_other_radio_buttons( widget );
+        set_toggle_button_state( widget, !button->state );
     }
-    else
-        button->state = TRUE;
-
-    update_button_colours( widget );
+    else if( is_radio_button( button ) )
+    {
+        set_widget_selected( widget, ON );
+        deselect_other_radio_buttons( widget );
+    }
 
     set_viewport_update_flag( &widget->graphics->graphics,
                               widget->viewport_index, NORMAL_PLANES );
@@ -108,15 +102,12 @@ public  void  update_button_colours(
     {
         if( button->toggle_flag )
         {
-            if( button->state )
-                rectangle_colour = button->selected_colour;
-            else
-                rectangle_colour = button->active_colour;
+            rectangle_colour = button->active_colour;
         }
         else
         {
-            if( button->state )
-                rectangle_colour = button->pushed_colour;
+            if( widget->selected_flag )
+                rectangle_colour = button->selected_colour;
             else
                 rectangle_colour = button->active_colour;
         }
@@ -154,6 +145,19 @@ public  void  position_button(
                y, y + widget->y_size - 1 );
 }
 
+public  void  set_toggle_button_state(
+    widget_struct    *widget,
+    Boolean          state )
+{
+    button_struct    *button;
+
+    button = get_widget_button( widget );
+
+    button->state = state;
+    set_button_text( widget, button->toggle_text[button->state] );
+    update_button_colours( widget );
+}
+
 public  void  set_button_text(
     widget_struct    *widget,
     char             text_string[] )
@@ -165,6 +169,9 @@ public  void  set_button_text(
     (void) strcpy( button->text->string, text_string );
     position_text_centred( button->text, widget->x, widget->y,
                            widget->x_size, widget->y_size );
+
+    set_viewport_update_flag( &widget->graphics->graphics,
+                              widget->viewport_index, NORMAL_PLANES );
 }
 
 public  void  update_button_activity(
@@ -267,12 +274,13 @@ private  widget_struct  *create_a_button(
     if( toggle_flag )
     {
         button->state = initial_state;
-        button->selected_colour = selected_colour;
         (void) strcpy( button->toggle_text[0], text1 );
         (void) strcpy( button->toggle_text[1], text2 );
     }
     else
-        button->state = FALSE;
+    {
+        button->selected_colour = selected_colour;
+    }
 
     button->push_callback = push_callback;
     button->callback_data = callback_data;
@@ -305,6 +313,7 @@ public  widget_struct *create_button(
     char                       label[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
+    UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
     UI_colours                 pushed_colour,
     UI_colours                 text_colour,
@@ -316,7 +325,8 @@ public  widget_struct *create_button(
     return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
                      FALSE, FALSE, label, (char *) 0,
-                     initial_activity, active_colour, BLACK, inactive_colour,
+                     initial_activity, active_colour,
+                     selected_colour, inactive_colour,
                      pushed_colour, text_colour,
                      text_font, font_size, push_callback, callback_data ) );
 }
@@ -333,7 +343,6 @@ public  widget_struct  *create_toggle_button(
     Boolean                    initial_state,
     Boolean                    initial_activity,
     UI_colours                 active_colour,
-    UI_colours                 selected_colour,
     UI_colours                 inactive_colour,
     UI_colours                 pushed_colour,
     UI_colours                 text_colour,
@@ -345,7 +354,7 @@ public  widget_struct  *create_toggle_button(
     return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
                      TRUE, initial_state, off_text, on_text,
-                     initial_activity, active_colour, selected_colour,
+                     initial_activity, active_colour, BLACK,
                      inactive_colour, pushed_colour, text_colour,
                      text_font, font_size, push_callback, callback_data ) );
 }

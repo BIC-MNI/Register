@@ -138,17 +138,34 @@ public  Boolean  get_text_entry_real_value(
         *value = (Real) double_value;
         found = TRUE;
     }
+    else
+    {
+        restore_text_entry_string( widget );
+    }
 
     return( found );
 }
 
-public  void    set_text_entry_string(
-    UI_struct      *ui_info,
-    widget_struct  *widget,
-    char           string[] )
+public  void  set_text_entry_real_value(
+    widget_struct     *widget,
+    char              format[],
+    Real              value )
 {
-    set_text_entry_text( widget, string );
-    set_viewport_update_flag( &ui_info->graphics_window.graphics,
-                              widget->viewport_index, NORMAL_PLANES );
+    String          string;
 
+    (void) sprintf( string, format, value );
+
+    set_text_entry_string( widget, string );
+}
+
+public  void  set_button_int_value(
+    widget_struct     *widget,
+    char              format[],
+    int               value )
+{
+    String          string;
+
+    (void) sprintf( string, format, value );
+
+    set_button_text( widget, string );
 }

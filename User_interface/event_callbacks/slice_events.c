@@ -45,7 +45,7 @@ private  void  update_move_slice(
     ui_get_volume_view_index( ui_info->interaction_viewport_index,
                               &volume, &view );
 
-    get_viewport_mouse_position( ui_info,
+    get_viewport_mouse_position( &ui_info->graphics_window,
                                  ui_info->interaction_viewport_index,
                                  &x_mouse, &y_mouse);
 
@@ -95,7 +95,7 @@ private  void  update_pan_slice(
 {
     int   volume, view, x_mouse, y_mouse;
 
-    get_viewport_mouse_position( ui_info,
+    get_viewport_mouse_position( &ui_info->graphics_window,
                                  ui_info->interaction_viewport_index,
                                  &x_mouse, &y_mouse);
 
@@ -139,7 +139,7 @@ public  void  install_slice_events(
 {
     int  view;
 
-    for_less( view, 0, N_SLICE_VIEWS )
+    for_less( view, 0, N_VIEWS )
     {
         add_event_viewport_callback( event_table,
                                      ui_get_slice_viewport_index(volume,view),
@@ -155,6 +155,29 @@ public  void  install_slice_events(
                                      ui_get_slice_viewport_index(volume,view),
                                      RIGHT_MOUSE_DOWN_EVENT,
                                      -1, -1, -1, -1,
+                                     right_mouse_down_callback, (void *) 0 );
+    }
+}
+
+public  void  remove_slice_events(
+    event_viewports_struct   *event_table,
+    int                     volume )
+{
+    int  view;
+
+    for_less( view, 0, N_VIEWS )
+    {
+        remove_event_viewport_callback( event_table,
+                                     ui_get_slice_viewport_index(volume,view),
+                                     LEFT_MOUSE_DOWN_EVENT,
+                                     left_mouse_down_callback, (void *) 0 );
+        remove_event_viewport_callback( event_table,
+                                     ui_get_slice_viewport_index(volume,view),
+                                     MIDDLE_MOUSE_DOWN_EVENT,
+                                     middle_mouse_down_callback, (void *) 0 );
+        remove_event_viewport_callback( event_table,
+                                     ui_get_slice_viewport_index(volume,view),
+                                     RIGHT_MOUSE_DOWN_EVENT,
                                      right_mouse_down_callback, (void *) 0 );
     }
 }

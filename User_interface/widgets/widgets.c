@@ -102,28 +102,6 @@ private  void  position_slider_widget(
     position_slider( widget, x, y );
 }
 
-/* -------------------- set selected function ----------------------------- */
-
-private  void  update_selected_button_widget(
-    widget_struct            *widget,
-    Boolean                  selected )
-{
-    update_button_selected( widget );
-}
-
-private  void  update_selected_text_entry_widget(
-    widget_struct            *widget,
-    Boolean                  selected )
-{
-    update_text_entry_selected( widget );
-}
-
-private  void  update_selected_slider_widget(
-    widget_struct            *widget,                 /* ARGSUSED */
-    Boolean                  selected )
-{
-}
-
 /* -------------------- update colours function ----------------------------- */
 
 private  void  update_colours_button_widget(
@@ -170,7 +148,6 @@ typedef  struct
 {
     void   (*position_function)( widget_struct *, int, int );
     void   (*update_activity)( widget_struct * );
-    void   (*update_selected)( widget_struct * );
     void   (*update_colours)( widget_struct * );
     void   (*delete_function)( widget_struct * );
 }
@@ -181,7 +158,6 @@ static  widget_functions_list   widget_functions[N_WIDGET_TYPES] =
     {
         position_button_widget,
         update_button_activity,
-        update_selected_button_widget,
         update_colours_button_widget,
         delete_button_widget
     },                                                    /* BUTTON */
@@ -189,7 +165,6 @@ static  widget_functions_list   widget_functions[N_WIDGET_TYPES] =
     {
         position_text_entry_widget,
         update_text_entry_activity,
-        update_selected_text_entry_widget,
         update_colours_text_entry_widget,
         delete_text_entry_widget
     },                                                    /* TEXT_ENTRY */
@@ -197,7 +172,6 @@ static  widget_functions_list   widget_functions[N_WIDGET_TYPES] =
     {
         position_slider_widget,
         update_slider_activity,
-        update_selected_slider_widget,
         update_colours_slider_widget,
         delete_slider_widget
     }                                                     /* TEXT_ENTRY */
@@ -250,7 +224,8 @@ public  void  set_widget_selected(
     Boolean        selected )
 {
     widget->selected_flag = selected;
-    widget_functions[widget->widget_type].update_selected( widget );
+
+    update_widget_colours( widget );
 }
 
 public  void  update_widget_colours(

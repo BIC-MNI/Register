@@ -14,7 +14,8 @@ public  void  start_interaction(
     add_global_event_callback( NO_EVENT, no_event_callback,
                                (void *) NULL );
 
-    get_viewport_mouse_position( ui_info, event_viewport_index,
+    get_viewport_mouse_position( &ui_info->graphics_window,
+                                 event_viewport_index,
                                  &ui_info->x_mouse_start,
                                  &ui_info->y_mouse_start );
 
@@ -34,17 +35,16 @@ public  void  terminate_interaction(
 }
 
 public  void  get_viewport_mouse_position(
-    UI_struct    *ui_info,
-    int          event_viewport_index,
-    int          *x_mouse,
-    int          *y_mouse )
+    graphics_window_struct    *graphics_window,
+    int                       event_viewport_index,
+    int                       *x_mouse,
+    int                       *y_mouse )
 {
     int   x_min, x_max, y_min, y_max;
 
-    (void) G_get_mouse_position( ui_info->graphics_window.window,
-                                 x_mouse, y_mouse );
+    (void) G_get_mouse_position( graphics_window->window, x_mouse, y_mouse );
 
-    get_event_viewport( &ui_info->graphics_window.event_viewports,
+    get_event_viewport( &graphics_window->event_viewports,
                         event_viewport_index, &x_min, &x_max, &y_min, &y_max );
 
     *x_mouse -= x_min;

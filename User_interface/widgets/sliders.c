@@ -229,7 +229,7 @@ private  void  update_one_slider_position(
                    peg_x1,    peg_x2,
                    widget->y, widget->y + widget->y_size - 1 );
 
-    set_text_entry_real_value( slider->text_widgets[ind], Slider_text_format,
+    set_text_entry_real_value( slider->text_widgets[ind], slider->format_string,
                                slider->values[ind] );
 
     position_widget( slider->text_widgets[ind],
@@ -391,6 +391,7 @@ private  widget_struct  *create_a_slider(
     Real                       initial_high_value,
     Real                       min_value,
     Real                       max_value,
+    char                       format_string[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
@@ -417,6 +418,7 @@ private  widget_struct  *create_a_slider(
     slider->min_value = min_value;
     slider->max_value = max_value;
     slider->values[0] = initial_low_value;
+    (void) strcpy( slider->format_string, format_string );
 
     slider->colour_bar_flag = colour_bar_flag;
     slider->value_changed_callback[0] = lower_value_callback;
@@ -493,6 +495,7 @@ public  widget_struct  *create_slider(
     Real                       initial_value,
     Real                       min_value,
     Real                       max_value,
+    char                       format_string[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
@@ -503,7 +506,7 @@ public  widget_struct  *create_slider(
     return( create_a_slider( graphics, viewport_index,
                      x, y, x_size, y_size,
                      FALSE, initial_value, 0.0, min_value, max_value,
-                     initial_activity,
+                     format_string, initial_activity,
                      active_colour, inactive_colour, peg_colour,
                      value_changed_callback, value_changed_data,
                      (widget_callback_type) 0, (void *) NULL ) );
@@ -520,6 +523,7 @@ public  widget_struct  *create_colour_bar_slider(
     Real                       initial_high_value,
     Real                       min_value,
     Real                       max_value,
+    char                       format_string[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
@@ -532,7 +536,7 @@ public  widget_struct  *create_colour_bar_slider(
     return( create_a_slider( graphics, viewport_index,
                     x, y, x_size, y_size,
                     TRUE, initial_low_value, initial_high_value,
-                    min_value, max_value,
+                    min_value, max_value, format_string,
                     initial_activity,
                     active_colour, inactive_colour, peg_colour,
                     lower_value_changed_callback, lower_value_callback_data,
