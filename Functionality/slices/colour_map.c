@@ -172,11 +172,18 @@ public  void  colour_mode_has_toggled(
     main_struct  *main,
     int          start_index )
 {
-    int        volume;
+    int        volume, view, bg_index;
     int        total_colours, n_volume, n_merged;
 
     if( G_get_colour_map_state(main->window) )
     {
+        bg_index = start_index;
+
+        G_set_colour_map_entry( main->window, bg_index,
+                                Slice_background_colour );
+
+        ++start_index;
+
         total_colours = G_get_n_colour_map_entries( main->window )-start_index;
 
         n_merged = Merged_colour_table_fraction * total_colours;
@@ -208,6 +215,16 @@ public  void  colour_mode_has_toggled(
             update_cmode_indices( main, volume );
 
         update_merged_cmode_indices( main );
+
+        for_less( volume, 0, N_VOLUMES_DISPLAYED )
+        {
+            for_less( view, 0, N_VIEWS )
+            {
+                set_graphics_viewport_background( &main->graphics,
+                                  get_slice_viewport_index(volume,view),
+                                  Slice_background_colour, bg_index );
+            }
+        }
     }
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
