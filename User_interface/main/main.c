@@ -13,10 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.12 1995-12-19 15:47:04 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.13 1995-12-19 18:55:48 david Exp $";
 #endif
 
 #include  <user_interface.h>
+
+private  STRING  version = "1.0      Dec. 19, 1995";
 
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
 #include  <globals.h>
@@ -43,7 +45,8 @@ private  void  print_usage(
     -rgb:       Starts program in RGB mode.\n\
     -cmap:      Starts program in colour map mode.\n\
     -single:    Starts program in single buffer mode.\n\
-    -double:    Starts program in double buffer mode.\n\n";
+    -double:    Starts program in double buffer mode.\n\
+    -version:   Displays the version number of the program.\n\n";
 
     print_error( usage, executable );
 }
@@ -82,6 +85,11 @@ int  main(
         if( equal_strings( argument, "-help" ) )
         {
             print_usage( argv[0] );
+            return( 0 );
+        }
+        else if( equal_strings( argument, "-version" ) )
+        {
+            print( "%s:  Version number %s\n", argv[0], version );
             return( 0 );
         }
         else if( equal_strings( argument, "-rgb" ) )
