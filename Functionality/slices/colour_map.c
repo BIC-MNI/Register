@@ -18,24 +18,6 @@ private  Colour  merge_colours(
 private  void  update_merged_rgb_colour_maps(
     main_struct  *main )
 {
-    int     i, volume;
-    Colour  col;
-
-    for_less( volume, 0, N_MERGED )
-    {
-        for_less( i, 0, N_VOXEL_VALUES )
-        {
-            col = get_colour_code( &main->merged.colour_coding[volume],(Real)i);
-
-            col = SCALE_COLOUR( col, main->merged.opacity[volume] );
-            main->merged.rgb_colour_map[volume][i] = col;
-        }
-    }
-}
-
-private  void  update_merged_cmode_maps(
-    main_struct  *main )
-{
     int     i, j;
     Colour  col1, col2;
 
@@ -47,9 +29,48 @@ private  void  update_merged_cmode_maps(
         {
             col2 = get_colour_code( &main->merged.colour_coding[1], (Real) j );
 
-            main->merged.cmode_colour_map[i][j] = 
+            main->merged.rgb_colour_map[i][j] = 
                     merge_colours( main->merged.opacity[0], col1,
                                    main->merged.opacity[1], col2 );
+        }
+    }
+}
+
+private  void  update_merged_cmode_maps(
+    main_struct  *main )
+{
+    int     i, j, n1, n2, min_ind, i1, i2, val;
+    Colour  col1, col2;
+
+    min_ind = main->merged.start_colour_map;
+    n1 = main->merged.n_colour_entries1;
+    n2 = main->merged.n_colour_entries2;
+
+    for_less( i, 0, N_VOXEL_VALUES )
+    {
+        i1 = CONVERT_INTEGER_RANGE( i, 0, N_VOXEL_VALUES-1, 0, n1-1 );
+        for_less( j, 0, N_VOXEL_VALUES )
+        {
+            i2 = CONVERT_INTEGER_RANGE( j, 0, N_VOXEL_VALUES-1, 0, n1-1 );
+
+            main->merged.cmode_colour_map[i][j] = min_ind + IJ(i1,i2,n2);
+        }
+    }
+
+    G_set_bitplanes( main->window, NORMAL_PLANES );
+
+    for_less( i, 0, n1 )
+    {
+        val = CONVERT_INTEGER_RANGE( i, 0, n1-1, 0, N_VOXEL_VALUES-1 );
+        col1 = get_colour_code( &main->merged.colour_coding[0], (Real) val );
+        for_less( j, 0, n2 )
+        {
+            val = CONVERT_INTEGER_RANGE( j, 0, n1-1, 0, N_VOXEL_VALUES-1 );
+            col2 = get_colour_code( &main->merged.colour_coding[1], (Real) val);
+
+            G_set_colour_map_entry( main->window, min_ind + IJ(i,j,n2), 
+                    merge_colours( main->merged.opacity[0], col1,
+                                   main->merged.opacity[1], col2 ) );
         }
     }
 }
@@ -146,7 +167,9 @@ public  void  colour_mode_has_toggled(
         main->trislice[1].n_colour_entries = n_volume;
 
         main->merged.start_colour_map = start_index + 2 * n_volume;
-        main->merged.n_colour_entries = n_merged;
+        main->merged.n_colour_entries1 = (int) sqrt( (double) n_merged );
+        main->merged.n_colour_entries2 = n_merged /
+                                         main->merged.n_colour_entries1;
     }
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
@@ -156,24 +179,19 @@ public  void  colour_mode_has_toggled(
         set_recreate_3_slices_flags( main, volume );
 
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
-
-    set_merged_volume_visibility( main, main->merged.active_flag );
 }
 
 private  colour_coding_has_changed (
     main_struct          *main,
     int                  volume_index )
 {
+    if( volume_index > MERGED_VOLUME_INDEX )
+        volume_index = MERGED_VOLUME_INDEX;
+
     update_colour_maps( main, volume_index );
 
     if( !G_get_colour_map_state( main->window ) )
-    {
-        if( volume_index < N_VOLUMES )
-            set_recreate_3_slices_flags( main, volume_index );
-        else
-            set_recreate_one_merged_volume( main,
-                                           volume_index - MERGED_VOLUME_INDEX );
-    }
+        set_recreate_3_slices_flags( main, volume_index );
 }
 
 private  colour_coding_struct  *get_volume_colour_coding(
@@ -213,4 +231,14 @@ public  void  set_volume_colour_coding_limits(
                                min_value, max_value );
 
     colour_coding_has_changed( main, volume_index );
+}
+
+public  void  set_merged_volume_opacity(
+    main_struct          *main,
+    int                  which_volume,
+    Real                 opacity )
+{
+    main->merged.opacity[which_volume] = opacity;
+
+    colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
 }
