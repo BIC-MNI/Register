@@ -180,7 +180,7 @@ public  void  add_main_widgets(
                        Main_menu_viewport, 
                        0, 0, Tags_filename_width, Text_entry_height,
                        "", ON,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
