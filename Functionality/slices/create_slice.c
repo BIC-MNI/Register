@@ -146,18 +146,19 @@ private  void  record_slice_display_limits(
 
     slice = get_slice_struct( main, volume, view );
     get_slice_viewport_size( main, volume, view,
-                             &viewport_size[0], &viewport_size[1] );
+                             &x_viewport_size, &y_viewport_size );
 
     get_slice_axes( view, &axis_index[0], &axis_index[1] );
 
     for_less( axis, 0, 2 )
     {
-        convert_pixel_to_voxel( main, volume, view, 0, 0, voxel_position );
+        (void) convert_pixel_to_voxel( main, volume, view, 0, 0,
+                                       voxel_position );
         slice->lower_display_limits[axis] = voxel_position[axis_index[axis]];
 
-        convert_pixel_to_voxel( main, volume, view,
-                                x_viewport_size-1, y_viewport_size-1,
-                                voxel_position );
+        (void) convert_pixel_to_voxel( main, volume, view,
+                                       x_viewport_size-1, y_viewport_size-1,
+                                       voxel_position );
         slice->upper_display_limits[axis] = voxel_position[axis_index[axis]];
     }
 }
@@ -178,8 +179,10 @@ public  void  translate_slice(
     y_translation += (Real) y_translation_offset;
 
     set_slice_translation( main, volume, view, x_translation, y_translation );
+    record_slice_display_limits( main, volume, view );
     update_volume_cursor( main, volume, view );
     set_recreate_slice_flag( main, volume, view );
+    update_slice_tag_objects( main, volume, view );
 }
 
 public  void  scale_slice(
@@ -194,7 +197,7 @@ public  void  scale_slice(
 
     get_slice_viewport_size( main, volume, view, &x_size, &y_size );
     x_centre = (Real) x_size / 2.0;
-    y_centre = (Real) x_size / 2.0;
+    y_centre = (Real) y_size / 2.0;
 
     get_slice_transform( main, volume, view, &x_translation, &y_translation,
                          &x_scale, &y_scale );
@@ -206,8 +209,60 @@ public  void  scale_slice(
 
     set_slice_translation( main, volume, view, x_translation, y_translation );
     set_slice_scale( main, volume, view, x_scale, y_scale );
+    record_slice_display_limits( main, volume, view );
     update_volume_cursor( main, volume, view );
     set_recreate_slice_flag( main, volume, view );
+    update_slice_tag_objects( main, volume, view );
+}
+
+public  void  fit_slice_to_view(
+    main_struct  *main,
+    int          volume_index,
+    int          view )
+{
+    int            viewport_size[2], axis, axis_index[2];
+    Real           voxel_diff[2], start_voxel[2];
+    Real           scales[2], scale_factor;
+    Real           translation[2];
+    volume_struct  *volume;
+    slice_struct   *slice;
+
+    volume = get_slice_volume( main, volume_index );
+    slice = get_slice_struct( main, volume_index, view );
+    get_slice_axes( view, &axis_index[0], &axis_index[1] );
+    get_slice_viewport_size( main, volume_index, view, &viewport_size[0],
+                             &viewport_size[1] );
+
+    for_less( axis, 0, 2 )
+    {
+        voxel_diff[axis] = slice->upper_display_limits[axis] -
+                           slice->lower_display_limits[axis];
+
+        scales[axis] = (Real) (viewport_size[axis] - 1) / voxel_diff[axis] /
+                       volume->thickness[axis_index[axis]]; 
+    }
+
+    scale_factor = MIN( scales[0], scales[1] );
+
+    for_less( axis, 0, 2 )
+    {
+        start_voxel[axis] = slice->lower_display_limits[axis] -
+              ((Real) (viewport_size[axis] - 1) / scale_factor /
+               volume->thickness[axis_index[axis]] - voxel_diff[axis]) / 2.0;
+
+        translation[axis] = -scale_factor *
+                            volume->thickness[axis_index[axis]] *
+                            start_voxel[axis] + 0.5;
+    }
+
+    set_slice_translation( main, volume_index, view,
+                           translation[0], translation[1] );
+
+    set_slice_scale( main, volume_index, view, scale_factor, scale_factor );
+
+    update_volume_cursor( main, volume_index, view );
+    set_recreate_slice_flag( main, volume_index, view );
+    update_slice_tag_objects( main, volume_index, view );
 }
 
 public  void  reset_slice_view(
@@ -215,37 +270,24 @@ public  void  reset_slice_view(
     int          volume_index,
     int          view )
 {
-    int            x_size, y_size;
     int            x_axis_index, y_axis_index;
-    Real           x_pixel_width, y_pixel_width;
-    Real           x_factor, y_factor, scale_factor;
+    Real           x_max_voxel, y_max_voxel, boundary;
     volume_struct  *volume;
+    slice_struct   *slice;
 
     volume = get_slice_volume( main, volume_index );
-
+    slice = get_slice_struct( main, volume_index, view );
     get_slice_axes( view, &x_axis_index, &y_axis_index );
 
-    x_pixel_width = (Real) volume->sizes[x_axis_index] *
-                           volume->thickness[x_axis_index];
+    x_max_voxel = (Real) volume->sizes[x_axis_index] - 0.5;
+    y_max_voxel = (Real) volume->sizes[y_axis_index] - 0.5;
 
-    y_pixel_width = (Real) volume->sizes[y_axis_index] *
-                           volume->thickness[y_axis_index];
+    boundary = (1.0-Slice_fit_size)/2.0*x_max_voxel;
 
-    get_slice_viewport_size( main, volume_index, view, &x_size, &y_size );
+    slice->lower_display_limits[0] = -boundary;
+    slice->upper_display_limits[0] = x_max_voxel + boundary;
+    slice->lower_display_limits[1] = -boundary;
+    slice->upper_display_limits[1] = y_max_voxel + boundary;
 
-    x_factor = (Real) x_size / x_pixel_width;
-    y_factor = (Real) y_size / y_pixel_width;
-
-    scale_factor = MIN( x_factor, y_factor );
-
-    scale_factor *= Slice_fit_size;
-
-    set_slice_translation( main, volume_index, view,
-              ROUND( ((Real) x_size - scale_factor * x_pixel_width) / 2.0 ),
-              ROUND( ((Real) x_size - scale_factor * y_pixel_width) / 2.0 ) );
-
-    set_slice_scale( main, volume_index, view, scale_factor, scale_factor );
-
-    set_recreate_slice_flag( main, volume_index, view );
-    update_volume_cursor( main, volume_index, view );
+    fit_slice_to_view( main, volume_index, view );
 }
