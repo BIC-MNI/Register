@@ -11,7 +11,7 @@ public  Boolean  make_window_up_to_date(
                                                         current_buffer );
 
     if( window == get_ui_struct()->graphics_window.window &&
-        IF_redraw_slices( window, current_buffer ) )
+        IF_redraw_slices( current_buffer ) )
         something_was_drawn = TRUE;
 
     if( something_was_drawn )

@@ -61,6 +61,10 @@ typedef  struct
     Transform                resampling_transform;
     String                   original_filename_volume_2;
     String                   resampled_filename;
+
+    int                      which_volume_readout;
+    int                      x_mouse_readout;
+    int                      y_mouse_readout;
 } UI_struct;
 
 typedef  struct popup_struct

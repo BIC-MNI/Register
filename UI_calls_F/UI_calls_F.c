@@ -60,6 +60,25 @@ public  void  IF_set_resampled_volume(
                                    resampling_transform );
 }
 
+public  Real  IF_get_voxel_value(
+    int     volume_index,
+    Real    x_voxel,
+    Real    y_voxel,
+    Real    z_voxel )
+{
+    return( get_voxel_value( get_main_struct(), volume_index,
+            x_voxel, y_voxel, z_voxel ) );
+}
+
+public  void  IF_get_volume_value_range(
+    int     volume_index,
+    Real    *min_value,
+    Real    *max_value )
+{
+    get_volume_value_range( get_main_struct(), volume_index,
+                            min_value, max_value );
+}
+
 public  void  IF_delete_volume(
     int            volume_index )
 {
@@ -93,11 +112,16 @@ public  void  IF_set_update_slice_viewport_flag(
                                     bitplane );
 }
 
+public  Boolean  IF_slices_to_be_updated(
+    int   current_buffer )
+{
+    return( slices_to_be_updated( get_main_struct(), current_buffer ) );
+}
+
 public  Boolean  IF_redraw_slices(
-    window_struct   *window,
     int             current_buffer )
 {
-    return( update_slice_display( get_main_struct(), window, current_buffer ) );
+    return( update_slice_display( get_main_struct(), current_buffer ) );
 }
 
 public  void  IF_set_volume_voxel_position(
@@ -240,6 +264,15 @@ public  void  IF_set_colour_coding_limits(
     Real   max_value )
 {
     set_volume_colour_coding_limits( get_main_struct(), volume_index,
+                                     min_value, max_value );
+}
+
+public  void  IF_get_colour_coding_limits(
+    int    volume_index,
+    Real   *min_value,
+    Real   *max_value )
+{
+    get_volume_colour_coding_limits( get_main_struct(), volume_index,
                                      min_value, max_value );
 }
 

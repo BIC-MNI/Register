@@ -76,6 +76,8 @@ private  void  volume_has_been_loaded(
     UI_struct      *ui_info,
     load_struct    *data )
 {
+    Real   min_value, max_value;
+
     set_volume_widgets_activity( ui_info, data->volume_index, ON );
 
     if( !IF_volume_is_loaded( data->volume_index ) )
@@ -108,6 +110,17 @@ private  void  volume_has_been_loaded(
     if( IF_volume_is_loaded( 1 - data->volume_index ) )
     {
         update_other_volume_positions( ui_info, 1 - data->volume_index );
+    }
+
+    if( data->volume_index < N_VOLUMES )
+    {
+        IF_get_volume_value_range( data->volume_index, &min_value, &max_value );
+        set_colour_bar_limits( ui_info, data->volume_index,
+                               min_value, max_value );
+        IF_get_colour_coding_limits( data->volume_index, &min_value,
+                                     &max_value );
+        set_colour_bar_values( ui_info, data->volume_index,
+                               min_value, max_value );
     }
 
     delete_popup_interaction( data );

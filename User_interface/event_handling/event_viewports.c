@@ -176,3 +176,31 @@ public  void  execute_event_viewport_events(
         }
     }
 }
+
+public  Boolean  find_viewport_containing_mouse(
+    event_viewports_struct  *event_viewports,
+    int                     x_mouse,
+    int                     y_mouse,
+    int                     *viewport_index )
+{
+    int      i;
+    Boolean  found;
+
+    found = FALSE;
+
+    for_less( i, 0, event_viewports->n_event_viewports )
+    {
+        if( event_viewports->event_viewports[i].x_min >= 0 &&
+            x_mouse >= event_viewports->event_viewports[i].x_min &&
+            x_mouse <= event_viewports->event_viewports[i].x_max &&
+            y_mouse >= event_viewports->event_viewports[i].y_min &&
+            y_mouse <= event_viewports->event_viewports[i].y_max )
+        {
+            found = TRUE;
+            *viewport_index = i;
+            break;
+        }
+    }
+
+    return( found );
+}

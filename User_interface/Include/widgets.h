@@ -67,6 +67,7 @@ typedef  struct
 {
     Boolean                  colour_bar_flag;
     Real                     min_value, max_value;
+    Boolean                  values_allowed_outside_range;
     Real                     values[2];
     String                   format_string;
 

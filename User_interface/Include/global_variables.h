@@ -54,6 +54,8 @@ START_GLOBALS
     DEF_GLOBAL( Interface_y_spacing, int, 10 )
     DEF_GLOBAL( Interface_highlight_time, Real, 0.2 )
 
+    DEF_GLOBAL( Volume_y_spacing, int, 7 )
+
     DEF_GLOBAL( Pixels_per_double_size, Real, 100.0 )
 
     DEF_GLOBAL( Button_height, int, 15 )
@@ -161,6 +163,9 @@ START_GLOBALS
 
     DEF_GLOBAL( Delete_tags_x_size, int, 350 )
     DEF_GLOBAL( Delete_tags_y_size, int, 60 )
+
+    DEF_GLOBAL( Value_readout_width, int, 50 )
+    DEF_GLOBAL_STRING( Readout_values_format, "%g" )
 
     DEF_GLOBAL( Seconds_per_resample, Real, 0.1 )
 END_GLOBALS

@@ -182,8 +182,7 @@ public  void  set_volume_widgets_activity(
 
     for_enum( widget_index, N_VOLUME_WIDGETS, Volume_widgets )
     {
-        if( widget_index != RESAMPLED_LABEL &&
-            widget_index != VALUE_READOUT_TEXT )
+        if( widget_index != RESAMPLED_LABEL )
         {
             set_widget_activity( ui_info->widget_list[viewport_index].widgets
                                                 [widget_indices[widget_index]],
@@ -202,10 +201,6 @@ public  void  set_volume_widgets_activity(
                                          [widget_indices[RESAMPLED_LABEL]],
                              OFF );
     }
-
-    set_widget_activity( ui_info->widget_list[viewport_index].widgets
-                                         [widget_indices[VALUE_READOUT_TEXT]],
-                         OFF );
 
     set_colour_bar_widgets_activity( ui_info, viewport_index,
                            colour_bar_start_index, activity );

@@ -88,13 +88,16 @@ private  void  update_both_slider_position_from_mouse(
 
     diff = slider->values[1] - slider->values[0];
 
-    if( value < slider->min_value )
-        value = slider->min_value;
-    else if( value > slider->max_value )
-        value = slider->max_value;
+    if( !slider->values_allowed_outside_range )
+    {
+        if( value < slider->min_value )
+            value = slider->min_value;
+        else if( value > slider->max_value )
+            value = slider->max_value;
 
-    if( value + diff > slider->max_value )
-        value = slider->max_value - diff;
+        if( value + diff > slider->max_value )
+            value = slider->max_value - diff;
+    }
 
     set_slider_values( widget, value, value + diff );
 }
@@ -260,10 +263,18 @@ private  int  convert_slider_value_to_position(
     int           x_size,
     Real          value )
 {
+    Real  ratio;
     int   x_position;
 
-    x_position = (int) ((Real) (x_size-1) * (value - slider->min_value) /
-                                 (slider->max_value - slider->min_value) );
+    ratio = (value - slider->min_value) /
+            (slider->max_value - slider->min_value);
+
+    if( ratio <= 0.0 )
+        x_position = 0;
+    else if( ratio >= 1.0 )
+        x_position = x_size - 1;
+    else
+        x_position = (int) ((Real) (x_size-1) * ratio);
 
     return( x_position );
 }
@@ -351,10 +362,13 @@ public  void  set_slider_values(
 
     slider = get_widget_slider( widget );
 
-    if( low_value < slider->min_value )
-        low_value = slider->min_value;
-    else if( low_value > slider->max_value )
-             low_value = slider->max_value;
+    if( !slider->values_allowed_outside_range )
+    {
+        if( low_value < slider->min_value )
+            low_value = slider->min_value;
+        else if( low_value > slider->max_value )
+            low_value = slider->max_value;
+    }
 
     if( low_value != slider->values[0] )
     {
@@ -364,10 +378,13 @@ public  void  set_slider_values(
 
     if( slider->colour_bar_flag )
     {
-        if( high_value < slider->min_value )
-            high_value = slider->min_value;
-        else if( high_value > slider->max_value )
-                 high_value = slider->max_value;
+        if( !slider->values_allowed_outside_range )
+        {
+            if( high_value < slider->min_value )
+                high_value = slider->min_value;
+            else if( high_value > slider->max_value )
+                high_value = slider->max_value;
+        }
 
         if( high_value < low_value )
             high_value = low_value;
@@ -392,6 +409,19 @@ public  void  set_slider_values(
 
     if( changed[1] )
         slider->value_changed_callback[1]( widget, slider->callback_data[1] );
+}
+
+public  void  set_slider_limits(
+    widget_struct  *widget,
+    Real           min_value,
+    Real           max_value )
+{
+    slider_struct   *slider;
+
+    slider = get_widget_slider( widget );
+
+    slider->min_value = min_value;
+    slider->max_value = max_value;
 }
 
 public  void  update_slider_activity(
@@ -499,6 +529,7 @@ private  widget_struct  *create_a_slider(
     Real                       initial_high_value,
     Real                       min_value,
     Real                       max_value,
+    Boolean                    values_allowed_outside_range,
     char                       format_string[],
     Boolean                    initial_activity,
     UI_colours                 active_colour,
@@ -525,6 +556,7 @@ private  widget_struct  *create_a_slider(
 
     slider->min_value = min_value;
     slider->max_value = max_value;
+    slider->values_allowed_outside_range = values_allowed_outside_range;
     slider->values[0] = initial_low_value;
     (void) strcpy( slider->format_string, format_string );
 
@@ -621,7 +653,7 @@ public  widget_struct  *create_slider(
 {
     return( create_a_slider( graphics, viewport_index,
                      x, y, x_size, y_size,
-                     FALSE, initial_value, 0.0, min_value, max_value,
+                     FALSE, initial_value, 0.0, min_value, max_value, FALSE,
                      format_string, initial_activity,
                      active_colour, inactive_colour, peg_colour,
                      value_changed_callback, value_changed_data,
@@ -652,7 +684,7 @@ public  widget_struct  *create_colour_bar_slider(
     return( create_a_slider( graphics, viewport_index,
                     x, y, x_size, y_size,
                     TRUE, initial_low_value, initial_high_value,
-                    min_value, max_value, format_string,
+                    min_value, max_value, TRUE, format_string,
                     initial_activity,
                     active_colour, inactive_colour, peg_colour,
                     lower_value_changed_callback, lower_value_callback_data,

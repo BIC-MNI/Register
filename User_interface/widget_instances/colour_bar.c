@@ -367,3 +367,35 @@ public  void  set_over_under_colour(
                                  [get_colour_bar_start_index() +
                                   widget_indices[widget_index]] );
 }
+
+public  void  set_colour_bar_limits(
+    UI_struct         *ui_info,
+    int               volume_index,
+    Real              min_value,
+    Real              max_value )
+{
+    Viewport_types      viewport;
+
+    viewport = get_volume_menu_viewport_index( volume_index );
+
+    set_slider_limits( ui_info->widget_list[viewport].widgets
+                                 [get_colour_bar_start_index() +
+                                  widget_indices[COLOUR_BAR_SLIDER]],
+                       min_value, max_value );
+}
+
+public  void  set_colour_bar_values(
+    UI_struct         *ui_info,
+    int               volume_index,
+    Real              min_value,
+    Real              max_value )
+{
+    Viewport_types      viewport;
+
+    viewport = get_volume_menu_viewport_index( volume_index );
+
+    set_slider_values( ui_info->widget_list[viewport].widgets
+                                 [get_colour_bar_start_index() +
+                                  widget_indices[COLOUR_BAR_SLIDER]],
+                       min_value, max_value );
+}

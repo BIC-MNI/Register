@@ -2,7 +2,6 @@
 
 public  Boolean  update_slice_display(
     main_struct     *main,
-    window_struct   *window,
     int             current_buffer )
 {
     Boolean   drawn;
@@ -44,8 +43,55 @@ public  Boolean  update_slice_display(
         }
     }
 
-    drawn = redraw_out_of_date_viewports( &main->graphics, window,
+    drawn = redraw_out_of_date_viewports( &main->graphics, main->window,
                                           current_buffer );
 
     return( drawn );
+}
+
+public  Boolean  slices_to_be_updated(
+    main_struct     *main,
+    int             current_buffer )
+{
+    Boolean   update_required;
+    int       volume, view;
+
+    update_required = FALSE;
+
+    for_less( volume, 0, N_VOLUMES )
+    {
+        for_less( view, 0, N_VIEWS )
+        {
+            if( (main->trislice[volume].input_flag &&
+                 !main->trislice[volume].slices[view].pixels_are_up_to_date) ||
+                get_viewport_update_flag( &main->graphics,
+                        get_slice_viewport_index(volume,view), NORMAL_PLANES,
+                        current_buffer ) )
+            {
+                update_required = TRUE;
+                break;
+            }
+        }
+
+        if( update_required )
+            break;
+    }
+
+    if( !update_required )
+    {
+        for_less( view, 0, N_VIEWS )
+        {
+            if( (main->merged.active_flag &&
+                 !main->merged.slices[view].pixels_are_up_to_date) ||
+                get_viewport_update_flag( &main->graphics,
+                       get_slice_viewport_index(MERGED_VOLUME_INDEX,view),
+                       NORMAL_PLANES, current_buffer ) )
+            {
+                update_required = TRUE;
+                break;
+            }
+        }
+    }
+
+    return( update_required );
 }

@@ -35,7 +35,7 @@ private  void   record_register_volume(
     volume_struct  *volume )
 {
     int     view, axis;
-    Real    position[N_DIMENSIONS];
+    Real    min_value, max_value, position[N_DIMENSIONS];
 
     if( is_volume_active( main, volume_index ) )
     {
@@ -63,6 +63,14 @@ private  void   record_register_volume(
     }
 
     set_volume_voxel_position( main, volume_index, position );
+
+    if( volume_index < N_VOLUMES )
+    {
+        get_volume_value_range( main, volume_index, &min_value, &max_value );
+
+        set_volume_colour_coding_limits( main, volume_index,
+                                         min_value, max_value );
+    }
 
     if( G_get_colour_map_state(main->window) )
         repartition_colour_maps( main );

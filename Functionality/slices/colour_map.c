@@ -71,11 +71,15 @@ private  Colour  get_merged_colour(
 }
 
 private  Range_flags  lookup_colour_code(
+    volume_struct         *volume,
     colour_coding_struct  *colour_coding,
-    Real                  value,
+    int                   voxel,
     Colour                *col )
 {
+    Real          value;
     Range_flags   flag;
+
+    value = CONVERT_VOXEL_TO_VALUE( *volume, voxel );
 
     *col = get_colour_code( colour_coding, value );
     if( value < colour_coding->min_value )
@@ -95,20 +99,24 @@ private  void  update_merged_rgb_colour_maps(
     int             min_value1, max_value1, min_value2, max_value2;
     Colour          col1, col2[N_VOXEL_VALUES];
     Range_flags     flag1, flags2[N_VOXEL_VALUES];
+    volume_struct   *volume1, *volume2;
 
-    get_volume_value_range( main, 0, &min_value1, &max_value1 );
-    get_volume_value_range( main, 1, &min_value2, &max_value2 );
+    volume1 = get_slice_volume( main, 0 );
+    volume2 = get_slice_volume( main, 1 );
+
+    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
+    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
 
     for_inclusive( j, min_value2, max_value2 )
     {
-        flags2[j] = lookup_colour_code( &main->merged.colour_coding[1],
-                                        (Real) j, &col2[j] );
+        flags2[j] = lookup_colour_code( volume2, &main->merged.colour_coding[1],
+                                        j, &col2[j] );
     }
 
     for_inclusive( i, min_value1, max_value1 )
     {
-        flag1 = lookup_colour_code( &main->merged.colour_coding[0],
-                                    (Real) i, &col1 );
+        flag1 = lookup_colour_code( volume1, &main->merged.colour_coding[0],
+                                    i, &col1 );
 
         for_inclusive( j, min_value2, max_value2 )
         {
@@ -129,8 +137,8 @@ private  void  update_merged_cmode_indices(
     int     i, j, n1, n2, min_ind, i1, i2[N_VOXEL_VALUES];
     int     min_value1, max_value1, min_value2, max_value2;
 
-    get_volume_value_range( main, 0, &min_value1, &max_value1 );
-    get_volume_value_range( main, 1, &min_value2, &max_value2 );
+    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
+    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
@@ -150,13 +158,17 @@ private  void  update_merged_cmode_indices(
 private  void  update_merged_cmode_maps(
     main_struct  *main )
 {
-    int             i, j, n1, n2, min_ind, val;
+    int             i, j, n1, n2, min_ind, voxel;
     Colour          col1, col2[N_VOXEL_VALUES];
     Range_flags     flag1, flags2[N_VOXEL_VALUES];
     int             min_value1, max_value1, min_value2, max_value2;
+    volume_struct   *volume1, *volume2;
 
-    get_volume_value_range( main, 0, &min_value1, &max_value1 );
-    get_volume_value_range( main, 1, &min_value2, &max_value2 );
+    volume1 = get_slice_volume( main, 0 );
+    volume2 = get_slice_volume( main, 1 );
+
+    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
+    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
@@ -164,17 +176,16 @@ private  void  update_merged_cmode_maps(
 
     for_less( j, 0, n2 )
     {
-        val = CONVERT_INTEGER_RANGE( j, 0, n2-1, min_value2, max_value2 );
-        flags2[j] = lookup_colour_code( &main->merged.colour_coding[1],
-                                        (Real) val, &col2[j] );
+        voxel = CONVERT_INTEGER_RANGE( j, 0, n2-1, min_value2, max_value2 );
+        flags2[j] = lookup_colour_code( volume2, &main->merged.colour_coding[1],
+                                        voxel, &col2[j] );
     }
 
     for_less( i, 0, n1 )
     {
-        val = CONVERT_INTEGER_RANGE( i, 0, n1-1, min_value1, max_value1 );
-        col1 = get_colour_code( &main->merged.colour_coding[0], (Real) val );
-        flag1 = lookup_colour_code( &main->merged.colour_coding[0],
-                                    (Real) val, &col1 );
+        voxel = CONVERT_INTEGER_RANGE( i, 0, n1-1, min_value1, max_value1 );
+        flag1 = lookup_colour_code( volume1, &main->merged.colour_coding[0],
+                                    voxel, &col1 );
         for_less( j, 0, n2 )
         {
             G_set_colour_map_entry( main->window, min_ind + IJ(i,j,n2), 
@@ -190,18 +201,22 @@ private  void  update_merged_cmode_maps(
 
 private  void  update_rgb_colour_maps(
     main_struct  *main,
-    int          volume )
+    int          volume_index )
 {
-    int   i;
-    int   min_value, max_value;
+    int            i;
+    int            min_value, max_value;
+    volume_struct  *volume;
 
-    get_volume_value_range( main, volume, &min_value, &max_value );
+    volume = get_slice_volume( main, volume_index );
+
+    get_volume_voxel_range( main, volume_index, &min_value, &max_value );
 
     for_inclusive( i, min_value, max_value )
     {
-        main->trislice[volume].rgb_colour_map[i] =
-                    get_colour_code( &main->trislice[volume].colour_coding,
-                                     (Real) i );
+        main->trislice[volume_index].rgb_colour_map[i] =
+                    get_colour_code(
+                        &main->trislice[volume_index].colour_coding,
+                        CONVERT_VOXEL_TO_VALUE(*volume,i) );
     }
 }
 
@@ -215,7 +230,7 @@ private  void  update_cmode_indices(
     min_ind = main->trislice[volume].start_colour_map;
     max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
 
-    get_volume_value_range( main, volume, &min_value, &max_value );
+    get_volume_voxel_range( main, volume, &min_value, &max_value );
 
     for_inclusive( voxel_value, min_value, max_value )
     {
@@ -227,23 +242,27 @@ private  void  update_cmode_indices(
 
 private  void  update_cmode_colour_maps(
     main_struct  *main,
-    int          volume )
+    int          volume_index )
 {
-    int   i, voxel_value, min_ind, max_ind;
-    int   min_value, max_value;
+    int            i, voxel_value, min_ind, max_ind;
+    int            min_value, max_value;
+    volume_struct  *volume;
 
-    min_ind = main->trislice[volume].start_colour_map;
-    max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
+    min_ind = main->trislice[volume_index].start_colour_map;
+    max_ind = min_ind + main->trislice[volume_index].n_colour_entries-1;
 
-    get_volume_value_range( main, volume, &min_value, &max_value );
+    get_volume_voxel_range( main, volume_index, &min_value, &max_value );
+
+    volume = get_slice_volume( main, volume_index );
 
     for_inclusive( i, min_ind, max_ind )
     {
         voxel_value = CONVERT_INTEGER_RANGE( i, min_ind, max_ind,
                                              min_value, max_value );
         G_set_colour_map_entry( main->window, i, 
-                    get_colour_code( &main->trislice[volume].colour_coding,
-                                     (Real) voxel_value ) );
+                    get_colour_code(
+                         &main->trislice[volume_index].colour_coding,
+                         CONVERT_VOXEL_TO_VALUE(*volume,voxel_value) ) );
     }
 }
 
@@ -284,8 +303,8 @@ public  void  repartition_colour_maps(
 
     total_colours = G_get_n_colour_map_entries( main->window ) - start_index;
 
-    get_volume_value_range( main, 0, &min_value1, &max_value1 );
-    get_volume_value_range( main, 1, &min_value2, &max_value2 );
+    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
+    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
 
     max_colours_1 = max_value1 - min_value1 + 1;
     max_colours_2 = max_value2 - min_value2 + 1;
@@ -479,6 +498,16 @@ public  void  set_volume_colour_coding_limits(
                                min_value, max_value );
 
     colour_coding_has_changed( main, volume_index );
+}
+
+public  void  get_volume_colour_coding_limits(
+    main_struct          *main,
+    int                  volume_index,
+    Real                 *min_value,
+    Real                 *max_value )
+{
+    get_colour_coding_min_max( get_volume_colour_coding(main,volume_index),
+                               min_value, max_value );
 }
 
 public  void  set_merged_volume_opacity(

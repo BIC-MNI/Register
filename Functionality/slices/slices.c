@@ -422,7 +422,7 @@ public  volume_struct  *get_slice_volume(
         return( &main->trislice[volume_index-MERGED_VOLUME_INDEX].volume );
 }
 
-public  void  get_volume_value_range(
+public  void  get_volume_voxel_range(
     main_struct   *main,
     int           volume_index,
     int           *min_value,
@@ -512,4 +512,35 @@ public  void  set_slice_scale(
 
     slice->x_scale = x_scale;
     slice->y_scale = y_scale;
+}
+
+public  Real  get_voxel_value(
+    main_struct   *main,
+    int           volume_index,
+    Real          x_voxel,
+    Real          y_voxel,
+    Real          z_voxel )
+{
+    Real           value;
+    volume_struct  *volume;
+
+    volume = get_slice_volume( main, volume_index );
+
+    if( voxel_is_within_volume( volume, x_voxel, y_voxel, z_voxel ) )
+        value = GET_VOLUME_SCALED_DATA( *volume, ROUND(x_voxel),
+                                        ROUND(y_voxel), ROUND(z_voxel) );
+    else
+        value = 0.0;
+
+    return( value );
+}
+
+public  void  get_volume_value_range(
+    main_struct   *main,
+    int           volume_index,
+    Real          *min_value,
+    Real          *max_value )
+{
+    get_volume_range( get_slice_volume(main,volume_index),
+                      min_value, max_value );
 }

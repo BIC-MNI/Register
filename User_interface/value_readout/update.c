@@ -1,5 +1,51 @@
 #include  <def_user_interface.h>
 
+private  void  set_readout(
+    UI_struct  *ui,
+    int        volume_index,
+    Real       voxel_position[N_DIMENSIONS] )
+{
+    Real   value;
+
+    if( volume_index < N_VOLUMES )
+    {
+        value = IF_get_voxel_value( volume_index,
+                                    voxel_position[X],
+                                    voxel_position[Y],
+                                    voxel_position[Z] );
+        set_text_entry_real_value( get_volume_readout_widget(ui,volume_index),
+                                   Readout_values_format, value );
+    }
+    else
+    {
+        value = IF_get_voxel_value( 0,
+                                    voxel_position[X],
+                                    voxel_position[Y],
+                                    voxel_position[Z] );
+        set_text_entry_real_value( get_merged_readout_widget(ui,0),
+                                   Readout_values_format, value );
+
+        value = IF_get_voxel_value( 1,
+                                    voxel_position[X],
+                                    voxel_position[Y],
+                                    voxel_position[Z] );
+        set_text_entry_real_value( get_merged_readout_widget(ui,1),
+                                   Readout_values_format, value );
+    }
+}
+
+public  void  update_volume_readout(
+    UI_struct  *ui,
+    int        volume_index )
+{
+    Real   voxel_position[N_DIMENSIONS];
+
+    IF_get_volume_voxel_position( volume_index, voxel_position );
+
+    set_readout( ui, volume_index, voxel_position );
+}
+
+#ifdef NOT_NEEDED
 private  const  NO_VOLUME = -1;
 
 private  void  set_readout_activity(
@@ -34,32 +80,7 @@ private  void  modify_readout(
         get_voxel_under_mouse( ui, viewport_index,
                                volume_index, voxel_position ) )
     {
-        if( *volume_index < N_VOLUMES )
-        {
-            value = IF_get_voxel_value( *volume_index,
-                                        voxel_position[X],
-                                        voxel_position[Y],
-                                        voxel_position[Z] );
-            set_text_entry_real_value(
-                     get_volume_readout_widget(ui,*volume_index),
-                     Readout_values_format, value );
-        }
-        else
-        {
-            value = IF_get_voxel_value( 0,
-                                        voxel_position[X],
-                                        voxel_position[Y],
-                                        voxel_position[Z] );
-            set_text_entry_real_value( get_merged_readout_widget(ui,0),
-                                       Readout_values_format, value );
-
-            value = IF_get_voxel_value( 1,
-                                        voxel_position[X],
-                                        voxel_position[Y],
-                                        voxel_position[Z] );
-            set_text_entry_real_value( get_merged_readout_widget(ui,1),
-                                       Readout_values_format, value );
-        }
+        set_readout( ui, *volume_index, voxel_position );
     }
     else
         *volume_index = NO_VOLUME;
@@ -119,3 +140,4 @@ public  void  install_readout_update_event(
     ui->y_mouse_readout = -1;
     ui->which_volume_readout = NO_VOLUME;
 }
+#endif

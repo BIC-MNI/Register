@@ -48,8 +48,6 @@ public  Status   initialize_user_interface( UI_struct  *ui )
 
     install_window_events( ui );
 
-    install_readout_update_event( ui );
-
     initialize_UI_widgets( ui );
 
     IF_set_volume_colour_coding_type( 0,

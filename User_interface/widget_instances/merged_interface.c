@@ -290,13 +290,6 @@ public  void  set_merged_widgets_activity(
                              activity );
     }
 
-    set_widget_activity( ui_info->widget_list[Merged_menu_viewport].widgets
-                                          [widget_indices[VALUE1_READOUT_TEXT]],
-                         FALSE );
-    set_widget_activity( ui_info->widget_list[Merged_menu_viewport].widgets
-                                          [widget_indices[VALUE2_READOUT_TEXT]],
-                         FALSE );
-
     set_voxel_position_widgets_activity( ui_info, Merged_menu_viewport,
                                          ui_info->position_text_start_index[2],
                                          activity );
