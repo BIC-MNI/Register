@@ -47,6 +47,9 @@ public  void  start_resampling(
     int     exit_status;
     char    command_str[2000];
     String  output_filename;
+    String  transform_filename;
+
+    (void) tmpnam( transform_filename );
 
     expand_filename( resampled_filename, output_filename );
 
@@ -58,6 +61,8 @@ public  void  start_resampling(
     (void) strcpy( ui->resampled_filename, output_filename );
     ui->resampling_transform = *resampling_transform;
 
+    IF_save_transform( transform_filename );
+
 #ifdef USE_FORK
     (void) signal( SIGCLD, child_died_signal );
 
@@ -66,15 +71,18 @@ public  void  start_resampling(
         (void) execlp( "register_resample",
                        volume_1_filename,
                        volume_2_filename,
+                       transform_filename,
                        output_filename,
                        (char *) NULL );
     }
 
     set_resample_button_activity( ui, FALSE );
 #else
-    (void) sprintf( command_str, "register_resample %s %s %s",
+    (void) printf( "Please wait a couple of minutes for the resampling.\n" );
+    (void) sprintf( command_str, "register_resample %s %s %s %s",
                     volume_1_filename,
                     volume_2_filename,
+                    transform_filename,
                     output_filename );
 
     exit_status = system( command_str );
