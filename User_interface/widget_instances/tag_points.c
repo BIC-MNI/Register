@@ -130,6 +130,14 @@ private  DEFINE_WIDGET_CALLBACK( tag_number_button_callback ) /* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( tag_activity_callback ) /* ARGSUSED */
 {
+    int   tag_index;
+
+    tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
+
+    IF_set_tag_point_activity( tag_index,
+                               !IF_get_tag_point_activity(tag_index) );
+
+    set_current_tag_from_button( callback_data );
 }
 
 private  DEFINE_WIDGET_CALLBACK( world1_button_callback ) /* ARGSUSED */
@@ -236,7 +244,7 @@ public  void  add_tag_point_widgets(
     y_top = y_max - y_min - 1 - Interface_y_spacing;
 
     x = x_left;
-    y = y_top;
+    y = y_top - Text_entry_height;
 
     rms_label_index = add_widget_to_list(
                   &ui_info->widget_list[rms_viewport_index],
@@ -312,7 +320,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -330,7 +338,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -348,7 +356,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -383,7 +391,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -401,7 +409,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -419,7 +427,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -469,7 +477,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry( &ui_info->graphics_window,
                        names_viewport_index, x, y,
                        Tag_name_width, Tag_point_height,
-                       "", OFF,
+                       FALSE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
