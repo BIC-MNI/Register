@@ -1,0 +1,12 @@
+2000-10-07  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
+
+	* tagged as release-1_3: sources copied from
+	~david/Source/Register, with two files rolled back one revision,
+	to match the `Display+register_src_v1.3' tarball, distributed from
+	David's web page.
+
+	* User_interface/event_callbacks/tag_events.c:	
+	* User_interface/event_handling/window_events.c: rolled back to 
+	version found in Display+register_src_v1.3, distributed from
+	web page.
+
