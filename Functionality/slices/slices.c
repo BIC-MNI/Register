@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.22 2004-10-25 19:11:08 bert Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.23 2005-02-28 22:52:01 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -663,17 +663,18 @@ public  Real  get_voxel_value(
     Real          y_voxel,
     Real          z_voxel )
 {
-    Real           value, position[N_DIMENSIONS];
+    Real           value, position[MAX_DIMENSIONS];
     Volume         volume;
     Real           tpos;
 
     volume = get_slice_volume( main, volume_index );
 
+    tpos = main->trislice[volume_index].time_pos;
+
     position[X] = x_voxel;
     position[Y] = y_voxel;
     position[Z] = z_voxel;
-
-    tpos = main->trislice[volume_index].time_pos;
+    position[3] = tpos;
 
     if( voxel_is_within_volume( volume, position ) )
     {
