@@ -5,6 +5,7 @@ SUBDIRS = Graphics Functionality UI_calls_F User_interface \
 	Register_resample Tagtoxfm
 
 bin_PROGRAMS = register
+man_MANS = Documentation/register.1
 
 # This nonsense is to force automake to install "data" in a "lib"
 # directory.  This is required because "lib_DATA = register_UI.globals"
@@ -15,10 +16,11 @@ blurg_DATA = register_UI.globals
 
 EXTRA_DIST = INSTALL.register  \
 	register_UI.globals    \
+	mni_Register.epm.header \
+	Documentation/register.1 \
 	m4/smr_OPTIONAL_LIB.m4 \
 	m4/smr_REQUIRED_LIB.m4 \
-	m4/smr_WITH_BUILD_PATH.m4 \
-	mni_Register.epm.header
+	m4/smr_WITH_BUILD_PATH.m4
 
 # Adding a dummy source file to register is a work-around for a bug in 
 # automake, which does not (in version 1.4) allow linking together
@@ -37,7 +39,6 @@ CLEANFILES = dummy.c
 register_LDFLAGS = $(X_LIBS)
 register_LDADD = $(objects) \
 	Graphics/libbicgl.a $(GL_LIBS) \
-	$(X_PRE_LIBS) -lX11 -lXmu $(X_EXTRA_LIBS) \
 	$(MNI_LIBS)
 
 
