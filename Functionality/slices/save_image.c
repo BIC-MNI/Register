@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.8 1998-06-29 15:01:46 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.9 2004-09-01 19:35:27 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -31,8 +31,7 @@ private  void  save_rgb_image(
 {
     char   command[EXTREMELY_LARGE_STRING_SIZE];
 
-    (void) sprintf( command, "scrsave %s %d %d %d %d", filename, x_min, x_max,
-                                                       y_min, y_max );
+    (void) sprintf( command, "import -window root -crop %dx%d+%d+%d %s ", x_max-x_min, y_max-y_min, x_min, y_min, filename );
     (void) printf( "%s", command );
     (void) flush_file( stdout );
     (void) system( command );
@@ -104,7 +103,7 @@ public  void  save_image(
 
     do
     {
-        (void) sprintf( filename, "%s%d.rgb", PREFIX, frame_number );
+        (void) sprintf( filename, "%s%d.tiff", PREFIX, frame_number );
         ++frame_number;
     }
     while( file_exists( filename ) );
