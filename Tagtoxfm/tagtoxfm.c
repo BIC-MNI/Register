@@ -1,69 +1,102 @@
-#include <internal_volume_io.h>
-#include <bicpl.h>
+/* ----------------------------- MNI Header -----------------------------------
+@NAME       : tagtoxfm
+@INPUT      : argc, argv - command line arguments
+@OUTPUT     : (none)
+@RETURNS    : status
+@DESCRIPTION: Program to calculate a transform file from a tag file.
+@METHOD     : 
+@GLOBALS    : 
+@CALLS      : 
+@CREATED    : August 30, 1993 (Peter Neelin)
+@MODIFIED   : $Log: tagtoxfm.c,v $
+@MODIFIED   : Revision 1.3  1995-12-18 16:43:40  david
+@MODIFIED   : *** empty log message ***
+@MODIFIED   :
+ * Revision 1.7  1995/12/15  21:29:25  neelin
+ * Recompiled (making modifications for changes to volume_io) so that
+ * calculations are done in double precision.
+ *
+ * Revision 1.6  94/04/22  08:17:26  neelin
+ * Changed back to using compute_transform_from_tags.
+ * 
+ * Revision 1.5  94/04/22  08:08:40  neelin
+ * Modified to use safe_compute_transform_from_tags and volume_io.h instead
+ * of def_mni.h
+ * 
+ * Revision 1.4  93/09/16  10:02:45  neelin
+ * Added open_file_with_default_suffix for reading tag files and 
+ * output_transform_file for writing xfm files to support default suffixes.
+ * 
+ * Revision 1.3  93/09/08  15:45:42  neelin
+ * Added checking for number of points and writing of comments in .xfm file.
+ * 
+ * Revision 1.2  93/09/01  15:36:15  neelin
+ * Changed usage error message.
+ * 
+ * Revision 1.1  93/09/01  15:25:33  neelin
+ * Initial revision
+ * 
+ * Revision 1.1  93/09/01  13:22:02  neelin
+ * Initial revision
+ * 
+---------------------------------------------------------------------------- */
+
+#ifndef lint
+static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.3 1995-12-18 16:43:40 david Exp $";
+#endif
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <volume_io.h>
+#include <ParseArgv.h>
+#include <compute_xfm.h>
+#include "tagtoxfm.h"
+
+/* Constants */
+#ifndef TRUE
+#  define TRUE 1
+#  define FALSE 0
+#endif
+#ifndef public
+#  define public
+#  define private static
+#endif
 
 /* Main program */
 
 int main(int argc, char *argv[])
 {
-    STRING pname, tagfile, xfmfile;
-    int i, n_volumes, n_tag_points, n_degrees;
-    Real **tags_volume1, **tags_volume2;
-    Real rms, tx, ty, tz, dx, dy, dz;
-    Trans_type      transform_type;
-    General_transform transform;
-    FILE *fp;
-    STRING type_string;
-    char   comment[EXTREMELY_LARGE_STRING_SIZE];
+   char *pname, *tagfile, *xfmfile;
+   int n_volumes, n_tag_points;
+   Real **tags_volume1, **tags_volume2, **temp_tags;
+   General_transform transform;
+   FILE *fp;
+   char *type_string, *inverse_string, comment[512];
 
-    pname = argv[0];
-    initialize_argument_processing( argc, argv );
+   /* Parse arguments */
+   pname = argv[0];
+   if (ParseArgv(&argc, argv, argTable, 0) || (argc != 3)) {
+      (void) fprintf(stderr, 
+                     "\nUsage: %s [<options>] infile.tag outfile.xfm\n\n",
+                     argv[0]);
+      exit(EXIT_FAILURE);
+   }
+   tagfile = argv[1];
+   xfmfile = argv[2];
 
-    if( !get_string_argument( "", &tagfile ) ||
-        !get_string_argument( "", &xfmfile ) )
-    {
-        print_error( "Usage: %s input.tag output.xfm [6|7|9|10|12]\n", argv[0] );
-        return( 1 );
-    }
-
-    if( get_int_argument( 0, &n_degrees ) )
-    {
-        switch( n_degrees )
-        {
-        case 6:
-            transform_type = TRANS_LSQ6;
-            break;
-        case 7:
-            transform_type = TRANS_LSQ7;
-            break;
-        case 9:
-            transform_type = TRANS_LSQ9;
-            break;
-        case 10:
-            transform_type = TRANS_LSQ10;
-            break;
-        case 12:
-            transform_type = TRANS_LSQ12;
-            break;
-
-        default:
-            print( "Invalid degrees.\n" );
-            return( 1 );
-        }
-    }
-    else
-        transform_type = TRANS_TPS;
-
-    if ((open_file_with_default_suffix(tagfile,
-                   get_default_tag_file_suffix(),
-                   READ_FILE, ASCII_FORMAT, &fp) != OK) ||
-        (input_tag_points(fp, &n_volumes, &n_tag_points, 
-                          &tags_volume1, &tags_volume2, 
-                          NULL, NULL, NULL, NULL) != OK)) {
-       (void) fprintf(stderr, "%s: Error reading tag file %s\n", 
-                      pname, tagfile);
-       exit(EXIT_FAILURE);
-    }
-    (void) close_file(fp);
+   /* Read in tag file */
+   if ((open_file_with_default_suffix(tagfile,
+                  get_default_tag_file_suffix(),
+                  READ_FILE, ASCII_FORMAT, &fp) != OK) ||
+       (input_tag_points(fp, &n_volumes, &n_tag_points, 
+                         &tags_volume1, &tags_volume2, 
+                         NULL, NULL, NULL, NULL) != OK)) {
+      (void) fprintf(stderr, "%s: Error reading tag file %s\n", 
+                     pname, tagfile);
+      exit(EXIT_FAILURE);
+   }
+   (void) close_file(fp);
 
    /* Check number of volumes */
    if (n_volumes != 2) {
@@ -94,6 +127,13 @@ int main(int argc, char *argv[])
       exit(EXIT_FAILURE);
    }
 
+   /* If inverting, switch order of points */
+   if (inverse) {
+      temp_tags = tags_volume1;
+      tags_volume1 = tags_volume2;
+      tags_volume2 = temp_tags;
+   }
+
    /* Compute transformation */
    compute_transform_from_tags(n_tag_points, tags_volume1, tags_volume2,
                                transform_type, &transform);
@@ -108,37 +148,24 @@ int main(int argc, char *argv[])
    case TRANS_TPS: type_string = "thin-plate spline"; break;
    default: type_string = "unknown"; break;
    }
-
-   (void) sprintf(comment, " Created from tag file %s\n using %s",
-                  tagfile, type_string );
+   if (inverse)
+      inverse_string = " with -inverse";
+   else
+      inverse_string = "";
+   (void) sprintf(comment, " Created from tag file %s\n using %s%s",
+                  tagfile, type_string, inverse_string);
 
    /* Save transformation */
-
+   if (!clobber && file_exists(xfmfile)) {
+      (void) fprintf(stderr, "%s: xfm file \"%s\" already exists.\n",
+                     pname, xfmfile);
+      exit(EXIT_FAILURE);
+   }
    if (output_transform_file(xfmfile, comment, &transform) != OK) {
       (void) fprintf(stderr, "%s: Error writing xfm file %s\n", 
                      pname, xfmfile);
       exit(EXIT_FAILURE);
    }
-
-   rms = 0.0;
-
-   for_less( i, 0, n_tag_points )
-   {
-       general_transform_point( &transform,
-                                tags_volume2[i][X],
-                                tags_volume2[i][Y],
-                                tags_volume2[i][Z], &tx, &ty, &tz );
-
-       dx = tags_volume1[i][X] - tx;
-       dy = tags_volume1[i][Y] - ty;
-       dz = tags_volume1[i][Z] - tz;
-
-       rms += dx * dx + dy * dy + dz * dz;
-   }
-
-   rms = sqrt( rms / (Real) n_tag_points );
-
-   print( "Rms: %g\n", rms );
 
    return EXIT_SUCCESS;
 }
