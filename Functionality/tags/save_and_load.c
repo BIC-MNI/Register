@@ -126,7 +126,8 @@ public  Status   save_tag_points(
         ++n_volumes;
     }
 
-    ALLOC2D( labels, n_valid_tags, MAX_STRING_LENGTH+1 );
+    if( n_valid_tags > 0 )
+        ALLOC2D( labels, n_valid_tags, MAX_STRING_LENGTH+1 );
 
     tag_index = 0;
     for_less( i, 0, tags->n_tag_points )
@@ -138,8 +139,8 @@ public  Status   save_tag_points(
         }
     }
 
-    status = open_file_with_default_suffix( filename, "tag", WRITE_FILE,
-                                            ASCII_FORMAT, &file );
+    status = open_file_with_default_suffix( filename, TAG_FILE_SUFFIX,
+                                            WRITE_FILE, ASCII_FORMAT, &file );
 
     if( status == OK )
     {
@@ -182,7 +183,8 @@ public  Status   load_tag_points(
     char             **labels;
     Real             position[N_DIMENSIONS];
 
-    file_status = open_file_with_default_suffix( filename, "tag", READ_FILE,
+    file_status = open_file_with_default_suffix( filename, TAG_FILE_SUFFIX,
+                                                 READ_FILE,
                                                  ASCII_FORMAT, &file );
 
     status = file_status;
