@@ -1,16 +1,17 @@
 def: all
 
 include ../Makefile.include
+UIC_DIR =
+include Makefile.objects
 
 LIBRARY_NAME = UI_calls_F
 
-SRC = $(ARCH_DIR)/UI_calls_F.c
-
-OBJECTS = $(SRC:.c=.o)
+OBJECTS = $(UI_calls_F_OBJECTS)
+SRC = $(OBJECTS:.o=.c)
 
 PROTOTYPE_FILE = Include/$(LIBRARY_NAME)_prototypes.h
 
-all:  $(PROTOTYPE_FILE) $(OBJECTS) Makefile.objects
+all:  $(PROTOTYPE_FILE) $(OBJECTS)
 
 $(SRC):
 	@$(MAKE_SOURCE_LINKS)
@@ -18,11 +19,6 @@ $(SRC):
 objects-O3: $(PROTOTYPE_FILE) $(OBJECTS:.o=.u)
 
 lint: $(SRC:.c=.ln)
-
-Makefile.objects: Makefile
-	@echo "$(LIBRARY_NAME)_OBJECTS = \\"   >  $@
-	../make_object_list `pwd` $(OBJECTS) | sed -e 's/$(ARCH_DIR)/$$(ARCH_DIR
-)/' >> $@
 
 OPT = $(OPT_O)
 
