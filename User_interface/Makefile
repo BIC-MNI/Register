@@ -23,6 +23,7 @@ OBJECTS = \
           quit_popup/quit.o \
           resampling/resample.o \
           slices/slices.o \
+          transform_popup/xform_selection.o \
           value_readout/update.o \
           widget_instances/colour_bar.o \
           widget_instances/initialize.o \
@@ -41,16 +42,17 @@ OBJECTS = \
           windows/popup.o \
           windows/update.o
 
-LIBRARY = lib$(LIBRARY_NAME).a
-LINT_LIBRARY = llib-l$(LIBRARY_NAME).ln
-
 PROTOTYPE_FILE = Include/$(LIBRARY_NAME)_prototypes.h
 
-all:  $(PROTOTYPE_FILE) $(OBJECTS) $(OBJECTS:.o=.ln) Makefile.objects
+all:  $(PROTOTYPE_FILE) $(OBJECTS)  Makefile.objects
+
+$(OBJECTS) $(OBJECTS:.o=.ln): $(PROTOTYPE_FILE)
+
+lint: $(OBJECTS:.o=.ln)
 
 Makefile.objects: Makefile
-	@echo "$(LIBRARY_NAME)_OBJECTS = \\"  >  $@
-	../make_object_list `pwd` $(OBJECTS) >> $@
+	@echo "$(LIBRARY_NAME)_OBJECTS = \\"   >  $@
+	../make_object_list `pwd` $(OBJECTS)  >> $@
 
 main/main.o:  Include/global_variables.h
 
@@ -60,13 +62,9 @@ OPT = -O
 
 INCLUDE = -IInclude -I.. \
           -I../UI_calls_F/Include \
-          $(C_UTILS_INCLUDE) \
           $(GRAPHICS_INCLUDE)
 
 # ------------------------------
 
 $(PROTOTYPE_FILE): $(OBJECTS:.o=.c) Include/*.h
-	@echo "#ifndef  DEF_$(LIBRARY_NAME)_PROTOTYPES"              >  $@
-	@echo "#define  DEF_$(LIBRARY_NAME)_PROTOTYPES"              >> $@
-	@extract_functions -public $(OBJECTS:.o=.c)           >> $@
-	@echo "#endif"                                        >> $@
+	@$(MAKE_DIRECTORY)/create_prototypes.csh $@ $(OBJECTS:.o=.c)

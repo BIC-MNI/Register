@@ -1,3 +1,5 @@
+default_target: all
+
 include Functionality/Makefile.objects
 include User_interface/Makefile.objects
 include UI_calls_F/Makefile.objects
@@ -7,30 +9,36 @@ OBJECTS = \
           $(User_interface_OBJECTS) \
           $(UI_calls_F_OBJECTS)
 
-all:  register  lint_register
+make_objects:
+	cd Functionality;  make
+	cd UI_calls_F;     make
+	cd User_interface; make
+
+all:  make_objects   register.irisgl
 
 $(OBJECTS):
 
 include Makefile.include
 
-OPT = -g
+RECIPES_LIB =
 
-register: $(OBJECTS)
-	$(CC) $(LFLAGS) $(OBJECTS) $(GRAPHICS_LIBS_2D) -o $@
+register.irisgl: make_objects $(OBJECTS)
+	$(CC) $(LFLAGS) $(OBJECTS) $(IRISGL_GRAPHICS_LIBS) -o $@ $(RECIPES_LIB)
 
-lint_register: $(OBJECTS:.o=.ln)
-	$(LINT) -u $(OBJECTS:.o=.ln) $(GRAPHICS_LINT_LIBS)
+register.opengl: make_objects $(OBJECTS)
+	$(CC) $(LFLAGS) $(OBJECTS) $(OPENGL_GRAPHICS_LIBS) -o $@ $(RECIPES_LIB)
 
-register.pixie:  $(OBJECTS)
-	if( -e register ) rm register
-	if( -e register.Addrs ) rm register.Addrs
-	if( -e register.Counts ) rm register.Counts
-	make register GRAPHICS_LIBS="-L$HHOME/david/new_C_dev -lmni -lfm -lgl -lX11 -L$$HHOME/david/new_C_dev/Libraries -lminc -lnetcdf  -lm -lsun -lmalloc"
-	@\rm -f register.Counts
-	@pixie register -o $@
+register.mesa: make_objects $(OBJECTS)
+	$(CC) $(LFLAGS) $(OBJECTS) $(MESA_GRAPHICS_LIBS) -o $@ $(RECIPES_LIB)
 
-prof:
-	prof -pixie register -proc >&! pixie.procedures
-	prof -pixie register -heavy >&! pixie.heavy
+lint_register:
+	cd Functionality;  make lint
+	cd UI_calls_F;     make lint
+	cd User_interface; make lint
+	$(LINT) -x -u $(OBJECTS:.o=.ln) $(GRAPHICS_LINT_LIBS)
 
-
+clean_all:
+	cd Functionality;  make clean
+	cd UI_calls_F;     make clean
+	cd User_interface; make clean
+	\rm -f register.irisgl register.opengl register.mesa
