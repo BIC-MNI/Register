@@ -13,13 +13,13 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.20 1998-06-29 15:01:42 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.20.2.1 2000-11-12 15:49:53 stever Exp $";
 #endif
 
 #include  <register.h>
 
 #define  GLOBALS_LOOKUP_NAME  functional_globals
-#include  <globals.h>
+#include  <bicpl/globals.h>
 
 #define   REGISTER_GLOBALS_FILENAME   "register.globals"
 

@@ -16,16 +16,14 @@ all:  $(PROTOTYPE_FILE) $(OBJECTS)
 $(SRC):
 	@$(MAKE_SOURCE_LINKS)
 
-objects-O3: $(PROTOTYPE_FILE) $(OBJECTS:.o=.u)
-
-lint: $(SRC:.c=.ln)
 
 OPT = $(OPT_O)
 
 INCLUDE = -IInclude -I.. \
           -I../User_interface/Include \
           -I../Functionality/Include \
-          $(GRAPHICS_INCLUDE)
+	  -I../Graphics/Include $(BIC_PL_INCLUDE) $(X11_INCLUDES)
+
 
 # ------------------------------
 

@@ -1,2 +1,1 @@
-UI_calls_F_OBJECTS = \
-$(UIC_DIR)$(ARCH_DIR)/UI_calls_F.o
+UI_calls_F_OBJECTS = $(UIC_DIR)UI_calls_F.o

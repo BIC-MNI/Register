@@ -16,14 +16,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char register_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/register.h,v 1.4 1995-07-31 19:54:09 david Exp $";
+static char register_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/register.h,v 1.4.2.1 2000-11-12 15:49:52 stever Exp $";
 #endif
 
 #include  <graphics.h>
 
 #include  <main_struct.h>
 
-#include  <globals.h>
+#include  <bicpl/globals.h>
 
 #include  <Functionality_prototypes.h>
 

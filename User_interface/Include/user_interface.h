@@ -16,7 +16,7 @@
 #define  DEF_USER_INTERFACE
 
 #ifndef lint
-static char user_interface_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/user_interface.h,v 1.6 1995-07-31 19:54:18 david Exp $";
+static char user_interface_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/user_interface.h,v 1.6.2.1 2000-11-12 15:49:56 stever Exp $";
 #endif
 
 #include  <graphics.h>
@@ -25,7 +25,7 @@ static char user_interface_rcsid[] = "$Header: /private-cvsroot/visualization/Re
 
 #include  <ui_struct.h>
 
-#include  <globals.h>
+#include  <bicpl/globals.h>
 
 #include  <User_interface_prototypes.h>
 

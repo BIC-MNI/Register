@@ -1,7 +1,7 @@
 #ifndef  DEF_COMMON_INCLUDE
 #define  DEF_COMMON_INCLUDE
 
-#include  <internal_volume_io.h>
+#include  <volume_io/internal_volume_io.h>
 #include  <graphics.h>
 
 #define  N_VOLUMES                         2

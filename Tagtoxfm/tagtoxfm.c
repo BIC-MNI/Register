@@ -9,7 +9,10 @@
 @CALLS      : 
 @CREATED    : August 30, 1993 (Peter Neelin)
 @MODIFIED   : $Log: tagtoxfm.c,v $
-@MODIFIED   : Revision 1.6  1999-06-21 20:18:19  stever
+@MODIFIED   : Revision 1.6.2.1  2000-11-12 15:49:54  stever
+@MODIFIED   : Removing obsolete Build directory
+@MODIFIED   :
+@MODIFIED   : Revision 1.6  1999/06/21 20:18:19  stever
 @MODIFIED   : final checkin before switch to CVS
 @MODIFIED   :
  * Revision 1.5  1997/12/10  20:25:06  david
@@ -51,7 +54,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.6 1999-06-21 20:18:19 stever Exp $";
+static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.6.2.1 2000-11-12 15:49:54 stever Exp $";
 #endif
 
 #include <stdlib.h>
@@ -59,7 +62,7 @@ static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/t
 #include <string.h>
 #include <bicpl.h>
 #include <ParseArgv.h>
-#include <compute_xfm.h>
+#include <bicpl/compute_xfm.h>
 #include "tagtoxfm.h"
 
 /* Constants */

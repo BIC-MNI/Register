@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.20 1999-06-21 20:18:20 stever Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.20.2.1 2000-11-12 15:49:56 stever Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -24,7 +24,7 @@ private  STRING  version = "1.3      Aug 25, 1998";
 #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
 
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
-#include  <globals.h>
+#include  <bicpl/globals.h>
 
 #define   UI_GLOBALS_FILENAME   "register_UI.globals"
 

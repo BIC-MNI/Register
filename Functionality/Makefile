@@ -29,7 +29,7 @@ OPT = $(OPT_O)
 INCLUDE = -IInclude \
           -I.. \
           -I../UI_calls_F/Include \
-          $(GRAPHICS_INCLUDE)
+	  -I../Graphics/Include $(BIC_PL_INCLUDE) $(X11_INCLUDES)
 
 # ------------------------------
 
