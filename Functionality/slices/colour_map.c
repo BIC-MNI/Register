@@ -56,14 +56,7 @@ private  Colour  get_merged_colour(
             return( col1 );
 
     case BLEND_VOLUMES:
-        if( use_under_over_colour_with_weights ||
-            range_flag1 != UNDER_RANGE && range_flag2 != UNDER_RANGE )
-            return( merge_colours( alpha1, col1, 1.0-alpha1, col2 ) );
-        else if( range_flag1 == UNDER_RANGE )
-            return( merge_colours( 0.0, col1, 1.0-alpha1, col2 ) );
-        else
-            return( merge_colours( alpha1, col1, 0.0, col2 ) );
-
+        alpha2 = 1.0 - alpha1;   /* drop through to WEIGHTED_VOLUMES */
     case WEIGHTED_VOLUMES:
         if( use_under_over_colour_with_weights ||
             range_flag1 != UNDER_RANGE && range_flag2 != UNDER_RANGE )
@@ -77,7 +70,7 @@ private  Colour  get_merged_colour(
     return( BLACK );
 }
 
-private  Range_flags  get_colour_coding_flag(
+private  Range_flags  lookup_colour_code(
     colour_coding_struct  *colour_coding,
     Real                  value,
     Colour                *col )
@@ -99,30 +92,33 @@ private  void  update_merged_rgb_colour_maps(
     main_struct  *main )
 {
     int             i, j;
+    int             min_value1, max_value1, min_value2, max_value2;
     Colour          col1, col2[N_VOXEL_VALUES];
     Range_flags     flag1, flags2[N_VOXEL_VALUES];
 
-    for_less( j, 0, N_VOXEL_VALUES )
+    get_volume_value_range( main, 0, &min_value1, &max_value1 );
+    get_volume_value_range( main, 1, &min_value2, &max_value2 );
+
+    for_inclusive( j, min_value2, max_value2 )
     {
-        flags2[j] = get_colour_coding_flag( &main->merged.colour_coding[1],
-                                            (Real) j, &col2[j] );
+        flags2[j] = lookup_colour_code( &main->merged.colour_coding[1],
+                                        (Real) j, &col2[j] );
     }
 
-    for_less( i, 0, N_VOXEL_VALUES )
+    for_inclusive( i, min_value1, max_value1 )
     {
-        flag1 = get_colour_coding_flag( &main->merged.colour_coding[0],
-                                        (Real) i, &col1 );
+        flag1 = lookup_colour_code( &main->merged.colour_coding[0],
+                                    (Real) i, &col1 );
 
-        for_less( j, 0, N_VOXEL_VALUES )
+        for_inclusive( j, min_value2, max_value2 )
         {
             main->merged.rgb_colour_map[i][j] = 
                     get_merged_colour( main->merged.merge_method,
                                    Use_over_under_colour_in_weights,
                                    main->merged.colour_coding[0].under_colour,
                                    main->merged.colour_coding[0].over_colour,
-                                   flag1, main->merged.opacity[0], col1,
-                                   flags2[j], main->merged.opacity[1],
-                                   col2[j] );
+                                   flag1,     main->merged.opacity[0], col1,
+                                   flags2[j], main->merged.opacity[1], col2[j]);
         }
     }
 }
@@ -131,17 +127,21 @@ private  void  update_merged_cmode_indices(
     main_struct  *main )
 {
     int     i, j, n1, n2, min_ind, i1, i2[N_VOXEL_VALUES];
+    int     min_value1, max_value1, min_value2, max_value2;
+
+    get_volume_value_range( main, 0, &min_value1, &max_value1 );
+    get_volume_value_range( main, 1, &min_value2, &max_value2 );
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
     n2 = main->merged.n_colour_entries2;
 
-    for_less( j, 0, N_VOXEL_VALUES )
-        i2[j] = CONVERT_INTEGER_RANGE( j, 0, N_VOXEL_VALUES-1, 0, n2-1 );
+    for_inclusive( j, min_value2, max_value2 )
+        i2[j] = CONVERT_INTEGER_RANGE( j, min_value2, max_value2, 0, n2-1 );
 
-    for_less( i, 0, N_VOXEL_VALUES )
+    for_inclusive( i, min_value1, max_value1 )
     {
-        i1 = CONVERT_INTEGER_RANGE( i, 0, N_VOXEL_VALUES-1, 0, n1-1 );
+        i1 = CONVERT_INTEGER_RANGE( i, min_value1, min_value1, 0, n1-1 );
         for_less( j, 0, N_VOXEL_VALUES )
             main->merged.cmode_colour_map[i][j] = min_ind + IJ(i1,i2[j],n2);
     }
@@ -153,6 +153,10 @@ private  void  update_merged_cmode_maps(
     int             i, j, n1, n2, min_ind, val;
     Colour          col1, col2[N_VOXEL_VALUES];
     Range_flags     flag1, flags2[N_VOXEL_VALUES];
+    int             min_value1, max_value1, min_value2, max_value2;
+
+    get_volume_value_range( main, 0, &min_value1, &max_value1 );
+    get_volume_value_range( main, 1, &min_value2, &max_value2 );
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
@@ -160,17 +164,17 @@ private  void  update_merged_cmode_maps(
 
     for_less( j, 0, n2 )
     {
-        val = CONVERT_INTEGER_RANGE( j, 0, n2-1, 0, N_VOXEL_VALUES-1 );
-        flags2[j] = get_colour_coding_flag( &main->merged.colour_coding[1],
-                                            (Real) val, &col2[j] );
+        val = CONVERT_INTEGER_RANGE( j, 0, n2-1, min_value2, max_value2 );
+        flags2[j] = lookup_colour_code( &main->merged.colour_coding[1],
+                                        (Real) val, &col2[j] );
     }
 
     for_less( i, 0, n1 )
     {
-        val = CONVERT_INTEGER_RANGE( i, 0, n1-1, 0, N_VOXEL_VALUES-1 );
+        val = CONVERT_INTEGER_RANGE( i, 0, n1-1, min_value1, max_value1 );
         col1 = get_colour_code( &main->merged.colour_coding[0], (Real) val );
-        flag1 = get_colour_coding_flag( &main->merged.colour_coding[0],
-                                        (Real) val, &col1 );
+        flag1 = lookup_colour_code( &main->merged.colour_coding[0],
+                                    (Real) val, &col1 );
         for_less( j, 0, n2 )
         {
             G_set_colour_map_entry( main->window, min_ind + IJ(i,j,n2), 
@@ -189,8 +193,11 @@ private  void  update_rgb_colour_maps(
     int          volume )
 {
     int   i;
+    int   min_value, max_value;
 
-    for_less( i, 0, N_VOXEL_VALUES )
+    get_volume_value_range( main, volume, &min_value, &max_value );
+
+    for_inclusive( i, min_value, max_value )
     {
         main->trislice[volume].rgb_colour_map[i] =
                     get_colour_code( &main->trislice[volume].colour_coding,
@@ -203,14 +210,17 @@ private  void  update_cmode_indices(
     int          volume )
 {
     int   min_ind, max_ind, voxel_value;
+    int   min_value, max_value;
 
     min_ind = main->trislice[volume].start_colour_map;
     max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
 
-    for_less( voxel_value, 0, N_VOXEL_VALUES )
+    get_volume_value_range( main, volume, &min_value, &max_value );
+
+    for_inclusive( voxel_value, min_value, max_value )
     {
         main->trislice[volume].cmode_colour_map[voxel_value] = 
-                    CONVERT_INTEGER_RANGE( voxel_value, 0, N_VOXEL_VALUES-1,
+                    CONVERT_INTEGER_RANGE( voxel_value, min_value, max_value,
                                            min_ind, max_ind );
     }
 }
@@ -220,14 +230,17 @@ private  void  update_cmode_colour_maps(
     int          volume )
 {
     int   i, voxel_value, min_ind, max_ind;
+    int   min_value, max_value;
 
     min_ind = main->trislice[volume].start_colour_map;
     max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
 
+    get_volume_value_range( main, volume, &min_value, &max_value );
+
     for_inclusive( i, min_ind, max_ind )
     {
         voxel_value = CONVERT_INTEGER_RANGE( i, min_ind, max_ind,
-                                             0, N_VOXEL_VALUES-1 );
+                                             min_value, max_value );
         G_set_colour_map_entry( main->window, i, 
                     get_colour_code( &main->trislice[volume].colour_coding,
                                      (Real) voxel_value ) );
@@ -257,12 +270,94 @@ public  void   update_colour_maps(
     }
 }
 
+public  void  repartition_colour_maps(
+    main_struct  *main )
+{
+    int        volume, start_index;
+    int        total_colours, n_merged;
+    int        min_value1, max_value1, min_value2, max_value2;
+    int        max_colours_1, max_colours_2, max_colours_merged, total_volume;
+    int        n_volume_1, n_volume_2, n_merged_1, n_merged_2;
+    Real       ratio;
+
+    start_index = main->start_colour_index + N_MAIN_COLOURS;
+
+    total_colours = G_get_n_colour_map_entries( main->window ) - start_index;
+
+    get_volume_value_range( main, 0, &min_value1, &max_value1 );
+    get_volume_value_range( main, 1, &min_value2, &max_value2 );
+
+    max_colours_1 = max_value1 - min_value1;
+    max_colours_2 = max_value2 - min_value2;
+    max_colours_merged = max_colours_1 * max_colours_2;
+
+    n_merged = Merged_colour_table_fraction * total_colours;
+
+    if( n_merged > max_colours_merged )
+        n_merged = max_colours_merged;
+
+    total_volume = total_colours - n_merged;
+    if( total_volume >= max_colours_1 + max_colours_2 )
+    {
+        n_volume_1 = max_colours_1;
+        n_volume_2 = max_colours_2;
+        n_merged = MIN( max_colours_merged,
+                        total_colours - n_volume_1 - n_volume_2 );
+    }
+    else
+    {
+        ratio = (Real) max_colours_1 / (Real) max_colours_2;
+        n_volume_1 = ROUND( (Real) total_volume * ratio );
+        if( n_volume_1 < 1 )
+            n_volume_1 = 1;
+        n_volume_2 = total_volume - n_volume_1;
+    }
+
+    if( n_merged + n_volume_1 + n_volume_2 > total_colours )
+        HANDLE_INTERNAL_ERROR( "repartition_colour_maps" );
+
+    if( n_volume_1 * n_volume_2 >= n_merged )
+    {
+        n_merged_1 = n_volume_1;
+        n_merged_2 = n_volume_2;
+    }
+    else
+    {
+        ratio = sqrt( (Real) n_merged / (Real) (n_volume_1 * n_volume_2) );
+        n_merged_1 = ROUND( (Real) n_merged * ratio );
+        if( n_merged_1 < 1 )
+            n_merged_1 = 1;
+        n_merged_2 = n_merged / n_merged_1;
+    }
+
+print( "%d %d  (%d * %d) = %d   total = %d\n",
+       n_volume_1, n_volume_2, n_merged_1, n_merged_2, n_merged_1 * n_merged_2,
+       n_volume_1 + n_volume_2 + n_merged_1 * n_merged_2 );
+
+    main->trislice[0].start_colour_map = start_index;
+    main->trislice[0].n_colour_entries = n_volume_1;
+
+    main->trislice[1].start_colour_map = start_index + n_volume_1;
+    main->trislice[1].n_colour_entries = n_volume_2;
+
+    main->merged.start_colour_map = start_index + n_volume_1 + n_volume_2;
+    main->merged.n_colour_entries1 = n_merged_1;
+    main->merged.n_colour_entries2 = n_merged_2;
+
+    for_less( volume, 0, N_VOLUMES )
+        update_cmode_indices( main, volume );
+
+    update_merged_cmode_indices( main );
+
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+        set_recreate_3_slices_flags( main, volume );
+}
+
 public  void  colour_mode_has_toggled(
     main_struct  *main,
     int          start_index )
 {
     int        volume, view, bg_index;
-    int        total_colours, n_volume, n_merged;
 
     if( G_get_colour_map_state(main->window) )
     {
@@ -293,40 +388,6 @@ public  void  colour_mode_has_toggled(
                                 main->start_colour_index +CURSOR_OUTSIDE_COLOUR,
                                 Cursor_outside_colour );
 
-        start_index = main->start_colour_index + N_MAIN_COLOURS;
-
-        total_colours = G_get_n_colour_map_entries( main->window )-start_index;
-
-        n_merged = Merged_colour_table_fraction * total_colours;
-
-        n_volume = (total_colours - n_merged) / 2;
-
-        if( n_volume > N_VOXEL_VALUES )
-            n_volume = N_VOXEL_VALUES;
-
-        n_merged = total_colours - 2 * n_volume;
-
-        main->trislice[0].start_colour_map = start_index;
-        main->trislice[0].n_colour_entries = n_volume;
-
-        main->trislice[1].start_colour_map = start_index + n_volume;
-        main->trislice[1].n_colour_entries = n_volume;
-
-        main->merged.start_colour_map = start_index + 2 * n_volume;
-        main->merged.n_colour_entries1 = (int) sqrt( (double) n_merged );
-        if( main->merged.n_colour_entries1 > N_VOXEL_VALUES )
-            main->merged.n_colour_entries1 = N_VOXEL_VALUES;
-
-        main->merged.n_colour_entries2 = n_merged /
-                                         main->merged.n_colour_entries1;
-        if( main->merged.n_colour_entries2 > N_VOXEL_VALUES )
-            main->merged.n_colour_entries2 = N_VOXEL_VALUES;
-
-        for_less( volume, 0, N_VOLUMES )
-            update_cmode_indices( main, volume );
-
-        update_merged_cmode_indices( main );
-
         for_less( volume, 0, N_VOLUMES_DISPLAYED )
         {
             for_less( view, 0, N_VIEWS )
@@ -336,6 +397,8 @@ public  void  colour_mode_has_toggled(
                                   Slice_background_colour, bg_index );
             }
         }
+
+        repartition_colour_maps( main );
     }
 
     update_all_tag_colours( main );
@@ -349,8 +412,6 @@ public  void  colour_mode_has_toggled(
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
         for_less( view, 0, N_VIEWS )
             update_cursor_colours( main, volume, view );
-
-    set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
 private  colour_coding_has_changed (
