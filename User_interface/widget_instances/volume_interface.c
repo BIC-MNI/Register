@@ -35,8 +35,8 @@ private  DEFINE_WIDGET_CALLBACK( load_volume_callback ) /* ARGSUSED */
                                  [widget_indices[LOAD_FILENAME_TEXT]] );
 
     (void) initialize_loading_volume( get_ui_struct(),
-                              get_viewport_volume_index(viewport_index),
-                              filename );
+                                      get_viewport_volume_index(viewport_index),
+                                      filename, FALSE );
 }
 
 private  DEFINE_WIDGET_CALLBACK( volume_filename_callback ) /* ARGSUSED */
@@ -90,8 +90,7 @@ public  void  add_volume_widgets(
                        viewport_index, 
                        x + Volume_button_width + Interface_x_spacing, y,
                        Load_filename_width, Text_entry_height,
-                       "",
-                       ON,
+                       FALSE, "", ON,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
