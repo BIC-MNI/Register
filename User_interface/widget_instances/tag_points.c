@@ -24,8 +24,6 @@ typedef enum
     N_TAG_NAME_WIDGETS
 } Tag_name_widgets;
 
-static  int  rms_label_index;
-static  int  rms_error_index;
 static  int  **rms_widget_indices;
 static  int  ***position_widgets_indices;
 static  int  **tag_name_widget_indices;
@@ -99,8 +97,8 @@ private  void  set_and_jump_to_tag(
             IF_get_tag_point_position( get_tag_index(get_ui_struct(),tag_index),
                                        tag_volume, position ) )
         {
-            ui_set_volume_world_position( get_ui_struct(), volume_index,
-                                          position );
+            ui_set_volume_original_world_position( get_ui_struct(),
+                                                   volume_index, position );
         }
     }
 }
@@ -134,8 +132,7 @@ private  DEFINE_WIDGET_CALLBACK( tag_activity_callback ) /* ARGSUSED */
 
     tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
 
-    IF_set_tag_point_activity( tag_index,
-                               !IF_get_tag_point_activity(tag_index) );
+    IF_set_tag_point_activity( tag_index, get_toggle_button_state( widget ) );
 
     set_current_tag_from_button( callback_data );
 }
@@ -155,11 +152,11 @@ private  DEFINE_WIDGET_CALLBACK( rms_error_callback ) /* ARGSUSED */
     set_current_tag_from_button( callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback ) /* ARGSUSED */
+public  void  previous_current_tag_point( UI_struct *ui )
 {
     int  tag_index;
 
-    tag_index =  get_current_tag_index( get_ui_struct() );
+    tag_index =  get_current_tag_index( ui );
 
     if( tag_index > 0 )
     {
@@ -168,17 +165,27 @@ private  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback ) /* ARGSUSED */
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( next_tag_button_callback ) /* ARGSUSED */
+public  void  advance_current_tag_point( UI_struct  *ui )
 {
     int  tag_index;
 
-    tag_index =  get_current_tag_index( get_ui_struct() );
+    tag_index =  get_current_tag_index( ui );
 
     if( tag_index < IF_get_n_tag_points() )
     {
         ++tag_index;
         set_and_jump_to_tag( tag_index );
     }
+}
+
+private  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback ) /* ARGSUSED */
+{
+    previous_current_tag_point( get_ui_struct() );
+}
+
+private  DEFINE_WIDGET_CALLBACK( next_tag_button_callback ) /* ARGSUSED */
+{
+    advance_current_tag_point( get_ui_struct() );
 }
 
 private  DEFINE_WIDGET_CALLBACK( end_tags_button_callback ) /* ARGSUSED */
@@ -240,32 +247,11 @@ public  void  add_tag_point_widgets(
                            rms_viewport_index,
                            &x_min, &x_max, &y_min, &y_max );
 
-    x_left = Interface_x_spacing;
-    y_top = y_max - y_min - 1 - Interface_y_spacing;
+    x_left = Tags_x_spacing;
+    y_top = y_max - y_min - 1 - Tags_y_spacing;
 
     x = x_left;
-    y = y_top - Text_entry_height;
-
-    rms_label_index = add_widget_to_list(
-                  &ui_info->widget_list[rms_viewport_index],
-                  create_label( &ui_info->graphics_window, rms_viewport_index,
-                  x, y, Avg_rms_label_width, Text_entry_height,
-                  "Avg:", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
-                  LABEL_INACTIVE_COLOUR,
-                  LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size ) );
-
-    rms_error_index = add_widget_to_list(
-                  &ui_info->widget_list[rms_viewport_index],
-                  create_label( &ui_info->graphics_window, rms_viewport_index,
-                  x + Interface_x_spacing + Avg_rms_label_width, y,
-                  Avg_rms_number_width, Text_entry_height,
-                  "", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
-                  LABEL_INACTIVE_COLOUR,
-                  LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size ) );
-
-    y -= Volume_button_height + Interface_y_spacing;
+    y = y_top - Tag_point_height;
 
     for_less( tag, 0, n_tag_points )
     {
@@ -538,7 +524,7 @@ public  void  add_tag_point_widgets(
                    end_tags_button_callback, (void *) NULL ) );
         }
 
-        y -= Tag_point_height + Interface_y_spacing;
+        y -= Tag_point_height + Tags_y_spacing;
     }
 
     update_all_tag_widgets( ui_info );
@@ -549,24 +535,6 @@ public  void  delete_tag_point_widgets_indices()
     FREE2D( rms_widget_indices );
     FREE3D( position_widgets_indices );
     FREE2D( tag_name_widget_indices );
-}
-
-private  void  update_avg_rms_error(
-    UI_struct         *ui_info )
-{
-    Real           avg_rms;
-    widget_struct  *widget;
-
-    widget = ui_info->widget_list[RMS_error_viewport].widgets[rms_error_index];
-
-    if( IF_get_tag_point_avg_rms_error( &avg_rms ) )
-    {
-        set_text_entry_real_value( widget, Rms_error_format, avg_rms );
-    }
-    else
-    {
-        set_text_entry_string( widget, "" );
-    }
 }
 
 private  void  update_rms_error(
