@@ -131,7 +131,7 @@ START_GLOBALS
 
     DEF_GLOBAL( Colour_bar_slider_width, int, 150 )
     DEF_GLOBAL( Colour_bar_slider_height, int, 10 )
-    DEF_GLOBAL_STRING( Colour_bar_text_format, "%.2g" )
+    DEF_GLOBAL_STRING( Colour_bar_text_format, "%.4g" )
 
     DEF_GLOBAL( Opacity_slider_width, int, 150 )
     DEF_GLOBAL( Opacity_slider_height, int, 10 )

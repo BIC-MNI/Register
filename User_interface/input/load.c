@@ -43,7 +43,7 @@ public  Status  initialize_loading_volume(
     load_struct   *data;
     int           x_window, y_window;
     int           x_min, y_min, x_max, y_max;
-    static String dim_names[] = { MIxspace, MIyspace, MIzspace };
+    static char   *dim_names[] = { MIxspace, MIyspace, MIzspace };
 
     ALLOC( data, 1 );
 

@@ -31,8 +31,8 @@ private  DEFINE_WIDGET_CALLBACK( quit_button_callback ) /* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED */
 {
-    Transform  *transform;
-    char       *filename;
+    General_transform  *transform;
+    char               *filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets

@@ -241,17 +241,17 @@ public  Status   save_transform(
     main_struct   *main,
     char          filename[] )
 {
-    Status           status;
-    Transform        *transform;
-    char             comments[1000];
+    Status                   status;
+    General_transform        *transform;
+    char                     comments[1000];
 
     status = OK;
 
-    if( get_tag_point_transform( main, &transform, (Transform **) NULL ) )
+    if( get_tag_point_transform( main, &transform ) )
     {
         create_comments( main, comments );
 
-        status = write_transform_file( filename, comments, transform );
+        status = output_transform_file( filename, comments, transform );
     }
 
     return( status );

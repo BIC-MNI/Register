@@ -8,12 +8,11 @@ public  Status  resample_the_volume(
     FILE               *file;
     char               command_str[10000];
     String             tmp_transform_filename;
-    General_transform  gen_transform;
-    Transform          *transform;
+    General_transform  *transform;
 
     status = OK;
 
-    if( !get_tag_point_transform( main, &transform, (Transform **) NULL ) )
+    if( !get_tag_point_transform( main, &transform ) )
     {
         print( "No transform present.\n" );
         status = ERROR;
@@ -27,11 +26,8 @@ public  Status  resample_the_volume(
                             &file );
     }
 
-    create_linear_transform( &gen_transform, transform );
-
-    if( status == OK &&
-        output_transform( file, (char *) NULL, &gen_transform) != OK )
-        status = ERROR;
+    if( status == OK )
+        status = output_transform( file, (char *) NULL, transform );
 
     if( status == OK )
         status = close_file( file );

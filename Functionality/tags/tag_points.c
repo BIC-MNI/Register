@@ -248,26 +248,21 @@ public  Boolean  get_tag_point_activity(
 }
 
 public  Boolean  get_tag_point_transform(
-    main_struct   *main,
-    Transform     **transform,
-    Transform     **inverse_transform )
+    main_struct           *main,
+    General_transform     **transform )
 {
     Boolean  exists;
 
     if( check_update_transform_and_rms_error( main ) )
     {
-        if( transform != (Transform **) NULL )
+        if( transform != (General_transform **) NULL )
             *transform = &main->tags.v2_to_v1_transform;
-        if( inverse_transform != (Transform **) NULL )
-            *inverse_transform = &main->tags.inverse_v2_to_v1_transform;
         exists = TRUE;
     }
     else
     {
-        if( transform != (Transform **) NULL )
-            *transform = (Transform *) NULL;
-        if( inverse_transform != (Transform **) NULL )
-            *inverse_transform = (Transform *) NULL;
+        if( transform != (General_transform **) NULL )
+            *transform = (General_transform *) NULL;
         exists = FALSE;
     }
 

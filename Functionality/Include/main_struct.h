@@ -76,8 +76,7 @@ typedef  struct
     int                    n_tag_points;
     tag_point_struct       *tag_points;
     Boolean                transform_out_of_date;
-    Transform              v2_to_v1_transform;
-    Transform              inverse_v2_to_v1_transform;
+    General_transform      v2_to_v1_transform;
     Real                   avg_rms_error;
     Boolean                transform_exists;
     Boolean                saved_flag;
@@ -94,8 +93,7 @@ typedef  struct
 
     Boolean                  resampled_file_loaded;
     String                   original_volume_filename;
-    Transform                resampling_transform;
-    Transform                inverse_resampling_transform;
+    General_transform        resampling_transform;
 
     int                      start_colour_index;
 

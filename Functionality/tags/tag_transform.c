@@ -12,11 +12,11 @@ private  void  recompute_tag_rms_errors(
 
     for_less( i, 0, tags->n_tag_points )
     {
-        transform_point( &tags->v2_to_v1_transform,
-                         Point_x(tags->tag_points[i].position[1]),
-                         Point_y(tags->tag_points[i].position[1]),
-                         Point_z(tags->tag_points[i].position[1]),
-                         &x, &y, &z );
+        general_transform_point( &tags->v2_to_v1_transform,
+                                 Point_x(tags->tag_points[i].position[1]),
+                                 Point_y(tags->tag_points[i].position[1]),
+                                 Point_z(tags->tag_points[i].position[1]),
+                                 &x, &y, &z );
 
         fill_Point( transformed, x, y, z );
 
@@ -38,11 +38,12 @@ private  void  recompute_tag_rms_errors(
 public  void  recompute_tag_transform(
     tag_list_struct   *tags )
 {
-    int    i, j, c, n_valid;
-    float  **Apoints, **Bpoints;
-    float  translation[N_DIMENSIONS+1], centre_of_rotation[N_DIMENSIONS+1];
-    float  scale;
-    float  **rotation, **transformation;;
+    int        i, j, c, n_valid;
+    float      **Apoints, **Bpoints;
+    float      translation[N_DIMENSIONS+1], centre_of_rotation[N_DIMENSIONS+1];
+    float      scale;
+    float      **rotation, **transformation;
+    Transform  linear_transform;
 
     ALLOC2D( Apoints, tags->n_tag_points+1, N_DIMENSIONS+1 );
     ALLOC2D( Bpoints, tags->n_tag_points+1, N_DIMENSIONS+1 );
@@ -66,6 +67,9 @@ public  void  recompute_tag_transform(
         }
     }
 
+    if( tags->transform_exists )
+        delete_general_transform( &tags->v2_to_v1_transform );
+
     if( n_valid >= 4 )
     {
         ALLOC2D( rotation, N_DIMENSIONS+2, N_DIMENSIONS+2 );
@@ -84,19 +88,16 @@ public  void  recompute_tag_transform(
         {
             for_less( j, 0, 4 )
             {
-                Transform_elem(tags->v2_to_v1_transform,i,j) =
-                                                    transformation[j+1][i+1];
+                Transform_elem(linear_transform,i,j) = transformation[j+1][i+1];
             }
         }
 
         FREE2D( rotation );
         FREE2D( transformation );
 
-        compute_transform_inverse( &tags->v2_to_v1_transform,
-                                   &tags->inverse_v2_to_v1_transform );
-        recompute_tag_rms_errors( tags );
-
+        create_linear_transform( &tags->v2_to_v1_transform, &linear_transform );
         tags->transform_exists = TRUE;
+        recompute_tag_rms_errors( tags );
     }
     else
         tags->transform_exists = FALSE;

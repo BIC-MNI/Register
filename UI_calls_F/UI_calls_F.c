@@ -60,10 +60,10 @@ public  void  IF_set_volume(
 }
 
 public  void  IF_set_resampled_volume(
-    Volume         volume,
-    char           filename[],
-    char           original_filename[],
-    Transform      *resampling_transform )
+    Volume                 volume,
+    char                   filename[],
+    char                   original_filename[],
+    General_transform      *resampling_transform )
 {
     set_register_resampled_volume( get_main_struct(), volume, filename,
                                    original_filename, resampling_transform );
@@ -435,15 +435,14 @@ public  void  IF_save_transform(
 
 public  Boolean  IF_does_transform_exist()
 {
-    return( get_tag_point_transform( get_main_struct(), (Transform **) NULL,
-                                     (Transform **) NULL ) );
+    return( get_tag_point_transform( get_main_struct(),
+                                     (General_transform **) NULL ) );
 }
 
 public  Boolean  IF_get_resampling_transform(
-    Transform  **transform )
+    General_transform  **transform )
 {
-    return( get_tag_point_transform( get_main_struct(), transform,
-                                     (Transform **) NULL ) );
+    return( get_tag_point_transform( get_main_struct(), transform ) );
 }
 
 public  Boolean  IF_tag_points_have_been_saved()

@@ -94,18 +94,18 @@ public  void   set_register_volume(
 }
 
 public  void   set_register_resampled_volume(
-    main_struct    *main,
-    Volume         volume,
-    char           filename[],
-    char           original_filename[],
-    Transform      *resampling_transform )
+    main_struct            *main,
+    Volume                 volume,
+    char                   filename[],
+    char                   original_filename[],
+    General_transform      *resampling_transform )
 {
     record_register_volume( main, RESAMPLED_VOLUME_INDEX, volume, filename );
 
     main->resampled_file_loaded = TRUE;
-    main->resampling_transform = *resampling_transform;
-    compute_transform_inverse( resampling_transform,
-                               &main->inverse_resampling_transform );
+
+    delete_general_transform( &main->resampling_transform );
+    copy_general_transform( resampling_transform, &main->resampling_transform );
     (void) strcpy( main->original_volume_filename, original_filename );
 }
 

@@ -1,9 +1,9 @@
 #include  <def_user_interface.h>
 
 public  void  do_resampling(
-    UI_struct   *ui,
-    Transform   *resampling_transform,
-    char        resampled_filename[] )
+    UI_struct           *ui,
+    General_transform   *resampling_transform,
+    char                resampled_filename[] )
 {
     String                  output_filename;
 
@@ -13,7 +13,8 @@ public  void  do_resampling(
     expand_filename( resampled_filename, output_filename );
     (void) strcpy( ui->resampled_filename, resampled_filename );
 
-    ui->resampling_transform = *resampling_transform;
+    delete_general_transform( &ui->resampling_transform );
+    copy_general_transform( resampling_transform, &ui->resampling_transform );
 
     print( "Please wait 2 minutes for the resampling.\n" );
     

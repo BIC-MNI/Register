@@ -201,13 +201,13 @@ public  void  convert_original_world_to_world(
     Real           *y_world,
     Real           *z_world )
 {
-    Transform  *inverse, *transform;
+    General_transform  *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX &&
-        get_tag_point_transform( main, &transform, &inverse ) )
+        get_tag_point_transform( main, &transform ) )
     {
-        transform_point( transform, x_original, y_original, z_original,
-                                    x_world, y_world, z_world );
+        general_transform_point( transform, x_original, y_original, z_original,
+                                 x_world, y_world, z_world );
     }
     else
     {
@@ -227,13 +227,13 @@ public  void  convert_world_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
-    Transform  *inverse, *transform;
+    General_transform  *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX &&
-        get_tag_point_transform( main, &transform, &inverse ) )
+        get_tag_point_transform( main, &transform ) )
     {
-        transform_point( inverse, x_world, y_world, z_world,
-                         x_original, y_original, z_original );
+        general_inverse_transform_point( transform, x_world, y_world, z_world,
+                                         x_original, y_original, z_original );
     }
     else
     {
@@ -309,9 +309,9 @@ public  void  convert_original_world_to_voxel(
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
-        transform_point( &main->resampling_transform,
-                         x_original, y_original, z_original,
-                         &x_world, &y_world, &z_world );
+        general_transform_point( &main->resampling_transform,
+                                 x_original, y_original, z_original,
+                                 &x_world, &y_world, &z_world );
     }
     else
     {
@@ -345,7 +345,7 @@ public  void  convert_voxel_to_original_world(
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
-        transform_point( &main->inverse_resampling_transform,
+        general_inverse_transform_point( &main->resampling_transform,
                         world_position[X], world_position[Y], world_position[Z],
                         x_original, y_original, z_original );
     }
@@ -433,8 +433,8 @@ public  void  get_volume_value_range(
     Real          *min_value,
     Real          *max_value )
 {
-    get_volume_range( get_slice_volume(main,volume_index),
-                      min_value, max_value );
+    get_volume_real_range( get_slice_volume(main,volume_index),
+                           min_value, max_value );
 }
 
 public  Real  *get_volume_cursor(

@@ -7,6 +7,8 @@ public  Status   initialize_user_interface( UI_struct  *ui )
 
     ui->volumes_synced = Initial_volumes_synced;
 
+    create_linear_transform( &ui->resampling_transform, (Transform *) NULL );
+
     initialize_ui_colours();
 
     initialize_print_popup();

@@ -58,7 +58,7 @@ typedef  struct
     int                      prev_y_mouse;
     Real                     slice_position_start;
 
-    Transform                resampling_transform;
+    General_transform        resampling_transform;
     String                   original_filename_volume_2;
     String                   resampled_filename;
 
