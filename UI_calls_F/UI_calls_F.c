@@ -112,6 +112,14 @@ public  void  IF_translate_slice(
                      x_translation, y_translation );
 }
 
+public  void  IF_scale_slice(
+    int       volume,
+    int       view,
+    Real      scale_factor )
+{
+    scale_slice( get_main_struct(), volume, view, scale_factor );
+}
+
 public  void  IF_set_slice_viewport(
     int       volume,
     int       view,
@@ -139,6 +147,20 @@ public  void  IF_colour_mode_has_toggled(
     int  start_index )
 {
     colour_mode_has_toggled( get_main_struct(), start_index );
+}
+
+public  void  IF_set_under_colour(
+    int        volume_index,
+    Colour     colour )
+{
+    set_volume_under_colour( get_main_struct(), volume_index, colour );
+}
+
+public  void  IF_set_over_colour(
+    int        volume_index,
+    Colour     colour )
+{
+    set_volume_over_colour( get_main_struct(), volume_index, colour );
 }
 
 public  void  IF_set_volume_colour_coding_type(
@@ -169,4 +191,91 @@ public  void  IF_set_merged_volume_opacity(
     Real   opacity )
 {
     set_merged_volume_opacity( get_main_struct(), which_volume, opacity );
+}
+
+/* ----------------------- tag points -------------------------------- */
+
+public  void  IF_create_new_tag_point( void )
+{
+    create_new_tag_point( get_main_struct() );
+}
+
+public  void  IF_delete_tag_point(
+    int      ind )
+{
+    delete_tag_point( get_main_struct(), ind );
+}
+
+public  int  IF_get_n_tag_points()
+{
+    return( get_n_tag_points( get_main_struct() ) );
+}
+
+public  Boolean  IF_get_tag_point_position(
+    int              ind,
+    int              volume_index,
+    Real             position[] )
+{
+    return( get_tag_point_position( get_main_struct(),
+                                    ind, volume_index, position ) );
+}
+
+public  void  IF_set_tag_point_position(
+    int              ind,
+    int              volume_index,
+    Real             position[] )
+{
+    set_tag_point_position( get_main_struct(),
+                            ind, volume_index, position );
+}
+
+public  char  *IF_get_tag_point_name(
+    int              ind )
+{
+    return( get_tag_point_name( get_main_struct(), ind ) );
+}
+
+public  void  IF_set_tag_point_name(
+    int              ind,
+    char             *name )
+{
+    set_tag_point_name( get_main_struct(), ind, name );
+}
+
+public  Boolean  IF_get_tag_point_rms_error(
+    int              ind,
+    Real             *rms_error )
+{
+    return( get_tag_point_rms_error( get_main_struct(), ind, rms_error ) );
+}
+
+public  Boolean  IF_get_tag_point_avg_rms_error(
+    Real             *avg_rms_error )
+{
+    return( get_tag_point_avg_rms_error( get_main_struct(), avg_rms_error ) );
+}
+
+public  Boolean  IF_get_tag_point_activity(
+    int              ind )
+{
+    return( get_tag_point_activity( get_main_struct(), ind ) );
+}
+
+public  void  IF_set_tag_point_activity(
+    int              ind,
+    Boolean          activity )
+{
+    set_tag_point_activity( get_main_struct(), ind, activity );
+}
+
+public  void  IF_save_tags_file(
+    char   filename[] )
+{
+    (void) save_tag_points( get_main_struct(), filename );
+}
+
+public  void  IF_load_tags_file(
+    char   filename[] )
+{
+    (void) load_tag_points( get_main_struct(), filename );
 }
