@@ -1,0 +1,18 @@
+
+CC           = gcc
+LINK         = gcc
+LINT         = @/bin/true
+MAKE_LIBRARY = ar r
+RANLIB       = ranlib
+X11_LIBS     = -L/usr/X11R6/lib -lX11 -lXext -lXt
+
+.SUFFIXES: .ln .i .u
+
+.c.o:
+	$(CC) -c $(CFLAGS) $< -o $@
+
+.c.i:
+	$(CC) -P $(CFLAGS) -c $< -o $@
+
+.c.ln:
+	$(LINT) $(LINTFLAGS) -i $<

@@ -1,0 +1,45 @@
+CFLAGS = $(OPT) $(INCLUDE) $(DEFINE)
+LINTFLAGS = -Dlint $(INCLUDE)
+
+include $(ARCH_MAKEFILE)
+
+#-------------------------
+# place path to minc and netcdf here
+#-------------------------------
+
+#MINC_INCLUDE =
+#MINC_LIB = -lminc -lnetcdf
+
+MINC_INCLUDE = -I$(SRC_DIRECTORY)/minc/libsrc \
+               -I$(SRC_DIRECTORY)/netcdf-2.3.2/libsrc
+MINC_LIB = -L$(SRC_DIRECTORY)/minc/libsrc -lminc \
+           -L$(SRC_DIRECTORY)/netcdf-2.3.2/libsrc -lnetcdf
+
+#--- eventually, the multi architecture should be incorporated into the Mesa dir
+
+MESA_INCLUDE = -I$(SRC_DIRECTORY)/Mesa/include
+MESA_LIB = -L$(SRC_DIRECTORY)/Mesa/$(ARCH_DIR) -lMesaGL
+MESA_LIB-O3 = -L$(SRC_DIRECTORY)/Mesa/$(ARCH_DIR) -lMesaGL
+
+include $(SRC_DIRECTORY)/Make/Makefile.$(ARCH)
+
+BASIC_LIBS = -lm $(SYS_LIBS)
+
+default:
+	@echo "Specify what you want to make"
+
+clean_o:
+	-$(RM) -f *.o */*.o */*/*.o
+
+clean_u:
+	-$(RM) -f *.u */*.u */*/*.u
+
+clean_ln:
+	-$(RM) -f *.ln */*.ln */*/*.ln
+
+clean: clean_o clean_u clean_ln
+
+#
+#   Depending on whether you have already installed MINC, netcdf, mesa or not,
+#   you may need to change the following
+#

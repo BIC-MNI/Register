@@ -1,0 +1,3 @@
+SGI_IMAGE_INCLUDE = -I/usr/people/4Dgifts/iristools/include
+SGI_IMAGE_LIB     = /usr/people/4Dgifts/iristools/libimage/libimage.a
+SYS_LIBS          = -lsun -lmalloc

@@ -1,0 +1,19 @@
+CC           = acc
+LINK         = acc
+LINT         = lint -u -x
+MAKE_LIBRARY = ar r
+RANLIB       = ranlib
+X11_INCLUDES = -I/usr/openwin/include
+X11_LIBS     = -L/usr/openwin/lib -lX11 -lXext
+
+
+.SUFFIXES: .ln .i .u
+
+.c.o:
+	$(CC) -c $(CFLAGS) $< -o $@
+
+.c.i:
+	$(CC) -P $(CFLAGS) -c $< -o $@
+
+.c.ln:
+	$(LINT) $(LINTFLAGS) -c $<

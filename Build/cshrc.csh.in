@@ -1,0 +1,5 @@
+#
+#  define my (David MacDonald) source makefiles
+#
+
+    setenv SRC_DIRECTORY   __INSERT_DIR_HERE__

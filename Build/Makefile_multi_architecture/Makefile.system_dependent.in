@@ -1,0 +1,16 @@
+ARCH_MAKEFILE_DIR = __INSERT_DIR_HERE__
+
+ARCH_DIR          = $(ARCH)$(ARCH_EXT)
+ECHO              = echo
+MV                = /bin/mv
+RM                = /bin/rm
+CP                = /bin/cp
+MKDIR             = mkdir
+OPT_O             = -O
+OPT_g             = -g
+MAKE_PROTOTYPES   = $(ARCH_MAKEFILE_DIR)/bin/create_prototypes.csh $(ARCH_MAKEFILE_DIR)/bin
+MAKE_SOURCE_LINKS = $(ARCH_MAKEFILE_DIR)/bin/make_source_links.csh $@
+X11_INCLUDES      =
+X11_LIBS          = -lX11 -lXext
+
+include $(ARCH_MAKEFILE_DIR)/Makefile.$(ARCH)

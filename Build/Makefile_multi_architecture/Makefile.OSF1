@@ -1,0 +1,21 @@
+
+CC           = cc
+LINK         = cc
+LINT         = lint -mux
+MAKE_LIBRARY = ar r
+RANLIB       = ranlib
+
+.SUFFIXES: .ln .i .u
+
+.c.o:
+	$(CC) -c $(CFLAGS) $< -o $@
+
+.c.u:
+	$(CC) $(CFLAGS) -O3 -j $< -o $@
+
+.c.i:
+	$(CC) -P $(CFLAGS) -c $< -o $@
+
+.c.ln:
+	$(LINT) -Ddec $(LINTFLAGS) -c $<
+	@mv `echo $@ | sed -e 's/.*\///'` $@

@@ -1,0 +1,69 @@
+              Copyright 1993,1994,1995 David MacDonald,
+              McConnell Brain Imaging Centre,
+              Montreal Neurological Institute, McGill University.
+
+              Permission to use, copy, modify, and distribute this
+              software and its documentation for any purpose and without
+              fee is hereby granted, provided that the above copyright
+              notice appear in all copies.  The author and McGill University
+              make no representations about the suitability of this
+              software for any purpose.  It is provided "as is" without
+              express or implied warranty.
+
+-------------------------------------------------------------------------------
+
+Note that this package relies on having the following packages in the current
+directory
+
+NetCDF library:  ftp://ftp.bic.mni.mcgill.ca/pub/minc/netcdf-2.3.2.tar.Z
+MINC library:    ftp://ftp.bic.mni.mcgill.ca/pub/minc/minc.tar.Z
+
+-------------------------------------------------------------------------------
+
+MNI-Display is an interactive program to display and segment 3 dimensional
+images, as well as to display and manipulate 3D geometric objects.
+
+MNI-register is an interactive program to display and merge 2 volumes and
+pick homologous points for manually registering one volume to the other.
+
+These sources build MNI-Display and MNI-register, as well as 4 supporting
+libraries.  The code compiles and runs on SGI, SUN, DEC, and Linux workstations,
+but has only been tested extensively on SGI.  Use at own risk.
+
+-------------------------------------------------------------------------------
+
+Step 1:  To set the path, and determine architecture, type
+
+             cd Makefile_multi_architecture ; make ; cd ..
+
+         and follow the instructions it gives to 'source' the following file:
+
+             source Makefile_multi_architecture/cshrc.csh
+
+
+Step 2:  To build everything, type
+
+             make
+
+         and follow the instructions it gives to 'source' the following file:
+
+             source cshrc.csh
+
+         then type one of:
+
+             make irisgl
+             make opengl
+             make mesa
+
+Note:  if you get a message that the variables FC or OS must be defined, then
+       type (if in using csh)
+             setenv FC /bin/true  
+             setenv OS linux               (or whatever operating system)
+
+-------------------------------------------------------------------------------
+
+Comments and questions may be directed to me,
+
+   David MacDonald
+
+   david@bic.mni.mcgill.ca

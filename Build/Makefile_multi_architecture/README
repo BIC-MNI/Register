@@ -1,0 +1,15 @@
+     In order to set up this multi architecture system for use the very
+     first time, you need to go to this directory, and type
+
+make
+
+     Then, put the following line in your .cshrc file (or type it at prompt)
+
+source  this_dir/cshrc.csh
+
+     where "this_dir" is replaced with the full path to this directory,
+     and the following line in each of your Makefiles (with no indentation):
+
+include $(ARCH_MAKEFILE)
+
+     For an example, then cd to Example

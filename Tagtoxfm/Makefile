@@ -43,11 +43,11 @@ build: $(PROGS)
 #Dependency on Makefile
 $(PROG_OBJ) $(EXTRA_OBJ) $(LINT_LIST) $(LINT_EXTRA): Makefile
 
-.c.ln:#                                   defines the rule for creating .ln
-	lint $(LINTFLAGS) -c $< -o $@
+#.c.ln:#                                   defines the rule for creating .ln
+#	lint $(LINTFLAGS) -c $< -o $@
 
-.c.o:#                                    defines the rule for creating .o
-	$(CC) $(CFLAGS) -c $< -o $@
+#.c.o:#                                    defines the rule for creating .o
+#	$(CC) $(CFLAGS) -c $< -o $@
 
 #Dependency of .o and .ln on .h
 $(PROG_OBJ) $(EXTRA_OBJ): $(HEADERS)
@@ -55,8 +55,8 @@ $(PROG_OBJ) $(EXTRA_OBJ): $(HEADERS)
 $(LINT_LIST) $(LINT_EXTRA): $(HEADERS)
 
 # How to make executables
-$(PROGS) : $$@.o $(EXTRA_OBJ) $(CC_PROG_LIB)
-	$(CC) $@.o $(EXTRA_OBJ) -o $@ $(LDOPT)
+tagtoxfm: tagtoxfm.o $(EXTRA_OBJ) $(CC_PROG_LIB)
+	$(CC) tagtoxfm.o $(EXTRA_OBJ) -o $@ $(LDOPT)
 
 #  how to lint the executable source
 lint: $(LINT_LIST_EXE)

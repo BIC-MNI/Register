@@ -1,0 +1,6 @@
+SGI_IMAGE_INCLUDE = -I/usr/people/4Dgifts/iristools/include
+SGI_IMAGE_LIB     = 
+SYS_LIBS          = -lmalloc
+
+MINC_LIB = -L $(SRC_DIRECTORY)/minc/libsrc -lminc \
+           -L $(SRC_DIRECTORY)/netcdf-2.3.2/libsrc -lnetcdf

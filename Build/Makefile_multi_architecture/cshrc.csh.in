@@ -1,0 +1,34 @@
+#!/bin/csh -f
+#
+#   This file is sourced at login in order to identify the machine/os
+#   and set two environment variables:
+#
+#   ARCH_MAKEFILE_DIR     directory where this file is,
+#            you might need to set this variable by hand in this file
+#
+#   ARCH_MAKEFILE         set automatically by using uname.
+#            you may want to change the way this is computed, depending
+#            on your system
+#
+
+#---- find the machine/os
+
+    set _uname = ( `uname -a` )
+
+    set _os = $_uname[1]
+    if( "`echo $_os | grep IRIX`" != "" )  set _os = "IRIX"
+
+    set _version = `echo $_uname[3] | sed -e 's/\..*//'`
+
+    if( $_os == "IRIX" || $_os == "SunOS" ) then
+        set _arch = ${_os}_${_version}
+    else
+        set _arch = ${_os}
+    endif
+
+#---- set the two environment variables that define the make system
+
+    set dir = __INSERT_DIR_HERE__
+
+    setenv ARCH          ${_arch}
+    setenv ARCH_MAKEFILE $dir/Makefile.system_dependent

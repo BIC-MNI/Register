@@ -1,0 +1,37 @@
+#! /usr/local/bin/perl
+# Script to extract function prototypes based on keywords 
+# public, private and semiprivate
+
+# Constants
+$LOOKING=1;
+$FOUND=2;
+$MAX_LINES=40;
+
+# Check arguments
+$type = shift;
+switch: {
+   if ($type eq '-public')   {$search = '(^public)'; last switch;};
+   if ($type eq '-nopublic') {$search = '(^private)|(^semiprivate)'; 
+                               last switch;};
+   $search = '(^public)|(^private)|(^semiprivate)';
+   unshift(ARGV, $type);
+}
+
+# Initial state
+$state=$LOOKING;
+
+# Loop through input lines looking for functions
+while (<>) {
+   $state==$LOOKING && do {
+      if (/$search/) {
+         $state=$FOUND;
+         $lines=0;
+      }
+   };
+   $state==$FOUND && do {
+      chop;
+      $lines++;
+      if (/\{|\;/ || ($lines>=$MAX_LINES)) {print ";\n"; $state=$LOOKING;}
+      if (!/^\{/) {print "\n$_";}
+   };
+}
