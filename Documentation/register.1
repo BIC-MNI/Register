@@ -4,6 +4,7 @@ MNI-register - interactive volume display and point tagging program
 .SH SYNOPSIS
 .B register
 [-version] [-rgb] [-cmap] [-single] [-double] [volume1_filename] [volume2_filename]
+
 .SH DESCRIPTION
 .I Register
 is an interactive graphics application.  It can display one or two volumes
@@ -18,6 +19,14 @@ If enough tag points for two volumes are picked, then a transformation is
 computed for registering the two volumes.  This transform is used in 
 displaying the merged image and in allowing the user to start a
 process which resamples one of the volumes into the same space as the other.
+
+A vector volume will normally be converted to an RGB volume, on input.
+I don't know what that means in terms of register's display.
+Alternatively, the vector can be converted to a scalar whose value
+is the mean of the vector components, by setting the global variable
+.I Convert_vectors_to_rgb
+to FALSE.
+
 .SH USER INTERFACE
 The user interface is a mouse-based interface composed of buttons, sliders,
 and text entry.  Buttons can be pressed with the left mouse button.  Text
@@ -199,6 +208,12 @@ Register has the ability to handle volumes larger than virtual memory
 by caching parts of the volume in memory.  The current default for
 deciding when to cache is volume is 80 Megabytes.  See the
 documentation of the source libraries for MNI-register for more information.
+
+.SH FILES
+
+/usr/local/lib/register.globals
+
+/usr/local/lib/register_UI.globals
 
 .SH AUTHOR
 David MacDonald
