@@ -15,28 +15,25 @@ private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
         if( !button->toggle_flag )
         {
             button->state = FALSE;
-            update_button_colours( widget,
-                                   G_get_colour_map_state(get_ui_struct()->
-                                        graphics_window.window) );
+            update_button_colours( widget );
         }
 
-        set_viewport_update_flag( &get_ui_struct()->graphics_window.graphics,
+        set_viewport_update_flag( &widget->graphics->graphics,
                                   widget->viewport_index, NORMAL_PLANES );
 
+        button->time_to_unpush = -1.0;
         remove_global_event_callback( NO_EVENT, check_unpush_button,
                                       (void *) widget );
     }
 }
 
 private  void  turn_on_other_radio_buttons(
-    widget_struct           *widget,
-    event_viewports_struct  *event_viewports,
-    Boolean                 colour_map_state )
+    widget_struct           *widget )
 {
     widget_struct   *current_widget;
     button_struct   *button;
 
-    set_widget_activity( widget, event_viewports, colour_map_state, OFF );
+    set_widget_activity( widget, OFF );
 
     current_widget = widget;
     button = get_widget_button( widget );
@@ -45,8 +42,7 @@ private  void  turn_on_other_radio_buttons(
     {
         current_widget = button->next_radio_button;
         button = get_widget_button( current_widget );
-        set_widget_activity( current_widget, event_viewports,
-                             colour_map_state, ON );
+        set_widget_activity( current_widget, ON );
     }
 }
 
@@ -80,32 +76,29 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
     else
         button->state = TRUE;
 
-    update_button_colours( widget, G_get_colour_map_state(get_ui_struct()->
-                                               graphics_window.window) );
+    update_button_colours( widget );
 
-    set_viewport_update_flag( &get_ui_struct()->graphics_window.graphics,
+    set_viewport_update_flag( &widget->graphics->graphics,
                               widget->viewport_index, NORMAL_PLANES );
 
     button->time_to_unpush = current_realtime_seconds() +
                              Interface_highlight_time;
+
     add_global_event_callback( NO_EVENT, check_unpush_button,
                                (void *) widget );
 
     if( button->next_radio_button != (widget_struct *) 0 )
     {
-        turn_on_other_radio_buttons( widget, &get_ui_struct()->
-                                             graphics_window.event_viewports,
-                 G_get_colour_map_state(get_ui_struct()->
-                                        graphics_window.window) );
+        turn_on_other_radio_buttons( widget );
     }
 
-    button->push_callback( widget );
+    button->push_callback( widget, button->callback_data );
 }
 
 public  void  update_button_colours(
-    widget_struct   *widget,
-    Boolean         colour_map_state )
+    widget_struct   *widget )
 {
+    Boolean        colour_map_state;
     UI_colours     rectangle_colour;
     button_struct  *button;
 
@@ -123,6 +116,8 @@ public  void  update_button_colours(
     else
         rectangle_colour = button->inactive_colour;
 
+    colour_map_state = G_get_colour_map_state(widget->graphics->window);
+
     button->polygons->colours[0] = get_ui_colour(colour_map_state,
                                                  rectangle_colour);
 
@@ -131,7 +126,6 @@ public  void  update_button_colours(
 
 public  void  position_button(
     widget_struct                 *widget,
-    event_viewports_struct        *event_viewports,
     int                           x,
     int                           y )
 {
@@ -144,7 +138,7 @@ public  void  position_button(
                         widget->x_size, widget->y_size );
 
     set_event_viewport_callback_viewport(
-               event_viewports,
+               &widget->graphics->event_viewports,
                widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
                push_button_event_callback,
                (void *) widget,
@@ -166,21 +160,17 @@ public  void  set_button_text(
 }
 
 public  void  update_button_activity(
-    widget_struct           *widget,
-    event_viewports_struct  *event_viewports,
-    Boolean                 colour_map_state )
+    widget_struct           *widget )
 {
-    update_button_colours( widget, colour_map_state );
+    update_button_colours( widget );
 
-    set_event_viewport_callback_enabled( event_viewports,
+    set_event_viewport_callback_enabled( &widget->graphics->event_viewports,
                        widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
                        push_button_event_callback, (void *) widget,
                        widget->active_flag );
 }
 
 private  void  create_button_graphics(
-    UI_struct        *ui_info,
-    int              viewport_index,
     widget_struct    *widget,
     char             label[],
     Font_types       text_font,
@@ -194,8 +184,8 @@ private  void  create_button_graphics(
     object = create_rectangle( get_ui_colour(button->active_colour,FALSE) );
     button->polygons = (polygons_struct *) get_object_pointer( object );
 
-    add_object_to_viewport( &ui_info->graphics_window.graphics,
-                            viewport_index, NORMAL_PLANES, object );
+    add_object_to_viewport( &widget->graphics->graphics,
+                            widget->viewport_index, NORMAL_PLANES, object );
 
     object = create_text( get_ui_colour(button->text_colour,FALSE),
                           text_font, font_size );
@@ -207,12 +197,27 @@ private  void  create_button_graphics(
     else
         set_button_text( widget, label );
 
-    add_object_to_viewport( &ui_info->graphics_window.graphics,
-                            viewport_index, NORMAL_PLANES, object );
+    add_object_to_viewport( &widget->graphics->graphics,
+                            widget->viewport_index, NORMAL_PLANES, object );
 }
 
-private  int  create_a_button(
-    UI_struct                  *ui_info,
+public  void  delete_button(
+    widget_struct  *widget )      /* ARGSUSED */
+{
+    button_struct     *button;
+
+    button = get_widget_button( widget );
+
+    if( button->time_to_unpush >= 0.0 )
+    {
+        button->time_to_unpush = -1.0;
+        remove_global_event_callback( NO_EVENT, check_unpush_button,
+                                      (void *) widget );
+    }
+}
+
+private  widget_struct  *create_a_button(
+    graphics_window_struct     *graphics,
     int                        viewport_index,
     int                        x,
     int                        y,
@@ -229,14 +234,14 @@ private  int  create_a_button(
     UI_colours                 text_colour,
     Font_types                 text_font,
     Real                       font_size,
-    widget_callback_type       push_callback )
+    widget_callback_type       push_callback,
+    void                       *callback_data )
 {
-    int             widget_index;
     widget_struct   *widget;
     button_struct   *button;
 
     widget = create_widget( BUTTON, x, y, x_size, y_size, initial_activity,
-                            viewport_index );
+                            graphics, viewport_index );
 
     button = get_widget_button( widget );
 
@@ -248,6 +253,7 @@ private  int  create_a_button(
     button->next_radio_button = (widget_struct *) 0;
 
     button->toggle_flag = toggle_flag;
+    button->time_to_unpush = -1.0;
 
     if( toggle_flag )
     {
@@ -259,36 +265,28 @@ private  int  create_a_button(
         button->state = FALSE;
 
     button->push_callback = push_callback;
+    button->callback_data = callback_data;
 
-    add_event_viewport_callback( &ui_info->graphics_window.event_viewports,
+    add_event_viewport_callback( &graphics->event_viewports,
                                  viewport_index,
                                  LEFT_MOUSE_DOWN_EVENT,
                                  x, x + x_size - 1, y, y + y_size - 1,
                                  push_button_event_callback,
                                  (void *) widget );
 
-    create_button_graphics( ui_info, viewport_index, widget, text1,
-                            text_font, font_size );
+    create_button_graphics( widget, text1, text_font, font_size );
 
-    update_button_activity( widget, &ui_info->graphics_window.event_viewports,
-                            G_get_colour_map_state(
-                                 ui_info->graphics_window.window) );
+    update_button_activity( widget );
 
-    update_button_colours( widget,
-                           G_get_colour_map_state(
-                                 ui_info->graphics_window.window) );
+    update_button_colours( widget );
 
-    position_button( widget, &ui_info->graphics_window.event_viewports,
-                     x, y );
+    position_button( widget, x, y );
 
-    widget_index = add_widget_to_list( &ui_info->widget_list[viewport_index],
-                                       widget );
-
-    return( widget_index );
+    return( widget );
 }
 
-public  int  create_button(
-    UI_struct                  *ui_info,
+public  widget_struct *create_button(
+    graphics_window_struct     *graphics,
     int                        viewport_index,
     int                        x,
     int                        y,
@@ -302,18 +300,19 @@ public  int  create_button(
     UI_colours                 text_colour,
     Font_types                 text_font,
     Real                       font_size,
-    widget_callback_type       push_callback )
+    widget_callback_type       push_callback,
+    void                       *callback_data )
 {
-    return( create_a_button( ui_info, viewport_index,
+    return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
                      FALSE, FALSE, label, (char *) 0,
                      initial_activity, active_colour, inactive_colour,
                      pushed_colour, text_colour,
-                     text_font, font_size, push_callback ) );
+                     text_font, font_size, push_callback, callback_data ) );
 }
 
-public  int  create_toggle_button(
-    UI_struct                  *ui_info,
+public  widget_struct  *create_toggle_button(
+    graphics_window_struct     *graphics,
     int                        viewport_index,
     int                        x,
     int                        y,
@@ -329,12 +328,13 @@ public  int  create_toggle_button(
     UI_colours                 text_colour,
     Font_types                 text_font,
     Real                       font_size,
-    widget_callback_type       push_callback )
+    widget_callback_type       push_callback,
+    void                       *callback_data )
 {
-    return( create_a_button( ui_info, viewport_index,
+    return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
                      TRUE, initial_state, off_text, on_text,
                      initial_activity, active_colour, inactive_colour,
                      pushed_colour, text_colour,
-                     text_font, font_size, push_callback ) );
+                     text_font, font_size, push_callback, callback_data ) );
 }
