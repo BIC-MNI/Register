@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load_popup.c,v 1.11 1996-12-09 20:21:52 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load_popup.c,v 1.12 1998-03-04 15:56:47 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -53,7 +53,7 @@ public  void  initialize_load_popup(
                       &load_data->meter );
 
     widget = create_button( &load_data->popup.graphics,
-                   0, Interface_x_spacing, Interface_y_spacing,
+                   (Viewport_types) 0, Interface_x_spacing, Interface_y_spacing,
                    Button_width, Button_height,
                    "Cancel",
                    ON, TRUE, BUTTON_ACTIVE_COLOUR,
