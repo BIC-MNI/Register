@@ -73,6 +73,8 @@ private  void  initialize_slice(
 
     slice->pixels = get_pixels_ptr( object );
 
+    initialize_pixels( slice->pixels, 0, 0, 0, 0, 1.0, 1.0, RGB_PIXEL );
+
     /* create cursor */
 
     slice->cursor_lines = create_cursor( main, volume, view );

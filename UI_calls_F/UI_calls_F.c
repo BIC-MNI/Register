@@ -33,6 +33,13 @@ public  char  *IF_get_volume_filename(
     return( get_volume_filename( get_main_struct(), volume_index ) );
 }
 
+public  void  IF_save_image(
+    int   volume,
+    int   view )
+{
+    save_image( get_main_struct(), volume, view );
+}
+
 public  Boolean  IF_get_merged_slice_visibility()
 {
     return( get_merged_volume_activity(get_main_struct()) );
