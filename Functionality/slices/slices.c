@@ -193,8 +193,8 @@ public  void  set_volume_voxel_position(
     {
         if( position[axis] < -0.5 )
             pos = -0.5;
-        else if( position[axis] > (Real) sizes[axis] - 0.5 )
-            pos = (Real) sizes[axis] - 0.5;
+        else if( position[axis] >= (Real) sizes[axis] - 0.5 )
+            pos = (Real) sizes[axis] - 0.500001;
         else
             pos = position[axis];
 

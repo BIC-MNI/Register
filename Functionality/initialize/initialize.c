@@ -71,6 +71,8 @@ public  Status   initialize_register( window_struct  *window )
     create_linear_transform( &main_info.resampling_transform,
                              (Transform *) NULL );
 
+    main_info.render_storage = initialize_render_storage();
+
     return( status );
 }
 
@@ -83,4 +85,6 @@ public  void   terminate_register()
 
     delete_tag_points( &main_info );
     delete_graphics_struct( &main_info.graphics );
+
+    delete_render_storage( main_info.render_storage );
 }

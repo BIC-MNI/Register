@@ -1,6 +1,9 @@
 #ifndef  DEF_COMMON_INCLUDE
 #define  DEF_COMMON_INCLUDE
 
+#include  <internal_volume_io.h>
+#include  <graphics.h>
+
 #define  N_VOLUMES                         2
 #define  N_VOLUMES_DISPLAYED               3
 #define  N_VIEWS                           3
@@ -11,7 +14,5 @@
 
 typedef  enum  { ONE_ON_TWO, TWO_ON_ONE, BLEND_VOLUMES, WEIGHTED_VOLUMES }
                  Merge_methods;
-
-#include  <compute_xfm.h>
 
 #endif

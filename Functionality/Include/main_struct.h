@@ -101,6 +101,8 @@ typedef  struct
     int                      start_colour_index;
 
     tag_list_struct          tags;
+
+    void                     *render_storage;
 } main_struct;
 
 #endif

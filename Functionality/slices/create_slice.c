@@ -44,6 +44,7 @@ public  void  create_slice_pixels(
                          main->interpolation_flag,
                          &cmode_colour_map,
                          &rgb_colour_map, make_rgba_Colour( 0, 0, 0, 0 ),
+                    main->render_storage,
                     &main->trislice[volume_index].slices[view].n_pixels_alloced,
                     main->trislice[volume_index].slices[view].pixels );
 }
@@ -117,13 +118,13 @@ public  void  create_merged_pixels(
     convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                             &x_lower_left_pixel, &y_lower_left_pixel );
 
-    voxel1[x_axis_index] = (Real) sizes1[x_axis_index] - 1.0;
+    voxel1[x_axis_index] = (Real) sizes1[x_axis_index];
     convert_volume1_voxel_to_volume2( main, voxel1, lower_right_voxel2 );
     convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                             &x_lower_right_pixel, &y_lower_right_pixel );
     voxel1[x_axis_index] = 0.0;
 
-    voxel1[y_axis_index] = (Real) sizes1[y_axis_index] - 1.0;
+    voxel1[y_axis_index] = (Real) sizes1[y_axis_index];
     convert_volume1_voxel_to_volume2( main, voxel1, upper_left_voxel2 );
     convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                             &x_upper_left_pixel, &y_upper_left_pixel );
@@ -178,6 +179,7 @@ public  void  create_merged_pixels(
                     main->merged.cmode_colour_map,
                     main->merged.rgb_colour_map,
                     make_rgba_Colour( 0, 0, 0, 0 ),
+                    main->render_storage,
                     &main->merged.slices[view].n_pixels_alloced,
                     main->merged.slices[view].pixels );
 }
