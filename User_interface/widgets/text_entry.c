@@ -69,13 +69,16 @@ public  void  position_text_entry(
     position_rectangle( text_entry->polygons, widget->x, widget->y,
                         widget->x_size, widget->y_size );
 
-    set_event_viewport_callback_viewport(
-               event_viewports,
-               viewport_index, LEFT_MOUSE_DOWN_EVENT,
-               select_text_entry_event_callback,
-               (void *) widget,
-               x, x + widget->x_size - 1,
-               y, y + widget->y_size - 1 );
+    if( !text_entry->label_only_flag )
+    {
+        set_event_viewport_callback_viewport(
+                   event_viewports,
+                   viewport_index, LEFT_MOUSE_DOWN_EVENT,
+                   select_text_entry_event_callback,
+                   (void *) widget,
+                   x, x + widget->x_size - 1,
+                   y, y + widget->y_size - 1 );
+    }
 }
 
 private  void  set_text_entry_activity_colour(
@@ -91,10 +94,13 @@ public  void  update_text_entry_activity(
 {
     set_text_entry_activity_colour( widget );
 
-    set_event_viewport_callback_enabled( event_viewports,
-                       widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
-                       select_text_entry_event_callback, (void *) widget,
-                       widget->active_flag );
+    if( !get_widget_text_entry(widget)->label_only_flag )
+    {
+        set_event_viewport_callback_enabled( event_viewports,
+                           widget->viewport_index, LEFT_MOUSE_DOWN_EVENT,
+                           select_text_entry_event_callback, (void *) widget,
+                           widget->active_flag );
+    }
 }
 
 private  void  create_text_entry_graphics(
@@ -127,13 +133,14 @@ private  void  create_text_entry_graphics(
                             viewport_index, NORMAL_PLANES, object );
 }
 
-public  void  create_text_entry(
+private  void  create_a_text_entry(
     UI_struct                  *ui_info,
     int                        viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
     int                        y_size,
+    Boolean                    label_only_flag,
     char                       initial_text[],
     Boolean                    initial_activity,
     Colour                     active_colour,
@@ -151,15 +158,20 @@ public  void  create_text_entry(
                             viewport_index );
     text_entry = get_widget_text_entry( widget );
 
-    text_entry->hit_return_callback = hit_return_callback;
+    text_entry->label_only_flag = label_only_flag;
+
     (void) strcpy( text_entry->string, initial_text );
 
-    add_event_viewport_callback( &ui_info->graphics_window.event_viewports,
-                                 viewport_index,
-                                 LEFT_MOUSE_DOWN_EVENT,
-                                 x, x + x_size - 1, y, y + y_size - 1,
-                                 select_text_entry_event_callback,
-                                 (void *) widget );
+    if( !text_entry->label_only_flag )
+    {
+        text_entry->hit_return_callback = hit_return_callback;
+        add_event_viewport_callback( &ui_info->graphics_window.event_viewports,
+                                     viewport_index,
+                                     LEFT_MOUSE_DOWN_EVENT,
+                                     x, x + x_size - 1, y, y + y_size - 1,
+                                     select_text_entry_event_callback,
+                                     (void *) widget );
+    }
 
     create_text_entry_graphics( ui_info, viewport_index, widget,
                                 text_colour, text_font, font_size );
@@ -168,4 +180,47 @@ public  void  create_text_entry(
                          viewport_index, x, y );
 
     add_widget_to_list( &ui_info->widget_list, widget );
+}
+
+public  void  create_text_entry(
+    UI_struct                  *ui_info,
+    int                        viewport_index,
+    int                        x,
+    int                        y,
+    int                        x_size,
+    int                        y_size,
+    char                       initial_text[],
+    Boolean                    initial_activity,
+    Colour                     active_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
+    Font_types                 text_font,
+    Real                       font_size,
+    widget_callback_type       hit_return_callback )
+{
+    create_a_text_entry( ui_info, viewport_index, x, y, x_size, y_size,
+                         FALSE, initial_text, initial_activity, active_colour,
+                         inactive_colour, text_colour, text_font, font_size,
+                         hit_return_callback );
+}
+
+public  void  create_label(
+    UI_struct                  *ui_info,
+    int                        viewport_index,
+    int                        x,
+    int                        y,
+    int                        x_size,
+    int                        y_size,
+    char                       initial_text[],
+    Boolean                    initial_activity,
+    Colour                     active_colour,
+    Colour                     inactive_colour,
+    Colour                     text_colour,
+    Font_types                 text_font,
+    Real                       font_size )
+{
+    create_a_text_entry( ui_info, viewport_index, x, y, x_size, y_size,
+                         TRUE, initial_text, initial_activity, active_colour,
+                         inactive_colour, text_colour, text_font, font_size,
+                         (widget_callback_type) 0 );
 }
