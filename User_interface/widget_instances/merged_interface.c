@@ -5,6 +5,8 @@ typedef  enum
     OPACITY_2_SLIDER,
     OPACITY_1_SLIDER,
     RESET_VIEW_BUTTON,
+    VALUE1_READOUT_TEXT,
+    VALUE2_READOUT_TEXT,
     ONE_ON_TWO_BUTTON,
     TWO_ON_ONE_BUTTON,
     BLEND_BUTTON,
@@ -227,6 +229,31 @@ public  void  add_merged_widgets(
                Button_text_font, Button_text_font_size,
                reset_view_callback, (void *) NULL ) );
 
+    widget_indices[VALUE1_READOUT_TEXT] =
+                   add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_label( &ui_info->graphics_window, viewport_index,
+                   x + Volume_button_width + Interface_x_spacing, y,
+                   Value_readout_width, Volume_button_height,
+                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   LABEL_SELECTED_COLOUR,
+                   BACKGROUND_COLOUR,
+                   BACKGROUND_COLOUR,
+                   Label_text_font, Label_text_font_size ) );
+
+    widget_indices[VALUE2_READOUT_TEXT] =
+                   add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_label( &ui_info->graphics_window, viewport_index,
+                   x + Volume_button_width + Value_readout_width +
+                   2 * Interface_x_spacing, y,
+                   Value_readout_width, Volume_button_height,
+                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   LABEL_SELECTED_COLOUR,
+                   BACKGROUND_COLOUR,
+                   BACKGROUND_COLOUR,
+                   Label_text_font, Label_text_font_size ) );
+
     y += Volume_button_height + Interface_y_spacing;
 
     ui_info->position_text_start_index[2] =
@@ -263,6 +290,13 @@ public  void  set_merged_widgets_activity(
                              activity );
     }
 
+    set_widget_activity( ui_info->widget_list[Merged_menu_viewport].widgets
+                                          [widget_indices[VALUE1_READOUT_TEXT]],
+                         FALSE );
+    set_widget_activity( ui_info->widget_list[Merged_menu_viewport].widgets
+                                          [widget_indices[VALUE2_READOUT_TEXT]],
+                         FALSE );
+
     set_voxel_position_widgets_activity( ui_info, Merged_menu_viewport,
                                          ui_info->position_text_start_index[2],
                                          activity );
@@ -275,4 +309,12 @@ public  void  set_merged_widgets_activity(
              [widget_indices[get_merge_method_widget(merge_method)]], ON );
         set_merge_sliders_activity( ui_info, merge_method );
     }
+}
+
+public  widget_struct  *get_merged_readout_widget(
+    UI_struct     *ui_info,
+    int           volume )
+{
+    return( ui_info->widget_list[Merged_menu_viewport].widgets
+                             [widget_indices[VALUE1_READOUT_TEXT + volume]] );
 }

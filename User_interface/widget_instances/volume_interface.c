@@ -3,6 +3,7 @@
 typedef  enum
 {
     RESET_VIEW_BUTTON,
+    VALUE_READOUT_TEXT,
     LOAD_BUTTON,
     LOAD_FILENAME_TEXT,
     RESAMPLED_LABEL,
@@ -62,33 +63,20 @@ public  void  add_volume_widgets(
     colour_bar_start_index = add_colour_bar_widgets( ui_info, viewport_index,
                                                      x, y, &height );
 
-    y += height + Interface_y_spacing;
-
-    widget_indices[RESET_VIEW_BUTTON] = add_widget_to_list(
-                   &ui_info->widget_list[viewport_index],
-                   create_button( &ui_info->graphics_window, viewport_index, 
-                   x, y, Volume_button_width, Volume_button_height,
-                   "Reset View",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
-                   BUTTON_SELECTED_COLOUR,
-                   BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
-                   reset_view_callback, (void *) NULL ) );
+    y += height + Volume_y_spacing;
 
     widget_indices[RESAMPLED_LABEL] =
                    add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_label( &ui_info->graphics_window, viewport_index,
-                   x + Interface_x_spacing + Volume_button_width, y,
-                   Load_filename_width, Volume_button_height,
+                   x, y, Load_filename_width, Volume_button_height,
                    "Volume Resampled", OFF, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
                    Label_text_font, Label_text_font_size ) );
 
-    y += Volume_button_height + Interface_y_spacing;
+    y += Volume_button_height + Volume_y_spacing;
 
     widget_indices[LOAD_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -116,6 +104,33 @@ public  void  add_volume_widgets(
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
                        volume_filename_callback, (void *) NULL ) );
+
+    y += Text_entry_height + Volume_y_spacing;
+
+    widget_indices[RESET_VIEW_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
+                   x, y, Volume_button_width, Volume_button_height,
+                   "Reset View",
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   reset_view_callback, (void *) NULL ) );
+
+    widget_indices[VALUE_READOUT_TEXT] =
+                   add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_label( &ui_info->graphics_window, viewport_index,
+                   x + Volume_button_width + Interface_x_spacing, y,
+                   Value_readout_width, Volume_button_height,
+                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   LABEL_SELECTED_COLOUR,
+                   BACKGROUND_COLOUR,
+                   BACKGROUND_COLOUR,
+                   Label_text_font, Label_text_font_size ) );
+
 
     ui_info->position_text_start_index[volume_index] =
                              add_cursor_position_widgets( ui_info,
@@ -167,7 +182,8 @@ public  void  set_volume_widgets_activity(
 
     for_enum( widget_index, N_VOLUME_WIDGETS, Volume_widgets )
     {
-        if( widget_index != RESAMPLED_LABEL )
+        if( widget_index != RESAMPLED_LABEL &&
+            widget_index != VALUE_READOUT_TEXT )
         {
             set_widget_activity( ui_info->widget_list[viewport_index].widgets
                                                 [widget_indices[widget_index]],
@@ -186,6 +202,10 @@ public  void  set_volume_widgets_activity(
                                          [widget_indices[RESAMPLED_LABEL]],
                              OFF );
     }
+
+    set_widget_activity( ui_info->widget_list[viewport_index].widgets
+                                         [widget_indices[VALUE_READOUT_TEXT]],
+                         OFF );
 
     set_colour_bar_widgets_activity( ui_info, viewport_index,
                            colour_bar_start_index, activity );
@@ -212,4 +232,16 @@ public  void  set_resampled_label_activity(
                                  [viewport_index].widgets
                                  [widget_indices[RESAMPLED_LABEL]],
                          state );
+}
+
+public  widget_struct  *get_volume_readout_widget(
+    UI_struct     *ui_info,
+    int           volume )
+{
+    Viewport_types       viewport_index;
+
+    viewport_index = get_volume_menu_viewport_index( volume );
+
+    return( ui_info->widget_list[viewport_index].widgets
+                                 [widget_indices[VALUE_READOUT_TEXT]] );
 }
