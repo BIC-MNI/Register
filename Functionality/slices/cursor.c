@@ -2,7 +2,13 @@
 
 private  const  int  N_LINES = 12;
 
-private  const  Bitplane_types  CURSOR_BITPLANE = OVERLAY_PLANES;
+private  Bitplane_types  get_cursor_bitplane()
+{
+    if( G_has_overlay_planes() && Use_overlay_planes )
+        return( OVERLAY_PLANES );
+    else
+        return( NORMAL_PLANES );
+}
 
 private  void  create_cursor_graphics(
     lines_struct   *lines,
@@ -69,7 +75,7 @@ public  lines_struct  *create_cursor(
 
     add_object_to_viewport( &main->graphics,
                             get_slice_viewport_index(volume_index,view_index),
-                            CURSOR_BITPLANE, object );
+                            get_cursor_bitplane(), object );
 
     return( lines );
 }
@@ -165,7 +171,7 @@ public  void  update_volume_cursor(
                      Slice_cursor_offset, Slice_cursor_size );
 
     set_update_slice_viewport_flag( main, volume_index, view_index,
-                                    CURSOR_BITPLANE );
+                                    get_cursor_bitplane() );
 }
 
 public  void  update_volume_cursors(
