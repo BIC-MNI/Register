@@ -13,7 +13,18 @@ public  void  IF_terminate_register()
 public  Boolean  IF_volume_is_loaded(
     int            volume_index )
 {
-    return( is_volume_loaded( get_main_struct(), volume_index ) );
+    return( is_volume_active( get_main_struct(), volume_index ) );
+}
+
+public  Boolean  IF_get_merged_slice_visibility()
+{
+    return( get_merged_volume_activity(get_main_struct()) );
+}
+
+public  void  IF_set_merged_slice_visibility(
+    Boolean  visible )
+{
+    set_merged_volume_activity( get_main_struct(), visible );
 }
 
 public  void  IF_set_volume(
@@ -40,6 +51,13 @@ public  void  IF_set_recreate_slice_flag(
     set_recreate_slice_flag( get_main_struct(), volume, view );
 }
 
+public  void  IF_reset_slice_view(
+    int             volume,
+    int             view )
+{
+    reset_slice_view( get_main_struct(), volume, view );
+}
+
 public  void  IF_set_update_slice_viewport_flag(
     int             volume,
     int             view,
@@ -56,18 +74,32 @@ public  Boolean  IF_redraw_slices(
     return( update_slice_display( get_main_struct(), window, current_buffer ) );
 }
 
-public  void  IF_set_volume_position(
+public  void  IF_set_volume_voxel_position(
     int       volume,
     Real      position[] )
 {
-    set_volume_position( get_main_struct(), volume, position );
+    set_volume_voxel_position( get_main_struct(), volume, position );
 }
 
-public  void  IF_get_volume_position(
+public  void  IF_get_volume_voxel_position(
     int       volume,
     Real      position[] )
 {
-    get_volume_position( get_main_struct(), volume, position );
+    get_volume_voxel_position( get_main_struct(), volume, position );
+}
+
+public  void  IF_set_volume_world_position(
+    int       volume,
+    Real      position[] )
+{
+    set_volume_world_position( get_main_struct(), volume, position );
+}
+
+public  void  IF_get_volume_world_position(
+    int       volume,
+    Real      position[] )
+{
+    get_volume_world_position( get_main_struct(), volume, position );
 }
 
 public  void  IF_translate_slice(
@@ -101,4 +133,40 @@ public  Boolean  IF_convert_pixel_to_voxel(
 {
     return( convert_pixel_to_voxel( get_main_struct(), volume, view,
                                     x_pixel, y_pixel, voxel_position ) );
+}
+
+public  void  IF_colour_mode_has_toggled(
+    int  start_index )
+{
+    colour_mode_has_toggled( get_main_struct(), start_index );
+}
+
+public  void  IF_set_volume_colour_coding_type(
+    int                   volume_index,
+    Colour_coding_types   type )
+{
+    set_volume_colour_coding_type( get_main_struct(), volume_index,
+                                   type );
+}
+
+public  Colour_coding_types  IF_get_colour_coding_type(
+    int    volume_index )
+{
+    return( get_volume_colour_coding_type( get_main_struct(), volume_index ) );
+}
+
+public  void  IF_set_colour_coding_limits(
+    int    volume_index,
+    Real   min_value,
+    Real   max_value )
+{
+    set_volume_colour_coding_limits( get_main_struct(), volume_index,
+                                     min_value, max_value );
+}
+
+public  void  IF_set_merged_volume_opacity(
+    int    which_volume,
+    Real   opacity )
+{
+    set_merged_volume_opacity( get_main_struct(), which_volume, opacity );
 }
