@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.28 1996-12-09 20:21:30 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.29 1998-03-03 15:39:06 david Exp $";
 #endif
 
 #include  <register.h>
@@ -425,6 +425,9 @@ public  void  repartition_colour_maps(
 
     if( n_merged_1 > 0 && n_merged_2 > 0 )
         update_merged_cmode_indices( main );
+
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+        update_colour_maps( main, volume );
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
         set_recreate_3_slices_flags( main, volume );
