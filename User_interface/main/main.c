@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.15 1996-04-11 19:01:39 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.16 1996-05-24 18:43:41 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -51,6 +51,8 @@ private  void  print_usage(
     -cmap:      Starts program in colour map mode.\n\
     -single:    Starts program in single buffer mode.\n\
     -double:    Starts program in double buffer mode.\n\
+    -global variable value:\n\
+                Sets a global variable that changes configuration of program.\n\
     -version:   Displays the version number of the program.\n\n";
 
     print_error( usage, executable );
