@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/tag_events.c,v 1.3 1995-07-31 19:54:22 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/tag_events.c,v 1.4 1995-08-14 18:08:56 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -39,7 +39,7 @@ public  void  install_tag_events(
                    &ui->graphics_window.event_viewports,
                    ui_get_slice_viewport_index(volume,view),
                    KEY_DOWN_EVENT, -1, -1, -1, -1,
-                   slice_key_down_callback, NO_SHIFT_ONLY, (void *) 0 );
+                   slice_key_down_callback, ANY_MODIFIER, (void *) 0 );
             add_event_viewport_callback(
                    &ui->graphics_window.event_viewports,
                    ui_get_slice_viewport_index(volume,view),
