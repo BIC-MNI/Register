@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/initialize_slice.c,v 1.14 1998-06-29 15:01:44 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/initialize_slice.c,v 1.15 2005-02-28 22:54:31 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -31,7 +31,7 @@ public  void  initialize_slices( main_struct  *main )
                                   GRAY_SCALE,
                                   Initial_under_colour,
                                   Initial_over_colour,
-                                  -0.5, (Real) N_VOXEL_VALUES - 0.5 );
+                                  -0.5, (Real) 255 - 0.5 );
     }
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
@@ -42,16 +42,12 @@ public  void  initialize_slices( main_struct  *main )
 
     main->merged.active_flag = FALSE;
 
-    ALLOC2D( main->merged.cmode_colour_map, N_VOXEL_VALUES, N_VOXEL_VALUES );
-
-    ALLOC2D( main->merged.rgb_colour_map, N_VOXEL_VALUES, N_VOXEL_VALUES );
-
     for_less( volume, 0, N_MERGED )
     {
         initialize_colour_coding( &main->merged.colour_coding[volume],
                                   GRAY_SCALE,
                                   Initial_under_colour, Initial_over_colour,
-                                  -0.5, (Real) N_VOXEL_VALUES - 0.5 );
+                                  -0.5, (Real) 255 - 0.5 );
     }
 
     main->merged.opacity[0] = Initial_merged_1_weight;
@@ -108,7 +104,4 @@ private  void  initialize_slice(
 
 public  void  terminate_slices( main_struct  *main )
 {
-    FREE2D( main->merged.cmode_colour_map );
-
-    FREE2D( main->merged.rgb_colour_map );
 }
