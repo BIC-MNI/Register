@@ -20,8 +20,10 @@ typedef  struct
 {
     Real            x_translation, y_translation;
     Real            x_scale, y_scale;
-    Real            lower_display_limits[N_DIMENSIONS-1];
-    Real            upper_display_limits[N_DIMENSIONS-1];
+    int             prev_viewport_x_size;
+    int             prev_viewport_y_size;
+    int             used_viewport_x_size;
+    int             used_viewport_y_size;
     Filter_types    filter_type;
     Real            filter_width;
     BOOLEAN         pixels_are_up_to_date;

@@ -69,6 +69,48 @@ public  int  get_slice_axis(
     return( 0 );
 }
 
+public  void  get_slice_plane(
+    main_struct   *main,
+    int           volume_index,
+    int           view,
+    Real          origin[],
+    Real          x_axis[],
+    Real          y_axis[] )
+{
+    Volume   volume;
+    int      c, axis, x_index, y_index;
+    Real     *slice_position;
+    BOOLEAN  x_flip, y_flip;
+
+    get_slice_axes( view, &x_index, &y_index );
+    axis = get_slice_axis( view );
+
+    get_slice_axes_flip( view, &x_flip, &y_flip );
+
+    volume = get_slice_volume( main, volume_index );
+
+    for_less( c, 0, get_volume_n_dimensions(volume) )
+    {
+        origin[c] = 0.0;
+        x_axis[c] = 0.0;
+        y_axis[c] = 0.0;
+    }
+
+    slice_position = get_volume_cursor( main, volume_index );
+
+    origin[axis] = slice_position[axis];
+
+    if( x_flip )
+        x_axis[x_index] = -1.0;
+    else
+        x_axis[x_index] = 1.0;
+
+    if( y_flip )
+        y_axis[y_index] = -1.0;
+    else
+        y_axis[y_index] = 1.0;
+}
+
 public  int  get_slice_viewport_index( int volume, int view )
 {
     return( volume * N_VIEWS + view );
@@ -127,7 +169,7 @@ public  void  set_slice_viewport(
                            x_min, x_max, y_min, y_max );
 
     if( is_volume_active( main, volume ) )
-        fit_slice_to_view( main, volume, view );
+        resize_slice( main, volume, view );
 }
 
 public  void  set_volume_voxel_position(

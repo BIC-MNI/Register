@@ -132,15 +132,15 @@ public  void  create_merged_pixels(
     dx_pixel = x_lower_right_pixel - x_lower_left_pixel;
     if( dx_pixel == 0.0 )
         dx_pixel = 1.0;
-    dy_pixel = y_lower_right_pixel - y_lower_left_pixel;
+    dy_pixel = y_upper_left_pixel - y_lower_left_pixel;
     if( dy_pixel == 0.0 )
         dy_pixel = 1.0;
 
     for_less( c, 0, get_volume_n_dimensions(volume2) )
     {
-        x_axis2[c] = (lower_right_voxel2[c] - lower_left_voxel2[c]) / dx_pixel /
+        x_axis2[c] = (lower_right_voxel2[c] - lower_left_voxel2[c]) / dx_pixel *
                      separations2[c];
-        y_axis2[c] = (upper_left_voxel2[c] - lower_left_voxel2[c]) / dy_pixel /
+        y_axis2[c] = (upper_left_voxel2[c] - lower_left_voxel2[c]) / dy_pixel *
                      separations2[c];
         origin2[c] = lower_left_voxel2[c];
     }
@@ -236,17 +236,20 @@ public  void   convert_voxel_to_pixel(
 private  void  record_slice_viewport(
     main_struct  *main,
     int          volume,
-    int          view )
+    int          view,
+    int          x_viewport_size,
+    int          y_viewport_size,
+    int          used_x_viewport_size,
+    int          used_y_viewport_size )
 {
-    int            x_viewport_size, y_viewport_size;
     slice_struct   *slice;
 
     slice = get_slice_struct( main, volume, view );
-    get_slice_viewport_size( main, volume, view,
-                             &x_viewport_size, &y_viewport_size );
 
     slice->prev_viewport_x_size = x_viewport_size;
     slice->prev_viewport_y_size = y_viewport_size;
+    slice->used_viewport_x_size = used_x_viewport_size;
+    slice->used_viewport_y_size = used_y_viewport_size;
 }
 
 public  void  translate_slice(
@@ -285,8 +288,8 @@ public  void  scale_slice(
                          &x_scale, &y_scale );
 
     scale_slice_about_viewport_centre( scale_factor, x_size, y_size,
-                                       &x_scale, &y_scale,
-                                       &x_translation, &y_translation );
+                                       &x_translation, &y_translation,
+                                       &x_scale, &y_scale );
 
     set_slice_translation( main, volume, view, x_translation, y_translation );
     set_slice_scale( main, volume, view, x_scale, y_scale );
@@ -301,6 +304,7 @@ public  void  resize_slice(
     int          volume_index,
     int          view )
 {
+    int            used_x_viewport_size, used_y_viewport_size;
     int            x_viewport_size, y_viewport_size;
     Real           x_scale, y_scale, x_trans, y_trans;
     slice_struct   *slice;
@@ -313,13 +317,18 @@ public  void  resize_slice(
 
     resize_volume_slice( slice->prev_viewport_x_size,
                          slice->prev_viewport_y_size,
+                         slice->used_viewport_x_size,
+                         slice->used_viewport_y_size,
                          x_viewport_size, y_viewport_size,
-                         &x_scale, &y_scale, &x_trans, &y_trans );
+                         &x_trans, &y_trans, &x_scale, &y_scale,
+                         &used_x_viewport_size, &used_y_viewport_size );
+
+    record_slice_viewport( main, volume_index, view,
+                           x_viewport_size, y_viewport_size,
+                           used_x_viewport_size, used_y_viewport_size );
 
     set_slice_translation( main, volume_index, view, x_trans, y_trans );
     set_slice_scale( main, volume_index, view, x_scale, y_scale );
-
-    record_slice_viewport( main, volume_index, view );
 
     update_volume_cursor( main, volume_index, view );
     set_recreate_slice_flag( main, volume_index, view );
@@ -332,6 +341,7 @@ public  void  initialize_slice_view(
     int          view )
 {
     int            x_viewport_size, y_viewport_size;
+    int            used_x_viewport_size, used_y_viewport_size;
     Volume         volume;
     Real           x_trans, y_trans, x_scale, y_scale;
     Real           origin[MAX_DIMENSIONS];
@@ -345,11 +355,16 @@ public  void  initialize_slice_view(
     fit_volume_slice_to_viewport( volume, origin, x_axis, y_axis,
                                   x_viewport_size, y_viewport_size,
                                   1.0 - Slice_fit_size,
-                                  &x_scale, &y_scale, &x_trans, &y_trans );
+                                  &x_trans, &y_trans, &x_scale, &y_scale,
+                                  &used_x_viewport_size,
+                                  &used_y_viewport_size );
 
     set_slice_translation( main, volume_index, view, x_trans, y_trans );
     set_slice_scale( main, volume_index, view, x_scale, y_scale );
-    record_slice_viewport( main, volume_index, view );
+
+    record_slice_viewport( main, volume_index, view,
+                           x_viewport_size, y_viewport_size,
+                           used_x_viewport_size, used_y_viewport_size );
 
     update_volume_cursor( main, volume_index, view );
     set_recreate_slice_flag( main, volume_index, view );

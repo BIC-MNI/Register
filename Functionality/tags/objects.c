@@ -127,7 +127,8 @@ private  BOOLEAN  convert_tag_to_pixel(
 {
     BOOLEAN  visible;
     int      which_volume, axis;
-    Real     *cursor_ptr;
+    Real     x_trans, y_trans, x_scale, y_scale;
+    Real     *cursor_ptr, separations[MAX_DIMENSIONS];
     Real     diff, voxel_position[N_DIMENSIONS];
 
     visible = FALSE;
@@ -147,11 +148,16 @@ private  BOOLEAN  convert_tag_to_pixel(
                                          &voxel_position[Y],
                                          &voxel_position[Z] );
 
+        get_volume_separations( get_slice_volume(main,which_volume),
+                                separations );
+        get_slice_transform( main, volume, view, &x_trans, &y_trans,
+                             &x_scale, &y_scale );
         axis = get_slice_axis( view );
 
         cursor_ptr = get_volume_cursor( main, volume );
 
-        diff = ABS( voxel_position[axis] - cursor_ptr[axis] );
+        diff = ABS( voxel_position[axis] - cursor_ptr[axis] ) *
+               x_scale * ABS( separations[axis] );
 
         if( diff < Tag_radius_pixels )
         {
