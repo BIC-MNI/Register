@@ -1,4 +1,4 @@
-.TH REGISTER 7 "Register Version 1.0 alpha" "Montreal Neurological Institute"
+.TH REGISTER 1 "Register Version 1.0 alpha" "Montreal Neurological Institute"
 .SH NAME
 register - interactive volume display and point tagging program
 .SH SYNOPSIS
@@ -22,7 +22,8 @@ entries can be changed by pressing the left mouse button on them, then typing
 text.  Typing return signals the text entry is done.  Typing escape ends
 text editting without modifying the text.  The delete, cursor left, and
 cursor right keys may be used.  Ctrl-a and ctrl-e move the cursor to the
-beginning and end of text, respectively.
+beginning and end of text, respectively.  Ctrl-u deletes all text in the text
+entry.
 
 .SH MAIN MENU
 .P
@@ -93,6 +94,12 @@ Specifies the volume filename.
 .P
 .I Reset View:
 Resets the scale and translation of the slices to fit in the viewports.
+.P
+.I Filter
+Pops up a dialog window that selects the filter type for each of the
+3 views of the volume.  The filtering applies across slices, but not within
+slice.  The filter types are: nearest neighbour, linear interpolation,
+box filter, triangle filter, and gaussian filter.
 .P
 .I Under Colour:
 Sets the colour displayed for voxels whose values are less than the range.
