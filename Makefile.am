@@ -16,7 +16,6 @@ blurg_DATA = register_UI.globals
 
 EXTRA_DIST = INSTALL.register  \
 	register_UI.globals    \
-	mni_Register.epm.header \
 	Documentation/register.1 \
 	epm-header.in \
 	$(m4_files)
