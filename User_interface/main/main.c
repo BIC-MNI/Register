@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.13 1995-12-19 18:55:48 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.14 1996-01-15 17:38:11 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -89,7 +89,7 @@ int  main(
         }
         else if( equal_strings( argument, "-version" ) )
         {
-            print( "%s:  Version number %s\n", argv[0], version );
+            print( "%s:  Version: %s\n", argv[0], version );
             return( 0 );
         }
         else if( equal_strings( argument, "-rgb" ) )
