@@ -44,13 +44,13 @@ private  void  create_comments(
     if( main->trislice[0].input_flag )
     {
         (void) sprintf( comments, "Volume: %s\n",
-                        main->trislice[0].volume.filename );
+                        get_volume_filename(main,0) );
     }
 
     if( main->trislice[1].input_flag )
     {
         (void) sprintf( temp, "Volume: %s\n",
-                        main->trislice[1].volume.filename );
+                        get_volume_filename(main,1) );
         (void) strcat( comments, temp );
     }
 }

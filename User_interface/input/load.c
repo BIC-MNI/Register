@@ -9,7 +9,7 @@ private  DEFINE_EVENT_FUNCTION( more_input )
 
     data = (load_struct *) callback_data;
 
-    if( input_more_of_volume( &data->volume, &data->input, &fraction_done ) )
+    if( input_more_of_volume( data->volume, &data->input, &fraction_done ) )
     {
         set_load_popup_meter( data, fraction_done );
     }
@@ -45,6 +45,7 @@ public  Status  initialize_loading_volume(
     ALLOC( data, 1 );
 
     data->volume_index = volume;
+    (void) strcpy( data->filename, filename );
     data->this_is_resampled_volume = this_is_resampled_volume;
 
     status = start_volume_input( filename, TRUE, &data->volume, &data->input );
@@ -88,14 +89,14 @@ private  void  volume_has_been_loaded(
 
     if( data->this_is_resampled_volume )
     {
-        IF_set_resampled_volume( &data->volume,
+        IF_set_resampled_volume( data->volume, data->filename,
                                  ui_info->original_filename_volume_2,
                                  &ui_info->resampling_transform );
         set_resampled_label_activity( ui_info, ON );
     }
     else
     {
-        IF_set_volume( data->volume_index, &data->volume );
+        IF_set_volume( data->volume_index, data->volume, data->filename );
         set_resampled_label_activity( ui_info, OFF );
     }
 
@@ -129,7 +130,7 @@ private  void  volume_has_been_loaded(
 public  void  cancel_loading(
     load_struct    *data )
 {
-    cancel_volume_input( &data->volume, &data->input );
+    cancel_volume_input( data->volume, &data->input );
 
     delete_popup_interaction( data );
 }

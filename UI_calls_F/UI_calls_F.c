@@ -45,19 +45,21 @@ public  void  IF_set_merged_slice_visibility(
 }
 
 public  void  IF_set_volume(
-    int            volume_index,
-    volume_struct  *volume )
+    int     volume_index,
+    Volume  volume,
+    char    filename[] )
 {
-    set_register_volume( get_main_struct(), volume_index, volume );
+    set_register_volume( get_main_struct(), volume_index, volume, filename );
 }
 
 public  void  IF_set_resampled_volume(
-    volume_struct  *volume,
+    Volume         volume,
+    char           filename[],
     char           original_filename[],
     Transform      *resampling_transform )
 {
-    set_register_resampled_volume( get_main_struct(), volume, original_filename,
-                                   resampling_transform );
+    set_register_resampled_volume( get_main_struct(), volume, filename,
+                                   original_filename, resampling_transform );
 }
 
 public  Real  IF_get_voxel_value(

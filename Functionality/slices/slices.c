@@ -136,12 +136,13 @@ public  void  set_volume_voxel_position(
     Real           position[N_DIMENSIONS] )
 {
     Boolean        changed;
-    volume_struct  *volume;
-    int            view, axis;
+    Volume         volume;
+    int            view, axis, sizes[N_DIMENSIONS];
     Real           pos;
     Real           *cursor_ptr;
 
     volume = get_slice_volume( main, volume_index );
+    get_volume_sizes( volume, sizes );
     cursor_ptr = get_volume_cursor( main, volume_index );
 
     changed = FALSE;
@@ -150,9 +151,8 @@ public  void  set_volume_voxel_position(
     {
         if( position[axis] < -0.5 )
             pos = -0.5;
-        else if( position[axis] >
-                 (Real) volume->sizes[axis] - 0.5 )
-            pos = (Real) volume->sizes[axis] - 0.5;
+        else if( position[axis] > (Real) sizes[axis] - 0.5 )
+            pos = (Real) sizes[axis] - 0.5;
         else
             pos = position[axis];
 
@@ -412,36 +412,48 @@ public  void  get_volume_original_world_position(
                                      &original_world_position[Z] );
 }
 
-public  volume_struct  *get_slice_volume(
+public  Volume  get_slice_volume(
     main_struct   *main,
     int           volume_index )
 {
     if( volume_index < N_VOLUMES )
-        return( &main->trislice[volume_index].volume );
+        return( main->trislice[volume_index].volume );
     else
-        return( &main->trislice[volume_index-MERGED_VOLUME_INDEX].volume );
+        return( main->trislice[volume_index-MERGED_VOLUME_INDEX].volume );
 }
 
-public  void  get_volume_voxel_range(
+public  void  get_volume_range_of_voxels(
     main_struct   *main,
     int           volume_index,
     int           *min_value,
     int           *max_value )
 {
-    volume_struct  *volume;
+    Real    real_min, real_max;
+    Volume  volume;
 
     if( is_volume_active( main, volume_index ) )
     {
         volume = get_slice_volume( main, volume_index );
 
-        *min_value = volume->min_value;
-        *max_value = volume->max_value;
+        get_volume_voxel_range( volume, &real_min, &real_max );
+        *min_value = ROUND( real_min );
+        *max_value = ROUND( real_max );
     }
     else
     {
         *min_value = 0;
-        *max_value = 0;
+        *max_value = -1;
     }
+}
+
+public  void  get_volume_value_range(
+    main_struct   *main,
+    int           volume_index,
+    Real          *min_value,
+    Real          *max_value )
+{
+    get_volume_range( get_slice_volume(main,volume_index),
+                      min_value, max_value );
 }
 
 public  Real  *get_volume_cursor(
@@ -521,26 +533,23 @@ public  Real  get_voxel_value(
     Real          y_voxel,
     Real          z_voxel )
 {
-    Real           value;
-    volume_struct  *volume;
+    Real           value, position[N_DIMENSIONS];
+    Volume         volume;
 
     volume = get_slice_volume( main, volume_index );
 
-    if( voxel_is_within_volume( volume, x_voxel, y_voxel, z_voxel ) )
-        value = GET_VOLUME_SCALED_DATA( *volume, ROUND(x_voxel),
-                                        ROUND(y_voxel), ROUND(z_voxel) );
+    position[X] = x_voxel;
+    position[Y] = y_voxel;
+    position[Z] = z_voxel;
+
+    if( voxel_is_within_volume( volume, position ) )
+    {
+        GET_VOXEL_3D( value, volume, ROUND(x_voxel),
+                      ROUND(y_voxel), ROUND(z_voxel) );
+        value = CONVERT_VOXEL_TO_VALUE( volume, value );
+    }
     else
         value = 0.0;
 
     return( value );
-}
-
-public  void  get_volume_value_range(
-    main_struct   *main,
-    int           volume_index,
-    Real          *min_value,
-    Real          *max_value )
-{
-    get_volume_range( get_slice_volume(main,volume_index),
-                      min_value, max_value );
 }

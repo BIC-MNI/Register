@@ -71,7 +71,7 @@ private  Colour  get_merged_colour(
 }
 
 private  Range_flags  lookup_colour_code(
-    volume_struct         *volume,
+    Volume                volume,
     colour_coding_struct  *colour_coding,
     int                   voxel,
     Colour                *col )
@@ -79,7 +79,7 @@ private  Range_flags  lookup_colour_code(
     Real          value;
     Range_flags   flag;
 
-    value = CONVERT_VOXEL_TO_VALUE( *volume, voxel );
+    value = CONVERT_VOXEL_TO_VALUE( volume, voxel );
 
     *col = get_colour_code( colour_coding, value );
     if( value < colour_coding->min_value )
@@ -99,13 +99,13 @@ private  void  update_merged_rgb_colour_maps(
     int             min_value1, max_value1, min_value2, max_value2;
     Colour          col1, col2[N_VOXEL_VALUES];
     Range_flags     flag1, flags2[N_VOXEL_VALUES];
-    volume_struct   *volume1, *volume2;
+    Volume          volume1, volume2;
 
     volume1 = get_slice_volume( main, 0 );
     volume2 = get_slice_volume( main, 1 );
 
-    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
-    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
+    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
+    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
 
     for_inclusive( j, min_value2, max_value2 )
     {
@@ -137,8 +137,8 @@ private  void  update_merged_cmode_indices(
     int     i, j, n1, n2, min_ind, i1, i2[N_VOXEL_VALUES];
     int     min_value1, max_value1, min_value2, max_value2;
 
-    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
-    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
+    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
+    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
@@ -162,13 +162,13 @@ private  void  update_merged_cmode_maps(
     Colour          col1, col2[N_VOXEL_VALUES];
     Range_flags     flag1, flags2[N_VOXEL_VALUES];
     int             min_value1, max_value1, min_value2, max_value2;
-    volume_struct   *volume1, *volume2;
+    Volume          volume1, volume2;
 
     volume1 = get_slice_volume( main, 0 );
     volume2 = get_slice_volume( main, 1 );
 
-    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
-    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
+    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
+    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
 
     min_ind = main->merged.start_colour_map;
     n1 = main->merged.n_colour_entries1;
@@ -205,18 +205,18 @@ private  void  update_rgb_colour_maps(
 {
     int            i;
     int            min_value, max_value;
-    volume_struct  *volume;
+    Volume         volume;
 
     volume = get_slice_volume( main, volume_index );
 
-    get_volume_voxel_range( main, volume_index, &min_value, &max_value );
+    get_volume_range_of_voxels( main, volume_index, &min_value, &max_value );
 
     for_inclusive( i, min_value, max_value )
     {
         main->trislice[volume_index].rgb_colour_map[i] =
                     get_colour_code(
                         &main->trislice[volume_index].colour_coding,
-                        CONVERT_VOXEL_TO_VALUE(*volume,i) );
+                        CONVERT_VOXEL_TO_VALUE(volume,i) );
     }
 }
 
@@ -230,7 +230,7 @@ private  void  update_cmode_indices(
     min_ind = main->trislice[volume].start_colour_map;
     max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
 
-    get_volume_voxel_range( main, volume, &min_value, &max_value );
+    get_volume_range_of_voxels( main, volume, &min_value, &max_value );
 
     for_inclusive( voxel_value, min_value, max_value )
     {
@@ -246,12 +246,12 @@ private  void  update_cmode_colour_maps(
 {
     int            i, voxel_value, min_ind, max_ind;
     int            min_value, max_value;
-    volume_struct  *volume;
+    Volume         volume;
 
     min_ind = main->trislice[volume_index].start_colour_map;
     max_ind = min_ind + main->trislice[volume_index].n_colour_entries-1;
 
-    get_volume_voxel_range( main, volume_index, &min_value, &max_value );
+    get_volume_range_of_voxels( main, volume_index, &min_value, &max_value );
 
     volume = get_slice_volume( main, volume_index );
 
@@ -262,7 +262,7 @@ private  void  update_cmode_colour_maps(
         G_set_colour_map_entry( main->window, i, 
                     get_colour_code(
                          &main->trislice[volume_index].colour_coding,
-                         CONVERT_VOXEL_TO_VALUE(*volume,voxel_value) ) );
+                         CONVERT_VOXEL_TO_VALUE(volume,voxel_value) ) );
     }
 }
 
@@ -303,8 +303,8 @@ public  void  repartition_colour_maps(
 
     total_colours = G_get_n_colour_map_entries( main->window ) - start_index;
 
-    get_volume_voxel_range( main, 0, &min_value1, &max_value1 );
-    get_volume_voxel_range( main, 1, &min_value2, &max_value2 );
+    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
+    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
 
     max_colours_1 = max_value1 - min_value1 + 1;
     max_colours_2 = max_value2 - min_value2 + 1;
@@ -327,7 +327,7 @@ public  void  repartition_colour_maps(
     {
         ratio = (Real) max_colours_1 / (Real) max_colours_2;
         n_volume_1 = ROUND( (Real) total_volume * ratio );
-        if( n_volume_1 < 1 )
+        if( n_volume_1 < 1 && max_colours_1 > 0 )
             n_volume_1 = 1;
         n_volume_2 = total_volume - n_volume_1;
     }
@@ -343,7 +343,7 @@ public  void  repartition_colour_maps(
     else
     {
         n_merged_1 = (int) sqrt( (double) n_merged );
-        if( n_merged_1 < 1 )
+        if( n_merged_1 < 1 && max_colours_merged > 0 )
             n_merged_1 = 1;
 
         if( max_colours_1 <= n_merged_1 )
@@ -362,6 +362,7 @@ public  void  repartition_colour_maps(
         }
     }
 
+#define DEBUG
 #ifdef  DEBUG
 (void) printf( "%d %d  (%d * %d) = %d   total = %d\n",
        n_volume_1, n_volume_2, n_merged_1, n_merged_2, n_merged_1 * n_merged_2,

@@ -77,9 +77,10 @@ popup_struct;
 typedef  struct
 {
     Boolean                   this_is_resampled_volume;
+    String                    filename;
     int                       volume_index;
     volume_input_struct       input;
-    volume_struct             volume;
+    Volume                    volume;
     popup_struct              popup;
     polygons_struct           *meter_background;
     polygons_struct           *meter;
@@ -89,7 +90,7 @@ load_struct;
 typedef  struct
 {
     resample_struct           resample;
-    volume_struct             resampled_volume;
+    Volume                    resampled_volume;
     popup_struct              popup;
     polygons_struct           *meter_background;
     polygons_struct           *meter;

@@ -26,15 +26,16 @@ public  char  *get_volume_filename(
         return( main->original_volume_filename );
     }
     else
-        return( get_slice_volume(main,volume_index)->filename );
+        return( main->trislice[volume_index].filename );
 }
 
 private  void   record_register_volume(
     main_struct    *main,
     int            volume_index,
-    volume_struct  *volume )
+    Volume         volume,
+    char           filename[] )
 {
-    int     view, axis;
+    int     view, axis, sizes[N_DIMENSIONS];
     Real    min_value, max_value, position[N_DIMENSIONS];
 
     if( is_volume_active( main, volume_index ) )
@@ -42,13 +43,16 @@ private  void   record_register_volume(
         delete_register_volume( main, volume_index );
     }
 
-    main->trislice[volume_index].volume = *volume;
+    main->trislice[volume_index].volume = volume;
     main->trislice[volume_index].input_flag = TRUE;
+
+    (void) strcpy( main->trislice[volume_index].filename, filename );
+
+    get_volume_sizes( volume, sizes );
 
     for_less( axis, 0, N_DIMENSIONS )
     {
-        position[axis] =
-              (Real) (main->trislice[volume_index].volume.sizes[axis]-1) / 2.0;
+        position[axis] = (Real) (sizes[axis]-1) / 2.0;
     }
 
     for_less( view, 0, N_VIEWS )
@@ -81,20 +85,22 @@ private  void   record_register_volume(
 public  void   set_register_volume(
     main_struct    *main,
     int            volume_index,
-    volume_struct  *volume )
+    Volume         volume,
+    char           filename[] )
 {
-    record_register_volume( main, volume_index, volume );
+    record_register_volume( main, volume_index, volume, filename );
 
     main->resampled_file_loaded = FALSE;
 }
 
 public  void   set_register_resampled_volume(
     main_struct    *main,
-    volume_struct  *volume,
+    Volume         volume,
+    char           filename[],
     char           original_filename[],
     Transform      *resampling_transform )
 {
-    record_register_volume( main, RESAMPLED_VOLUME_INDEX, volume );
+    record_register_volume( main, RESAMPLED_VOLUME_INDEX, volume, filename );
 
     main->resampled_file_loaded = TRUE;
     main->resampling_transform = *resampling_transform;
@@ -109,7 +115,7 @@ public  void  delete_register_volume(
 {
     int            view;
 
-    delete_volume( &main->trislice[volume_index].volume );
+    delete_volume( main->trislice[volume_index].volume );
     main->trislice[volume_index].input_flag = FALSE;
 
     for_less( view, 0, N_VIEWS )
@@ -138,7 +144,7 @@ public  void  set_merged_volume_activity(
     main_struct    *main,
     Boolean        activity )
 {
-    int     view, axis;
+    int     view, axis, sizes[N_DIMENSIONS];
     Real    position[N_DIMENSIONS];
 
     if( activity && !main->merged.active_flag )
@@ -146,10 +152,11 @@ public  void  set_merged_volume_activity(
         for_less( view, 0, N_VIEWS )
             initialize_slice_view( main, MERGED_VOLUME_INDEX, view );
 
+        get_volume_sizes( get_slice_volume(main,0), sizes );
+
         for_less( axis, 0, N_DIMENSIONS )
         {
-            position[axis] =
-              (Real) (main->trislice[0].volume.sizes[axis]-1) / 2.0;
+            position[axis] = (Real) (sizes[axis]-1) / 2.0;
         }
 
         set_volume_voxel_position( main, MERGED_VOLUME_INDEX, position );

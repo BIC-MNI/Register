@@ -31,7 +31,8 @@ typedef  struct
 typedef struct
 {
     Boolean                    input_flag;
-    volume_struct              volume;
+    Volume                     volume;
+    String                     filename;
     slice_struct               slices[N_VIEWS];
     Real                       position[N_DIMENSIONS];
     unsigned short             cmode_colour_map[N_VOXEL_VALUES];
