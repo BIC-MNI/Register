@@ -196,7 +196,6 @@ private  void  update_one_slider_position(
     int                   x, peg_x1, peg_x2, text_entry_pos;
     slider_struct         *slider;
     widget_callback_type  callback;
-    String                position_string;
 
     slider = get_widget_slider( widget );
 
@@ -230,9 +229,8 @@ private  void  update_one_slider_position(
                    peg_x1,    peg_x2,
                    widget->y, widget->y + widget->y_size - 1 );
 
-    (void) sprintf( position_string, Slider_text_format, slider->values[ind] );
-
-    set_text_entry_string( slider->text_widgets[ind], position_string );
+    set_text_entry_real_value( slider->text_widgets[ind], Slider_text_format,
+                               slider->values[ind] );
 
     position_widget( slider->text_widgets[ind],
                      text_entry_pos, widget->y + Slider_text_entry_y_offset );
@@ -436,6 +434,7 @@ private  widget_struct  *create_a_slider(
                        0, 0, Slider_text_width, Slider_text_height,
                        "", ON,
                        TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
@@ -462,6 +461,7 @@ private  widget_struct  *create_a_slider(
                        0, 0, Slider_text_width, Slider_text_height,
                        "", ON,
                        TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
