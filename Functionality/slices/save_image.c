@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.5 1995-10-02 18:34:43 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.6 1996-02-28 16:04:22 david Exp $";
 #endif
 
 #include  <register.h>
@@ -102,10 +102,15 @@ public  void  save_image(
                         &viewport_x_min, &viewport_x_max,
                         &viewport_y_min, &viewport_y_max );
 
-    (void) sprintf( filename, "%s%d.rgb", PREFIX, frame_number );
+    do
+    {
+        (void) sprintf( filename, "%s%d.rgb", PREFIX, frame_number );
+        ++frame_number;
+    }
+    while( file_exists( filename ) );
+
     save_rgb_image( filename, x_origin + viewport_x_min + x_min,
                               x_origin + viewport_x_min + x_max,
                               y_origin + viewport_y_min + y_min,
                               y_origin + viewport_y_min + y_max );
-    ++frame_number;
 }

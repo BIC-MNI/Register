@@ -13,24 +13,29 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.13 1995-10-02 18:34:44 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.14 1996-02-28 16:04:22 david Exp $";
 #endif
 
 #include  <register.h>
 
 private  void   create_tags_array(
-    int                n_valid_tags,
     BOOLEAN            valid_tags[],
     int                n_tag_points,
     tag_point_struct   tag_points[],
     int                which_volume,
     Real               ***tag_array )
 {
-    int   i, tag_index, d;
+    int   i, tag_index, d, n_valid;
 
-    if( n_valid_tags > 0 )
+    n_valid = 0;
+
+    for_less( i, 0, n_tag_points )
+        if( valid_tags[i] )
+            ++n_valid;
+
+    if( n_valid > 0 )
     {
-        ALLOC2D( *tag_array, n_valid_tags, N_DIMENSIONS );
+        ALLOC2D( *tag_array, n_valid, N_DIMENSIONS );
 
         tag_index = 0;
 
@@ -86,16 +91,13 @@ public  Status   save_tag_points(
     Real             **tags_volume1, **tags_volume2, ***ptr;
     STRING           *labels;
     tag_list_struct  *tags;
-    BOOLEAN          *tag_is_valid, both_volumes_flag;
+    BOOLEAN          *tag_is_valid;
     STRING           comments;
 
     tags = &main->tags;
 
     if( tags->n_tag_points > 0 )
         ALLOC( tag_is_valid, tags->n_tag_points );
-
-    both_volumes_flag = (main->trislice[0].input_flag &&
-                         main->trislice[1].input_flag);
 
     if( !main->trislice[0].input_flag && !main->trislice[1].input_flag )
         return( ERROR );
@@ -106,11 +108,6 @@ public  Status   save_tag_points(
     {
         if( !get_tag_point_activity( main, i ) )
             tag_is_valid[i] = FALSE;
-        else if( both_volumes_flag )
-        {
-            tag_is_valid[i] = tags->tag_points[i].position_exists[0] &&
-                              tags->tag_points[i].position_exists[1];
-        }
         else
         {
             tag_is_valid[i] = (main->trislice[0].input_flag &&
@@ -127,9 +124,9 @@ public  Status   save_tag_points(
 
     if( main->trislice[0].input_flag )
     {
-        create_tags_array( n_valid_tags, tag_is_valid,
+        create_tags_array( tag_is_valid,
                            tags->n_tag_points, tags->tag_points,
-                           n_volumes, &tags_volume1 );
+                           0, &tags_volume1 );
         ++n_volumes;
     }
 
@@ -140,9 +137,9 @@ public  Status   save_tag_points(
         else
             ptr = &tags_volume2;
 
-        create_tags_array( n_valid_tags, tag_is_valid,
+        create_tags_array( tag_is_valid,
                            tags->n_tag_points, tags->tag_points,
-                           n_volumes, ptr );
+                           1, ptr );
         ++n_volumes;
     }
 
