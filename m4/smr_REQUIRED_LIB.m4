@@ -1,6 +1,6 @@
 dnl @synopsis smr_REQUIRED_LIB(LIBRARY,FUNCTION,HEADER-FILE,[OTHER-LIBRARIES],[INCLUDES])
 dnl
-dnl @version $Id: smr_REQUIRED_LIB.m4,v 1.1 2001-07-25 03:20:07 stever Exp $
+dnl @version $Id: smr_REQUIRED_LIB.m4,v 1.2 2001-07-25 04:23:31 stever Exp $
 dnl @author Steve M. Robbins <smr@debian.org>
 
 
