@@ -26,7 +26,7 @@ public  Status   initialize_user_interface( UI_struct  *ui )
     {
         print_error( "Not enough colours, reopening in RGB mode.\n" );
 
-        G_delete_window( ui->graphics_window.window );
+        (void) G_delete_window( ui->graphics_window.window );
 
         status = G_create_window( Main_window_name, -1, -1,
                                   Initial_window_x_size,

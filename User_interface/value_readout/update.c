@@ -108,7 +108,9 @@ private  void  check_readout(
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( check_update_readout )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( check_update_readout )
 {
     check_readout( get_ui_struct() );
 }

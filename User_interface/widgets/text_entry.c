@@ -163,7 +163,7 @@ private  void  add_character_to_text_entry(
         break;
 
     case RIGHT_ARROW_KEY:
-        if( text_entry->string_index < strlen(text_entry->string) )
+        if( text_entry->string_index < (int) strlen(text_entry->string) )
             ++text_entry->string_index;
         break;
 
@@ -178,10 +178,11 @@ private  void  add_character_to_text_entry(
     }
 }
 
-private  void  set_text_entry_activity_colour( widget_struct * );
 private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback );
 
-private  DEFINE_EVENT_FUNCTION( key_hit_event )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( key_hit_event )
 {
     widget_struct       *widget;
     text_entry_struct   *text_entry;
@@ -221,7 +222,9 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )   /* ARGSUSED */
                               widget->viewport_index, NORMAL_PLANES );
 }
 
-private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )/* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
 {
     widget_struct   *widget;
     text_entry_struct   *text_entry;
@@ -432,8 +435,10 @@ private  void  create_text_entry_graphics(
                             widget->viewport_index, NORMAL_PLANES, object );
 }
 
+/* ARGSUSED */
+
 public  void  delete_text_entry(
-    widget_struct  *widget )      /* ARGSUSED */
+    widget_struct  *widget )
 {
 }
 

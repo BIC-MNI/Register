@@ -55,32 +55,44 @@ private  void  set_filter(
     IF_set_slice_filter_type( callback->volume, callback->view, type );
 }
 
-private  DEFINE_WIDGET_CALLBACK( nearest_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( nearest_callback )
 {
     set_filter( callback_data, NEAREST_NEIGHBOUR );
 }
 
-private  DEFINE_WIDGET_CALLBACK( linear_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( linear_callback )
 {
     set_filter( callback_data, LINEAR_INTERPOLATION );
 }
 
-private  DEFINE_WIDGET_CALLBACK( box_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( box_callback )
 {
     set_filter( callback_data, BOX_FILTER );
 }
 
-private  DEFINE_WIDGET_CALLBACK( triangle_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( triangle_callback )
 {
     set_filter( callback_data, TRIANGLE_FILTER );
 }
 
-private  DEFINE_WIDGET_CALLBACK( gaussian_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( gaussian_callback )
 {
     set_filter( callback_data, GAUSSIAN_FILTER );
 }
 
-private  DEFINE_WIDGET_CALLBACK( filter_width_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( filter_width_callback )
 {
     Real             value;
     callback_struct  *callback;
@@ -224,12 +236,16 @@ private  void  delete_filter_selection(
     FREE( popup );
 }
 
-private  DEFINE_WIDGET_CALLBACK( close_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( close_callback )
 {
     delete_filter_selection( (filter_selection_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_filter_selection( (filter_selection_struct *) callback_data );
 }

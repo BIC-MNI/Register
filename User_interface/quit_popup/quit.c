@@ -10,19 +10,25 @@ private  void  delete_quit_confirm(
     set_quit_button_activity( get_ui_struct(), ON );
 }
 
-private  DEFINE_WIDGET_CALLBACK( quit_button_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( quit_button_callback )
 {
     set_quit_program_flag();
 
     delete_quit_confirm( (popup_struct *) callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( dont_quit_button_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( dont_quit_button_callback )
 {
     delete_quit_confirm( (popup_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( kill_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( kill_window_callback )
 {
     delete_quit_confirm( (popup_struct *) callback_data );
 }

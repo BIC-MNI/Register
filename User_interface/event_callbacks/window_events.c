@@ -1,16 +1,22 @@
 #include  <user_interface.h>
 
-private  DEFINE_EVENT_FUNCTION( redraw_overlay_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( redraw_overlay_callback )
 {
     set_clear_and_update_flags( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( redraw_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
 {
     set_clear_and_update_flags( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( resize_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( resize_window_callback )
 {
     resize_layout( get_ui_struct() );
 
@@ -21,7 +27,9 @@ private  DEFINE_EVENT_FUNCTION( resize_window_callback )   /* ARGSUSED */
     set_clear_and_update_flags( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
 #ifdef DEBUG
     set_quit_program_flag();
@@ -33,7 +41,9 @@ private  DEFINE_EVENT_FUNCTION( quit_window_callback )   /* ARGSUSED */
 /* ---- a hook to force update of colour map, when other program has
         screwed up the colour map ------------------------------------ */
 
-private  DEFINE_EVENT_FUNCTION( deiconize_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( deiconize_window_callback )
 {
     set_window_colours( get_ui_struct()->graphics_window.window );
 }

@@ -41,7 +41,7 @@ public  void  create_slice_pixels(
                          (Real *) NULL, (Real *) NULL, (Real *) NULL,
                          0.0, 0.0, 0.0, 0.0,
                          x_size, y_size, pixel_type,
-                         main->interpolation_flag,
+                         main->degrees_continuity,
                          &cmode_colour_map,
                          &rgb_colour_map, make_rgba_Colour( 0, 0, 0, 0 ),
                     main->render_storage,
@@ -194,7 +194,7 @@ public  void  create_merged_pixels(
                     origin2, x_axis2, y_axis2,
                     x_translation2, y_translation2, x_scale2, y_scale2,
                     x_size, y_size, pixel_type,
-                    main->interpolation_flag,
+                    main->degrees_continuity,
                     main->merged.cmode_colour_map,
                     main->merged.rgb_colour_map,
                     make_rgba_Colour( 0, 0, 0, 0 ),
@@ -390,4 +390,16 @@ public  void  initialize_slice_view(
     update_volume_cursor( main, volume_index, view );
     set_recreate_slice_flag( main, volume_index, view );
     update_slice_tag_objects( main, volume_index, view );
+}
+
+public  void  set_slice_interpolation(
+    main_struct  *main,
+    int          degrees_continuity )
+{
+    if( degrees_continuity == -1 ||
+        degrees_continuity == 0 ||
+        degrees_continuity == 2 )
+    {
+        main->degrees_continuity = degrees_continuity;
+    }
 }

@@ -1,11 +1,15 @@
 #include  <user_interface.h>
 
-private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )
 {
     cancel_resampling( (resample_volume_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )    /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     cancel_resampling( (resample_volume_struct *) callback_data );
 }

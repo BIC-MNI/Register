@@ -27,10 +27,6 @@ typedef enum
 static  int  **rms_widget_indices;
 static  int  ***position_widgets_indices;
 static  int  **tag_name_widget_indices;
-static  int  start_tags_widget_index;
-static  int  prev_tag_widget_index;
-static  int  next_tag_widget_index;
-static  int  end_tags_widget_index;
 
 private  int  get_tag_index(
     UI_struct      *ui_info,
@@ -43,37 +39,49 @@ private  void   type_in_world_position_callback(
     int            volume_index,
     int            axis );
 
-private  DEFINE_WIDGET_CALLBACK( world_x_position1_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 0, X );
 }
 
-private  DEFINE_WIDGET_CALLBACK( world_y_position1_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 0, Y );
 }
 
-private  DEFINE_WIDGET_CALLBACK( world_z_position1_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 0, Z );
 }
 
-private  DEFINE_WIDGET_CALLBACK( world_x_position2_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 1, X );
 }
 
-private  DEFINE_WIDGET_CALLBACK( world_y_position2_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 1, Y );
 }
 
-private  DEFINE_WIDGET_CALLBACK( world_z_position2_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world_z_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 1, Z );
@@ -112,7 +120,9 @@ private  void  set_current_tag_from_button(
     set_and_jump_to_tag( get_tag_index(get_ui_struct(), (int) callback_data) );
 }
 
-private  DEFINE_WIDGET_CALLBACK( tag_name_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( tag_name_callback )
 {
     int   tag_index;
     char  *name;
@@ -125,12 +135,16 @@ private  DEFINE_WIDGET_CALLBACK( tag_name_callback ) /* ARGSUSED */
     set_current_tag_from_button( callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( tag_number_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( tag_number_button_callback )
 {
     set_current_tag_from_button( callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( tag_activity_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( tag_activity_callback )
 {
     int   tag_index;
 
@@ -141,17 +155,23 @@ private  DEFINE_WIDGET_CALLBACK( tag_activity_callback ) /* ARGSUSED */
     set_current_tag_from_button( callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( world1_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world1_button_callback )
 {
     set_current_tag_from_button( callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( world2_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( world2_button_callback )
 {
     set_current_tag_from_button( callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( rms_error_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( rms_error_callback )
 {
     set_current_tag_from_button( callback_data );
 }
@@ -182,17 +202,23 @@ public  void  advance_current_tag_point( UI_struct  *ui )
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback )
 {
     previous_current_tag_point( get_ui_struct() );
 }
 
-private  DEFINE_WIDGET_CALLBACK( next_tag_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( next_tag_button_callback )
 {
     advance_current_tag_point( get_ui_struct() );
 }
 
-private  DEFINE_WIDGET_CALLBACK( end_tags_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( end_tags_button_callback )
 {
     int  tag_index;
 
@@ -204,7 +230,9 @@ private  DEFINE_WIDGET_CALLBACK( end_tags_button_callback ) /* ARGSUSED */
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( start_tags_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( start_tags_button_callback )
 {
     int  tag_index;
 
@@ -493,8 +521,7 @@ public  void  add_tag_point_widgets(
 
         if( tag == 0 )
         {
-            start_tags_widget_index =
-                   add_widget_to_list(
+            (void) add_widget_to_list(
                    &ui_info->widget_list[names_viewport_index],
                    create_button( &ui_info->graphics_window,
                    names_viewport_index,
@@ -509,8 +536,7 @@ public  void  add_tag_point_widgets(
         }
         else if( tag == 1 )
         {
-            prev_tag_widget_index =
-                   add_widget_to_list(
+            (void) add_widget_to_list(
                    &ui_info->widget_list[names_viewport_index],
                    create_button( &ui_info->graphics_window,
                    names_viewport_index,
@@ -525,8 +551,7 @@ public  void  add_tag_point_widgets(
         }
         else if( tag == 2 )
         {
-            next_tag_widget_index =
-                   add_widget_to_list(
+            (void) add_widget_to_list(
                    &ui_info->widget_list[names_viewport_index],
                    create_button( &ui_info->graphics_window,
                    names_viewport_index,
@@ -541,8 +566,7 @@ public  void  add_tag_point_widgets(
         }
         else if( tag == n_tag_points-1 )
         {
-            end_tags_widget_index =
-                   add_widget_to_list(
+            (void) add_widget_to_list(
                    &ui_info->widget_list[names_viewport_index],
                    create_button( &ui_info->graphics_window,
                    names_viewport_index,

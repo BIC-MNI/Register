@@ -4,6 +4,8 @@ private  void  volume_has_been_loaded( UI_struct  *, load_struct * );
 
 #define  TIME_SLICE   0.1    /* input volume for at least tenth of second */
 
+/* ARGSUSED */
+
 private  DEFINE_EVENT_FUNCTION( more_input )
 {
     BOOLEAN       done_loading;

@@ -18,7 +18,9 @@ private  void  delete_colour_selection(
     FREE( popup );
 }
 
-private  DEFINE_WIDGET_CALLBACK( colour_button_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( colour_button_callback )
 {
     colour_selection_struct   *popup;
 
@@ -30,12 +32,16 @@ private  DEFINE_WIDGET_CALLBACK( colour_button_callback )   /* ARGSUSED */
     delete_colour_selection( popup );
 }
 
-private  DEFINE_WIDGET_CALLBACK( cancel_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( cancel_callback )
 {
     delete_colour_selection( (colour_selection_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_colour_selection( (colour_selection_struct *) callback_data );
 }

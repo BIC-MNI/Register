@@ -22,32 +22,44 @@ Position_widgets;
 
 static  int  widget_indices[N_POSITION_WIDGETS];
 
-private  DEFINE_WIDGET_CALLBACK( pos_x_voxel_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( pos_x_voxel_callback )
 {
     set_voxel_position_callback( get_ui_struct(), widget, X );
 }
 
-private  DEFINE_WIDGET_CALLBACK( pos_y_voxel_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( pos_y_voxel_callback )
 {
     set_voxel_position_callback( get_ui_struct(), widget, Y );
 }
 
-private  DEFINE_WIDGET_CALLBACK( pos_z_voxel_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( pos_z_voxel_callback )
 {
     set_voxel_position_callback( get_ui_struct(), widget, Z );
 }
 
-private  DEFINE_WIDGET_CALLBACK( pos_x_world_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( pos_x_world_callback )
 {
     set_world_position_callback( get_ui_struct(), widget, X );
 }
 
-private  DEFINE_WIDGET_CALLBACK( pos_y_world_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( pos_y_world_callback )
 {
     set_world_position_callback( get_ui_struct(), widget, Y );
 }
 
-private  DEFINE_WIDGET_CALLBACK( pos_z_world_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( pos_z_world_callback )
 {
     set_world_position_callback( get_ui_struct(), widget, Z );
 }

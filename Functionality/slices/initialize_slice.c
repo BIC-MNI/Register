@@ -86,7 +86,9 @@ private  void  initialize_slice(
                                      OFF );
 }
 
-public  void  terminate_slices( main_struct  *main )    /* ARGSUSED */
+/* ARGSUSED */
+
+public  void  terminate_slices( main_struct  *main )
 {
     FREE2D( main->merged.cmode_colour_map );
 

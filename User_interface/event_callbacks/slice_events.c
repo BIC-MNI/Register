@@ -13,12 +13,16 @@ private  void  update_move_voxel_cursor(
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( update_voxel_cursor_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( update_voxel_cursor_callback )
 {
     update_move_voxel_cursor( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( left_mouse_up_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( left_mouse_up_callback )
 {
     update_move_voxel_cursor( get_ui_struct() );
 
@@ -26,7 +30,9 @@ private  DEFINE_EVENT_FUNCTION( left_mouse_up_callback )  /* ARGSUSED */
                            update_voxel_cursor_callback );
 }
 
-private  DEFINE_EVENT_FUNCTION( left_mouse_down_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( left_mouse_down_callback )
 {
     start_interaction( get_ui_struct(), event_viewport_index,
                        LEFT_MOUSE_UP_EVENT, left_mouse_up_callback,
@@ -60,12 +66,16 @@ private  void  update_move_slice(
     ui_set_volume_voxel_position( ui_info, volume, position );
 }
 
-private  DEFINE_EVENT_FUNCTION( update_move_slice_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( update_move_slice_callback )
 {
     update_move_slice( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )
 {
     update_move_slice( get_ui_struct() );
 
@@ -75,7 +85,9 @@ private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )  /* ARGSUSED */
                            update_move_slice_callback );
 }
 
-private  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )
 {
     int   volume, view;
     Real  position[N_DIMENSIONS];
@@ -116,12 +128,16 @@ private  void  update_pan_slice(
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( pan_slice_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( pan_slice_callback )
 {
     update_pan_slice( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( terminate_pan_slice_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( terminate_pan_slice_callback )
 {
     update_pan_slice( get_ui_struct() );
 
@@ -129,7 +145,9 @@ private  DEFINE_EVENT_FUNCTION( terminate_pan_slice_callback )  /* ARGSUSED */
                            pan_slice_callback );
 }
 
-private  DEFINE_EVENT_FUNCTION( start_pan_slice_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( start_pan_slice_callback )
 {
     start_interaction( get_ui_struct(), event_viewport_index,
                        LEFT_MOUSE_UP_EVENT, terminate_pan_slice_callback,
@@ -161,12 +179,16 @@ private  void  update_scale_slice(
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( scale_slice_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( scale_slice_callback )
 {
     update_scale_slice( get_ui_struct() );
 }
 
-private  DEFINE_EVENT_FUNCTION( terminate_scale_slice_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( terminate_scale_slice_callback )
 {
     update_scale_slice( get_ui_struct() );
 
@@ -177,7 +199,9 @@ private  DEFINE_EVENT_FUNCTION( terminate_scale_slice_callback )  /* ARGSUSED */
                            scale_slice_callback );
 }
 
-private  DEFINE_EVENT_FUNCTION( start_scale_slice_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( start_scale_slice_callback )
 {
     start_interaction( get_ui_struct(), event_viewport_index,
                        MIDDLE_MOUSE_UP_EVENT, terminate_scale_slice_callback,
@@ -210,7 +234,9 @@ private  void  increment_slice(
     }
 }
 
-public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )
 {
     switch( keyboard_character )
     {

@@ -39,7 +39,9 @@ public  void  define_radio_buttons(
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( check_unpush_button )
 {
     widget_struct   *widget;
     button_struct   *button;
@@ -68,7 +70,9 @@ private  DEFINE_EVENT_FUNCTION( check_unpush_button )   /* ARGSUSED */
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( push_button_event_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
 {
     widget_struct   *widget;
     button_struct   *button;
@@ -255,8 +259,10 @@ private  void  create_button_graphics(
                             widget->viewport_index, NORMAL_PLANES, object );
 }
 
+/* ARGSUSED */
+
 public  void  delete_button(
-    widget_struct  *widget )      /* ARGSUSED */
+    widget_struct  *widget )
 {
     button_struct     *button;
 

@@ -72,6 +72,7 @@ public  Status   initialize_register( window_struct  *window )
     }
 
     main_info.resampled_file_loaded = FALSE;
+    main_info.degrees_continuity = -1;
     create_linear_transform( &main_info.resampling_transform,
                              (Transform *) NULL );
 

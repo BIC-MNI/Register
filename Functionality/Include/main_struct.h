@@ -90,7 +90,7 @@ typedef  struct
 {
     window_struct            *window;
     graphics_struct          graphics;
-    BOOLEAN                  interpolation_flag;
+    int                      degrees_continuity;
     trislice_struct          trislice[N_VOLUMES];
     merged_struct            merged;
 

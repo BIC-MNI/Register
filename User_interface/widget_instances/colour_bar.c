@@ -1,8 +1,5 @@
 #include  <user_interface.h>
 
-private  void   set_colour_coding_buttons_active( UI_struct *, int,
-                                                  Colour_coding_types );
-
 typedef  enum
 {
     GRAY_SCALE_BUTTON,
@@ -50,37 +47,51 @@ private  void  set_colour_coding(
                                       type );
 }
 
-private  DEFINE_WIDGET_CALLBACK( gray_scale_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( gray_scale_callback )
 {
     set_colour_coding( widget, GRAY_SCALE );
 }
 
-private  DEFINE_WIDGET_CALLBACK( hot_metal_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( hot_metal_callback )
 {
     set_colour_coding( widget, HOT_METAL );
 }
 
-private  DEFINE_WIDGET_CALLBACK( spectral_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( spectral_callback )
 {
     set_colour_coding( widget, SPECTRAL );
 }
 
-private  DEFINE_WIDGET_CALLBACK( red_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( red_callback )
 {
     set_colour_coding( widget, RED_COLOUR_MAP );
 }
 
-private  DEFINE_WIDGET_CALLBACK( green_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( green_callback )
 {
     set_colour_coding( widget, GREEN_COLOUR_MAP );
 }
 
-private  DEFINE_WIDGET_CALLBACK( blue_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( blue_callback )
 {
     set_colour_coding( widget, BLUE_COLOUR_MAP );
 }
 
-private  DEFINE_WIDGET_CALLBACK( under_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( under_button_callback )
 {
     int   volume_index;
 
@@ -90,7 +101,9 @@ private  DEFINE_WIDGET_CALLBACK( under_button_callback ) /* ARGSUSED */
     popup_colour_selection( get_ui_struct(), volume_index, 0 );
 }
 
-private  DEFINE_WIDGET_CALLBACK( over_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( over_button_callback )
 {
     int   volume_index;
 
@@ -115,12 +128,16 @@ private  void  change_limits(
                                  min_val, max_val );
 }
 
-private  DEFINE_WIDGET_CALLBACK( lower_limit_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( lower_limit_callback )
 {
     change_limits( widget );
 }
 
-private  DEFINE_WIDGET_CALLBACK( upper_limit_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
 {
     change_limits( widget );
 }

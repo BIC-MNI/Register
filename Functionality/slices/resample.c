@@ -18,6 +18,7 @@ public  Status  resample_the_volume(
     }
 
     (void) tmpnam( tmp_transform_filename );
+    (void) strcat( tmp_transform_filename, "." );
     (void) strcat( tmp_transform_filename, get_default_transform_file_suffix());
 
     if( status == OK )

@@ -10,19 +10,25 @@ private  void  delete_tags_confirm(
     set_delete_tags_button_activity( get_ui_struct(), ON );
 }
 
-private  DEFINE_WIDGET_CALLBACK( delete_button_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( delete_button_callback )
 {
     delete_all_tag_points( get_ui_struct() );
 
     delete_tags_confirm( (popup_struct *) callback_data );
 }
 
-private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )
 {
     delete_tags_confirm( (popup_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( kill_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( kill_window_callback )
 {
     delete_tags_confirm( (popup_struct *) callback_data );
 }

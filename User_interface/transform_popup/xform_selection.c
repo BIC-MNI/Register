@@ -8,21 +8,29 @@ private  void  delete_transform_selection(
     FREE( popup );
 }
 
-private  DEFINE_WIDGET_CALLBACK( transform_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( transform_callback )
 {
     IF_set_transform_type( *((Trans_type *) callback_data) );
     update_all_tag_widgets( get_ui_struct() );
 }
 
-private  DEFINE_WIDGET_CALLBACK( close_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( close_callback )
 {
     delete_transform_selection( (popup_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )  /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_transform_selection( (popup_struct *) callback_data );
 }
+
+/* ARGSUSED */
 
 public  void  popup_transform_dialog(
     UI_struct   *ui )

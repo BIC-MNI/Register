@@ -1,6 +1,8 @@
 #include  <user_interface.h>
 
-private  DEFINE_EVENT_FUNCTION( redraw_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
 {
     popup_struct    *popup;
     Bitplane_types  bitplane;
@@ -14,7 +16,9 @@ private  DEFINE_EVENT_FUNCTION( redraw_window_callback )   /* ARGSUSED */
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( resize_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( resize_window_callback )
 {
     popup_struct     *popup;
     Bitplane_types   bitplane;

@@ -1,6 +1,8 @@
 #include  <user_interface.h>
 
-private  DEFINE_EVENT_FUNCTION( add_tag_point_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( add_tag_point_callback )
 {
     record_tag( get_ui_struct(), IF_get_n_tag_points() );
 }

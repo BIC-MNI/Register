@@ -24,7 +24,9 @@ public  void  disable_print_popup()
     set_print_function( 0 );
 }
 
-private  DEFINE_EVENT_FUNCTION( create_the_window )    /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( create_the_window )
 {
     disable_print_popup();
 
@@ -34,7 +36,9 @@ private  DEFINE_EVENT_FUNCTION( create_the_window )    /* ARGSUSED */
 
     create_message_popup( output );
 
-    SET_ARRAY_SIZE( output, n_chars, 0, DEFAULT_CHUNK_SIZE );
+    if( n_chars > 0 )
+        FREE( output );
+
     n_chars = 0;
 
     initialize_print_popup();
@@ -76,17 +80,23 @@ private  void  delete_message_popup(
     FREE( popup );
 }
 
-private  DEFINE_WIDGET_CALLBACK( acknowledge_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( acknowledge_callback )
 {
     delete_message_popup( (message_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_message_popup( (message_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( check_to_expire_popup )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( check_to_expire_popup )
 {
     message_struct   *popup;
 

@@ -94,6 +94,8 @@ public  void  IF_delete_volume(
     delete_register_volume( get_main_struct(), volume_index );
 }
 
+/* ARGSUSED */
+
 public  void  IF_set_interpolation_flag( BOOLEAN  flag )
 {
 }

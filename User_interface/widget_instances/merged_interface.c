@@ -28,12 +28,16 @@ private  void  opacity_callback(
     IF_set_merged_volume_opacity( which_volume, value );
 }
 
-private  DEFINE_WIDGET_CALLBACK( opacity_2_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( opacity_2_callback )
 {
     opacity_callback( widget, 1 );
 }
 
-private  DEFINE_WIDGET_CALLBACK( opacity_1_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( opacity_1_callback )
 {
     opacity_callback( widget, 0 );
 }
@@ -79,22 +83,30 @@ private  void  set_merging_method(
     IF_set_merge_method( method );
 }
 
-private  DEFINE_WIDGET_CALLBACK( one_on_two_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( one_on_two_callback )
 {
     set_merging_method( ONE_ON_TWO );
 }
 
-private  DEFINE_WIDGET_CALLBACK( two_on_one_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( two_on_one_callback )
 {
     set_merging_method( TWO_ON_ONE );
 }
 
-private  DEFINE_WIDGET_CALLBACK( blend_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( blend_callback )
 {
     set_merging_method( BLEND_VOLUMES );
 }
 
-private  DEFINE_WIDGET_CALLBACK( weight_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( weight_callback )
 {
     set_merging_method( WEIGHTED_VOLUMES );
 }

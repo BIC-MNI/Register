@@ -22,6 +22,8 @@ private  Colour  merge_colours(
     return( make_Colour( r, g, b ) );
 }
 
+/* ARGSUSED */
+
 private  Colour  get_merged_colour(
     Merge_methods  method,
     BOOLEAN        use_under_over_colour_with_weights,
@@ -31,7 +33,7 @@ private  Colour  get_merged_colour(
     Real           alpha1,
     Colour         col1,
     Range_flags    range_flag2,
-    Real           alpha2,                        /* ARGSUSED */
+    Real           alpha2,
     Colour         col2 )
 {
     if( (!use_under_over_colour_with_weights ||
@@ -56,8 +58,10 @@ private  Colour  get_merged_colour(
             return( col1 );
 
     case BLEND_VOLUMES:
-        alpha2 = 1.0 - alpha1;   /* drop through to WEIGHTED_VOLUMES */
     case WEIGHTED_VOLUMES:
+        if( method == BLEND_VOLUMES )
+            alpha2 = 1.0 - alpha1;
+
         if( use_under_over_colour_with_weights ||
             range_flag1 != UNDER_RANGE && range_flag2 != UNDER_RANGE )
             return( merge_colours( alpha1, col1, alpha2, col2 ) );

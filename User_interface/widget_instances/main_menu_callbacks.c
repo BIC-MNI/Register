@@ -25,7 +25,9 @@ typedef  enum
 
 private  int  widget_indices[N_MAIN_WIDGETS];
 
-private  DEFINE_WIDGET_CALLBACK( quit_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( quit_button_callback )
 {
 #ifdef DEBUG
     set_quit_program_flag();
@@ -34,12 +36,16 @@ private  DEFINE_WIDGET_CALLBACK( quit_button_callback ) /* ARGSUSED */
 #endif
 }
 
-private  DEFINE_WIDGET_CALLBACK( transform_type_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( transform_type_callback )
 {
     popup_transform_dialog( get_ui_struct() );
 }
 
-private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback )
 {
     General_transform  *transform;
     char               *filename;
@@ -61,11 +67,15 @@ private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( resample_filename_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( resample_filename_callback )
 {
 }
 
-private  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback )
 {
     get_ui_struct()->volumes_synced = !get_ui_struct()->volumes_synced;
 
@@ -75,7 +85,9 @@ private  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback ) /* ARGSUSED */
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback )
 {
     int            state;
 
@@ -88,7 +100,9 @@ private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback ) /* ARGSUSED */
     set_clear_and_update_flags( get_ui_struct() );
 }
 
-private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback )
 {
     int            state, true_state;
 
@@ -115,7 +129,9 @@ public  void  load_tags_file(
     set_current_tag_index( ui, 0 );
 }
 
-private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback )
 {
     char   *filename;
 
@@ -131,11 +147,15 @@ private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback ) /* ARGSUSED */
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback )
 {
 }
 
-private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback )
 {
     char   *filename;
 
@@ -149,11 +169,15 @@ private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback ) /* ARGSUSED */
         IF_save_tags_file( filename );
 }
 
-private  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback )
 {
 }
 
-private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback )
 {
     char   *filename;
 
@@ -192,17 +216,23 @@ public  void  record_tag(
     set_current_tag_index( ui, tag_index );
 }
 
-private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback )
 {
     record_tag( get_ui_struct(), get_current_tag_index(get_ui_struct()) );
 }
 
-private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback )
 {
     delete_current_tag_point( get_ui_struct() );
 }
 
-private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )/* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )
 {
     if( IF_get_n_tag_points() > 0 )
     {
@@ -210,7 +240,9 @@ private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )/* ARGSUSED */
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback )
 {
     BOOLEAN   visibility;
 

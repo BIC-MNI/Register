@@ -32,12 +32,16 @@ private  void  update_value_from_text(
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( upper_value_hit_return_callback )/* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( upper_value_hit_return_callback )
 {
     update_value_from_text( (widget_struct *) callback_data, 1 );
 }
 
-private  DEFINE_WIDGET_CALLBACK( lower_value_hit_return_callback )/* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( lower_value_hit_return_callback )
 {
     update_value_from_text( (widget_struct *) callback_data, 0 );
 }
@@ -102,12 +106,16 @@ private  void  update_both_slider_position_from_mouse(
     set_slider_values( widget, value, value + diff );
 }
 
-private  DEFINE_EVENT_FUNCTION( update_slider_position_event )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( update_slider_position_event )
 {
     update_slider_position_from_mouse( (widget_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( done_moving_slider )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( done_moving_slider )
 {
     update_slider_position_from_mouse( (widget_struct *) callback_data );
 
@@ -120,12 +128,16 @@ private  DEFINE_EVENT_FUNCTION( done_moving_slider )   /* ARGSUSED */
     set_interaction_in_progress( FALSE );
 }
 
-private  DEFINE_EVENT_FUNCTION( update_both_position_event )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( update_both_position_event )
 {
     update_both_slider_position_from_mouse( (widget_struct *) callback_data );
 }
 
-private  DEFINE_EVENT_FUNCTION( done_moving_both_sliders )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( done_moving_both_sliders )
 {
     update_both_slider_position_from_mouse( (widget_struct *) callback_data );
 
@@ -158,12 +170,16 @@ private  void  select_slider(
     set_interaction_in_progress( TRUE );
 }
 
-private  DEFINE_EVENT_FUNCTION( select_upper_slider )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( select_upper_slider )
 {
     select_slider( (widget_struct *) callback_data, 1 );
 }
 
-private  DEFINE_EVENT_FUNCTION( select_lower_slider )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( select_lower_slider )
 {
     select_slider( (widget_struct *) callback_data, 0 );
 }
@@ -191,7 +207,9 @@ private  void  select_colour_bar_sliders(
     set_interaction_in_progress( TRUE );
 }
 
-private  DEFINE_EVENT_FUNCTION( select_both_sliders )   /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_EVENT_FUNCTION( select_both_sliders )
 {
     select_colour_bar_sliders( (widget_struct *) callback_data );
 }
@@ -459,10 +477,12 @@ public  void  update_slider_activity(
     }
 }
 
+/* ARGSUSED */
+
 public  void  position_slider(
     widget_struct                 *widget,
     int                           x,
-    int                           y )    /* ARGSUSED */
+    int                           y )
 {
     slider_struct   *slider;
 
@@ -504,8 +524,10 @@ private  void  create_slider_graphics(
     }
 }
 
+/* ARGSUSED */
+
 public  void  delete_slider(
-    widget_struct  *widget )      /* ARGSUSED */
+    widget_struct  *widget )
 {
     slider_struct     *slider;
 

@@ -16,7 +16,9 @@ Volume_widgets;
 static  int  widget_indices[N_VOLUME_WIDGETS];
 static  int  colour_bar_start_index;
 
-public  DEFINE_WIDGET_CALLBACK( reset_view_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+public  DEFINE_WIDGET_CALLBACK( reset_view_callback )
 {
     int   volume_index, view_index;
 
@@ -26,7 +28,9 @@ public  DEFINE_WIDGET_CALLBACK( reset_view_callback ) /* ARGSUSED */
         IF_reset_slice_view( volume_index, view_index );
 }
 
-public  DEFINE_WIDGET_CALLBACK( popup_filter_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+public  DEFINE_WIDGET_CALLBACK( popup_filter_callback )
 {
     int   volume_index;
 
@@ -36,7 +40,9 @@ public  DEFINE_WIDGET_CALLBACK( popup_filter_callback ) /* ARGSUSED */
     popup_filter_selection( get_ui_struct(), volume_index );
 }
 
-private  DEFINE_WIDGET_CALLBACK( load_volume_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( load_volume_callback )
 {
     char       *filename;
     int        viewport_index;
@@ -56,7 +62,9 @@ private  DEFINE_WIDGET_CALLBACK( load_volume_callback ) /* ARGSUSED */
     }
 }
 
-private  DEFINE_WIDGET_CALLBACK( volume_filename_callback ) /* ARGSUSED */
+/* ARGSUSED */
+
+private  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
 {
 }
 
