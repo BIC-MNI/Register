@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.10 1996-12-09 20:21:38 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.11 1998-02-20 15:00:14 david Exp $";
 #endif
 
 #include  <register.h>
@@ -89,10 +89,10 @@ public  void  create_new_tag_point(
         fill_Point( tag.position[volume_index], 0.0, 0.0, 0.0 );
     }
 
-    create_tag_objects( main, &tag );
-
     tag.name = create_string( NULL );
     tag.activity = ON;
+
+    create_tag_objects( main, &tag );
 
     ADD_ELEMENT_TO_ARRAY( main->tags.tag_points, main->tags.n_tag_points, tag,
                           DEFAULT_CHUNK_SIZE );

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.9 1998-02-16 16:02:18 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.10 1998-02-20 15:00:17 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -51,6 +51,9 @@ public  void   handle_event(
 
     shift_state = G_get_shift_key_state() || G_get_ctrl_key_state() ||
                   G_get_alt_key_state();
+
+    x_mouse = 0;
+    y_mouse = 0;
 
     if( !execute_global_event_callbacks( shift_state, event_type,
                                          key_pressed ) &&
