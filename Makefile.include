@@ -1,1 +1,3 @@
-include /nil/david/Libraries/Graphics/Makefile.include
+#include /nil/david/Libraries/Graphics/Makefile.include
+
+include /nil/david/Libraries/New_graphics/OpenGL/Makefile.include

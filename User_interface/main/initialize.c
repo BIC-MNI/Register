@@ -13,10 +13,14 @@ public  Status   initialize_user_interface( UI_struct  *ui )
 
     initialize_print_popup();
 
+    initial_rgb = Initial_rgb_state;
+
     status = G_create_window( Main_window_name, -1, -1,
                               Initial_window_x_size,
                               Initial_window_y_size,
-                              &ui->graphics_window.window );
+                              !initial_rgb,
+                              Initial_double_buffer_state,
+                              FALSE, 2, &ui->graphics_window.window );
 
     IF_initialize_register( ui->graphics_window.window );
 
@@ -24,17 +28,6 @@ public  Status   initialize_user_interface( UI_struct  *ui )
 
     G_set_zbuffer_state( ui->graphics_window.window, OFF );
     G_set_transparency_state( ui->graphics_window.window, OFF );
-    G_set_double_buffer_state( ui->graphics_window.window,
-                               Initial_double_buffer_state );
-
-    initial_rgb = Initial_rgb_state;
-    if( G_get_n_colour_map_entries(ui->graphics_window.window) <
-        Min_colour_map_size )
-    {
-        initial_rgb = TRUE;
-    }
-
-    G_set_colour_map_state( ui->graphics_window.window, !initial_rgb );
 
     set_start_colour_table( ui );
 

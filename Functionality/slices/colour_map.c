@@ -464,7 +464,7 @@ public  void  colour_mode_has_toggled(
             update_cursor_colours( main, volume, view );
 }
 
-private  colour_coding_has_changed (
+private  void   colour_coding_has_changed (
     main_struct          *main,
     int                  volume_index )
 {

@@ -41,17 +41,14 @@ public  void   create_popup_window(
     Bitplane_types    bitplane;
 
     (void) G_create_window( title, x_position, y_position,
-                            x_size, y_size, &popup->graphics.window );
+                            x_size, y_size, FALSE, TRUE,
+                            FALSE, 0, &popup->graphics.window );
 
     initialize_graphics_struct( &popup->graphics.graphics );
     initialize_event_viewports( &popup->graphics.event_viewports );
     initialize_widget_list( &popup->widgets );
 
     popup->graphics.current_buffer = 0;
-
-    G_set_zbuffer_state( popup->graphics.window, OFF );
-    G_set_colour_map_state( popup->graphics.window, FALSE );
-    G_set_double_buffer_state( popup->graphics.window, ON );
 
     G_set_background_colour( popup->graphics.window, Popup_background_colour );
 

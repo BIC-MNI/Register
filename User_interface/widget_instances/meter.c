@@ -47,13 +47,18 @@ public  void  set_meter_position(
     polygons_struct   *meter,
     Real              fraction_done )
 {
-    int   x, y, x_size, y_size;
+    int   x, y, x_size, y_size, new_pos;
 
     x = (int) Point_x(meter_background->points[0]);
     y = (int) Point_y(meter_background->points[0]);
     x_size = (int) Point_x(meter_background->points[1]) - x + 1;
     y_size = (int) Point_y(meter_background->points[2]) - y + 1;
 
-    position_rectangle( meter, x, y, ROUND( fraction_done * x_size ), y_size );
-    set_viewport_update_flag( &popup->graphics.graphics, 0, NORMAL_PLANES );
+    new_pos = ROUND( fraction_done * x_size );
+
+    if( new_pos != (int) Point_x(meter->points[0]) )
+    {
+        position_rectangle( meter, x, y, new_pos, y_size );
+        set_viewport_update_flag( &popup->graphics.graphics, 0, NORMAL_PLANES );
+    }
 }

@@ -124,7 +124,7 @@ START_GLOBALS
     DEF_GLOBAL( Slider_text_entry_x_offset, int, 3 )
     DEF_GLOBAL( Slider_text_entry_y_offset, int, 15 )
     DEF_GLOBAL( Slider_height, int, 15 )
-    DEF_GLOBAL( Slider_text_width, int, 30 )
+    DEF_GLOBAL( Slider_text_width, int, 55 )
     DEF_GLOBAL( Slider_text_height, int, 15 )
     DEF_GLOBAL( Slider_text_font, int, (int) SIZED_FONT )
     DEF_GLOBAL( Slider_text_font_size, Real, 10.0 )
@@ -132,7 +132,7 @@ START_GLOBALS
 
     DEF_GLOBAL( Colour_bar_slider_width, int, 150 )
     DEF_GLOBAL( Colour_bar_slider_height, int, 10 )
-    DEF_GLOBAL_STRING( Colour_bar_text_format, "%.4g" )
+    DEF_GLOBAL_STRING( Colour_bar_text_format, "%.3g" )
 
     DEF_GLOBAL( Opacity_slider_width, int, 150 )
     DEF_GLOBAL( Opacity_slider_height, int, 10 )

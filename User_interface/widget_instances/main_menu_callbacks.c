@@ -277,7 +277,8 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    sync_volumes_button_callback, (void *) 0 ) );
 
-    colour_map_toggle_activity = (G_get_n_colour_map_entries(
+    colour_map_toggle_activity = G_can_switch_colour_map_mode() &&
+             (G_get_n_colour_map_entries(
              ui_info->graphics_window.window) >= Min_colour_map_size);
 
     widget_indices[COLOUR_MODE_BUTTON] = add_widget_to_list(
@@ -300,7 +301,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Single", "Double",
                    G_get_double_buffer_state(ui_info->graphics_window.window),
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   G_can_switch_double_buffering(), TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,

@@ -2,18 +2,26 @@
 
 private  void  volume_has_been_loaded( UI_struct  *, load_struct * );
 
+#define  TIME_SLICE   0.1    /* input volume for at least tenth of second */
+
 private  DEFINE_EVENT_FUNCTION( more_input )
 {
+    BOOLEAN       done_loading;
     load_struct   *data;
-    Real          fraction_done;
+    Real          fraction_done, end_time;
 
     data = (load_struct *) callback_data;
 
-    if( input_more_of_volume( data->volume, &data->input, &fraction_done ) )
+    end_time = current_realtime_seconds() + TIME_SLICE;
+
+    do
     {
-        set_load_popup_meter( data, fraction_done );
+        done_loading = !input_more_of_volume( data->volume, &data->input,
+                                              &fraction_done );
     }
-    else
+    while( !done_loading && current_realtime_seconds() < end_time );
+
+    if( done_loading )
     {
         /*  --- the following printf line seems to fix a memory leak
             error that occurs when reading an rgb MINC file */
@@ -22,6 +30,8 @@ private  DEFINE_EVENT_FUNCTION( more_input )
 
         volume_has_been_loaded( get_ui_struct(), data );
     }
+    else
+        set_load_popup_meter( data, fraction_done );
 }
 
 private  void  delete_popup_interaction(

@@ -226,12 +226,51 @@ public  void  get_volume_voxel_position(
     Real          position[N_DIMENSIONS] )
 {
     Real           *cursor_ptr;
+    Real           original_world_position1[N_DIMENSIONS];
+    Real           original_world_position2[N_DIMENSIONS];
+    Real           world_position[N_DIMENSIONS];
 
-    cursor_ptr = get_volume_cursor( main, volume );
+    if( volume <= MERGED_VOLUME_INDEX )
+    {
+        cursor_ptr = get_volume_cursor( main, volume );
 
-    position[X] = cursor_ptr[X];
-    position[Y] = cursor_ptr[Y];
-    position[Z] = cursor_ptr[Z];
+        position[X] = cursor_ptr[X];
+        position[Y] = cursor_ptr[Y];
+        position[Z] = cursor_ptr[Z];
+    }
+    else
+    {
+        cursor_ptr = get_volume_cursor( main, MERGED_VOLUME_INDEX );
+
+        convert_voxel_to_original_world( main, 1 - RESAMPLED_VOLUME_INDEX,
+                                         cursor_ptr[X],
+                                         cursor_ptr[Y],
+                                         cursor_ptr[Z],
+                                         &original_world_position1[X],
+                                         &original_world_position1[Y],
+                                         &original_world_position1[Z] );
+        convert_original_world_to_world( main, 1 - RESAMPLED_VOLUME_INDEX,
+                                         original_world_position1[X],
+                                         original_world_position1[Y],
+                                         original_world_position1[Z],
+                                         &world_position[X],
+                                         &world_position[Y],
+                                         &world_position[Z] );
+        convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
+                                         world_position[X],
+                                         world_position[Y],
+                                         world_position[Z],
+                                         &original_world_position2[X],
+                                         &original_world_position2[Y],
+                                         &original_world_position2[Z] );
+        convert_original_world_to_voxel( main, RESAMPLED_VOLUME_INDEX,
+                                         original_world_position2[X],
+                                         original_world_position2[Y],
+                                         original_world_position2[Z],
+                                         &position[X],
+                                         &position[Y],
+                                         &position[Z] );
+    }
 }
 
 public  void  convert_original_world_to_world(
@@ -575,9 +614,8 @@ public  Real  get_voxel_value(
 
     if( voxel_is_within_volume( volume, position ) )
     {
-        GET_VOXEL_3D( value, volume, ROUND(x_voxel),
-                      ROUND(y_voxel), ROUND(z_voxel) );
-        value = CONVERT_VOXEL_TO_VALUE( volume, value );
+        value = get_volume_real_value( volume, ROUND(x_voxel),
+                           ROUND(y_voxel), ROUND(z_voxel), 0, 0 );
     }
     else
         value = 0.0;

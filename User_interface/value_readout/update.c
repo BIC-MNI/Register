@@ -1,48 +1,31 @@
 #include  <user_interface.h>
 
-private  void  set_readout(
+public  void  update_volume_readout(
     UI_struct  *ui,
-    int        volume_index,
-    Real       voxel_position[N_DIMENSIONS] )
+    int        volume_index )
 {
     Real   value;
+    Real   voxel[N_DIMENSIONS];
 
-    if( volume_index < N_VOLUMES )
+    if( volume_index < MERGED_VOLUME_INDEX )
     {
-        value = IF_get_voxel_value( volume_index,
-                                    voxel_position[X],
-                                    voxel_position[Y],
-                                    voxel_position[Z] );
+        IF_get_volume_voxel_position( volume_index, voxel );
+        value = IF_get_voxel_value( volume_index, voxel[X], voxel[Y], voxel[Z]);
         set_text_entry_real_value( get_volume_readout_widget(ui,volume_index),
                                    Readout_values_format, value );
     }
     else
     {
-        value = IF_get_voxel_value( 0,
-                                    voxel_position[X],
-                                    voxel_position[Y],
-                                    voxel_position[Z] );
+        IF_get_volume_voxel_position( MERGED_VOLUME_INDEX, voxel );
+        value = IF_get_voxel_value( 0, voxel[X], voxel[Y], voxel[Z] );
         set_text_entry_real_value( get_merged_readout_widget(ui,0),
                                    Readout_values_format, value );
 
-        value = IF_get_voxel_value( 1,
-                                    voxel_position[X],
-                                    voxel_position[Y],
-                                    voxel_position[Z] );
+        IF_get_volume_voxel_position( MERGED_VOLUME_INDEX+1, voxel );
+        value = IF_get_voxel_value( 1, voxel[X], voxel[Y], voxel[Z] );
         set_text_entry_real_value( get_merged_readout_widget(ui,1),
                                    Readout_values_format, value );
     }
-}
-
-public  void  update_volume_readout(
-    UI_struct  *ui,
-    int        volume_index )
-{
-    Real   voxel_position[N_DIMENSIONS];
-
-    IF_get_volume_voxel_position( volume_index, voxel_position );
-
-    set_readout( ui, volume_index, voxel_position );
 }
 
 #ifdef NOT_NEEDED
