@@ -52,6 +52,8 @@ private  void  initialize_slice(
 
     slice = get_slice_struct( main, volume, view );
 
+    slice->filter_type = (Filter_types) Initial_slice_filter_type;
+    slice->filter_width = Initial_slice_filter_width;
     slice->pixels_are_up_to_date = FALSE;
     slice->n_pixels_alloced = 0;
     slice->x_translation = 0.0;

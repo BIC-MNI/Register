@@ -260,17 +260,17 @@ public  int  add_colour_bar_widgets(
     *height = y + Colour_bar_slider_height;
 
     radio_widgets[0] = ui_info->widget_list[viewport_index].widgets
-                               [widget_indices[start_index+GRAY_SCALE_BUTTON]];
+                               [start_index+widget_indices[GRAY_SCALE_BUTTON]];
     radio_widgets[1] = ui_info->widget_list[viewport_index].widgets
-                                 [widget_indices[start_index+HOT_METAL_BUTTON]];
+                                 [start_index+widget_indices[HOT_METAL_BUTTON]];
     radio_widgets[2] = ui_info->widget_list[viewport_index].widgets
-                                 [widget_indices[start_index+SPECTRAL_BUTTON]];
+                                 [start_index+widget_indices[SPECTRAL_BUTTON]];
     radio_widgets[3] = ui_info->widget_list[viewport_index].widgets
-                                 [widget_indices[start_index+RED_BUTTON]];
+                                 [start_index+widget_indices[RED_BUTTON]];
     radio_widgets[4] = ui_info->widget_list[viewport_index].widgets
-                                 [widget_indices[start_index+GREEN_BUTTON]];
+                                 [start_index+widget_indices[GREEN_BUTTON]];
     radio_widgets[5] = ui_info->widget_list[viewport_index].widgets
-                                 [widget_indices[start_index+BLUE_BUTTON]];
+                                 [start_index+widget_indices[BLUE_BUTTON]];
 
     define_radio_buttons( 6, radio_widgets );
 

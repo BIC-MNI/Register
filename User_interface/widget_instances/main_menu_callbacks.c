@@ -6,7 +6,6 @@ typedef  enum
     RESAMPLE_BUTTON,
     RESAMPLE_FILENAME_ENTRY,
     SYNC_VOLUMES_BUTTON,
-    INTERPOLATION_BUTTON,
     COLOUR_MODE_BUTTON,
     DOUBLE_BUFFER_BUTTON,
     LOAD_TAGS_BUTTON,
@@ -64,10 +63,6 @@ private  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback ) /* ARGSUSED */
     {
         update_other_volume_positions( get_ui_struct(), 0 );
     }
-}
-
-private  DEFINE_WIDGET_CALLBACK( interpolation_button_callback ) /* ARGSUSED */
-{
 }
 
 private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback ) /* ARGSUSED */
@@ -271,18 +266,6 @@ public  void  add_main_widgets(
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    sync_volumes_button_callback, (void *) 0 ) );
-
-    widget_indices[INTERPOLATION_BUTTON] = add_widget_to_list(
-                   &ui_info->widget_list[Main_menu_viewport],
-                   create_toggle_button( &ui_info->graphics_window,
-                   Main_menu_viewport, 
-                   0, 0, Button_width, Button_height,
-                   "Flat", "Smooth", FALSE,
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
-                   BUTTON_INACTIVE_COLOUR,
-                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
-                   Button_text_font, Button_text_font_size,
-                   interpolation_button_callback, (void *) 0 ) );
 
     colour_map_toggle_activity = (G_get_n_colour_map_entries(
              ui_info->graphics_window.window) >= Min_colour_map_size);

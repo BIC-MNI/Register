@@ -362,8 +362,8 @@ public  void  repartition_colour_maps(
         }
     }
 
-#define DEBUG
 #ifdef  DEBUG
+#define DEBUG
 (void) printf( "%d %d  (%d * %d) = %d   total = %d\n",
        n_volume_1, n_volume_2, n_merged_1, n_merged_2, n_merged_1 * n_merged_2,
        n_volume_1 + n_volume_2 + n_merged_1 * n_merged_2 );

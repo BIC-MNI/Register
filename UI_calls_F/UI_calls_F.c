@@ -298,6 +298,38 @@ public  Real  IF_get_merged_volume_opacity(
     return( get_merged_volume_opacity( get_main_struct(), which_volume ) );
 }
 
+public  void  IF_set_slice_filter_type(
+    int           volume_index,
+    int           view_index,
+    Filter_types  filter_type )
+{
+    set_slice_filter_type( get_main_struct(), volume_index, view_index,
+                           filter_type );
+}
+
+public  Filter_types  IF_get_slice_filter_type(
+    int           volume_index,
+    int           view_index )
+{
+    return( get_slice_filter_type(get_main_struct(), volume_index, view_index));
+}
+
+public  void  IF_set_slice_filter_width(
+    int      volume_index,
+    int      view_index,
+    Real     filter_width )
+{
+    set_slice_filter_width( get_main_struct(), volume_index, view_index,
+                            filter_width );
+}
+
+public  Real  IF_get_slice_filter_width(
+    int           volume_index,
+    int           view_index )
+{
+    return(get_slice_filter_width(get_main_struct(), volume_index, view_index));
+}
+
 /* ----------------------- tag points -------------------------------- */
 
 public  Boolean  IF_get_tags_visibility( void )

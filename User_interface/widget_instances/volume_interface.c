@@ -3,6 +3,7 @@
 typedef  enum
 {
     RESET_VIEW_BUTTON,
+    POPUP_FILTER_BUTTON,
     VALUE_READOUT_TEXT,
     LOAD_BUTTON,
     LOAD_FILENAME_TEXT,
@@ -23,6 +24,16 @@ public  DEFINE_WIDGET_CALLBACK( reset_view_callback ) /* ARGSUSED */
 
     for_less( view_index, 0, N_VIEWS )
         IF_reset_slice_view( volume_index, view_index );
+}
+
+public  DEFINE_WIDGET_CALLBACK( popup_filter_callback ) /* ARGSUSED */
+{
+    int   volume_index;
+
+    volume_index = get_viewport_volume_index(widget->viewport_index);
+
+    set_widget_activity( widget, OFF );
+    popup_filter_selection( get_ui_struct(), volume_index );
 }
 
 private  DEFINE_WIDGET_CALLBACK( load_volume_callback ) /* ARGSUSED */
@@ -119,11 +130,25 @@ public  void  add_volume_widgets(
                    Button_text_font, Button_text_font_size,
                    reset_view_callback, (void *) NULL ) );
 
+    widget_indices[POPUP_FILTER_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
+                   x + Volume_button_width + Interface_x_spacing, y,
+                   Filter_button_width, Filter_button_height,
+                   "Filter",
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   popup_filter_callback, (void *) NULL ) );
+
     widget_indices[VALUE_READOUT_TEXT] =
                    add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_label( &ui_info->graphics_window, viewport_index,
-                   x + Volume_button_width + Interface_x_spacing, y,
+                   x + Volume_button_width + Interface_x_spacing +
+                   Filter_button_width + Interface_x_spacing, y,
                    Value_readout_width, Volume_button_height,
                    "", OFF, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
@@ -240,3 +265,17 @@ public  widget_struct  *get_volume_readout_widget(
     return( ui_info->widget_list[viewport_index].widgets
                                  [widget_indices[VALUE_READOUT_TEXT]] );
 }
+
+public  void  set_filter_popup_activity(
+    UI_struct         *ui_info,
+    int               volume_index,
+    Boolean           activity )
+{
+    Viewport_types      viewport;
+
+    viewport = get_volume_menu_viewport_index( volume_index );
+
+    set_widget_activity( ui_info->widget_list[viewport].widgets
+                           [widget_indices[POPUP_FILTER_BUTTON]], activity );
+}
+

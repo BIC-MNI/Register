@@ -1,7 +1,7 @@
 #ifndef  DEF_USER_INTERFACE
 #define  DEF_USER_INTERFACE
 
-#include  <def_mni.h>
+#include  <def_graphics.h>
 
 #include  <def_events.h>
 

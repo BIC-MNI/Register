@@ -4,7 +4,7 @@ private  void  recompute_tag_rms_errors(
     tag_list_struct   *tags )
 {
     int    i, n_active;
-    Real   sum, rms_error;
+    Real   sum, rms_error, x, y, z;
     Point  transformed;
 
     sum = 0.0;
@@ -13,8 +13,12 @@ private  void  recompute_tag_rms_errors(
     for_less( i, 0, tags->n_tag_points )
     {
         transform_point( &tags->v2_to_v1_transform,
-                         &tags->tag_points[i].position[1],
-                         &transformed );
+                         Point_x(tags->tag_points[i].position[1]),
+                         Point_y(tags->tag_points[i].position[1]),
+                         Point_z(tags->tag_points[i].position[1]),
+                         &x, &y, &z );
+
+        fill_Point( transformed, x, y, z );
 
         rms_error = distance_between_points( &transformed,
                                              &tags->tag_points[i].position[0] );

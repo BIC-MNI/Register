@@ -1,7 +1,7 @@
 #ifndef  DEF_GRAPHICS_WINDOW
 #define  DEF_GRAPHICS_WINDOW
 
-#include  <def_mni.h>
+#include  <def_graphics.h>
 #include  <def_events.h>
 
 typedef struct

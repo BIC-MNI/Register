@@ -26,6 +26,8 @@ private  void  delete_popup_interaction(
 
     remove_global_event_callback( NO_EVENT, more_input, (void *) data );
 
+    delete_volume_input( &data->input );
+
     delete_load_popup( data );
 
     FREE( data );

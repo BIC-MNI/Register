@@ -39,8 +39,16 @@ public  void  set_tags_visibility(
 public  void  delete_tag_points(
     main_struct      *main )
 {
+    int   i;
+
+    for_less( i, 0, main->tags.n_tag_points )
+        delete_tag_objects( main, &main->tags.tag_points[i] );
+
     if( main->tags.n_tag_points > 0 )
         FREE( main->tags.tag_points );
+
+    main->tags.transform_out_of_date = TRUE;
+    main->tags.saved_flag = TRUE;
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 

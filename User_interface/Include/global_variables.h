@@ -75,6 +75,8 @@ START_GLOBALS
     DEF_GLOBAL( Volume_menu_y_offset, int, 10 )
     DEF_GLOBAL( Volume_button_height, int, 15 )
     DEF_GLOBAL( Volume_button_width, int, 70 )
+    DEF_GLOBAL( Filter_button_height, int, 15 )
+    DEF_GLOBAL( Filter_button_width, int, 60 )
     DEF_GLOBAL( Load_filename_width, int, 150 )
     DEF_GLOBAL( Colour_bar_button_width, int, 40 )
     DEF_GLOBAL( Colour_bar_button_spacing, int, 5 )
@@ -82,6 +84,17 @@ START_GLOBALS
     DEF_GLOBAL( Position_values_width, int, 35 )
     DEF_GLOBAL( Position_values_separation, int, 5 )
     DEF_GLOBAL_STRING( Position_values_format, "%.1lf" )
+
+    DEF_GLOBAL( Filter_selection_x_size, int, 360 )
+    DEF_GLOBAL( Filter_selection_y_size, int, 340 )
+    DEF_GLOBAL( Filter_button_spacing, int, 5 )
+    DEF_GLOBAL( Filter_y_spacing, int, 7 )
+    DEF_GLOBAL( Full_width_label_width, int, 70 )
+    DEF_GLOBAL( Full_width_text_width, int, 40 )
+    DEF_GLOBAL( Filter_view_label_width, int, 100 )
+    DEF_GLOBAL_STRING( Filter_name1, "Transverse Filter" )
+    DEF_GLOBAL_STRING( Filter_name2, "Sagittal Filter" )
+    DEF_GLOBAL_STRING( Filter_name3, "Coronal Filter" )
 
     DEF_GLOBAL( Label_text_font, int, (int) SIZED_FONT )
     DEF_GLOBAL( Label_text_font_size, Real, 10.0 )
@@ -118,7 +131,7 @@ START_GLOBALS
 
     DEF_GLOBAL( Colour_bar_slider_width, int, 150 )
     DEF_GLOBAL( Colour_bar_slider_height, int, 10 )
-    DEF_GLOBAL_STRING( Colour_bar_text_format, "%.0lf" )
+    DEF_GLOBAL_STRING( Colour_bar_text_format, "%.2g" )
 
     DEF_GLOBAL( Opacity_slider_width, int, 150 )
     DEF_GLOBAL( Opacity_slider_height, int, 10 )

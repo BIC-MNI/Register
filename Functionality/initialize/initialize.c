@@ -36,7 +36,9 @@ public  Status   initialize_register( window_struct  *window )
     if( Disable_alloc_checking )
         set_alloc_checking( OFF );
 
+/*
     set_alloc_debug( Alloc_debugging );
+*/
 
     G_set_overlay_colour_map( window, 1, Overlay_colour_1 );
     G_set_overlay_colour_map( window, 2, Overlay_colour_2 );
@@ -70,6 +72,10 @@ public  Status   initialize_register( window_struct  *window )
 public  void   terminate_register()
 {
     terminate_slices( &main_info );
-    delete_graphics_struct( &main_info.graphics );
+
+    /* --- since delete_tag_points() makes calls to remove objects from the
+           graphics struct, it must be called before delete_graphics_struct() */
+
     delete_tag_points( &main_info );
+    delete_graphics_struct( &main_info.graphics );
 }

@@ -128,6 +128,7 @@ public  void  create_merged_pixels(
         convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view,
                                 tmp, &x_pixel_min, &y_pixel_min );
         
+#ifdef OLD
         /* determine which pixel that (x_size,y_size) voxel maps to */
 
         tmp[x_axis_index] = (Real) sizes2[x_axis_index];
@@ -151,6 +152,12 @@ public  void  create_merged_pixels(
                    volume2->separation[x_axis_index];
         y_scale2 = (y_pixel_max - y_pixel_min) / (Real) sizes2[y_axis_index] /
                    volume2->separation[y_axis_index];
+#else
+        x_translation2 = x_pixel_min;
+        y_translation2 = y_pixel_min;
+        x_scale2 = x_scale1;
+        y_scale2 = y_scale1;
+#endif
 
         create_volume_slice( NEAREST_NEIGHBOUR, 0.0,
                     volume1, position1[axis],

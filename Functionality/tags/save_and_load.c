@@ -6,7 +6,7 @@ private  void   create_tags_array(
     int                n_tag_points,
     tag_point_struct   tag_points[],
     int                which_volume,
-    double             ***tag_array )
+    Real               ***tag_array )
 {
     int   i, tag_index, d;
 
@@ -62,7 +62,7 @@ public  Status   save_tag_points(
     FILE             *file;
     Status           status;
     int              n_volumes, tag_index;
-    double           **tags_volume1, **tags_volume2, ***ptr;
+    Real             **tags_volume1, **tags_volume2, ***ptr;
     char             **labels;
     tag_list_struct  *tags;
     Boolean          *tag_is_valid, both_volumes_flag;
@@ -180,7 +180,7 @@ public  Status   load_tag_points(
     FILE             *file;
     Status           file_status, status;
     int              n_volumes;
-    double           **tags_volume1, **tags_volume2;
+    Real             **tags_volume1, **tags_volume2;
     char             **labels;
     Real             position[N_DIMENSIONS];
 

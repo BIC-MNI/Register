@@ -201,18 +201,13 @@ public  void  convert_original_world_to_world(
     Real           *y_world,
     Real           *z_world )
 {
-    Point      original_world, world;
     Transform  *inverse, *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX &&
         get_tag_point_transform( main, &transform, &inverse ) )
     {
-        fill_Point( original_world, x_original, y_original, z_original );
-        transform_point( transform, &original_world, &world );
-
-        *x_world = Point_x(world);
-        *y_world = Point_y(world);
-        *z_world = Point_z(world);
+        transform_point( transform, x_original, y_original, z_original,
+                                    x_world, y_world, z_world );
     }
     else
     {
@@ -232,18 +227,13 @@ public  void  convert_world_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
-    Point      original_world, world;
     Transform  *inverse, *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX &&
         get_tag_point_transform( main, &transform, &inverse ) )
     {
-        fill_Point( world, x_world, y_world, z_world );
-        transform_point( inverse, &world, &original_world );
-
-        *x_original = Point_x(original_world);
-        *y_original = Point_y(original_world);
-        *z_original = Point_z(original_world);
+        transform_point( inverse, x_world, y_world, z_world,
+                         x_original, y_original, z_original );
     }
     else
     {
@@ -315,17 +305,13 @@ public  void  convert_original_world_to_voxel(
     Real           *y_voxel,
     Real           *z_voxel )
 {
-    Point  original_world, world;
     Real   x_world, y_world, z_world;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
-        fill_Point( original_world, x_original, y_original, z_original );
-        transform_point( &main->resampling_transform, &original_world, &world );
-
-        x_world = Point_x(world);
-        y_world = Point_y(world);
-        z_world = Point_z(world);
+        transform_point( &main->resampling_transform,
+                         x_original, y_original, z_original,
+                         &x_world, &y_world, &z_world );
     }
     else
     {
@@ -349,7 +335,6 @@ public  void  convert_voxel_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
-    Point  world, original;
     Real   world_position[N_DIMENSIONS];
 
     convert_voxel_to_world( get_slice_volume(main,volume_index),
@@ -360,13 +345,9 @@ public  void  convert_voxel_to_original_world(
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
-        fill_Point( world,
-                    world_position[X], world_position[Y], world_position[Z] );
         transform_point( &main->inverse_resampling_transform,
-                         &world, &original );
-        *x_original = Point_x(original);
-        *y_original = Point_y(original);
-        *z_original = Point_z(original);
+                        world_position[X], world_position[Y], world_position[Z],
+                        x_original, y_original, z_original );
     }
     else
     {
@@ -552,4 +533,58 @@ public  Real  get_voxel_value(
         value = 0.0;
 
     return( value );
+}
+
+public  void  set_slice_filter_type(
+    main_struct   *main,
+    int           volume_index,
+    int           view,
+    Filter_types  filter_type )
+{
+    slice_struct   *slice;
+
+    slice = get_slice_struct( main, volume_index, view );
+
+    slice->filter_type = filter_type;
+
+    set_recreate_slice_flag( main, volume_index, view );
+}
+
+public  Filter_types  get_slice_filter_type(
+    main_struct   *main,
+    int           volume_index,
+    int           view )
+{
+    slice_struct   *slice;
+
+    slice = get_slice_struct( main, volume_index, view );
+
+    return( slice->filter_type );
+}
+
+public  void  set_slice_filter_width(
+    main_struct   *main,
+    int           volume_index,
+    int           view,
+    Real          filter_width )
+{
+    slice_struct   *slice;
+
+    slice = get_slice_struct( main, volume_index, view );
+
+    slice->filter_width = filter_width;
+
+    set_recreate_slice_flag( main, volume_index, view );
+}
+
+public  Real  get_slice_filter_width(
+    main_struct   *main,
+    int           volume_index,
+    int           view )
+{
+    slice_struct   *slice;
+
+    slice = get_slice_struct( main, volume_index, view );
+
+    return( slice->filter_width );
 }

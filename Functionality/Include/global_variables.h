@@ -4,7 +4,7 @@ START_GLOBALS
 
     DEF_GLOBAL( Scaling_allowed, Boolean, FALSE )
 
-    DEF_GLOBAL( Use_overlay_planes, Boolean, TRUE )
+    DEF_GLOBAL( Use_overlay_planes, Boolean, FALSE )
     DEF_GLOBAL( Overlay_colour_1, Colour, RED )
     DEF_GLOBAL( Overlay_colour_2, Colour, GREEN )
     DEF_GLOBAL( Overlay_colour_3, Colour, BLUE )
@@ -51,4 +51,7 @@ START_GLOBALS
     DEF_GLOBAL( Use_over_under_colour_in_weights, Boolean, TRUE )
 
     DEF_GLOBAL_STRING( Resample_command_name, "register_resample" )
+
+    DEF_GLOBAL( Initial_slice_filter_type, int, 0 )
+    DEF_GLOBAL( Initial_slice_filter_width, Real, 1.0 )
 END_GLOBALS

@@ -29,7 +29,8 @@ public  Status  resample_the_volume(
 
     create_linear_transform( &gen_transform, transform );
 
-    if( status == OK && !output_transform( file, (char *) NULL, &gen_transform))
+    if( status == OK &&
+        output_transform( file, (char *) NULL, &gen_transform) != OK )
         status = ERROR;
 
     if( status == OK )

@@ -1,7 +1,7 @@
 #ifndef  DEF_EVENTS
 #define  DEF_EVENTS
 
-#include  <def_mni.h>
+#include  <def_graphics.h>
 
 typedef  void  (*event_function_type) ( int, int, void * );
 
