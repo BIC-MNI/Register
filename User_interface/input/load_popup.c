@@ -13,8 +13,9 @@ public  void  initialize_load_popup(
 {
     int                     x, y;
     object_struct           *object;
+    widget_struct           *widget;
 
-    create_popup_window( &load_data->graphics_window, filename,
+    create_popup_window( &load_data->popup, filename,
                          x_position, y_position,
                          Load_popup_x_size, Load_popup_y_size );
 
@@ -33,7 +34,7 @@ public  void  initialize_load_popup(
     position_rectangle( load_data->meter_background, x, y,
                         Load_meter_x_size, Load_meter_y_size );
     
-    add_object_to_viewport( &load_data->graphics_window.graphics, 0,
+    add_object_to_viewport( &load_data->popup.graphics.graphics, 0,
                             NORMAL_PLANES, object );
 
     /* create the meter */
@@ -44,10 +45,10 @@ public  void  initialize_load_popup(
 
     position_rectangle( load_data->meter, x, y, 0, 0 );
 
-    add_object_to_viewport( &load_data->graphics_window.graphics, 0,
+    add_object_to_viewport( &load_data->popup.graphics.graphics, 0,
                             NORMAL_PLANES, object );
 
-    load_data->cancel_widget = create_button( &load_data->graphics_window,
+    widget = create_button( &load_data->popup.graphics,
                    0, Interface_x_spacing, Interface_y_spacing,
                    Button_width, Button_height,
                    "Cancel",
@@ -57,13 +58,14 @@ public  void  initialize_load_popup(
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    cancel_button_callback, (void *) load_data );
+
+    (void) add_widget_to_list( &load_data->popup.widgets, widget );
 }
 
 public  void  delete_load_popup(
     load_struct   *load_data )
 {
-    delete_widget( load_data->cancel_widget );
-    delete_popup_window( &load_data->graphics_window );
+    delete_popup_window( &load_data->popup );
 }
 
 public  void  set_load_popup_meter(
@@ -79,6 +81,6 @@ public  void  set_load_popup_meter(
 
     position_rectangle( load_data->meter, x, y,
                         ROUND( fraction_done * x_size ), y_size );
-    set_viewport_update_flag( &load_data->graphics_window.graphics, 0,
+    set_viewport_update_flag( &load_data->popup.graphics.graphics, 0,
                               NORMAL_PLANES );
 }
