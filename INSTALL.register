@@ -58,16 +58,17 @@ will do the trick.
 		-------------------
 
 
-Register can run in either RGB mode or ColourMap mode. If register
+Register can run in either RGB mode (default) or ColourMap mode. If register
 emits the message
 
 	visual with necessary capabilities not found
 
-when run, then you need to use the other mode.
+when run, then you need to use the other mode.  
 
-You can change the default mode for register by copying the file
-named "register_UI.globals" to the ${prefix}/lib directory, and
-edit to taste.  The sample file tells register to start in rgb mode.
+The mode may be set on the command line using "-rgb" or "-cmap" options.  You
+can change the default mode for register by editing the file named
+"register_UI.globals", which is installed in directory ${prefix}/lib
+directory.
 
 
 

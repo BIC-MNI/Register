@@ -13,3 +13,4 @@ Makefile
 .deps
 dummy.c
 register
+autom4te.cache

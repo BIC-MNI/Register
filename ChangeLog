@@ -1,3 +1,13 @@
+2003-05-29  Steve ROBBINS  <stever@bic.mni.mcgill.ca>
+
+	* User_interface/main/main.c: Use autoconf-generated version
+	string for "-version".
+	(HARD_CODED_REGISTER_DIRECTORY1): Add $(prefix) to top of
+	search list for file "register_UI.globals".
+
+	* Makefile.am (blurg_DATA): Install file "register_UI.globals"
+	into $(libdir).
+
 2001-08-11  Steve M. Robbins  <steve@nyongwa.montreal.qc.ca>
 
 	* configure.in: Bump version to 1.3.3.

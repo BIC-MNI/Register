@@ -1,10 +1,17 @@
 AUTOMAKE_OPTIONS = check-news
+ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = Graphics Functionality UI_calls_F User_interface \
 	Register_resample Tagtoxfm
 
 bin_PROGRAMS = register
 
+# This nonsense is to force automake to install "data" in a "lib"
+# directory.  This is required because "lib_DATA = register_UI.globals"
+# doesn't work (automake 1.7).
+#
+blurgdir = $(libdir)
+blurg_DATA = register_UI.globals
 
 EXTRA_DIST = INSTALL.register  \
 	register_UI.globals    \

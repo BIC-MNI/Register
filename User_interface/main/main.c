@@ -13,15 +13,24 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.21 2001-05-23 04:13:14 stever Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.22 2003-05-29 16:56:57 stever Exp $";
 #endif
 
+#include "config.h"
 #include  <user_interface.h>
 
-private  STRING  version = "1.3      Aug 25, 1998";
+private  STRING  version = VERSION;
 
-#define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
-#define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
+/* Search for "register_UI.globals in  the following
+ * three directories, then in the directory containing argv[0],
+ * $HOME, and ".".
+ *
+ * Hard coded directories 2 and 3 are deprecated and will be removed
+ * in a future release.
+ */
+#define  HARD_CODED_REGISTER_DIRECTORY1    LIBDIR
+#define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/mni/lib"
+#define  HARD_CODED_REGISTER_DIRECTORY3    "/usr/local/lib"
 
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
 #include  <bicpl/globals.h>
@@ -208,9 +217,11 @@ private  void  read_global_files(
     directories = NULL;
 
     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+                          HARD_CODED_REGISTER_DIRECTORY1, DEFAULT_CHUNK_SIZE );
+    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
                           HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );
     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-                          HARD_CODED_REGISTER_DIRECTORY1, DEFAULT_CHUNK_SIZE );
+                          HARD_CODED_REGISTER_DIRECTORY3, DEFAULT_CHUNK_SIZE );
     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
                           runtime_directory, DEFAULT_CHUNK_SIZE );
     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
