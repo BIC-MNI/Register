@@ -1,55 +1,78 @@
-#include  <def_register.h>
+#include  <def_user_interface.h>
 
-public  void  record_window( graphics_window_struct  *graphics_window )
+public  Status   initialize_user_interface( UI_struct  *ui )
 {
-    add_graphics_window( graphics_window );
-    initialize_event_rectangles( &graphics_window->rectangles_actions );
-}
+    Status      status;
 
-#define   REGISTER_GLOBALS_FILENAME   "register.globals"
+    ui->volumes_synced = Initial_volumes_synced;
 
-public  Status   initialize_register( main_struct  *main )
-{
-    Status     status;
+    initialize_ui_colours();
 
-    if( file_exists( REGISTER_GLOBALS_FILENAME ) )
-    {
-        status = input_globals_file( REGISTER_GLOBALS_FILENAME );
-    }
+    initialize_print_popup();
 
-    main->rgb_mode = Initial_rgb_state;
-    main->double_buffer_mode = Initial_double_buffer_state;
-    main->current_buffer = 0;
-    main->interpolation_flag = Initial_interpolation_state;
+    status = G_create_window( Main_window_name, -1, -1,
+                              Initial_window_x_size,
+                              Initial_window_y_size,
+                              &ui->graphics_window.window );
 
-    status = G_create_window( Main_window_name, -1, -1, 900, 900,
-                              &main->graphics_window.window );
+    IF_initialize_register( ui->graphics_window.window );
 
-    record_window( &main->graphics_window );
+    IF_set_interpolation_flag( Initial_interpolation_state );
 
-    G_set_colour_map_state( main->graphics_window.window, !main->rgb_mode );
+    G_set_zbuffer_state( ui->graphics_window.window, OFF );
+    G_set_colour_map_state( ui->graphics_window.window, !Initial_rgb_state );
+    G_set_transparency_state( ui->graphics_window.window, OFF );
+    G_set_double_buffer_state( ui->graphics_window.window,
+                               Initial_double_buffer_state );
 
-    if( main->rgb_mode )
-    {
-        G_set_background_colour( main->graphics_window.window,
-                                 Default_background_colour );
-    }
+    G_set_automatic_clear_state( ui->graphics_window.window, OFF );
 
-    G_set_double_buffer_state( main->graphics_window.window,
-                               main->double_buffer_mode );
+    initialize_graphics_struct( &ui->graphics_window.graphics );
+    initialize_event_viewports( &ui->graphics_window.event_viewports );
+    ui->graphics_window.current_buffer = 0;
 
-    G_set_automatic_clear_state( main->graphics_window.window, FALSE );
+    record_graphics_window( &ui->graphics_window );
 
-    initialize_global_events();
-    install_window_events();
+    initialize_layout( ui );
 
-    initialize_layout( main );
+    set_clear_and_update_flags( ui );
 
-    initialize_slices( main );
+    install_window_events( ui );
 
-    install_quit_events( &main->graphics_window.rectangles_actions );
+    initialize_UI_widgets( ui );
 
-    set_all_update_flags( main );
+    IF_set_volume_colour_coding_type( 0,
+                  (Colour_coding_types) Volume_1_default_colour_coding );
+    IF_set_volume_colour_coding_type( 1,
+                  (Colour_coding_types) Volume_2_default_colour_coding );
+    IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX,
+                  (Colour_coding_types) Volume_1_default_colour_coding );
+    IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX+1,
+                  (Colour_coding_types) Volume_2_default_colour_coding );
+    IF_set_merge_method( (Merge_methods) Initial_merge_method );
+
+    colour_map_state_has_changed( ui );
 
     return( status );
+}
+
+public  void   terminate_user_interface( UI_struct  *ui )
+{
+    int   volume;
+
+    for_less( volume, 0, N_VOLUMES )
+    {
+        if( IF_volume_is_loaded(volume) )
+            IF_delete_volume( volume );
+    }
+
+    IF_terminate_register();
+
+    delete_UI_widgets( ui );
+
+    delete_all_graphics_windows();
+
+    delete_global_events();
+
+    G_terminate();
 }
