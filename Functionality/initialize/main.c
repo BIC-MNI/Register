@@ -15,36 +15,33 @@ main()
     int              i, x, y, z, val, iter;
     Real             dx, dy, dz;
     int              colour_index_offset;
-    int              x_stride, y_stride;
     Real             x_scale[3][3], y_scale[3][3];
     int              x_translation[3][3], y_translation[3][3];
     int              x_offset[3][3], y_offset[3][3];
-    int              a, a1, a2, y_image, sizes[3];
-    int              a_indices[3], a1_indices[3], a2_indices[3];
-    int              x_size, y_size;
-    Real             x_start, y_start, x_end, y_end, x_delta, y_delta;
+    int              a, a1, a2, y_image;
     Pixel_types      pixel_type;
     pixels_struct    pixels[3][3];
     Boolean          interpolation_flag;
-    Volume_type      *volume_start;
-    Volume_type      volume[X_SIZE*Y_SIZE*Z_SIZE];
+    volume_struct    volume;
     Colour           rgb_colour_map[N_VALUES];
-    Real             thickness[3];
     Real             start_time, compute_time, render_time;
 
     pixel_type = RGB_PIXEL;
     interpolation_flag = FALSE;
 
-    sizes[X] = X_SIZE;
-    sizes[Y] = Y_SIZE;
-    sizes[Z] = Z_SIZE;
-
-    thickness[X] = 1.0;
-    thickness[Y] = 1.5;
-    thickness[Z] = 2.0;
-
     for_less( i, 0, N_VALUES )
         rgb_colour_map[i] = make_Colour( i, i, i );
+
+    volume.sizes[X] = X_SIZE;
+    volume.sizes[Y] = Y_SIZE;
+    volume.sizes[Z] = Z_SIZE;
+
+    ALLOC3D( status, volume.data, volume.sizes[X], volume.sizes[Y],
+             volume.sizes[Z] );
+
+    volume.thickness[X] = 1.0;
+    volume.thickness[Y] = 0.3;
+    volume.thickness[Z] = 0.2;
 
     for_less( x, 0, X_SIZE )
     {
@@ -60,7 +57,7 @@ main()
                 if( dz < 0.0 ) dz = -dz;
                 val = (int) ((dx + dy + dz) * (Real) N_VALUES / 2.0 );
                 if( val > N_VALUES-1 )  val = 0;
-                volume[IJK(x,y,z,Y_SIZE,Z_SIZE)] = val;
+                volume.data[x][y][z] = val;
             }
         }
         if( x % 10 == 0 )
@@ -103,9 +100,9 @@ main()
     {
         for_less( y_image, 0, 3 )
         {
+/*
             x_scale[a][y_image] += 0.05;
             y_scale[a][y_image] += 0.03;
-/*
             x_translation[a][y_image] -= 10;
             y_translation[a][y_image] += 30;
 */
@@ -120,67 +117,20 @@ main()
 
         for_less( y_image, 0, 3 )
         {
-            a1_indices[X] = 0;
-            a1_indices[Y] = 0;
-            a1_indices[Z] = 0;
-            a1_indices[a1] = 1;
-
-            x_stride = IJK(a1_indices[X],a1_indices[Y],a1_indices[Z],Y_SIZE,Z_SIZE) -
-                       IJK(0,0,0,Y_SIZE,Z_SIZE);
-
-            a2_indices[X] = 0;
-            a2_indices[Y] = 0;
-            a2_indices[Z] = 0;
-            a2_indices[a2] = 1;
-            y_stride = IJK(a2_indices[X],a2_indices[Y],a2_indices[Z],Y_SIZE,Z_SIZE) -
-                       IJK(0,0,0,Y_SIZE,Z_SIZE);
-
-            a_indices[X] = 0;
-            a_indices[Y] = 0;
-            a_indices[Z] = 0;
-            a_indices[a] = sizes[a] / 2.0;
-            volume_start = &volume[IJK(a_indices[X],a_indices[Y],a_indices[Z],
-                                       Y_SIZE,Z_SIZE)];
-
-            x_start = -0.5;
-            y_start = -0.5;
-            x_end = (Real) sizes[a1] - 0.5;
-            y_end = (Real) sizes[a2] - 0.5;
-
-            x_delta = x_scale[a][y_image] * thickness[a1];
-            y_delta = y_scale[a][y_image] * thickness[a2];
-
-            if( clip_slice_to_viewport( VIEWPORT_SIZE, VIEWPORT_SIZE,
-                                    x_translation[a][y_image],
-                                    y_translation[a][y_image],
-                                    x_delta,
-                                    y_delta,
-                                    x_start,
-                                    y_start,
-                                    x_end,
-                                    y_end,
-                                    &x_start,
-                                    &y_start,
-                                    &x_size,
-                                    &y_size,
-                                    &x_offset[a][y_image],
-                                    &y_offset[a][y_image] ) )
-            {
-                status = initialize_pixels( &pixels[a][y_image], x_size,
-                                            y_size, pixel_type );
-
-                render_volume_to_slice( volume_start, x_stride, y_stride,
-                                        x_start, y_start,
-                                        x_delta, y_delta,
-                                        interpolation_flag, rgb_colour_map,
-                                        colour_index_offset,
-                                        &pixels[a][y_image] );
-            }
-            else
-            {
-                status = initialize_pixels( &pixels[a][y_image], 0, 0,
-                                            pixel_type );
-            }
+            create_volume_slice( &volume, volume.sizes[a] / 2.0,
+                                 a1, FALSE, a2, FALSE,
+                                 x_translation[a][y_image],
+                                 y_translation[a][y_image],
+                                 x_scale[a][y_image],
+                                 y_scale[a][y_image],
+                                 VIEWPORT_SIZE, VIEWPORT_SIZE,
+                                 pixel_type,
+                                 interpolation_flag,
+                                 rgb_colour_map,
+                                 colour_index_offset,
+                                 &x_offset[a][y_image],
+                                 &y_offset[a][y_image],
+                                 &pixels[a][y_image] );
         }
     }
 
