@@ -18,7 +18,7 @@
 #include  <common_include.h>
 
 #ifndef lint
-static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.18 1995-07-31 19:54:09 david Exp $";
+static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.19 1995-10-02 20:13:46 david Exp $";
 #endif
 
 #define  TWO_BUFFERS            2
@@ -47,7 +47,7 @@ typedef  struct
     BOOLEAN         pixels_are_up_to_date;
     int             n_pixels_alloced;
     pixels_struct   *pixels;
-    lines_struct    *cursor_lines;
+    object_struct   *cursor_lines;
 } slice_struct;
 
 typedef struct
@@ -111,6 +111,8 @@ typedef  struct
     int                      degrees_continuity;
     trislice_struct          trislice[N_VOLUMES];
     merged_struct            merged;
+
+    BOOLEAN                  cursor_visibility;
 
     BOOLEAN                  resampled_file_loaded;
     STRING                   original_volume_filename;
