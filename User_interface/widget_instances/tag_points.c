@@ -688,6 +688,8 @@ public  void  update_tag_widgets(
     update_tag_position( ui_info, 0, tag );
     update_tag_position( ui_info, 1, tag );
     update_tag_name( ui_info, tag );
+
+    set_transform_buttons_activity( ui_info, IF_does_transform_exist() );
 }
 
 public  void  update_all_tag_widgets(

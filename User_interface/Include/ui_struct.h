@@ -26,7 +26,9 @@ typedef  enum
 
 typedef struct
 {
-    int   n_tag_points;
+    int   n_tags_displayed;
+    int   first_tag_displayed;
+    int   current_tag_index;
 } tag_points_struct;
 
 typedef  struct

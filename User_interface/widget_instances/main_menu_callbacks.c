@@ -11,6 +11,8 @@ typedef  enum
     LOAD_TAGS_BUTTON,
     TAGS_FILENAME_ENTRY,
     SAVE_TAGS_BUTTON,
+    SAVE_TRANSFORM_BUTTON,
+    TRANSFORM_FILENAME_ENTRY,
     RECORD_TAG_BUTTON,
     DELETE_TAG_BUTTON,
     N_MAIN_WIDGETS
@@ -85,6 +87,21 @@ private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback ) /* ARGSUSED */
                                  [widget_indices[TAGS_FILENAME_ENTRY]] );
 
     IF_save_tags_file( filename );
+}
+
+private  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback ) /* ARGSUSED */
+{
+}
+
+private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback ) /* ARGSUSED */
+{
+    char   *filename;
+
+    filename = get_text_entry_string(
+                     get_ui_struct()->widget_list[Main_menu_viewport].widgets
+                                 [widget_indices[TRANSFORM_FILENAME_ENTRY]] );
+
+    IF_save_transform( filename );
 }
 
 private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
@@ -247,6 +264,34 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    save_tags_button_callback, (void *) 0 ) );
 
+    widget_indices[SAVE_TRANSFORM_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_button( &ui_info->graphics_window,
+                   Main_menu_viewport, 
+                   0, 0, Button_width, Button_height,
+                   "Save Transform",
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   save_transform_button_callback, (void *) 0 ) );
+
+    widget_indices[TRANSFORM_FILENAME_ENTRY] = add_widget_to_list(
+                   &ui_info->widget_list[Main_menu_viewport],
+                   create_text_entry( &ui_info->graphics_window,
+                       Main_menu_viewport, 
+                       0, 0, Tags_filename_width, Text_entry_height,
+                       "", ON,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
+                       TEXT_ENTRY_INACTIVE_COLOUR,
+                       TEXT_ENTRY_TEXT_COLOUR,
+                       TEXT_ENTRY_EDIT_COLOUR,
+                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
+                       TEXT_ENTRY_CURSOR_COLOUR,
+                       Text_entry_font, Text_entry_font_size,
+                       transform_filename_hit_return_callback, (void *) 0 ) );
+
     widget_indices[RECORD_TAG_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
                    create_button( &ui_info->graphics_window,
@@ -304,4 +349,14 @@ public  void  position_main_widgets(
                                                       widgets[widget] ) +
                  Interface_y_spacing;
     }
+}
+
+public  void  set_transform_buttons_activity(
+    UI_struct         *ui_info,
+    Boolean           activity )
+{
+    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
+                         [widget_indices[SAVE_TRANSFORM_BUTTON]], activity );
+    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
+                         [widget_indices[RESAMPLE_BUTTON]], activity );
 }
