@@ -5,7 +5,6 @@ public  Status  resample_the_volume(
     char         resampled_filename[] )
 {
     Status             status;
-    FILE               *file;
     char               command_str[10000];
     STRING             tmp_transform_filename;
     General_transform  *transform;
@@ -18,19 +17,12 @@ public  Status  resample_the_volume(
         status = ERROR;
     }
 
-    if( status == OK )
-    {
-        (void) tmpnam( tmp_transform_filename );
-
-        status = open_file( tmp_transform_filename, WRITE_FILE, ASCII_FORMAT,
-                            &file );
-    }
+    (void) tmpnam( tmp_transform_filename );
+    (void) strcat( tmp_transform_filename, get_default_transform_file_suffix());
 
     if( status == OK )
-        status = output_transform( file, (char *) NULL, transform );
-
-    if( status == OK )
-        status = close_file( file );
+        status = output_transform_file( tmp_transform_filename, NULL,
+                                        transform );
 
     if( status == OK )
     {
