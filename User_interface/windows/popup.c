@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.7 1995-07-31 19:54:34 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.8 1995-10-02 18:35:04 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -52,7 +52,7 @@ private  DEFINE_EVENT_FUNCTION( resize_window_callback )
 
 public  void   create_popup_window(
     popup_struct          *popup,
-    char                  title[],
+    STRING                title,
     int                   x_position,
     int                   y_position,
     int                   x_size,

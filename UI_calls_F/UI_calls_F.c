@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.14 1995-07-31 19:54:17 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.15 1995-10-02 18:34:46 david Exp $";
 #endif
 
 #include  <UI_calls_F.h>
@@ -40,12 +40,12 @@ public  BOOLEAN  IF_is_resampled_volume_loaded()
 }
 
 public  Status  IF_do_resampling(
-    char   resampled_filename[] )
+    STRING   resampled_filename )
 {
     return( resample_the_volume( get_main_struct(), resampled_filename ) );
 }
 
-public  char  *IF_get_volume_filename(
+public  STRING  IF_get_volume_filename(
     int  volume_index )
 {
     return( get_volume_filename( get_main_struct(), volume_index ) );
@@ -72,15 +72,15 @@ public  void  IF_set_merged_slice_visibility(
 public  void  IF_set_volume(
     int     volume_index,
     Volume  volume,
-    char    filename[] )
+    STRING  filename )
 {
     set_register_volume( get_main_struct(), volume_index, volume, filename );
 }
 
 public  void  IF_set_resampled_volume(
     Volume                 volume,
-    char                   filename[],
-    char                   original_filename[],
+    STRING                 filename,
+    STRING                 original_filename,
     General_transform      *resampling_transform )
 {
     set_register_resampled_volume( get_main_struct(), volume, filename,
@@ -396,7 +396,7 @@ public  void  IF_set_tag_point_position(
                             ind, volume_index, position );
 }
 
-public  char  *IF_get_tag_point_name(
+public  STRING  IF_get_tag_point_name(
     int              ind )
 {
     return( get_tag_point_name( get_main_struct(), ind ) );
@@ -404,7 +404,7 @@ public  char  *IF_get_tag_point_name(
 
 public  void  IF_set_tag_point_name(
     int              ind,
-    char             *name )
+    STRING           name )
 {
     set_tag_point_name( get_main_struct(), ind, name );
 }
@@ -436,19 +436,19 @@ public  void  IF_set_tag_point_activity(
 }
 
 public  void  IF_save_tags_file(
-    char   filename[] )
+    STRING   filename )
 {
     (void) save_tag_points( get_main_struct(), filename );
 }
 
 public  void  IF_load_tags_file(
-    char   filename[] )
+    STRING   filename )
 {
     (void) load_tag_points( get_main_struct(), filename );
 }
 
 public  void  IF_save_transform(
-    char   filename[] )
+    STRING   filename )
 {
     (void) save_transform( get_main_struct(), filename );
 }

@@ -5,14 +5,15 @@
 
 int main(int argc, char *argv[])
 {
-    char *pname, *tagfile, *xfmfile;
+    STRING pname, tagfile, xfmfile;
     int i, n_volumes, n_tag_points, n_degrees;
     Real **tags_volume1, **tags_volume2;
     Real rms, tx, ty, tz, dx, dy, dz;
     Trans_type      transform_type;
     General_transform transform;
     FILE *fp;
-    char *type_string, comment[512];
+    STRING type_string;
+    char   comment[EXTREMELY_LARGE_STRING_SIZE];
 
     pname = argv[0];
     initialize_argument_processing( argc, argv );

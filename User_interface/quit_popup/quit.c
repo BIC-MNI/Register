@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/quit_popup/quit.c,v 1.6 1995-07-31 19:54:27 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/quit_popup/quit.c,v 1.7 1995-10-02 18:34:56 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -81,7 +81,8 @@ public  void  popup_quit_confirm(
         initialize_text( text, &point, Message_text_colour,
                          Message_font, Message_font_size );
 
-        (void) strcpy( text->string, "The tag points have not been saved." );
+        replace_string( &text->string,
+                        create_string("The tag points have not been saved.") );
 
         add_object_to_viewport( &popup->graphics.graphics, 0, NORMAL_PLANES,
                                 object );
@@ -95,7 +96,7 @@ public  void  popup_quit_confirm(
     initialize_text( text, &point, Message_text_colour,
                      Message_font, Message_font_size );
 
-    (void) strcpy( text->string, "Do you want to quit?" );
+    replace_string( &text->string, create_string("Do you want to quit?") );
 
     add_object_to_viewport( &popup->graphics.graphics, 0, NORMAL_PLANES,
                             object );

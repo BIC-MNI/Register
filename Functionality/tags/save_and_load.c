@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.12 1995-07-31 19:54:14 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.13 1995-10-02 18:34:44 david Exp $";
 #endif
 
 #include  <register.h>
@@ -50,41 +50,44 @@ private  void   create_tags_array(
     }
 }
 
-private  void  create_comments(
-    main_struct   *main,
-    char          comments[] )
+private  STRING  create_comments(
+    main_struct   *main )
 {
-    char    temp[1000];
-
-    comments[0] = (char) 0;
+    char    buffer1[EXTREMELY_LARGE_STRING_SIZE];
+    char    buffer2[EXTREMELY_LARGE_STRING_SIZE];
 
     if( main->trislice[0].input_flag )
     {
-        (void) sprintf( comments, "Volume: %s\n",
+        (void) sprintf( buffer1, "Volume: %s\n",
                         get_volume_filename(main,0) );
     }
+    else
+        buffer1[0] = (char) 0;
 
     if( main->trislice[1].input_flag )
     {
-        (void) sprintf( temp, "Volume: %s\n",
+        (void) sprintf( buffer2, "Volume: %s\n",
                         get_volume_filename(main,1) );
-        (void) strcat( comments, temp );
     }
+    else
+        buffer2[0] = (char) 0;
+
+    return( concat_strings( buffer1, buffer2 ) );
 }
 
 public  Status   save_tag_points(
     main_struct   *main,
-    char          filename[] )
+    STRING        filename )
 {
     int              i, n_valid_tags;
     FILE             *file;
     Status           status;
     int              n_volumes, tag_index;
     Real             **tags_volume1, **tags_volume2, ***ptr;
-    char             **labels;
+    STRING           *labels;
     tag_list_struct  *tags;
     BOOLEAN          *tag_is_valid, both_volumes_flag;
-    char             comments[1000];
+    STRING           comments;
 
     tags = &main->tags;
 
@@ -144,14 +147,16 @@ public  Status   save_tag_points(
     }
 
     if( n_valid_tags > 0 )
-        ALLOC2D( labels, n_valid_tags, MAX_STRING_LENGTH+1 );
+    {
+        ALLOC( labels, n_valid_tags );
+    }
 
     tag_index = 0;
     for_less( i, 0, tags->n_tag_points )
     {
         if( tag_is_valid[i] )
         {
-            (void) strcpy( labels[tag_index], tags->tag_points[i].name );
+            labels[tag_index] = create_string( tags->tag_points[i].name );
             ++tag_index;
         }
     }
@@ -161,19 +166,25 @@ public  Status   save_tag_points(
 
     if( status == OK )
     {
-        create_comments( main, comments );
+        comments = create_comments( main );
 
         status = output_tag_points( file, comments, n_volumes,
                                     n_valid_tags,
                                     tags_volume1, tags_volume2,
                                     (Real *) NULL, (int *) NULL, (int *) NULL,
                                     labels );
+
+        delete_string( comments );
     }
 
     if( n_valid_tags > 0 )
     {
         FREE2D( tags_volume1 );
-        FREE2D( labels );
+
+        for_less( i, 0, n_valid_tags )
+            delete_string( labels[i] );
+
+        FREE( labels );
 
         if( n_volumes == 2 )
            FREE2D( tags_volume2 );
@@ -192,14 +203,14 @@ public  Status   save_tag_points(
 
 public  Status   load_tag_points(
     main_struct   *main,
-    char          filename[] )
+    STRING        filename )
 {
     int              i, d, n_tag_points;
     FILE             *file;
     Status           file_status, status;
     int              n_volumes;
     Real             **tags_volume1, **tags_volume2;
-    char             **labels;
+    STRING           *labels;
     Real             position[N_DIMENSIONS];
 
     file_status = open_file_with_default_suffix( filename, TAG_FILE_SUFFIX,
@@ -257,19 +268,21 @@ public  Status   load_tag_points(
 
 public  Status   save_transform(
     main_struct   *main,
-    char          filename[] )
+    STRING        filename )
 {
     Status                   status;
     General_transform        *transform;
-    char                     comments[1000];
+    STRING                   comments;
 
     status = OK;
 
     if( get_tag_point_transform( main, &transform ) )
     {
-        create_comments( main, comments );
+        comments = create_comments( main );
 
         status = output_transform_file( filename, comments, transform );
+
+        delete_string( comments );
     }
 
     return( status );

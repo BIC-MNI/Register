@@ -14,7 +14,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.12 1995-07-31 19:54:12 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.13 1995-10-02 18:34:41 david Exp $";
 #endif
 
 #include  <register.h>
@@ -35,7 +35,7 @@ public  BOOLEAN  is_resampled_volume_loaded(
     return( main->resampled_file_loaded );
 }
 
-public  char  *get_volume_filename(
+public  STRING  get_volume_filename(
     main_struct    *main,
     int            volume_index )
 {
@@ -52,7 +52,7 @@ private  void   record_register_volume(
     main_struct    *main,
     int            volume_index,
     Volume         volume,
-    char           filename[] )
+    STRING         filename )
 {
     int     view, axis, sizes[N_DIMENSIONS];
     Real    min_value, max_value, *cursor_ptr;
@@ -65,7 +65,8 @@ private  void   record_register_volume(
     main->trislice[volume_index].volume = volume;
     main->trislice[volume_index].input_flag = TRUE;
 
-    (void) strcpy( main->trislice[volume_index].filename, filename );
+    replace_string( &main->trislice[volume_index].filename,
+                    create_string(filename) );
 
     get_volume_sizes( volume, sizes );
 
@@ -104,7 +105,7 @@ public  void   set_register_volume(
     main_struct    *main,
     int            volume_index,
     Volume         volume,
-    char           filename[] )
+    STRING         filename )
 {
     record_register_volume( main, volume_index, volume, filename );
 
@@ -115,8 +116,8 @@ public  void   set_register_volume(
 public  void   set_register_resampled_volume(
     main_struct            *main,
     Volume                 volume,
-    char                   filename[],
-    char                   original_filename[],
+    STRING                 filename,
+    STRING                 original_filename,
     General_transform      *resampling_transform )
 {
     record_register_volume( main, RESAMPLED_VOLUME_INDEX, volume, filename );
@@ -125,7 +126,8 @@ public  void   set_register_resampled_volume(
 
     delete_general_transform( &main->resampling_transform );
     copy_general_transform( resampling_transform, &main->resampling_transform );
-    (void) strcpy( main->original_volume_filename, original_filename );
+    replace_string( &main->original_volume_filename,
+                    create_string(original_filename) );
 }
 
 public  void  delete_register_volume(

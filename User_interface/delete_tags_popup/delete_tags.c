@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/delete_tags_popup/delete_tags.c,v 1.4 1995-07-31 19:54:20 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/delete_tags_popup/delete_tags.c,v 1.5 1995-10-02 18:34:48 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -80,7 +80,7 @@ public  void  popup_delete_tags(
     initialize_text( text, &point, Message_text_colour,
                      Message_font, Message_font_size );
 
-    (void) strcpy( text->string, "Delete all tag points?" );
+    replace_string( &text->string, create_string("Delete all tag points?") );
 
     add_object_to_viewport( &popup->graphics.graphics, 0, NORMAL_PLANES,
                             object );

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.5 1995-07-31 19:54:36 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.6 1995-10-02 18:35:06 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -55,13 +55,13 @@ public  void  popup_transform_dialog(
 {
     int                          i, x, y;
     popup_struct                 *popup;
-    char                         *window_name = "Transform Type Selection";
+    STRING                       window_name = "Transform Type Selection";
     BOOLEAN                      activity;
     Trans_type                   transform_type;
     static  struct
             {
                 Trans_type           transform_type;
-                char                 *name;
+                STRING               name;
             }                            choices[] = {
          { TRANS_LSQ6,  "3 Rot'ns & 3 Transl'ns" },
          { TRANS_LSQ7,  "3 Rot'ns & 3 Transl'ns & 1 Scale" },

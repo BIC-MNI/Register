@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.30 1995-07-31 19:54:29 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.31 1995-10-02 18:34:59 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -66,7 +66,7 @@ private  DEFINE_WIDGET_CALLBACK( transform_type_callback )
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback )
 {
     General_transform  *transform;
-    char               *filename;
+    STRING             filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
@@ -139,7 +139,7 @@ private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback )
 
 public  void  load_tags_file(
     UI_struct  *ui,
-    char       filename[] )
+    STRING     filename )
 {
     IF_load_tags_file( filename );
 
@@ -151,7 +151,7 @@ public  void  load_tags_file(
 
 private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback )
 {
-    char   *filename;
+    STRING   filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
@@ -175,7 +175,7 @@ private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback )
 
 private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback )
 {
-    char   *filename;
+    STRING   filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
@@ -197,7 +197,7 @@ private  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback )
 
 private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback )
 {
-    char   *filename;
+    STRING   filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/utilities.c,v 1.6 1995-07-31 19:54:33 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/utilities.c,v 1.7 1995-10-02 18:35:03 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -166,24 +166,24 @@ public  BOOLEAN  get_text_entry_real_value(
 
 public  void  set_text_entry_real_value(
     widget_struct     *widget,
-    char              format[],
+    STRING            format,
     Real              value )
 {
-    STRING          string;
+    char          buffer[EXTREMELY_LARGE_STRING_SIZE];
 
-    (void) sprintf( string, format, value );
+    (void) sprintf( buffer, format, value );
 
-    set_text_entry_string( widget, string );
+    set_text_entry_string( widget, buffer );
 }
 
 public  void  set_button_int_value(
     widget_struct     *widget,
-    char              format[],
+    STRING            format,
     int               value )
 {
-    STRING          string;
+    char          buffer[EXTREMELY_LARGE_STRING_SIZE];
 
-    (void) sprintf( string, format, value );
+    (void) sprintf( buffer, format, value );
 
-    set_button_text( widget, string );
+    set_button_text( widget, buffer );
 }

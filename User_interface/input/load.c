@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.18 1995-07-31 19:54:24 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.19 1995-10-02 18:34:52 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -65,13 +65,15 @@ private  void  delete_popup_interaction(
 
     delete_load_popup( data );
 
+    delete_string( data->filename );
+
     FREE( data );
 }
 
 public  Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
-    char       filename[],
+    STRING     filename,
     BOOLEAN    this_is_resampled_volume )
 {
     Status        status;
@@ -82,7 +84,7 @@ public  Status  initialize_loading_volume(
     ALLOC( data, 1 );
 
     data->volume_index = volume;
-    (void) strcpy( data->filename, filename );
+    data->filename = create_string( filename );
     data->this_is_resampled_volume = this_is_resampled_volume;
 
     status = start_volume_input( filename, 3, XYZ_dimension_names,

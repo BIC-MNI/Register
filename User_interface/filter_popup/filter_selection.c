@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.4 1995-07-31 19:54:36 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.5 1995-10-02 18:35:06 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -277,9 +277,12 @@ public  void  popup_filter_selection(
     int                       view_start_index, height;
     Filter_types              filter_type;
     Real                      filter_width;
-    STRING                    window_name;
-    static char               *view_names[] =
-                                 { Filter_name1, Filter_name2, Filter_name3 };
+    char                      window_name[EXTREMELY_LARGE_STRING_SIZE];
+    static STRING             view_names[3];
+
+    view_names[0] = Filter_name1;
+    view_names[1] = Filter_name2;
+    view_names[2] = Filter_name3;
 
     set_filter_popup_activity( ui, volume, OFF );
 

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/text_entry.c,v 1.15 1995-07-31 19:54:33 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/text_entry.c,v 1.16 1995-10-02 18:35:03 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -23,7 +23,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 #define  CONTROL_U    21
 
 private  BOOLEAN  fit_text_within_widget(
-    char         string[],
+    STRING       string,
     Real         x_size,
     int          left_index,
     int          cursor_index,
@@ -35,16 +35,17 @@ private  BOOLEAN  fit_text_within_widget(
 
     i = 0;
 
-    len = strlen( &string[left_index] );
+    replace_string( &text->string, create_string(NULL) );
 
-    text->string[0] = (char) 0;
+    len = string_length( &string[left_index] );
+
     *cursor_position = 0.0;
     width = 0.0;
 
     while( i < len && width <= x_size )
     {
-        text->string[i] = string[left_index+i];
-        text->string[i+1] = (char) 0;
+        concat_char_to_string( &text->string, string[left_index+i] );
+
         width = G_get_text_length( text->string, text->font, text->size );
 
         if( left_index + i + 1 == cursor_index )
@@ -53,10 +54,10 @@ private  BOOLEAN  fit_text_within_widget(
         ++i;
     }
 
-    if( width > x_size )
+    if( width > x_size && i > 0 )
     {
         --i;
-        text->string[i] = (char) 0;
+        text->string[i] = END_OF_STRING;
     }
 
     return( left_index + i >= cursor_index );
@@ -118,20 +119,23 @@ private  void  insert_character_in_text_entry(
     text_entry_struct  *text_entry,
     int                key )
 {
-    int  i, len;
+    int     i, len;
+    STRING  inserted;
+    
+    len = string_length( text_entry->string );
 
-    len = strlen( text_entry->string );
+    inserted = alloc_string( string_length(text_entry->string ) + 1 );
 
-    if( len < MAX_STRING_LENGTH )
-    {
-        for( i = len+1;  i > text_entry->string_index;  --i )
-        {
-            text_entry->string[i] = text_entry->string[i-1];
-        }
+    for_less( i, 0, text_entry->string_index )
+        inserted[i] = text_entry->string[i];
 
-        text_entry->string[text_entry->string_index] = (char) key;
-        ++text_entry->string_index;
-    }
+    for_down( i, len, text_entry->string_index )
+        inserted[i+1] = text_entry->string[i];
+
+    inserted[text_entry->string_index] = (char) key;
+
+    replace_string( &text_entry->string, inserted );
+    ++text_entry->string_index;
 }
 
 private  void  delete_character_in_text_entry(
@@ -141,14 +145,12 @@ private  void  delete_character_in_text_entry(
 
     if( text_entry->string_index > 0 )
     {
-        len = strlen( text_entry->string );
+        len = string_length( text_entry->string );
 
         if( text_entry->string_index <= len )
         {
             for_less( i, text_entry->string_index-1, len )
-            {
                 text_entry->string[i] = text_entry->string[i+1];
-            }
 
             --text_entry->string_index;
         }
@@ -167,12 +169,12 @@ private  void  add_character_to_text_entry(
         break;
 
     case CONTROL_E:
-        text_entry->string_index = strlen(text_entry->string);
+        text_entry->string_index = string_length( text_entry->string );
         break;
 
     case CONTROL_U:
         text_entry->string_index = 0;
-        text_entry->string[0] = (char) 0;
+        replace_string( &text_entry->string, create_string(NULL) );
         break;
 
     case LEFT_ARROW_KEY:
@@ -181,7 +183,7 @@ private  void  add_character_to_text_entry(
         break;
 
     case RIGHT_ARROW_KEY:
-        if( text_entry->string_index < (int) strlen(text_entry->string) )
+        if( text_entry->string_index < string_length( text_entry->string ) )
             ++text_entry->string_index;
         break;
 
@@ -252,12 +254,13 @@ private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
 
     text_entry->in_edit_mode = TRUE;
 
-    (void) strcpy( text_entry->saved_string, text_entry->string );
+    replace_string( &text_entry->saved_string,
+                    create_string(text_entry->string) );
 
     if( text_entry->clear_text_when_selected )
-        text_entry->string[0] = (char) 0;
+        replace_string( &text_entry->string, create_string(NULL) );
 
-    text_entry->string_index = strlen( text_entry->string );
+    text_entry->string_index = string_length( text_entry->string );
 
     set_object_visibility( text_entry->cursor, TRUE );
 
@@ -309,7 +312,7 @@ public  void  position_text_entry(
     }
 }
 
-public  char  *get_text_entry_string(
+public  STRING  get_text_entry_string(
     widget_struct  *widget )
 {
     text_entry_struct   *text_entry;
@@ -320,14 +323,14 @@ public  char  *get_text_entry_string(
 
 public  void  set_text_entry_string(
     widget_struct  *widget,
-    char           string[] )
+    STRING         string )
 {
     text_entry_struct   *text_entry;
 
     text_entry = get_widget_text_entry( widget );
 
-    (void) strncpy( text_entry->string, string, MAX_STRING_LENGTH );
-    text_entry->string[MAX_STRING_LENGTH] = (char) 0;
+    replace_string( &text_entry->string, create_string(string) );
+
     text_entry->left_index = 0;
     text_entry->string_index = 0;
 
@@ -458,6 +461,12 @@ private  void  create_text_entry_graphics(
 public  void  delete_text_entry(
     widget_struct  *widget )
 {
+    text_entry_struct     *text_entry;
+
+    text_entry = get_widget_text_entry( widget );
+
+    delete_string( text_entry->string );
+    delete_string( text_entry->saved_string );
 }
 
 private  widget_struct  *create_a_text_entry(
@@ -469,7 +478,7 @@ private  widget_struct  *create_a_text_entry(
     int                        y_size,
     BOOLEAN                    label_only_flag,
     BOOLEAN                    clear_text_when_selected,
-    char                       initial_text[],
+    STRING                     initial_text,
     BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
@@ -506,7 +515,8 @@ private  widget_struct  *create_a_text_entry(
     text_entry->string_index = 0;
     text_entry->left_index = 0;
 
-    (void) strcpy( text_entry->string, initial_text );
+    text_entry->string = create_string( initial_text );
+    text_entry->saved_string = create_string( NULL );
 
     if( !text_entry->label_only_flag )
     {
@@ -540,7 +550,7 @@ public  widget_struct  *create_text_entry(
     int                        x_size,
     int                        y_size,
     BOOLEAN                    clear_text_when_selected,
-    char                       initial_text[],
+    STRING                     initial_text,
     BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,
@@ -571,7 +581,7 @@ public  widget_struct  *create_label(
     int                        y,
     int                        x_size,
     int                        y_size,
-    char                       initial_text[],
+    STRING                     initial_text,
     BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 selected_colour,

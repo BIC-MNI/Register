@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample.c,v 1.7 1995-07-31 19:54:27 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample.c,v 1.8 1995-10-02 18:34:57 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -21,15 +21,13 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 public  void  do_resampling(
     UI_struct           *ui,
     General_transform   *resampling_transform,
-    char                resampled_filename[] )
+    STRING              resampled_filename )
 {
-    STRING                  output_filename;
+    replace_string( &ui->original_filename_volume_2,
+               create_string(IF_get_volume_filename(RESAMPLED_VOLUME_INDEX)) );
 
-    (void) strcpy( ui->original_filename_volume_2,
-                   IF_get_volume_filename(RESAMPLED_VOLUME_INDEX) );
-
-    expand_filename( resampled_filename, output_filename );
-    (void) strcpy( ui->resampled_filename, resampled_filename );
+    replace_string( &ui->resampled_filename,
+                    expand_filename( resampled_filename ) );
 
     delete_general_transform( &ui->resampling_transform );
     copy_general_transform( resampling_transform, &ui->resampling_transform );
@@ -40,10 +38,8 @@ public  void  do_resampling(
 
     if( IF_do_resampling( resampled_filename ) == OK )
     {
-        (void) initialize_loading_volume( get_ui_struct(),
-                                          RESAMPLED_VOLUME_INDEX,
-                                          get_ui_struct()->resampled_filename,
-                                          TRUE );
+        (void) initialize_loading_volume( ui, RESAMPLED_VOLUME_INDEX,
+                                          ui->resampled_filename, TRUE );
     }
     else
         print( "Resampling failed.\n" );

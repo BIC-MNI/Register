@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.7 1995-07-31 19:54:26 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.8 1995-10-02 18:34:55 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -24,12 +24,11 @@ typedef  struct
     Real                    expiration_time;
 } message_struct;
 
-static  char     *output;
-static  int      n_chars = 0;
+static  STRING   output = NULL;
 static  BOOLEAN  create_new_window = TRUE;
 
-private  void  output_chars( char [] );
-private  void  create_message_popup( char [] );
+private  void  output_chars( STRING );
+private  void  create_message_popup( STRING );
 private  DEFINE_EVENT_FUNCTION( check_to_expire_popup );
 
 public  void  initialize_print_popup()
@@ -54,19 +53,15 @@ private  DEFINE_EVENT_FUNCTION( create_the_window )
 
     create_message_popup( output );
 
-    if( n_chars > 0 )
-        FREE( output );
-
-    n_chars = 0;
+    delete_string( output );
+    output = NULL;
 
     initialize_print_popup();
 }
 
 private  void  output_chars(
-    char   str[] )
+    STRING   str )
 {
-    int   new_size;
-
     disable_print_popup();
 
     if( create_new_window )
@@ -76,13 +71,7 @@ private  void  output_chars(
                                    ANY_MODIFIER, (void *) NULL );
     }
 
-    new_size = strlen( str ) + n_chars + 1;
-
-    SET_ARRAY_SIZE( output, n_chars, new_size, DEFAULT_CHUNK_SIZE );
-
-    (void) strcpy( &output[n_chars], str );
-
-    n_chars = new_size - 1;
+    concat_to_string( &output, str );
 
     initialize_print_popup();
 }
@@ -127,12 +116,12 @@ private  DEFINE_EVENT_FUNCTION( check_to_expire_popup )
 }
 
 private  void  create_message_popup(
-    char   string[] )
+    STRING   string )
 {
     int                     i, n_lines, x, y, x_size, y_size;
     Real                    max_length, graphics_length;
     Point                   point;
-    char                    *ptr;
+    STRING                  ptr;
     object_struct           *object;
     object_struct           **text_objects;
     widget_struct           *widget;
@@ -147,7 +136,7 @@ private  void  create_message_popup(
     ptr = string;
     max_length = 0.0;
 
-    while( *ptr != (char) 0 )
+    while( *ptr != END_OF_STRING )
     {
         object = create_object( TEXT );
         text = get_text_ptr( object );
@@ -156,16 +145,14 @@ private  void  create_message_popup(
         ADD_ELEMENT_TO_ARRAY( text_objects, n_lines, object,
                               DEFAULT_CHUNK_SIZE );
 
-        i = 0;
-        while( *ptr != (char) 0 && *ptr != '\n' && i < MAX_STRING_LENGTH )
+        while( *ptr != END_OF_STRING && *ptr != '\n' )
         {
-            text->string[i] = *ptr;
-            ++i;
+            concat_char_to_string( &text->string, *ptr );
             ++ptr;
         }
+
         if( *ptr == '\n' )
             ++ptr;
-        text->string[i] = (char) 0;
 
         graphics_length = G_get_text_length( text->string, text->font,
                                              text->size );

@@ -13,16 +13,19 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.14 1995-07-31 19:54:25 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.15 1995-10-02 18:34:54 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  Status   initialize_user_interface( UI_struct  *ui )
+public  Status   initialize_user_interface(
+    UI_struct  *ui )
 {
     Status      status;
 
     ui->volumes_synced = Initial_volumes_synced;
+    ui->original_filename_volume_2 = create_string( NULL );
+    ui->resampled_filename = create_string( NULL );
 
     create_linear_transform( &ui->resampling_transform, (Transform *) NULL );
 
@@ -96,9 +99,13 @@ public  Status   initialize_user_interface( UI_struct  *ui )
     return( status );
 }
 
-public  void   terminate_user_interface( UI_struct  *ui )
+public  void   terminate_user_interface(
+    UI_struct  *ui )
 {
     int   volume;
+
+    delete_string( ui->original_filename_volume_2 );
+    delete_string( ui->resampled_filename );
 
     for_less( volume, 0, N_VOLUMES )
     {

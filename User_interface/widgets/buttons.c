@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.15 1995-07-31 19:54:32 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.16 1995-10-02 18:35:02 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -222,13 +222,13 @@ public  void  set_toggle_button_state(
 
 public  void  set_button_text(
     widget_struct    *widget,
-    char             text_string[] )
+    STRING           text_string )
 {
     button_struct    *button;
 
     button = get_widget_button( widget );
 
-    (void) strcpy( button->text->string, text_string );
+    replace_string( &button->text->string, create_string(text_string) );
     position_text_centred( button->text, widget->x, widget->y,
                            widget->x_size, widget->y_size );
 
@@ -249,7 +249,7 @@ public  void  update_button_activity(
 
 private  void  create_button_graphics(
     widget_struct    *widget,
-    char             label[],
+    STRING           label,
     Font_types       text_font,
     Real             font_size )
 {
@@ -286,6 +286,9 @@ public  void  delete_button(
 
     button = get_widget_button( widget );
 
+    delete_string( button->toggle_text[0] );
+    delete_string( button->toggle_text[1] );
+
     if( button->update_counter >= 0 )
     {
         button->update_counter = -1;
@@ -303,8 +306,8 @@ private  widget_struct  *create_a_button(
     int                        y_size,
     BOOLEAN                    toggle_flag,
     BOOLEAN                    initial_state,
-    char                       text1[],
-    char                       text2[],
+    STRING                     text1,
+    STRING                     text2,
     BOOLEAN                    initial_activity,
     BOOLEAN                    use_ui_colours,
     UI_colours                 active_colour,
@@ -338,12 +341,14 @@ private  widget_struct  *create_a_button(
     if( toggle_flag )
     {
         button->state = initial_state;
-        (void) strcpy( button->toggle_text[0], text1 );
-        (void) strcpy( button->toggle_text[1], text2 );
+        button->toggle_text[0] = create_string( text1 );
+        button->toggle_text[1] = create_string( text2 );
     }
     else
     {
         button->selected_colour = selected_colour;
+        button->toggle_text[0] = create_string( NULL );
+        button->toggle_text[1] = create_string( NULL );
     }
 
     button->push_callback = push_callback;
@@ -374,7 +379,7 @@ public  widget_struct *create_button(
     int                        y,
     int                        x_size,
     int                        y_size,
-    char                       label[],
+    STRING                     label,
     BOOLEAN                    initial_activity,
     BOOLEAN                    use_ui_colours,
     UI_colours                 active_colour,
@@ -389,7 +394,7 @@ public  widget_struct *create_button(
 {
     return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
-                     FALSE, FALSE, label, (char *) 0,
+                     FALSE, FALSE, label, NULL,
                      initial_activity, use_ui_colours, active_colour,
                      selected_colour, inactive_colour,
                      pushed_colour, text_colour,
@@ -403,8 +408,8 @@ public  widget_struct  *create_toggle_button(
     int                        y,
     int                        x_size,
     int                        y_size,
-    char                       off_text[],
-    char                       on_text[],
+    STRING                     off_text,
+    STRING                     on_text,
     BOOLEAN                    initial_state,
     BOOLEAN                    initial_activity,
     BOOLEAN                    use_ui_colours,

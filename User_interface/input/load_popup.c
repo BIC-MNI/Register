@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load_popup.c,v 1.8 1995-07-31 19:54:24 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load_popup.c,v 1.9 1995-10-02 18:34:52 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -36,7 +36,7 @@ public  void  initialize_load_popup(
     load_struct   *load_data,
     int           x_position,
     int           y_position,
-    char          filename[] )
+    STRING        filename )
 {
     widget_struct  *widget;
 

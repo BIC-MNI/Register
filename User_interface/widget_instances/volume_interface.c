@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.13 1995-07-31 19:54:31 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.14 1995-10-02 18:35:01 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -62,7 +62,7 @@ public  DEFINE_WIDGET_CALLBACK( popup_filter_callback )
 
 private  DEFINE_WIDGET_CALLBACK( load_volume_callback )
 {
-    char       *filename;
+    STRING     filename;
     int        viewport_index;
 
     viewport_index = widget->viewport_index;
@@ -210,7 +210,7 @@ public  void  set_load_activity(
 public  void  set_load_filename(
     UI_struct         *ui_info,
     int               volume_index,
-    char              filename[] )
+    STRING            filename )
 {
     Viewport_types   viewport_index;
 

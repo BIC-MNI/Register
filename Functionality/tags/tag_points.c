@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.8 1995-07-31 19:54:15 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.9 1995-10-02 18:34:44 david Exp $";
 #endif
 
 #include  <register.h>
@@ -61,7 +61,10 @@ public  void  delete_tag_points(
     int   i;
 
     for_less( i, 0, main->tags.n_tag_points )
+    {
         delete_tag_objects( main, &main->tags.tag_points[i] );
+        delete_string( main->tags.tag_points[i].name );
+    }
 
     if( main->tags.n_tag_points > 0 )
         FREE( main->tags.tag_points );
@@ -69,6 +72,9 @@ public  void  delete_tag_points(
     main->tags.transform_out_of_date = TRUE;
     main->tags.saved_flag = TRUE;
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
+
+    if( main->tags.transform_exists )
+        delete_general_transform( &main->tags.v2_to_v1_transform );
 }
 
 public  void  create_new_tag_point(
@@ -85,7 +91,7 @@ public  void  create_new_tag_point(
 
     create_tag_objects( main, &tag );
 
-    tag.name[0] = (char) 0;
+    tag.name = create_string( NULL );
     tag.activity = ON;
 
     ADD_ELEMENT_TO_ARRAY( main->tags.tag_points, main->tags.n_tag_points, tag,
@@ -96,6 +102,7 @@ public  void  delete_tag_point(
     main_struct      *main,
     int              ind )
 {
+    delete_string( main->tags.tag_points[ind].name );
     delete_tag_objects( main, &main->tags.tag_points[ind] );
     DELETE_ELEMENT_FROM_ARRAY( main->tags.tag_points, main->tags.n_tag_points,
                                ind, DEFAULT_CHUNK_SIZE );
@@ -160,16 +167,16 @@ public  void  set_tag_point_position(
     }
 }
 
-public  char  *get_tag_point_name(
+public  STRING  get_tag_point_name(
     main_struct      *main,
     int              ind )
 {
-    char   *name;
+    STRING   name;
 
     if( ind < main->tags.n_tag_points )
         name = main->tags.tag_points[ind].name;
     else
-        name = (char *) NULL;
+        name = NULL;
 
     return( name );
 }
@@ -177,11 +184,11 @@ public  char  *get_tag_point_name(
 public  void  set_tag_point_name(
     main_struct      *main,
     int              ind,
-    char             *name )
+    STRING           name )
 {
     if( ind < main->tags.n_tag_points )
     {
-        (void) strcpy( main->tags.tag_points[ind].name, name );
+        replace_string( &main->tags.tag_points[ind].name, create_string(name) );
         main->tags.saved_flag = FALSE;
     }
 }

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.4 1995-07-31 19:54:13 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.5 1995-10-02 18:34:43 david Exp $";
 #endif
 
 #include  <register.h>
@@ -23,13 +23,13 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 private  int  frame_number = 1;
 
 private  void  save_rgb_image(
-    char   filename[],
-    int    x_min,
-    int    x_max,
-    int    y_min,
-    int    y_max )
+    STRING   filename,
+    int      x_min,
+    int      x_max,
+    int      y_min,
+    int      y_max )
 {
-    STRING   command;
+    char   command[EXTREMELY_LARGE_STRING_SIZE];
 
     (void) sprintf( command, "scrsave %s %d %d %d %d", filename, x_min, x_max,
                                                        y_min, y_max );
@@ -52,7 +52,7 @@ public  void  save_image(
     int     x_size, y_size;
     int     viewport_x_min, viewport_y_min, viewport_x_max, viewport_y_max;
     int     x_origin, y_origin;
-    STRING  filename;
+    char    filename[EXTREMELY_LARGE_STRING_SIZE];
 
     if( !is_volume_active( main_info, volume_index ) )
         return;

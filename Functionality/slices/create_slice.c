@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.24 1995-07-31 19:54:11 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.25 1995-10-02 18:34:40 david Exp $";
 #endif
 
 #include  <register.h>
@@ -58,7 +58,7 @@ public  void  create_slice_pixels(
                          (Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
                          (Real *) NULL, (Real *) NULL, (Real *) NULL,
                          0.0, 0.0, 0.0, 0.0,
-                         x_size, y_size, pixel_type,
+                         x_size, y_size, 0, -1, 0, -1, pixel_type,
                          main->degrees_continuity,
                          &cmode_colour_map,
                          &rgb_colour_map, make_rgba_Colour( 0, 0, 0, 0 ),
@@ -211,7 +211,7 @@ public  void  create_merged_pixels(
                     volume2, filter_type, filter_width,
                     origin2, x_axis2, y_axis2,
                     x_translation2, y_translation2, x_scale2, y_scale2,
-                    x_size, y_size, pixel_type,
+                    x_size, y_size, 0, -1, 0, -1, pixel_type,
                     main->degrees_continuity,
                     main->merged.cmode_colour_map,
                     main->merged.rgb_colour_map,

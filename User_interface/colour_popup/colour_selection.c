@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.7 1995-07-31 19:54:20 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.8 1995-10-02 18:34:47 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -72,10 +72,10 @@ public  void  popup_colour_selection(
     int                       i, x, y;
     widget_struct             *widget;
     colour_selection_struct   *popup;
-    static  char              *over_under_names[] = { "Under", "Over" };
-    STRING                    window_name;
+    static  STRING            over_under_names[] = { "Under", "Over" };
+    char                      window_name[EXTREMELY_LARGE_STRING_SIZE];
     Colour                    colour;
-    static  char              *colours[] = { "BLACK", "WHITE",
+    static  STRING            colours[] = { "BLACK", "WHITE",
                                             "RED", "GREEN", "BLUE",
                                             "CYAN", "MAGENTA", "YELLOW",
                                             "ORANGE" };

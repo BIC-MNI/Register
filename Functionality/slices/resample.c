@@ -13,17 +13,18 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/resample.c,v 1.7 1995-07-31 19:54:13 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/resample.c,v 1.8 1995-10-02 18:34:43 david Exp $";
 #endif
 
 #include  <register.h>
 
 public  Status  resample_the_volume(
     main_struct  *main,
-    char         resampled_filename[] )
+    STRING       resampled_filename )
 {
     Status             status;
-    char               command_str[10000];
+    char               command_str[EXTREMELY_LARGE_STRING_SIZE];
+    char               tmp_name[L_tmpnam];
     STRING             tmp_transform_filename;
     General_transform  *transform;
 
@@ -35,9 +36,11 @@ public  Status  resample_the_volume(
         status = ERROR;
     }
 
-    (void) tmpnam( tmp_transform_filename );
-    (void) strcat( tmp_transform_filename, "." );
-    (void) strcat( tmp_transform_filename, get_default_transform_file_suffix());
+    (void) tmpnam( tmp_name );
+
+    tmp_transform_filename = concat_strings( tmp_name, "." );
+    concat_to_string( &tmp_transform_filename,
+                      get_default_transform_file_suffix() );
 
     if( status == OK )
         status = output_transform_file( tmp_transform_filename, NULL,
@@ -56,6 +59,8 @@ public  Status  resample_the_volume(
 
         remove_file( tmp_transform_filename );
     }
+
+    delete_string( tmp_transform_filename );
 
     return( status );
 }

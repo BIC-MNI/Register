@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.10 1995-07-31 19:54:26 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.11 1995-10-02 18:34:54 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -37,17 +37,19 @@ int  main(
     char  *argv[] )
 {
     int              n_volumes;
-    char             *filename;
+    STRING           filename;
     STRING           home_filename;
     Status           status;
 
     initialize_global_colours();
 
-    (void) sprintf( home_filename, "$HOME/%s", UI_GLOBALS_FILENAME );
+    home_filename = get_absolute_filename( UI_GLOBALS_FILENAME, "$HOME" );
 
     if( file_exists( home_filename ) )
         status = input_globals_file( SIZEOF_STATIC_ARRAY(UI_globals_list),
                           UI_globals_list, home_filename );
+
+    delete_string( home_filename );
 
     if( file_exists( UI_GLOBALS_FILENAME ) )
         status = input_globals_file( SIZEOF_STATIC_ARRAY(UI_globals_list),
@@ -77,6 +79,9 @@ int  main(
     event_loop();
 
     terminate_user_interface( &ui_struct );
+
+    delete_global_variables( SIZEOF_STATIC_ARRAY(UI_globals_list),
+                             UI_globals_list );
 
     output_alloc_to_file( ".register.alloc_debug" );
 

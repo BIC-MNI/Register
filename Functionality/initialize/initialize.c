@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.13 1995-07-31 19:54:10 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.14 1995-10-02 18:34:39 david Exp $";
 #endif
 
 #include  <register.h>
@@ -41,7 +41,7 @@ public  Status   initialize_register( window_struct  *window )
 
     initialize_global_colours();
 
-    (void) sprintf( home_filename, "$HOME/%s", REGISTER_GLOBALS_FILENAME );
+    home_filename = get_absolute_filename( REGISTER_GLOBALS_FILENAME, "$HOME" );
 
     if( file_exists( home_filename ) )
     {
@@ -54,6 +54,8 @@ public  Status   initialize_register( window_struct  *window )
         status = input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
                           functional_globals, REGISTER_GLOBALS_FILENAME );
     }
+
+    delete_string( home_filename );
 
     if( Disable_alloc_checking )
         set_alloc_checking( OFF );
@@ -76,6 +78,11 @@ public  Status   initialize_register( window_struct  *window )
     initialize_slices( &main_info );
 
     initialize_tag_points( &main_info );
+
+    main_info.original_volume_filename = create_string( NULL );
+
+    for_less( volume, 0, N_VOLUMES )
+        main_info.trislice[volume].filename = create_string( NULL );
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
     {
@@ -101,6 +108,13 @@ public  Status   initialize_register( window_struct  *window )
 
 public  void   terminate_register()
 {
+    int   volume;
+
+    delete_string( main_info.original_volume_filename );
+
+    for_less( volume, 0, N_VOLUMES )
+        delete_string( main_info.trislice[volume].filename );
+
     terminate_slices( &main_info );
 
     /* --- since delete_tag_points() makes calls to remove objects from the
@@ -110,6 +124,8 @@ public  void   terminate_register()
     delete_graphics_struct( &main_info.graphics );
 
     delete_render_storage( main_info.render_storage );
+
+    delete_general_transform( &main_info.resampling_transform );
 }
 
 private  void    initialize_global_colours()

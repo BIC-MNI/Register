@@ -1,5 +1,5 @@
 START_GLOBALS
-    DEF_GLOBAL_STRING( Main_window_name, "Register" )
+    DEF_GLOBAL( Main_window_name, STRING, "Register" )
 
     DEF_GLOBAL( Initial_rgb_state, BOOLEAN, FALSE )
     DEF_GLOBAL( Initial_double_buffer_state, BOOLEAN, TRUE )
@@ -84,7 +84,7 @@ START_GLOBALS
     DEF_GLOBAL( Position_label_width, int, 15 )
     DEF_GLOBAL( Position_values_width, int, 35 )
     DEF_GLOBAL( Position_values_separation, int, 5 )
-    DEF_GLOBAL_STRING( Position_values_format, "%.1lf" )
+    DEF_GLOBAL( Position_values_format, STRING, "%.1lf" )
 
     DEF_GLOBAL( Filter_selection_x_size, int, 360 )
     DEF_GLOBAL( Filter_selection_y_size, int, 340 )
@@ -93,9 +93,9 @@ START_GLOBALS
     DEF_GLOBAL( Full_width_label_width, int, 70 )
     DEF_GLOBAL( Full_width_text_width, int, 40 )
     DEF_GLOBAL( Filter_view_label_width, int, 100 )
-    DEF_GLOBAL_STRING( Filter_name1, "Transverse Filter" )
-    DEF_GLOBAL_STRING( Filter_name2, "Sagittal Filter" )
-    DEF_GLOBAL_STRING( Filter_name3, "Coronal Filter" )
+    DEF_GLOBAL( Filter_name1, STRING, "Transverse Filter" )
+    DEF_GLOBAL( Filter_name2, STRING, "Sagittal Filter" )
+    DEF_GLOBAL( Filter_name3, STRING, "Coronal Filter" )
 
     DEF_GLOBAL( Label_text_font, int, (int) SIZED_FONT )
     DEF_GLOBAL( Label_text_font_size, Real, 10.0 )
@@ -132,19 +132,19 @@ START_GLOBALS
 
     DEF_GLOBAL( Colour_bar_slider_width, int, 150 )
     DEF_GLOBAL( Colour_bar_slider_height, int, 10 )
-    DEF_GLOBAL_STRING( Colour_bar_text_format, "%.3g" )
+    DEF_GLOBAL( Colour_bar_text_format, STRING, "%.3g" )
 
     DEF_GLOBAL( Opacity_slider_width, int, 150 )
     DEF_GLOBAL( Opacity_slider_height, int, 10 )
-    DEF_GLOBAL_STRING( Opacity_text_format, "%.2lf" )
+    DEF_GLOBAL( Opacity_text_format, STRING, "%.2lf" )
 
     DEF_GLOBAL( Avg_rms_label_width, int, 35 )
     DEF_GLOBAL( Avg_rms_number_width, int, 45 )
     DEF_GLOBAL( Rms_button_width, int, 35 )
     DEF_GLOBAL( Rms_number_width, int, 45 )
     DEF_GLOBAL( Tag_world_button_width, int, 50 )
-    DEF_GLOBAL_STRING( Rms_error_format, "%5.1f" )
-    DEF_GLOBAL_STRING( Tag_number_format, "%2d:" )
+    DEF_GLOBAL( Rms_error_format, STRING, "%5.1f" )
+    DEF_GLOBAL( Tag_number_format, STRING, "%2d:" )
     DEF_GLOBAL( Default_n_tag_points, int, 5 )
     DEF_GLOBAL( Tag_number_button_width, int, 30 )
     DEF_GLOBAL( Tag_position_label_width, int, 40 )
@@ -183,7 +183,7 @@ START_GLOBALS
     DEF_GLOBAL( Delete_tags_y_size, int, 60 )
 
     DEF_GLOBAL( Value_readout_width, int, 50 )
-    DEF_GLOBAL_STRING( Readout_values_format, "%g" )
+    DEF_GLOBAL( Readout_values_format, STRING, "%g" )
 
     DEF_GLOBAL( Seconds_per_resample, Real, 0.1 )
 

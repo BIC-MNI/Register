@@ -50,7 +50,7 @@ START_GLOBALS
     DEF_GLOBAL( Initial_merged_2_weight, Real, 0.5 )
     DEF_GLOBAL( Use_over_under_colour_in_weights, BOOLEAN, TRUE )
 
-    DEF_GLOBAL_STRING( Resample_command_name, "register_resample" )
+    DEF_GLOBAL( Resample_command_name, STRING, "register_resample" )
 
     DEF_GLOBAL( Initial_slice_filter_type, int, 0 )
     DEF_GLOBAL( Initial_slice_filter_width, Real, 1.0 )

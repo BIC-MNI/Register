@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/sliders.c,v 1.13 1995-07-31 19:54:32 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/sliders.c,v 1.14 1995-10-02 18:35:02 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -551,6 +551,8 @@ public  void  delete_slider(
 
     slider = get_widget_slider( widget );
 
+    delete_string( slider->format_string );
+
     delete_widget( slider->text_widgets[0] );
 
     if( slider->colour_bar_flag )
@@ -570,7 +572,7 @@ private  widget_struct  *create_a_slider(
     Real                       min_value,
     Real                       max_value,
     BOOLEAN                    values_allowed_outside_range,
-    char                       format_string[],
+    STRING                     format_string,
     BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
@@ -598,7 +600,7 @@ private  widget_struct  *create_a_slider(
     slider->max_value = max_value;
     slider->values_allowed_outside_range = values_allowed_outside_range;
     slider->values[0] = initial_low_value;
-    (void) strcpy( slider->format_string, format_string );
+    slider->format_string = create_string( format_string );
 
     slider->colour_bar_flag = colour_bar_flag;
     slider->value_changed_callback[0] = lower_value_callback;
@@ -683,7 +685,7 @@ public  widget_struct  *create_slider(
     Real                       initial_value,
     Real                       min_value,
     Real                       max_value,
-    char                       format_string[],
+    STRING                     format_string,
     BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,
@@ -711,7 +713,7 @@ public  widget_struct  *create_colour_bar_slider(
     Real                       initial_high_value,
     Real                       min_value,
     Real                       max_value,
-    char                       format_string[],
+    STRING                     format_string,
     BOOLEAN                    initial_activity,
     UI_colours                 active_colour,
     UI_colours                 inactive_colour,

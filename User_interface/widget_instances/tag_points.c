@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/tag_points.c,v 1.18 1995-07-31 19:54:31 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/tag_points.c,v 1.19 1995-10-02 18:35:00 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -142,8 +142,8 @@ private  void  set_current_tag_from_button(
 
 private  DEFINE_WIDGET_CALLBACK( tag_name_callback )
 {
-    int   tag_index;
-    char  *name;
+    int     tag_index;
+    STRING  name;
 
     name = get_text_entry_string( widget );
     tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
@@ -668,7 +668,7 @@ private  void  update_tag_name(
     UI_struct         *ui_info,
     int               tag )
 {
-    char           *name;
+    STRING         name;
     int            tag_index;
     BOOLEAN        exists;
     widget_struct  *widget;

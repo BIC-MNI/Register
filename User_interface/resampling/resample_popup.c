@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample_popup.c,v 1.5 1995-07-31 19:54:28 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample_popup.c,v 1.6 1995-10-02 18:34:57 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -36,7 +36,7 @@ public  void  initialize_resample_popup(
     resample_volume_struct   *data,
     int                      x_position,
     int                      y_position,
-    char                     filename[] )
+    STRING                   filename )
 {
     widget_struct   *widget;
 
