@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.18 1995-12-11 19:31:30 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.19 1995-12-19 15:46:58 david Exp $";
 #endif
 
 #include  <register.h>
@@ -518,18 +518,19 @@ public  void  get_volume_range_of_voxels(
     Real    real_min, real_max;
     Volume  volume;
 
+    *min_value = 0;
+    *max_value = -1;
+
     if( is_volume_active( main, volume_index ) )
     {
         volume = get_slice_volume( main, volume_index );
 
-        get_volume_voxel_range( volume, &real_min, &real_max );
-        *min_value = ROUND( real_min );
-        *max_value = ROUND( real_max );
-    }
-    else
-    {
-        *min_value = 0;
-        *max_value = -1;
+        if( !is_an_rgb_volume(volume) )
+        {
+            get_volume_voxel_range( volume, &real_min, &real_max );
+            *min_value = ROUND( real_min );
+            *max_value = ROUND( real_max );
+        }
     }
 }
 

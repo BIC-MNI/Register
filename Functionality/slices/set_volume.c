@@ -14,7 +14,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.15 1995-12-11 19:31:29 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.16 1995-12-19 15:46:58 david Exp $";
 #endif
 
 #include  <register.h>
@@ -78,8 +78,7 @@ private  void   record_register_volume(
     for_less( view, 0, N_VIEWS )
     {
         set_viewport_objects_visibility( &main->graphics,
-                                get_slice_viewport_index(volume_index,view),
-                                ON );
+                              get_slice_viewport_index(volume_index,view), ON );
 
         initialize_slice_view( main, volume_index, view );
         update_slice_tag_objects( main, volume_index, view );
@@ -211,6 +210,7 @@ public  Status  start_loading_volume(
     minc_input_options     options;
 
     set_default_minc_input_options( &options );
+
     set_minc_input_vector_to_colour_flag( &options, Convert_vectors_to_rgb );
 
     status = start_volume_input( filename, 3, XYZ_dimension_names,
@@ -218,6 +218,24 @@ public  Status  start_loading_volume(
                               &main->trislice[volume_index].volume_being_input,
                               &options,
                               &main->trislice[volume_index].volume_input );
+
+    if( status == OK &&
+        is_an_rgb_volume(main->trislice[volume_index].volume_being_input) &&
+        G_get_colour_map_state( main->window ) )
+    {
+        print( "Warning: reading rgb volume as intensity volume.\n" );
+        print( "         This is because the program is in colour map mode.\n");
+
+        cancel_loading_volume( main, volume_index );
+
+        set_minc_input_vector_to_colour_flag( &options, FALSE );
+
+        status = start_volume_input( filename, 3, XYZ_dimension_names,
+                              NC_BYTE, FALSE, 0.0, 0.0, TRUE,
+                              &main->trislice[volume_index].volume_being_input,
+                              &options,
+                              &main->trislice[volume_index].volume_input );
+    }
 
     return( status );
 }
@@ -256,4 +274,12 @@ public  void  cancel_loading_volume(
 {
     delete_volume_input( &main->trislice[volume_index].volume_input );
     delete_volume( main->trislice[volume_index].volume_being_input );
+}
+
+public  BOOLEAN  is_volume_rgb(
+    main_struct    *main,
+    int            volume_index )
+{
+    return( is_volume_active(main,volume_index) &&
+            is_an_rgb_volume(get_slice_volume(main,volume_index)) );
 }

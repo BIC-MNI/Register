@@ -1,6 +1,6 @@
 .TH REGISTER 1 "Register Version 1.0 alpha" "Montreal Neurological Institute"
 .SH NAME
-register - interactive volume display and point tagging program
+MNI-register - interactive volume display and point tagging program
 .SH SYNOPSIS
 .B register
 [volume1_filename] [volume2_filename]
@@ -97,7 +97,7 @@ especially noticeable when the images are zoomed up.
 .I RMS:
 Displays the average RMS error of the tag points, if a transform exists.
 
-.SH Volume Menus
+.SH VOLUME MENUS
 .P
 .I Voxel and World Position Readouts
 Displays the position of the volume cursor in voxel and world coordinates.
@@ -188,6 +188,13 @@ Translates the slice display
 .I Shift/Ctrl/Alt Middle Mouse:
 Zooms the slice display according to the y position of the mouse.
 
+.SH VOLUME CACHING
+
+Register has the ability to handle volumes larger than virtual memory
+by caching parts of the volume in memory.  The current default for
+deciding when to cache is volume is 80 Megabytes.  See the
+documentation of the source libraries for MNI-register for more information.
+
 .SH AUTHOR
 David MacDonald
 .SH BUGS
@@ -200,8 +207,10 @@ RGB mode.  Current releases have minimized the occurrence of this bug.
 .P
 Sometimes you have to hit the over-colour or under-colour button twice
 for it to notice.
+.P
+In smooth interpolation mode, filtering has not been implemented.
 .SH BUG REPORTS TO
-David MacDonald	      david@pet.mni.mcgill.ca
+David MacDonald	      david@bic.mni.mcgill.ca
 .SH COPYRIGHTS
 .ps 18
 \fB\(co\fR\s12 Copyright 1993 by David MacDonald

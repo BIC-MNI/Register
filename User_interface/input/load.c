@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.20 1995-12-11 19:31:33 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.21 1995-12-19 15:47:03 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -112,8 +112,6 @@ private  void  volume_has_been_loaded(
 {
     Real   min_value, max_value;
 
-    set_volume_widgets_activity( ui_info, data->volume_index, ON );
-
     if( !IF_volume_is_loaded( data->volume_index ) )
     {
         install_slice_events( &ui_info->graphics_window.event_viewports,
@@ -130,6 +128,11 @@ private  void  volume_has_been_loaded(
     {
         IF_set_volume( data->volume_index, data->filename );
     }
+
+    set_volume_widgets_activity( ui_info, data->volume_index, ON,
+                                 IF_is_an_rgb_volume(data->volume_index) );
+
+    update_colour_map_toggle_activity( ui_info );
 
     set_resampled_label_activity( ui_info, IF_is_resampled_volume_loaded() );
 
@@ -156,6 +159,8 @@ private  void  volume_has_been_loaded(
         set_colour_bar_values( ui_info, data->volume_index,
                                min_value, max_value );
     }
+
+    update_colour_map_toggle_activity( ui_info );
 
     delete_popup_interaction( data );
 }

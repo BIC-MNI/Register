@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.33 1995-12-11 19:31:35 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.34 1995-12-19 15:47:05 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -296,8 +296,6 @@ private  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
 public  void  add_main_widgets(
     UI_struct         *ui_info )
 {
-    BOOLEAN   colour_map_toggle_activity;
-
     widget_indices[QUIT_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
                    create_button( &ui_info->graphics_window, Main_menu_viewport, 
@@ -351,9 +349,6 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    sync_volumes_button_callback, (void *) 0 ) );
 
-    colour_map_toggle_activity = G_can_switch_colour_map_mode() &&
-             (G_get_n_colour_map_entries(
-             ui_info->graphics_window.window) >= Min_colour_map_size);
 
     widget_indices[COLOUR_MODE_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
@@ -362,7 +357,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "RGB", "Colour Map",
                    G_get_colour_map_state(ui_info->graphics_window.window),
-                   colour_map_toggle_activity, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
@@ -563,9 +558,9 @@ public  void  add_main_widgets(
                   LABEL_TEXT_COLOUR,
                   Label_text_font, Label_text_font_size ) );
 
-
-
     position_main_widgets( ui_info );
+
+    update_colour_map_toggle_activity( ui_info );
 }
 
 public  void  position_main_widgets(
@@ -680,4 +675,17 @@ public  void  update_avg_rms_error(
     {
         set_text_entry_string( widget, "" );
     }
+}
+
+public  void  update_colour_map_toggle_activity(
+    UI_struct         *ui_info )
+{
+    BOOLEAN   activity;
+
+    activity = IF_can_switch_colour_modes() &&
+             (G_get_n_colour_map_entries(
+             ui_info->graphics_window.window) >= Min_colour_map_size);
+
+    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
+                         [widget_indices[COLOUR_MODE_BUTTON]], activity );
 }

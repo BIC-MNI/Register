@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.26 1995-12-11 19:31:28 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.27 1995-12-19 15:46:56 david Exp $";
 #endif
 
 #include  <register.h>
@@ -598,4 +598,105 @@ public  void   set_volume_over_colour(
     set_colour_coding_over_colour( get_volume_colour_coding(main,volume_index),
                                    colour );
     colour_coding_has_changed( main, volume_index );
+}
+
+public  void  composite_merged_pixels(
+    main_struct          *main,
+    pixels_struct        *pixels1,
+    pixels_struct        *pixels2,
+    pixels_struct        *result )
+{
+    int            p, n_pixels;
+    Colour         col1, col2;
+    Colour         *p1, *p2, *res_ptr;
+    int            r1, g1, b1, r2, g2, b2, r, g, b;
+    Merge_methods  method;
+    Real           alpha1, alpha2, a1, a2;
+
+    n_pixels = pixels1->x_size * pixels2->y_size;
+
+    p1 = &PIXEL_RGB_COLOUR( *pixels1, 0, 0 );
+    p2 = &PIXEL_RGB_COLOUR( *pixels2, 0, 0 );
+    res_ptr = &PIXEL_RGB_COLOUR( *result, 0, 0 );
+    method = main->merged.merge_method;
+
+    alpha1 = main->merged.opacity[0];
+    alpha2 = main->merged.opacity[1];
+
+    if( method == BLEND_VOLUMES )
+    {
+        alpha2 = 1.0 - alpha1;
+        method = WEIGHTED_VOLUMES;
+    }
+
+    for_less( p, 0, n_pixels )
+    {
+        col1 = p1[p];
+        col2 = p2[p];
+        a1 = get_Colour_a_0_1( col1 );
+        a2 = get_Colour_a_0_1( col2 );
+
+        switch( method )
+        {
+        case ONE_ON_TWO:
+            a2 = (1.0 - a1) * a2;
+            break;
+
+        case TWO_ON_ONE:
+            a1 = (1.0 - a2) * a1;
+            break;
+
+        case WEIGHTED_VOLUMES:
+            a1 = alpha1 * a1;
+            a2 = alpha2 * a2;
+            break;
+        }
+
+        r1 = get_Colour_r( col1 );
+        g1 = get_Colour_g( col1 );
+        b1 = get_Colour_b( col1 );
+
+        r2 = get_Colour_r( col2 );
+        g2 = get_Colour_g( col2 );
+        b2 = get_Colour_b( col2 );
+
+        r = (int) (a1 * r1 + a2 * r2);
+        g = (int) (a1 * g1 + a2 * g2);
+        b = (int) (a1 * b1 + a2 * b2);
+
+        if( r < 0 )
+            r = 0;
+        else if( r > 255 )
+            r = 255;
+
+        if( g < 0 )
+            g = 0;
+        else if( g > 255 )
+            g = 255;
+
+        if( b < 0 )
+            b = 0;
+        else if( b > 255 )
+            b = 255;
+
+        res_ptr[p] = make_Colour( r, g, b );
+    }
+}
+
+public  BOOLEAN  can_switch_colour_modes(
+    main_struct          *main )
+{
+    int    v;
+
+    if( !G_can_switch_colour_map_mode() )
+        return( FALSE );
+
+    for_less( v, 0, N_VOLUMES )
+    {
+        if( is_volume_active(main,v) &&
+            is_an_rgb_volume(get_slice_volume(main,v)) )
+            return( FALSE );
+    }
+
+    return( TRUE );
 }

@@ -9,9 +9,12 @@
 @CALLS      : 
 @CREATED    : August 30, 1993 (Peter Neelin)
 @MODIFIED   : $Log: tagtoxfm.c,v $
-@MODIFIED   : Revision 1.3  1995-12-18 16:43:40  david
-@MODIFIED   : *** empty log message ***
+@MODIFIED   : Revision 1.4  1995-12-19 15:47:00  david
+@MODIFIED   : check_in_all
 @MODIFIED   :
+ * Revision 1.3  1995/12/18  16:43:40  david
+ * *** empty log message ***
+ *
  * Revision 1.7  1995/12/15  21:29:25  neelin
  * Recompiled (making modifications for changes to volume_io) so that
  * calculations are done in double precision.
@@ -42,7 +45,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.3 1995-12-18 16:43:40 david Exp $";
+static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.4 1995-12-19 15:47:00 david Exp $";
 #endif
 
 #include <stdlib.h>
@@ -62,6 +65,9 @@ static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/t
 #  define public
 #  define private static
 #endif
+
+double  ftol;
+double  simplex_size;
 
 /* Main program */
 

@@ -18,7 +18,7 @@
 #include  <common_include.h>
 
 #ifndef lint
-static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.20 1995-12-11 19:31:26 david Exp $";
+static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.21 1995-12-19 15:46:54 david Exp $";
 #endif
 
 #define  TWO_BUFFERS            2

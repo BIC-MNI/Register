@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.16 1995-12-11 19:31:31 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.17 1995-12-19 15:47:01 david Exp $";
 #endif
 
 #include  <UI_calls_F.h>
@@ -54,6 +54,12 @@ public  BOOLEAN  IF_volume_is_loaded(
     int            volume_index )
 {
     return( is_volume_active( get_main_struct(), volume_index ) );
+}
+
+public  BOOLEAN  IF_is_an_rgb_volume(
+    int            volume_index )
+{
+    return( is_volume_rgb( get_main_struct(), volume_index ) );
 }
 
 public  BOOLEAN  IF_is_resampled_volume_loaded()
@@ -265,6 +271,11 @@ public  BOOLEAN  IF_convert_pixel_to_voxel(
 {
     return( convert_pixel_to_voxel( get_main_struct(), volume, view,
                                     x_pixel, y_pixel, voxel_position ) );
+}
+
+public  BOOLEAN  IF_can_switch_colour_modes()
+{
+    return( can_switch_colour_modes( get_main_struct() ) );
 }
 
 public  void  IF_colour_mode_has_toggled(

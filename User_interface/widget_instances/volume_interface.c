@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.14 1995-10-02 18:35:01 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.15 1995-12-19 15:47:06 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -224,7 +224,8 @@ public  void  set_load_filename(
 public  void  set_volume_widgets_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    BOOLEAN           activity )
+    BOOLEAN           activity,
+    BOOLEAN           is_rgb_volume )
 {
     Viewport_types       viewport_index;
     Volume_widgets       widget_index;
@@ -254,7 +255,7 @@ public  void  set_volume_widgets_activity(
     }
 
     set_colour_bar_widgets_activity( ui_info, viewport_index,
-                           colour_bar_start_index, activity );
+                          colour_bar_start_index, activity && !is_rgb_volume );
 
     set_voxel_position_widgets_activity( ui_info, viewport_index,
                            ui_info->position_text_start_index[volume_index],

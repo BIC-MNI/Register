@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.26 1995-12-11 19:31:28 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.27 1995-12-19 15:46:56 david Exp $";
 #endif
 
 #include  <register.h>
@@ -32,7 +32,7 @@ public  void  create_slice_pixels(
     Real             x_axis[MAX_DIMENSIONS], y_axis[MAX_DIMENSIONS];
     Volume           volume;
     unsigned short   *cmode_colour_map;
-    Colour           *rgb_colour_map;
+    Colour           *rgb_colour_map, **rgb_colour_map_ptr;
 
     volume = get_slice_volume( main, volume_index );
     get_slice_transform( main, volume_index, view,
@@ -48,7 +48,14 @@ public  void  create_slice_pixels(
     get_slice_viewport_size( main, volume_index, view, &x_size, &y_size );
 
     cmode_colour_map = main->trislice[volume_index].cmode_colour_map;
-    rgb_colour_map = main->trislice[volume_index].rgb_colour_map;
+
+    if( is_an_rgb_volume(volume) )
+        rgb_colour_map_ptr = NULL;
+    else
+    {
+        rgb_colour_map = main->trislice[volume_index].rgb_colour_map;
+        rgb_colour_map_ptr = &rgb_colour_map;
+    }
 
     get_slice_plane( main, volume_index, view, origin, x_axis, y_axis );
 
@@ -61,8 +68,8 @@ public  void  create_slice_pixels(
                          x_size, y_size, 0, -1, 0, -1, pixel_type,
                          main->degrees_continuity,
                          &cmode_colour_map,
-                         &rgb_colour_map, make_rgba_Colour( 0, 0, 0, 0 ),
-                    main->render_storage,
+                         rgb_colour_map_ptr, make_rgba_Colour( 0, 0, 0, 0 ),
+                    main->render_storage, TRUE,
                     &main->trislice[volume_index].slices[view].n_pixels_alloced,
                     main->trislice[volume_index].slices[view].pixels );
 }
@@ -117,6 +124,8 @@ public  void  create_merged_pixels(
     Real             x_axis1[MAX_DIMENSIONS], y_axis1[MAX_DIMENSIONS];
     Real             origin2[MAX_DIMENSIONS];
     Real             x_axis2[MAX_DIMENSIONS], y_axis2[MAX_DIMENSIONS];
+    Colour           *rgb_colour_map, **rgb_colour_map_ptr;
+    pixels_struct    *merged_pixels, pixels1, pixels2;
 
     volume1 = get_slice_volume( main, 0 );
     volume2 = get_slice_volume( main, 1 );
@@ -205,7 +214,90 @@ public  void  create_merged_pixels(
     filter_type = get_slice_filter_type( main, MERGED_VOLUME_INDEX, view );
     filter_width = get_slice_filter_width( main, MERGED_VOLUME_INDEX, view );
 
-    create_volume_slice( volume1, filter_type, filter_width,
+    merged_pixels = main->merged.slices[view].pixels;
+
+    if( is_an_rgb_volume(volume1) || is_an_rgb_volume(volume2) )
+    {
+        set_volume_slice_pixel_range( volume1, filter_type, filter_width,
+                    origin1, x_axis1, y_axis1,
+                    x_translation1, y_translation1, x_scale1, y_scale1,
+                    volume2, filter_type, filter_width,
+                    origin2, x_axis2, y_axis2,
+                    x_translation2, y_translation2, x_scale2, y_scale2,
+                    x_size, y_size, pixel_type,
+                    &main->merged.slices[view].n_pixels_alloced,
+                    merged_pixels );
+
+        if( is_an_rgb_volume(volume1) )
+            rgb_colour_map_ptr = NULL;
+        else
+        {
+            rgb_colour_map = main->trislice[0].rgb_colour_map;
+            rgb_colour_map_ptr = &rgb_colour_map;
+        }
+
+        initialize_pixels( &pixels1,
+                           merged_pixels->x_position,
+                           merged_pixels->y_position,
+                           merged_pixels->x_size,
+                           merged_pixels->y_size,
+                           merged_pixels->x_zoom,
+                           merged_pixels->y_zoom,
+                           RGB_PIXEL );
+
+        create_volume_slice( volume1, filter_type, filter_width,
+                    origin1, x_axis1, y_axis1,
+                    x_translation1, y_translation1, x_scale1, y_scale1,
+                    (Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
+                    (Real *) NULL, (Real *) NULL, (Real *) NULL,
+                    0.0, 0.0, 0.0, 0.0,
+                    x_size, y_size, 0, -1, 0, -1, pixel_type,
+                    main->degrees_continuity,
+                    NULL,
+                    rgb_colour_map_ptr,
+                    make_rgba_Colour( 0, 0, 0, 0 ),
+                    main->render_storage,
+                    FALSE, NULL, &pixels1 );
+
+        if( is_an_rgb_volume(volume2) )
+            rgb_colour_map_ptr = NULL;
+        else
+        {
+            rgb_colour_map = main->trislice[1].rgb_colour_map;
+            rgb_colour_map_ptr = &rgb_colour_map;
+        }
+        initialize_pixels( &pixels2,
+                           merged_pixels->x_position,
+                           merged_pixels->y_position,
+                           merged_pixels->x_size,
+                           merged_pixels->y_size,
+                           merged_pixels->x_zoom,
+                           merged_pixels->y_zoom,
+                           RGB_PIXEL );
+
+        create_volume_slice( volume2, filter_type, filter_width,
+                    origin2, x_axis2, y_axis2,
+                    x_translation2, y_translation2, x_scale2, y_scale2,
+                    (Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
+                    (Real *) NULL, (Real *) NULL, (Real *) NULL,
+                    0.0, 0.0, 0.0, 0.0,
+                    x_size, y_size, 0, -1, 0, -1, pixel_type,
+                    main->degrees_continuity,
+                    NULL,
+                    rgb_colour_map_ptr,
+                    make_rgba_Colour( 0, 0, 0, 0 ),
+                    main->render_storage,
+                    FALSE, NULL, &pixels2 );
+
+        composite_merged_pixels( main, &pixels1, &pixels2,
+                                 main->merged.slices[view].pixels );
+
+        delete_pixels( &pixels1 );
+        delete_pixels( &pixels2 );
+    }
+    else
+    {
+        create_volume_slice( volume1, filter_type, filter_width,
                     origin1, x_axis1, y_axis1,
                     x_translation1, y_translation1, x_scale1, y_scale1,
                     volume2, filter_type, filter_width,
@@ -217,8 +309,9 @@ public  void  create_merged_pixels(
                     main->merged.rgb_colour_map,
                     make_rgba_Colour( 0, 0, 0, 0 ),
                     main->render_storage,
-                    &main->merged.slices[view].n_pixels_alloced,
+                    TRUE, &main->merged.slices[view].n_pixels_alloced,
                     main->merged.slices[view].pixels );
+    }
 }
 
 public  BOOLEAN   convert_pixel_to_voxel(

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.11 1995-10-02 18:34:54 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.12 1995-12-19 15:47:04 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -32,13 +32,29 @@ public  UI_struct  *get_ui_struct()
     return( &ui_struct );
 }
 
+private  void  print_usage(
+    char   executable[] )
+{
+    static  STRING  usage =
+"Usage: %s  [-help] [-rgb] [-cmap] [-single] [-double] [volume1.mnc] \n\
+                                [volume2.mnc] [tags.tag]\n\
+\n\
+    -help:      Prints this message.\n\
+    -rgb:       Starts program in RGB mode.\n\
+    -cmap:      Starts program in colour map mode.\n\
+    -single:    Starts program in single buffer mode.\n\
+    -double:    Starts program in double buffer mode.\n\n";
+
+    print_error( usage, executable );
+}
+
 int  main(
     int   argc,
     char  *argv[] )
 {
-    int              n_volumes;
-    STRING           filename;
-    STRING           home_filename;
+    int              volume, n_volumes;
+    STRING           argument;
+    STRING           home_filename, volume_filenames[2], tag_filename;
     Status           status;
 
     initialize_global_colours();
@@ -57,24 +73,60 @@ int  main(
 
     initialize_argument_processing( argc, argv );
 
-    status = initialize_user_interface( &ui_struct );
+    tag_filename = NULL;
 
     n_volumes = 0;
 
-    while( get_string_argument( "", &filename ) )
+    while( get_string_argument( "", &argument ) )
     {
-        if( string_ends_in( filename, TAG_FILE_SUFFIX ) )
+        if( equal_strings( argument, "-help" ) )
         {
-            load_tags_file( &ui_struct, filename );
+            print_usage( argv[0] );
+            return( 0 );
+        }
+        else if( equal_strings( argument, "-rgb" ) )
+        {
+            Initial_rgb_state = TRUE;
+        }
+        else if( equal_strings( argument, "-cmap" ) )
+        {
+            Initial_rgb_state = FALSE;
+        }
+        else if( equal_strings( argument, "-single" ) )
+        {
+            Initial_double_buffer_state = FALSE;
+        }
+        else if( equal_strings( argument, "-double" ) )
+        {
+            Initial_double_buffer_state = TRUE;
+        }
+        else if( string_ends_in( argument, TAG_FILE_SUFFIX ) )
+        {
+            tag_filename = argument;
         }
         else if( n_volumes < 2 )
         {
-            set_load_filename( &ui_struct, n_volumes, filename );
-            status = initialize_loading_volume( &ui_struct, n_volumes,
-                                                filename, FALSE );
+            volume_filenames[n_volumes] = argument;
             ++n_volumes;
         }
+        else
+        {
+            print_usage( argv[0] );
+            return( 0 );
+        }
     }
+
+    status = initialize_user_interface( &ui_struct );
+
+    for_less( volume, 0, n_volumes )
+    {
+        set_load_filename( &ui_struct, volume, volume_filenames[volume] );
+        status = initialize_loading_volume( &ui_struct, volume,
+                                            volume_filenames[volume], FALSE );
+    }
+
+    if( tag_filename != NULL )
+        load_tags_file( &ui_struct, tag_filename );
 
     event_loop();
 
