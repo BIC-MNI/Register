@@ -1,14 +1,5 @@
 #include  <def_user_interface.h>
 
-typedef  struct
-{
-    int                       volume_index;
-    volume_input_struct       input;
-    volume_struct             volume;
-    load_meter_popup_struct   popup;
-}
-load_struct;
-
 private  void  volume_has_been_loaded( UI_struct  *, load_struct * );
 
 private  DEFINE_EVENT_FUNCTION( more_input )
@@ -20,13 +11,24 @@ private  DEFINE_EVENT_FUNCTION( more_input )
 
     if( input_more_of_volume( &data->volume, &data->input, &fraction_done ) )
     {
-        set_load_popup_meter( &data->popup, fraction_done );
+        set_load_popup_meter( data, fraction_done );
     }
     else
     {
         volume_has_been_loaded( get_ui_struct(), data );
-        remove_global_event_callback( NO_EVENT, more_input, callback_data );
     }
+}
+
+private  void  delete_popup_interaction(
+    load_struct    *data )
+{
+    set_load_activity( get_ui_struct(), data->volume_index, ON );
+
+    remove_global_event_callback( NO_EVENT, more_input, (void *) data );
+
+    delete_load_popup( data );
+
+    FREE( data );
 }
 
 public  Status  initialize_loading_volume(
@@ -51,7 +53,8 @@ public  Status  initialize_loading_volume(
 
         if( status == OK )
         {
-            add_global_event_callback( NO_EVENT, more_input, (void *) data );
+            add_global_event_callback( NO_EVENT, more_input, ANY_MODIFIER,
+                                       (void *) data );
         }
 
         get_graphics_viewport( &ui_info->graphics_window.graphics, 
@@ -61,7 +64,7 @@ public  Status  initialize_loading_volume(
         G_get_window_position( ui_info->graphics_window.window,
                                &x_window, &y_window );
 
-        initialize_load_popup( &data->popup, x_window + x_min, y_window + y_min,
+        initialize_load_popup( data, x_window + x_min, y_window + y_min,
                                filename );
     }
     else
@@ -84,8 +87,6 @@ private  void  volume_has_been_loaded(
 
     IF_set_volume( data->volume_index, &data->volume );
 
-    delete_load_popup( &data->popup );
-
     update_position_counters( ui_info, data->volume_index );
 
     if( IF_volume_is_loaded( 0 ) &&
@@ -94,5 +95,18 @@ private  void  volume_has_been_loaded(
         set_merged_activity( ui_info, ON );
     }
 
-    FREE( data );
+    if( IF_volume_is_loaded( 1 - data->volume_index ) )
+    {
+        update_other_volume_positions( ui_info, 1 - data->volume_index );
+    }
+
+    delete_popup_interaction( data );
+}
+
+public  void  cancel_loading(
+    load_struct    *data )
+{
+    cancel_volume_input( &data->volume, &data->input );
+
+    delete_popup_interaction( data );
 }
