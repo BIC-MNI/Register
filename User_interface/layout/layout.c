@@ -20,7 +20,7 @@ public  void  resize_layout( UI_struct  *ui_info )
     graphics_struct         *graphics;
     event_viewports_struct  *event_viewports;
     Viewport_types          viewport_index;
-    int  x_size, y_size, divider_width, middle;
+    int  x_size, y_size, divider_width;
     int  divider1, divider2;
     int  x_min, x_max, y_min, y_max;
     int  x_main_start, x_main_end, x_volume_1_start, x_volume_1_end;
@@ -100,14 +100,9 @@ public  void  resize_layout( UI_struct  *ui_info )
                            x_volume_2_start, x_volume_2_end,
                            y_volume_panel_start, y_volume_panel_end );
 
-    middle = y_volume_panel_start + Default_second_merged_panel_height - 1;
-    set_graphics_viewport( graphics, Merged_menu_2_viewport,
+    set_graphics_viewport( graphics, Merged_menu_viewport,
                            x_merged_start, x_merged_end,
-                           y_volume_panel_start, middle );
-
-    set_graphics_viewport( graphics, Merged_menu_1_viewport,
-                           x_merged_start, x_merged_end,
-                           middle+1, y_volume_panel_end );
+                           y_volume_panel_start, y_volume_panel_end );
 
     /* volume 1 */
 
@@ -217,7 +212,8 @@ public  Boolean   get_voxel_under_mouse(
 {
     int        view, x_mouse, y_mouse;
 
-    get_viewport_mouse_position( ui_info, event_viewport_index,
+    get_viewport_mouse_position( &ui_info->graphics_window,
+                                 event_viewport_index,
                                  &x_mouse, &y_mouse );
 
     ui_get_volume_view_index( event_viewport_index, volume, &view);
@@ -231,13 +227,13 @@ public  void  ui_get_volume_view_index(
     int   *volume,
     int   *view )
 {
-    *volume = (view_index - N_VIEWPORT_TYPES) / N_DIMENSIONS;
-    *view = (view_index - N_VIEWPORT_TYPES) % N_DIMENSIONS;
+    *volume = (view_index - N_VIEWPORT_TYPES) / N_VIEWS;
+    *view = (view_index - N_VIEWPORT_TYPES) % N_VIEWS;
 }
 
 public  int  ui_get_slice_viewport_index(
     int   volume,
     int   view )
 {
-    return( N_VIEWPORT_TYPES + volume * N_DIMENSIONS + view );
+    return( N_VIEWPORT_TYPES + volume * N_VIEWS + view );
 }

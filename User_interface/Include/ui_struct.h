@@ -35,6 +35,8 @@ typedef  struct
 {
     graphics_window_struct   graphics_window;
 
+    Boolean                  volumes_synced;
+
     widgets_struct           widget_list[N_UI_viewports];
     int                      position_text_start_index[N_VOLUMES_DISPLAYED];
 
@@ -55,13 +57,19 @@ typedef  struct
 
 typedef  struct
 {
+    graphics_window_struct  graphics;
+    widgets_struct          widgets;
+}
+popup_struct;
+
+typedef  struct
+{
     int                       volume_index;
     volume_input_struct       input;
     volume_struct             volume;
-    graphics_window_struct    graphics_window;
+    popup_struct              popup;
     polygons_struct           *meter_background;
     polygons_struct           *meter;
-    widget_struct             *cancel_widget;
 }
 load_struct;
 
