@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/tag_events.c,v 1.7 1998-02-16 16:02:17 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/tag_events.c,v 1.8 1998-04-22 13:24:24 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -31,24 +31,24 @@ public  void  install_tag_events(
     int             volume, view;
     Viewport_types  viewport;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, ui->n_columns )
     {
-        for_less( view, 0, N_VIEWS )
+        for_less( view, 0, ui->n_views )
         {
             add_event_viewport_callback(
                    &ui->graphics_window.event_viewports,
-                   ui_get_slice_viewport_index(volume,view),
+                   ui_get_slice_viewport_index(ui,volume,view),
                    KEY_DOWN_EVENT, -1, -1, -1, -1,
                    slice_key_down_callback, ANY_MODIFIER, (void *) 0 );
             add_event_viewport_callback(
                    &ui->graphics_window.event_viewports,
-                   ui_get_slice_viewport_index(volume,view),
+                   ui_get_slice_viewport_index(ui,volume,view),
                    RIGHT_MOUSE_DOWN_EVENT, -1, -1, -1, -1,
                    add_tag_point_callback, NO_SHIFT_ONLY, (void *) 0 );
         }
     }
 
-    for_less( viewport, (Viewport_types) 0, N_UI_viewports )
+    for_less( viewport, (Viewport_types) 0, ui->n_ui_viewports )
     {
         add_event_viewport_callback(
                &ui->graphics_window.event_viewports, viewport,
