@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.20 1998-06-29 15:01:59 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.21 1998-08-24 19:52:13 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -41,14 +41,31 @@ public  Status   initialize_user_interface(
                               Initial_double_buffer_state,
                               FALSE, 2, &ui->graphics_window.window );
 
-    if( status != OK )
+    if( status != OK ||
+        !Initial_rgb_state &&
+        G_get_n_colour_map_entries(ui->graphics_window.window) < 64 )
     {
+        if( status == OK )
+             G_delete_window( ui->graphics_window.window );
+        else
+        {
+            print_error( "Not enough colours for colour map mode.\n" );
+            print_error( "Using RGB mode.\n" );
+        }
+
         status = G_create_window( Main_window_name, -1, -1,
                                   Initial_window_x_size,
                                   Initial_window_y_size,
                                   Initial_rgb_state,
                                   Initial_double_buffer_state,
                                   FALSE, 2, &ui->graphics_window.window );
+
+        if( Initial_rgb_state &&
+            G_get_n_colour_map_entries(ui->graphics_window.window) < 64 )
+        {
+            print_error( "Not enough colours for colour map mode\n" );
+            exit( 1 );
+        }
     }
 
     set_window_event_callbacks( &ui->graphics_window );

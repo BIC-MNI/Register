@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.11 1998-06-29 15:02:00 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.12 1998-08-24 19:52:34 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -34,11 +34,13 @@ private  DEFINE_EVENT_FUNCTION( check_to_expire_popup );
 public  void  initialize_print_popup( void )
 {
     set_print_function( output_chars );
+    set_print_error_function( output_chars );
 }
 
 public  void  disable_print_popup( void )
 {
     set_print_function( 0 );
+    set_print_error_function( 0 );
 }
 
 /* ARGSUSED */

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.12 1998-06-29 15:02:09 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.13 1998-08-24 19:52:01 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -65,7 +65,7 @@ public  void   create_popup_window(
     Bitplane_types    bitplane;
 
     if( G_create_window( title, x_position, y_position,
-                         x_size, y_size, FALSE, FALSE,
+                         x_size, y_size, FALSE, TRUE,
                          FALSE, 0, &popup->graphics.window ) != OK )
     {
         (void) fprintf( stderr, "Cannot create popup window\n" );
