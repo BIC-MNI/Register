@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.11 1998-02-20 15:00:14 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.12 1998-06-29 15:01:48 david Exp $";
 #endif
 
 #include  <register.h>

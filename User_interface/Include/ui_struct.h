@@ -16,7 +16,7 @@
 #define  DEF_UI_STRUCT
 
 #ifndef lint
-static char ui_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_struct.h,v 1.14 1996-12-09 20:21:43 david Exp $";
+static char ui_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_struct.h,v 1.15 1998-06-29 15:01:52 david Exp $";
 #endif
 
 #include  <common_include.h>

@@ -16,7 +16,7 @@
 #define  DEF_UI_COLOURS
 
 #ifndef lint
-static char ui_colours_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_colours.h,v 1.6 1996-12-09 20:21:42 david Exp $";
+static char ui_colours_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/ui_colours.h,v 1.7 1998-06-29 15:01:51 david Exp $";
 #endif
 
 typedef  enum

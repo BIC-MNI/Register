@@ -5,6 +5,7 @@ $(UI_DIR)colour_popup/$(ARCH_DIR)/colour_selection.o \
 $(UI_DIR)delete_tags_popup/$(ARCH_DIR)/delete_tags.o \
 $(UI_DIR)event_callbacks/$(ARCH_DIR)/save_image.o \
 $(UI_DIR)event_callbacks/$(ARCH_DIR)/slice_events.o \
+$(UI_DIR)event_callbacks/$(ARCH_DIR)/tag_events.o \
 $(UI_DIR)event_callbacks/$(ARCH_DIR)/utilities.o \
 $(UI_DIR)event_callbacks/$(ARCH_DIR)/window_events.o \
 $(UI_DIR)event_handling/$(ARCH_DIR)/event_callbacks.o \
