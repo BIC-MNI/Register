@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/position_widgets.c,v 1.11 1998-06-29 15:02:04 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/position_widgets.c,v 1.12 2004-10-25 19:11:08 bert Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -33,7 +33,8 @@ typedef  enum
     X_WORLD_TEXT,
     Y_WORLD_TEXT,
     Z_WORLD_TEXT,
-
+    TIME_LABEL,
+    TIME_TEXT,
     N_POSITION_WIDGETS
 }
 Position_widgets;
@@ -80,6 +81,31 @@ private  DEFINE_WIDGET_CALLBACK( pos_y_world_callback )
 private  DEFINE_WIDGET_CALLBACK( pos_z_world_callback )
 {
     set_world_position_callback( get_ui_struct(), widget, Z );
+}
+
+private  DEFINE_WIDGET_CALLBACK( pos_time_callback )
+{
+    int    volume_index;
+    int    start_widget_index;
+    Real   value;
+    Real   tpos;
+    UI_struct *ui_info = get_ui_struct();
+
+    volume_index = get_viewport_volume_index( widget->viewport_index );
+    start_widget_index = ui_info->position_text_start_index[volume_index];
+
+    IF_get_volume_time_position( volume_index, &tpos );
+
+    if ( get_text_entry_real_value( ui_info->widget_list
+                                    [widget->viewport_index].widgets
+                                    [start_widget_index+
+                                     widget_indices[TIME_TEXT]],
+                                    &value ) )
+    {
+        tpos = value;
+    }
+
+    ui_set_volume_time_position( ui_info, volume_index, tpos );
 }
 
 public  int  add_cursor_position_widgets(
@@ -216,6 +242,36 @@ public  int  add_cursor_position_widgets(
                        (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_z_world_callback, (void *) NULL ) ) - start_index;
 
+    y -= Text_entry_height + 2;
+    x = x_start + 2 * dx - (Position_label_width + Position_values_separation);
+
+    widget_indices[TIME_LABEL] = add_widget_to_list(
+                  &ui_info->widget_list[viewport_index],
+                  create_label( &ui_info->graphics_window, viewport_index, 
+                  x, y, Position_label_width, Text_entry_height,
+                  "T:", OFF, LABEL_ACTIVE_COLOUR,
+                  LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
+                  LABEL_TEXT_COLOUR,
+                  (Font_types) Label_text_font, 
+                  Label_text_font_size ) ) - start_index;
+
+    x += Position_label_width + Position_values_separation;
+
+    widget_indices[TIME_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_text_entry( &ui_info->graphics_window, viewport_index,
+                       x, y,
+                       Position_values_width, Text_entry_height,
+                       TRUE, "", OFF,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
+                       TEXT_ENTRY_INACTIVE_COLOUR,
+                       TEXT_ENTRY_TEXT_COLOUR,
+                       TEXT_ENTRY_EDIT_COLOUR,
+                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
+                       TEXT_ENTRY_CURSOR_COLOUR,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
+                       pos_time_callback, (void *) NULL ) ) - start_index;
+
     *height = Text_entry_height;
 
     return( start_index );
@@ -267,6 +323,22 @@ public  void  set_volume_world_text(
     set_text_entry_real_value( ui_info->widget_list[viewport_index].widgets
                            [ui_info->position_text_start_index[volume_index]+
                             widget_indices[X_WORLD_TEXT+view_index]],
+                            Position_values_format,
+                            value );
+}
+
+public  void  set_volume_time_text(
+    UI_struct         *ui_info,
+    int               volume_index,
+    Real              value )
+{
+    Viewport_types  viewport_index;
+
+    viewport_index = get_volume_menu_viewport_index( volume_index );
+
+    set_text_entry_real_value( ui_info->widget_list[viewport_index].widgets
+                           [ui_info->position_text_start_index[volume_index]+
+                            widget_indices[TIME_TEXT]],
                             Position_values_format,
                             value );
 }

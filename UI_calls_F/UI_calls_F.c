@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.20 1998-06-29 15:01:50 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.21 2004-10-25 19:11:08 bert Exp $";
 #endif
 
 #include  <UI_calls_F.h>
@@ -205,6 +205,20 @@ public  void  IF_get_volume_voxel_position(
     Real      position[] )
 {
     get_volume_voxel_position( get_main_struct(), volume, position );
+}
+
+public  void  IF_set_volume_time_position(
+    int       volume_index,
+    Real      tpos )
+{
+    set_volume_time_position( get_main_struct(), volume_index, tpos );
+}
+
+public  void  IF_get_volume_time_position(
+    int       volume_index,
+    Real      *tpos_ptr )
+{
+    get_volume_time_position( get_main_struct(), volume_index, tpos_ptr );
 }
 
 public  void  IF_set_volume_world_position(

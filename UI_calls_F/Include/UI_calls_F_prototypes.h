@@ -272,4 +272,9 @@ public  void  IF_set_transform_type(
 public  BOOLEAN  IF_get_cursor_visibility( void );
 
 public  void  IF_set_cursor_visibility( BOOLEAN  visibility );
+
+public void IF_get_volume_time_position(int volume_index, Real *tpos_ptr);
+
+public void IF_set_volume_time_position(int volume_index, Real tpos);
+
 #endif

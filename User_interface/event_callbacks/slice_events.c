@@ -13,10 +13,32 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/slice_events.c,v 1.15 1998-06-29 15:01:54 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/slice_events.c,v 1.16 2004-10-25 19:11:08 bert Exp $";
 #endif
 
 #include  <user_interface.h>
+
+private void time_step(UI_struct *ui_info, 
+                       Viewport_types viewport, 
+                       int dir)
+{
+    int  volume_index, view_index;
+    Real tpos;
+
+    if( is_slice_viewport( viewport ) )
+    {
+        ui_get_volume_view_index( viewport, &volume_index, &view_index );
+
+        if( IF_volume_is_loaded( volume_index ) )
+        {
+            IF_get_volume_time_position(volume_index, &tpos);
+
+            tpos += (Real) dir;
+
+            ui_set_volume_time_position(ui_info, volume_index, tpos);
+        }
+    }
+}
 
 private  void  update_move_voxel_cursor(
      UI_struct *ui_info )
@@ -276,6 +298,14 @@ public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )
 
     case  'S':
         save_current_viewport( get_ui_struct(), event_viewport_index );
+        break;
+
+    case '<':
+        time_step(get_ui_struct(), event_viewport_index, -1);
+        break;
+
+    case '>':
+        time_step(get_ui_struct(), event_viewport_index, 1);
         break;
     }
 }

@@ -18,7 +18,7 @@
 #include  <common_include.h>
 
 #ifndef lint
-static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.22 1998-06-29 15:01:42 david Exp $";
+static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.23 2004-10-25 19:11:07 bert Exp $";
 #endif
 
 #define  TWO_BUFFERS            2
@@ -65,6 +65,7 @@ typedef struct
 
     volume_input_struct        volume_input;
     Volume                     volume_being_input;
+    Real                       time_pos; /* Time position for 4D volumes */
 }
 trislice_struct;
 

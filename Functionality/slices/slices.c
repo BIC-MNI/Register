@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.21 1998-06-29 15:01:45 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.22 2004-10-25 19:11:08 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -118,6 +118,8 @@ public  void  get_slice_plane(
 
     origin[axis] = slice_position[axis];
 
+    get_volume_time_position(main, volume_index, &origin[3]);
+
     if( x_flip )
         x_axis[x_index] = -FSIGN(separations[x_index]);
     else
@@ -197,7 +199,7 @@ public  void  set_volume_voxel_position(
 {
     BOOLEAN        changed;
     Volume         volume;
-    int            view, axis, sizes[N_DIMENSIONS];
+    int            view, axis, sizes[MAX_DIMENSIONS];
     Real           pos;
     Real           *cursor_ptr;
 
@@ -481,6 +483,46 @@ public  void  set_volume_original_world_position(
     set_volume_voxel_position( main, volume_index, voxel_position );
 }
 
+
+public  void  get_volume_time_position(main_struct *main_ptr,
+                                       int volume_index,
+                                       Real *tpos_ptr)
+{
+    *tpos_ptr = main_ptr->trislice[volume_index].time_pos;
+}
+
+public  void  set_volume_time_position(main_struct *main_ptr,
+                                       int volume_index,
+                                       Real tpos)
+{
+    int sizes[MAX_DIMENSIONS];
+    Volume volume;
+
+    volume = get_slice_volume( main_ptr, volume_index );
+
+    /* If we're dealing with a 3D volume, assume there is no time
+     * dimension.
+     */
+    if (get_volume_n_dimensions(volume) > 3) {
+        get_volume_sizes( volume, sizes );
+
+        /* Force time within range.
+         */
+        if (tpos < 0.0) {
+            tpos = 0;
+        }
+
+        if (tpos >= (Real) sizes[3]) {
+            tpos = (Real) sizes[3] - 1.0;
+        }
+
+        main_ptr->trislice[volume_index].time_pos = tpos;
+
+        set_recreate_3_slices_flags(main_ptr, volume_index);
+    }
+}
+
+
 public  void  get_volume_original_world_position(
     main_struct   *main,
     int           volume_index,
@@ -623,6 +665,7 @@ public  Real  get_voxel_value(
 {
     Real           value, position[N_DIMENSIONS];
     Volume         volume;
+    Real           tpos;
 
     volume = get_slice_volume( main, volume_index );
 
@@ -630,10 +673,13 @@ public  Real  get_voxel_value(
     position[Y] = y_voxel;
     position[Z] = z_voxel;
 
+    tpos = main->trislice[volume_index].time_pos;
+
     if( voxel_is_within_volume( volume, position ) )
     {
-        value = get_volume_real_value( volume, ROUND(x_voxel),
-                           ROUND(y_voxel), ROUND(z_voxel), 0, 0 );
+        value = get_volume_real_value( volume, ROUND(x_voxel), 
+                                       ROUND(y_voxel), ROUND(z_voxel), 
+                                       ROUND(tpos), 0 );
     }
     else
         value = 0.0;

@@ -302,6 +302,11 @@ public  void  update_other_volume_positions(
     UI_struct   *ui_info,
     int         volume_index );
 
+public  void  ui_set_volume_time_position(
+    UI_struct  *ui_info,
+    int        volume_index,
+    Real       tpos);
+
 public  void  ui_set_volume_voxel_position(
     UI_struct  *ui_info,
     int        volume_index,
@@ -469,6 +474,11 @@ public  void  set_volume_world_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
+    Real              value );
+
+public  void  set_volume_time_text(
+    UI_struct         *ui_info,
+    int               volume_index,
     Real              value );
 
 public  void  previous_current_tag_point( UI_struct *ui );
@@ -898,4 +908,5 @@ public  BOOLEAN  make_window_up_to_date(
 public  void  set_clear_and_update_flags( UI_struct  *ui_struct );
 
 public  void  set_recreate_all_slice_flags( void );
+
 #endif

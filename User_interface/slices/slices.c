@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/slices/slices.c,v 1.6 1998-06-29 15:02:02 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/slices/slices.c,v 1.7 2004-10-25 19:11:08 bert Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -24,6 +24,7 @@ public  void  update_position_counters(
 {
     Real   voxel_position[N_DIMENSIONS];
     Real   original_world_position[N_DIMENSIONS];
+    Real   tpos;
     int    axis;
 
     IF_get_volume_voxel_position( volume_index, voxel_position );
@@ -37,6 +38,9 @@ public  void  update_position_counters(
         set_volume_world_text( ui_info, volume_index, axis,
                                original_world_position[axis] );
     }
+
+    IF_get_volume_time_position(volume_index, &tpos);
+    set_volume_time_text(ui_info, volume_index, tpos);
 
     update_volume_readout( ui_info, volume_index );
 }
@@ -75,6 +79,17 @@ public  void  ui_set_volume_voxel_position(
 
     update_other_volume_positions( ui_info, volume_index );
 }
+
+
+public void ui_set_volume_time_position(UI_struct *ui_info,
+                                        int volume_index,
+                                        Real tpos)
+{
+    IF_set_volume_time_position( volume_index, tpos );
+
+    update_position_counters( ui_info, volume_index );
+}
+
 
 public  void  ui_set_volume_original_world_position(
     UI_struct  *ui_info,

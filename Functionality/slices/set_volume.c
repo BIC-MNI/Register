@@ -14,7 +14,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.18 1998-06-29 15:01:45 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.19 2004-10-25 19:11:07 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -201,6 +201,8 @@ public  BOOLEAN  get_merged_volume_activity(
     return( main->merged.active_flag );
 }
 
+char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime };
+
 public  Status  start_loading_volume(
     main_struct    *main,
     int            volume_index,
@@ -213,7 +215,7 @@ public  Status  start_loading_volume(
 
     set_minc_input_vector_to_colour_flag( &options, Convert_vectors_to_rgb );
 
-    status = start_volume_input( filename, 3, XYZ_dimension_names,
+    status = start_volume_input( filename, 0, XYZT_dimension_names,
                               NC_BYTE, FALSE, 0.0, 0.0, TRUE,
                               &main->trislice[volume_index].volume_being_input,
                               &options,
@@ -230,7 +232,7 @@ public  Status  start_loading_volume(
 
         set_minc_input_vector_to_colour_flag( &options, FALSE );
 
-        status = start_volume_input( filename, 3, XYZ_dimension_names,
+        status = start_volume_input( filename, 0, XYZT_dimension_names,
                               NC_BYTE, FALSE, 0.0, 0.0, TRUE,
                               &main->trislice[volume_index].volume_being_input,
                               &options,
