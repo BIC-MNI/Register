@@ -7,6 +7,7 @@
 #define X_PIXELS_PER_TICK 64
 
 extern void *get_main_struct();
+extern Volume get_slice_volume(void *, int);
 
 struct xs_window {
     struct popup_struct popup;
