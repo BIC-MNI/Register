@@ -14,7 +14,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.19 2004-10-25 19:11:07 bert Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.20 2005-02-28 21:05:18 bert Exp $";
 #endif
 
 #include  <register.h>
@@ -216,7 +216,7 @@ public  Status  start_loading_volume(
     set_minc_input_vector_to_colour_flag( &options, Convert_vectors_to_rgb );
 
     status = start_volume_input( filename, 0, XYZT_dimension_names,
-                              NC_BYTE, FALSE, 0.0, 0.0, TRUE,
+                                 VOXEL_TYPE, FALSE, 0.0, 0.0, TRUE,
                               &main->trislice[volume_index].volume_being_input,
                               &options,
                               &main->trislice[volume_index].volume_input );
@@ -233,7 +233,7 @@ public  Status  start_loading_volume(
         set_minc_input_vector_to_colour_flag( &options, FALSE );
 
         status = start_volume_input( filename, 0, XYZT_dimension_names,
-                              NC_BYTE, FALSE, 0.0, 0.0, TRUE,
+                                     VOXEL_TYPE, FALSE, 0.0, 0.0, TRUE,
                               &main->trislice[volume_index].volume_being_input,
                               &options,
                               &main->trislice[volume_index].volume_input );
