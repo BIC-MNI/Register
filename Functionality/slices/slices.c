@@ -214,6 +214,159 @@ public  void  get_volume_world_position(
                             &world_position[Z] );
 }
 
+private  void  convert_original_world_to_world(
+    main_struct    *main,
+    int            volume_index,
+    Real           x_original,
+    Real           y_original,
+    Real           z_original,
+    Real           *x_world,
+    Real           *y_world,
+    Real           *z_world )
+{
+    Point     original_world, world;
+
+    if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
+    {
+        fill_Point( original_world, x_original, y_original, z_original );
+        transform_point( &main->resampling_transform, &original_world, &world );
+
+        *x_world = Point_x(world);
+        *y_world = Point_y(world);
+        *z_world = Point_z(world);
+    }
+    else
+    {
+        *x_world = x_original;
+        *y_world = y_original;
+        *z_world = z_original;
+    }
+}
+
+private  void  convert_world_to_original_world(
+    main_struct    *main,
+    int            volume_index,
+    Real           x_world,
+    Real           y_world,
+    Real           z_world,
+    Real           *x_original,
+    Real           *y_original,
+    Real           *z_original )
+{
+    Point     original_world, world;
+
+    if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
+    {
+        fill_Point( world, x_world, y_world, z_world );
+        transform_point( &main->inverse_resampling_transform,
+                         &world, &original_world );
+
+        *x_original = Point_x(original_world);
+        *y_original = Point_y(original_world);
+        *z_original = Point_z(original_world);
+    }
+    else
+    {
+        *x_original = x_world;
+        *y_original = y_world;
+        *z_original = z_world;
+    }
+}
+
+public  void  convert_original_world_to_voxel(
+    main_struct    *main,
+    int            volume_index,
+    Real           x_original,
+    Real           y_original,
+    Real           z_original,
+    Real           *x_voxel,
+    Real           *y_voxel,
+    Real           *z_voxel )
+{
+    Real   world_position[N_DIMENSIONS];
+
+    convert_original_world_to_world( main, volume_index,
+                                     x_original,
+                                     y_original,
+                                     z_original,
+                                     &world_position[X],
+                                     &world_position[Y],
+                                     &world_position[Z] );
+
+    convert_world_to_voxel( get_slice_volume(main,volume_index),
+                            world_position[X],
+                            world_position[Y],
+                            world_position[Z],
+                            x_voxel,
+                            y_voxel,
+                            z_voxel );
+}
+
+public  void  convert_voxel_to_original_world(
+    main_struct    *main,
+    int            volume_index,
+    Real           x_voxel,
+    Real           y_voxel,
+    Real           z_voxel,
+    Real           *x_original,
+    Real           *y_original,
+    Real           *z_original )
+{
+    Real   world_position[N_DIMENSIONS];
+
+    convert_voxel_to_world( get_slice_volume(main,volume_index),
+                            x_voxel,
+                            y_voxel,
+                            z_voxel,
+                            &world_position[X],
+                            &world_position[Y],
+                            &world_position[Z] );
+
+    convert_world_to_original_world( main, volume_index,
+                                     world_position[X],
+                                     world_position[Y],
+                                     world_position[Z],
+                                     x_original,
+                                     y_original,
+                                     z_original );
+}
+
+public  void  set_volume_original_world_position(
+    main_struct    *main,
+    int            volume_index,
+    Real           original_world_position[N_DIMENSIONS] )
+{
+    Real           voxel_position[N_DIMENSIONS];
+
+    convert_original_world_to_voxel( main, volume_index,
+                                     original_world_position[X],
+                                     original_world_position[Y],
+                                     original_world_position[Z],
+                                     &voxel_position[X],
+                                     &voxel_position[Y],
+                                     &voxel_position[Z] );
+
+    set_volume_voxel_position( main, volume_index, voxel_position );
+}
+
+public  void  get_volume_original_world_position(
+    main_struct   *main,
+    int           volume_index,
+    Real          original_world_position[N_DIMENSIONS] )
+{
+    Real           voxel_position[N_DIMENSIONS];
+
+    get_volume_voxel_position( main, volume_index, voxel_position );
+
+    convert_voxel_to_original_world( main, volume_index,
+                                     voxel_position[X],
+                                     voxel_position[Y],
+                                     voxel_position[Z],
+                                     &original_world_position[X],
+                                     &original_world_position[Y],
+                                     &original_world_position[Z] );
+}
+
 public  volume_struct  *get_slice_volume(
     main_struct   *main,
     int           volume_index )
