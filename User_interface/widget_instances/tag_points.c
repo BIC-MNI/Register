@@ -86,18 +86,21 @@ private  void  set_and_jump_to_tag(
 
     set_current_tag_index( get_ui_struct(), tag_index );
 
-    for_less( volume_index, 0, N_VOLUMES_DISPLAYED )
+    if( IF_get_tags_visibility() )
     {
-        if( volume_index == MERGED_VOLUME_INDEX )
-            tag_volume = 0;
-        else
-            tag_volume = volume_index;
-
-        if( IF_volume_is_loaded( volume_index ) &&
-            IF_get_tag_point_position( tag_index, tag_volume, position ) )
+        for_less( volume_index, 0, N_VOLUMES_DISPLAYED )
         {
-            ui_set_volume_original_world_position( get_ui_struct(),
-                                                   volume_index, position );
+            if( volume_index == MERGED_VOLUME_INDEX )
+                tag_volume = 0;
+            else
+                tag_volume = volume_index;
+
+            if( IF_volume_is_loaded( volume_index ) &&
+                IF_get_tag_point_position( tag_index, tag_volume, position ) )
+            {
+                ui_set_volume_original_world_position( get_ui_struct(),
+                                                       volume_index, position );
+            }
         }
     }
 }
