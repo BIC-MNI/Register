@@ -10,9 +10,9 @@ public  void  start_interaction(
     ui_info->interaction_viewport_index = event_viewport_index;
 
     add_global_event_callback( terminate_event, terminate_callback,
-                               (void *) NULL );
+                               ANY_MODIFIER, (void *) NULL );
     add_global_event_callback( NO_EVENT, no_event_callback,
-                               (void *) NULL );
+                               ANY_MODIFIER, (void *) NULL );
 
     get_viewport_mouse_position( &ui_info->graphics_window,
                                  event_viewport_index,

@@ -94,8 +94,7 @@ private  void  set_and_jump_to_tag(
             tag_volume = volume_index;
 
         if( IF_volume_is_loaded( volume_index ) &&
-            IF_get_tag_point_position( get_tag_index(get_ui_struct(),tag_index),
-                                       tag_volume, position ) )
+            IF_get_tag_point_position( tag_index, tag_volume, position ) )
         {
             ui_set_volume_original_world_position( get_ui_struct(),
                                                    volume_index, position );
@@ -118,7 +117,8 @@ private  DEFINE_WIDGET_CALLBACK( tag_name_callback ) /* ARGSUSED */
     tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
 
     IF_set_tag_point_name( tag_index, name );
-    set_and_jump_to_tag( tag_index );
+
+    set_current_tag_from_button( callback_data );
 }
 
 private  DEFINE_WIDGET_CALLBACK( tag_number_button_callback ) /* ARGSUSED */

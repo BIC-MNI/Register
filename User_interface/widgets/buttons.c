@@ -237,14 +237,14 @@ private  void  create_button_graphics(
     button = get_widget_button( widget );
 
     object = create_rectangle( BLACK );
-    button->polygons = (polygons_struct *) get_object_pointer( object );
+    button->polygons = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
                             widget->viewport_index, NORMAL_PLANES, object );
 
     object = create_text( BLACK, text_font, font_size );
 
-    button->text = (text_struct *) get_object_pointer( object );
+    button->text = get_text_ptr( object );
 
     if( button->toggle_flag )
         set_button_text( widget, button->toggle_text[button->state] );

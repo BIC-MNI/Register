@@ -453,13 +453,13 @@ private  void  create_slider_graphics(
     slider = get_widget_slider( widget );
 
     object = create_rectangle( slider->active_colour );
-    slider->polygons = (polygons_struct *) get_object_pointer( object );
+    slider->polygons = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
                             widget->viewport_index, NORMAL_PLANES, object );
 
     object = create_rectangle( slider->peg_colour );
-    slider->pegs[0] = (polygons_struct *) get_object_pointer( object );
+    slider->pegs[0] = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
                             widget->viewport_index, NORMAL_PLANES, object );
@@ -467,7 +467,7 @@ private  void  create_slider_graphics(
     if( slider->colour_bar_flag )
     {
         object = create_rectangle( slider->peg_colour );
-        slider->pegs[1] = (polygons_struct *) get_object_pointer( object );
+        slider->pegs[1] = get_polygons_ptr( object );
 
         add_object_to_viewport( &widget->graphics->graphics,
                                 widget->viewport_index, NORMAL_PLANES, object );

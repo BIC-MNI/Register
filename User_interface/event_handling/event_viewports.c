@@ -118,13 +118,14 @@ public  void  add_event_viewport_callback(
     int                     y_min,
     int                     y_max,
     event_function_type     callback_function,
+    Event_modifiers         modifier,
     void                    *callback_data )
 {
     check_event_viewport_exists( event_viewports, event_viewport_index );
 
     add_event_callback_function(
       &event_viewports->event_viewports[event_viewport_index].table[event_type],
-      x_min, x_max, y_min, y_max, callback_function, callback_data );
+      x_min, x_max, y_min, y_max, callback_function, modifier, callback_data );
 }
 
 public  void  remove_event_viewport_callback(
@@ -142,6 +143,7 @@ public  void  remove_event_viewport_callback(
 }
 
 public  void  execute_event_viewport_events(
+    Boolean                 shift_state,
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,
@@ -165,7 +167,7 @@ public  void  execute_event_viewport_events(
                                event_viewports->event_viewports[i].x_min;
             y_mouse_viewport = y_mouse -
                                event_viewports->event_viewports[i].y_min;
-            found = execute_event_callback_functions(
+            found = execute_event_callback_functions( shift_state,
                      &event_viewports->event_viewports[i].table[event_type],
                      x_mouse_viewport, y_mouse_viewport, i, key_pressed );
 

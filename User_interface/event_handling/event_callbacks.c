@@ -137,6 +137,8 @@ private  Boolean  is_correct_shift_modifier(
     }
 }
 
+#define  STATIC_SIZE  20
+
 public  Boolean  execute_event_callback_functions(
     Boolean                      shift_state,
     event_callback_list_struct   *callback_list,
@@ -145,11 +147,25 @@ public  Boolean  execute_event_callback_functions(
     int                          event_viewport_index,
     int                          key_pressed )
 {
-    Boolean                 callback_found;
-    event_callback_struct   *callback;
-    int                     i;
+    event_callback_struct          *callback;
+    int                            i, n_callbacks;
+    int                            n_valid;
+    static  event_callback_struct  static_valid_callbacks[STATIC_SIZE];
+    event_callback_struct          *valid_callbacks;
 
-    callback_found = FALSE;
+    n_callbacks = callback_list->n_callbacks;
+
+    if( n_callbacks > STATIC_SIZE )
+    {
+        ALLOC( valid_callbacks, n_callbacks );
+    }
+    else
+        valid_callbacks = static_valid_callbacks;
+
+    n_valid = 0;
+
+    /* to avoid having a callback modify the list callback_list, we
+       first copy it to a temporary array */
 
     for_less( i, 0, callback_list->n_callbacks )
     {
@@ -162,16 +178,24 @@ public  Boolean  execute_event_callback_functions(
              mouse_y <= callback->y_max) &&
              is_correct_shift_modifier( shift_state, callback->modifier) )
         {
-            callback->callback( event_viewport_index, key_pressed,
-                                callback->callback_data );
-            callback_found = TRUE;
+            valid_callbacks[n_valid] = *callback;
+            ++n_valid;
 
             if( callback->x_min >= 0 )
                 break;
         }
     }
 
-    return( callback_found );
+    for_less( i, 0, n_valid )
+    {
+        valid_callbacks[i].callback( event_viewport_index, key_pressed,
+                                     valid_callbacks[i].callback_data );
+    }
+
+    if( n_callbacks > STATIC_SIZE )
+        FREE( valid_callbacks );
+
+    return( n_valid > 0 );
 }
 
 private  void  delete_event_callbacks(

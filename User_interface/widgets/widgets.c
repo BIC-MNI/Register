@@ -49,6 +49,7 @@ public  widget_struct  *create_widget(
     int                     x_size,
     int                     y_size,
     Boolean                 initial_activity,
+    Boolean                 use_ui_colours,
     graphics_window_struct  *graphics,
     int                     viewport_index )
 {
@@ -62,6 +63,7 @@ public  widget_struct  *create_widget(
     widget->y_size = y_size;
     widget->active_flag = initial_activity;
     widget->selected_flag = FALSE;
+    widget->use_ui_colours = use_ui_colours;
     widget->graphics = graphics;
     widget->viewport_index = viewport_index;
 
@@ -231,7 +233,8 @@ public  void  set_widget_selected(
 public  void  update_widget_colours(
     widget_struct  *widget )
 {
-    widget_functions[widget->widget_type].update_colours( widget );
+    if( widget->use_ui_colours )
+        widget_functions[widget->widget_type].update_colours( widget );
 }
 
 public  void  update_widget_list_colours(

@@ -16,7 +16,7 @@ public  void  initialize_meter(
 
     object = create_rectangle( background_colour );
 
-    *meter_background = (polygons_struct *) get_object_pointer( object );
+    *meter_background = get_polygons_ptr( object );
 
     G_get_window_size( popup->graphics.window, &window_x_size, &window_y_size );
 
@@ -33,7 +33,7 @@ public  void  initialize_meter(
 
     object = create_rectangle( colour );
 
-    *meter = (polygons_struct *) get_object_pointer( object );
+    *meter = get_polygons_ptr( object );
 
     position_rectangle( *meter, x, y, 0, 0 );
 

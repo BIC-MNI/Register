@@ -31,47 +31,44 @@ private  Colour  get_merged_colour(
     Real           alpha1,
     Colour         col1,
     Range_flags    range_flag2,
-    Real           alpha2,
+    Real           alpha2,                        /* ARGSUSED */
     Colour         col2 )
 {
     if( (!use_under_over_colour_with_weights ||
          method == ONE_ON_TWO || method == TWO_ON_ONE) &&
-         range_flag1 != WITHIN_RANGE && range_flag2 != WITHIN_RANGE )
+         (range_flag1 == UNDER_RANGE && range_flag2 == UNDER_RANGE) )
     {
-        if( range_flag1 == UNDER_RANGE )
-            return( under_colour );
-        else
-            return( over_colour );
+        return( under_colour );
     }
 
     switch( method )
     {
     case ONE_ON_TWO:
-        if( range_flag1 == WITHIN_RANGE )
+        if( range_flag1 != UNDER_RANGE )
             return( col1 );
         else
             return( col2 );
 
     case TWO_ON_ONE:
-        if( range_flag2 == WITHIN_RANGE )
+        if( range_flag2 != UNDER_RANGE )
             return( col2 );
         else
             return( col1 );
 
     case BLEND_VOLUMES:
         if( use_under_over_colour_with_weights ||
-            range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
+            range_flag1 != UNDER_RANGE && range_flag2 != UNDER_RANGE )
             return( merge_colours( alpha1, col1, 1.0-alpha1, col2 ) );
-        else if( range_flag1 != WITHIN_RANGE )
+        else if( range_flag1 == UNDER_RANGE )
             return( merge_colours( 0.0, col1, 1.0-alpha1, col2 ) );
         else
             return( merge_colours( alpha1, col1, 0.0, col2 ) );
 
     case WEIGHTED_VOLUMES:
         if( use_under_over_colour_with_weights ||
-            range_flag1 == WITHIN_RANGE && range_flag2 == WITHIN_RANGE )
+            range_flag1 != UNDER_RANGE && range_flag2 != UNDER_RANGE )
             return( merge_colours( alpha1, col1, alpha2, col2 ) );
-        else if( range_flag1 != WITHIN_RANGE )
+        else if( range_flag1 == UNDER_RANGE )
             return( merge_colours( 0.0, col1, alpha2, col2 ) );
         else
             return( merge_colours( alpha1, col1, 0.0, col2 ) );

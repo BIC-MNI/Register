@@ -32,11 +32,12 @@ private  DEFINE_WIDGET_CALLBACK( colour_button_callback )   /* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( cancel_callback )   /* ARGSUSED */
 {
-    colour_selection_struct   *popup;
+    delete_colour_selection( (colour_selection_struct *) callback_data );
+}
 
-    popup = (colour_selection_struct *) callback_data;
-
-    delete_colour_selection( popup );
+private  DEFINE_EVENT_FUNCTION( quit_window_callback )  /* ARGSUSED */
+{
+    delete_colour_selection( (colour_selection_struct *) callback_data );
 }
 
 public  void  popup_colour_selection(
@@ -66,7 +67,8 @@ public  void  popup_colour_selection(
                     over_under_names[over_or_under] );
 
     create_popup_window( &popup->popup_window, window_name, x, y,
-                         Colour_selection_x_size, Colour_selection_y_size );
+                         Colour_selection_x_size, Colour_selection_y_size,
+                         quit_window_callback, (void *) popup );
 
     initialize_widget_list( &popup->popup_window.widgets );
 

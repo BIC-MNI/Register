@@ -30,6 +30,12 @@ public  void  event_loop()
     while( !quit_flag );
 }
 
+public  void  force_update_all_windows()
+{
+    handle_event( NO_EVENT, (window_struct *) NULL, 0 );
+    make_windows_up_to_date();
+}
+
 private  void   handle_event(
     Event_types              event_type,
     window_struct            *event_window,

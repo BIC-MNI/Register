@@ -28,6 +28,22 @@ public  Boolean  update_slice_display(
         }
     }
 
+    if( main->merged.active_flag )
+    {
+        for_less( view, 0, N_VIEWS )
+        {
+            if( !main->merged.slices[view].pixels_are_up_to_date )
+            {
+                create_merged_pixels( main, view );
+                main->merged.slices[view].pixels_are_up_to_date = TRUE;
+
+                set_viewport_update_flag( &main->graphics,
+                       get_slice_viewport_index(MERGED_VOLUME_INDEX,view),
+                       NORMAL_PLANES );
+            }
+        }
+    }
+
     drawn = redraw_out_of_date_viewports( &main->graphics, window,
                                           current_buffer );
 

@@ -52,7 +52,7 @@ public  void  popup_quit_confirm(
     if( !IF_tag_points_have_been_saved() )
     {
         object = create_object( TEXT );
-        text = (text_struct *) get_object_pointer( object );
+        text = get_text_ptr( object );
         fill_Point( point, x, y - Message_font_size, 0.0);
         initialize_text( text, &point, Message_text_colour,
                          Message_font, Message_font_size );
@@ -66,7 +66,7 @@ public  void  popup_quit_confirm(
     }
 
     object = create_object( TEXT );
-    text = (text_struct *) get_object_pointer( object );
+    text = get_text_ptr( object );
     fill_Point( point, x, y - Message_font_size, 0.0);
     initialize_text( text, &point, Message_text_colour,
                      Message_font, Message_font_size );

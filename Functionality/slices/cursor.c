@@ -62,7 +62,7 @@ public  lines_struct  *create_cursor(
     
     object = create_object( LINES );
 
-    lines = (lines_struct *) get_object_pointer( object );
+    lines = get_lines_ptr( object );
 
     create_cursor_graphics( lines, Slice_cursor_inside_colour,
                             Slice_cursor_outside_colour );

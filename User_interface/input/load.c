@@ -47,17 +47,14 @@ public  Status  initialize_loading_volume(
     data->volume_index = volume;
     data->this_is_resampled_volume = this_is_resampled_volume;
 
-    status = start_volume_input( filename, &data->volume, &data->input );
+    status = start_volume_input( filename, TRUE, &data->volume, &data->input );
 
     if( status == OK )
     {
         set_load_activity( ui_info, volume, OFF );
 
-        if( status == OK )
-        {
-            add_global_event_callback( NO_EVENT, more_input, ANY_MODIFIER,
-                                       (void *) data );
-        }
+        add_global_event_callback( NO_EVENT, more_input, ANY_MODIFIER,
+                                   (void *) data );
 
         get_graphics_viewport( &ui_info->graphics_window.graphics, 
                                get_volume_menu_viewport_index(volume),

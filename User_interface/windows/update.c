@@ -10,7 +10,8 @@ public  Boolean  make_window_up_to_date(
     something_was_drawn = redraw_out_of_date_viewports( graphics, window,
                                                         current_buffer );
 
-    if( IF_redraw_slices( window, current_buffer ) )
+    if( window == get_ui_struct()->graphics_window.window &&
+        IF_redraw_slices( window, current_buffer ) )
         something_was_drawn = TRUE;
 
     if( something_was_drawn )
@@ -32,8 +33,7 @@ public  void  set_clear_and_update_flags( UI_struct  *ui_struct )
     for_enum( bitplane, N_BITPLANE_TYPES, Bitplane_types )
     {
         set_bitplanes_clear_flag( &ui_struct->graphics_window.graphics,
-                                  bitplane,
-                                  ui_struct->graphics_window.current_buffer );
+                                  bitplane );
 
         for_enum( viewport, N_UI_viewports, Viewport_types )
         {
@@ -42,23 +42,25 @@ public  void  set_clear_and_update_flags( UI_struct  *ui_struct )
         }
     }
 
-    for_less( volume, 0, N_VOLUMES_ACROSS )
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
     {
-        for_less( view, 0, N_SLICE_VIEWS )
+        for_less( view, 0, N_VIEWS )
         {
             for_enum( bitplane, N_BITPLANE_TYPES, Bitplane_types )
                 IF_set_update_slice_viewport_flag( volume, view, bitplane );
         }
     }
+
+    ui_struct->graphics_window.current_buffer = 0;
 }
 
 public  void  set_recreate_all_slice_flags()
 {
     int             volume, view;
 
-    for_less( volume, 0, N_VOLUMES_ACROSS )
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
     {
-        for_less( view, 0, N_SLICE_VIEWS )
+        for_less( view, 0, N_VIEWS )
         {
             IF_set_recreate_slice_flag( volume, view );
         }

@@ -17,12 +17,26 @@ public  Status   initialize_register( window_struct  *window )
     Status          status;
     int             volume, view;
     Bitplane_types  bitplane;
+    String          home_filename;
+
+    (void) sprintf( home_filename, "$HOME/%s", REGISTER_GLOBALS_FILENAME );
+
+    if( file_exists( home_filename ) )
+    {
+        status = input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
+                                     functional_globals, home_filename );
+    }
 
     if( file_exists( REGISTER_GLOBALS_FILENAME ) )
     {
         status = input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
                           functional_globals, REGISTER_GLOBALS_FILENAME );
     }
+
+    if( Disable_alloc_checking )
+        set_alloc_checking( OFF );
+
+    set_alloc_debug( Alloc_debugging );
 
     G_set_overlay_colour_map( window, 1, Overlay_colour_1 );
     G_set_overlay_colour_map( window, 2, Overlay_colour_2 );
@@ -47,6 +61,8 @@ public  Status   initialize_register( window_struct  *window )
             }
         }
     }
+
+    main_info.resampled_file_loaded = FALSE;
 
     return( status );
 }

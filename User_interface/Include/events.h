@@ -11,9 +11,12 @@ typedef  void  (*event_function_type) ( int, int, void * );
                       int          keyboard_character,                        \
                       void         *callback_data )
 
+typedef  enum  { ANY_MODIFIER, NO_SHIFT_ONLY, SHIFT_ONLY } Event_modifiers;
+
 typedef  struct
 {
     Boolean               enabled;
+    Event_modifiers       modifier;
     int                   x_min, x_max, y_min, y_max;
     event_function_type   callback;
     void                  *callback_data;

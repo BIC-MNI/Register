@@ -8,7 +8,7 @@ public  object_struct  *create_rectangle(
     polygons_struct   *polygons;
 
     object = create_object( POLYGONS );
-    polygons = (polygons_struct *) get_object_pointer( object );
+    polygons = get_polygons_ptr( object );
 
     initialize_polygons( polygons, colour, (Surfprop *) 0 );
 
@@ -51,7 +51,7 @@ public  object_struct  *create_text(
     text_struct       *text;
 
     object = create_object( TEXT );
-    text = (text_struct *) get_object_pointer( object );
+    text = get_text_ptr( object );
 
     fill_Point( point, 0.0, 0.0, 0.0 );
 

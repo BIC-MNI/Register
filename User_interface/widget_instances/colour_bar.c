@@ -132,8 +132,10 @@ public  int  add_colour_bar_widgets(
     int               y,
     int               *height )
 {
-    int              start_index, dx;
+    int              start_index, dx, volume;
     widget_struct    *radio_widgets[6];
+
+    volume = get_viewport_volume_index( viewport_index );
 
     dx = Colour_bar_button_width + Colour_bar_button_spacing;
 
@@ -142,7 +144,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Gray",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -156,7 +158,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + dx, y, Colour_bar_button_width, Volume_button_height,
                    "Hot",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -168,7 +170,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 2 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Spect",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -180,7 +182,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 3 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Red",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -192,7 +194,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 4 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Green",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -204,7 +206,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 5 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Blue",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -218,7 +220,8 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Under",
-                   OFF, VOLUME1_UNDER_COLOUR,
+                   OFF, TRUE,
+                   volume == 0 ? VOLUME1_UNDER_COLOUR : VOLUME2_UNDER_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -246,7 +249,8 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Over",
-                   OFF, VOLUME1_OVER_COLOUR,
+                   OFF, TRUE,
+                   volume == 0 ? VOLUME1_OVER_COLOUR : VOLUME2_OVER_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -299,4 +303,67 @@ public  void  set_colour_bar_widgets_activity(
                      [start_widget_index + widget_indices[
                            get_colour_coding_widget_index(type)]], ON );
     }
+}
+
+public  void  set_over_under_colour_activity(
+    UI_struct         *ui_info,
+    int               volume_index,
+    int               over_or_under,
+    Boolean           activity )
+{
+    Viewport_types      viewport;
+    Colour_bar_widgets  widget_index;
+
+    viewport = get_volume_menu_viewport_index( volume_index );
+
+    if( over_or_under == 0 )
+        widget_index = UNDER_BUTTON;
+    else
+        widget_index = OVER_BUTTON;
+
+    set_widget_activity( ui_info->widget_list[viewport].widgets
+                           [get_colour_bar_start_index() +
+                            widget_indices[widget_index]],
+                             activity );
+}
+
+public  void  set_over_under_colour(
+    UI_struct         *ui_info,
+    int               volume_index,
+    int               over_or_under,
+    Colour            colour )
+{
+    Viewport_types      viewport;
+    Colour_bar_widgets  widget_index;
+    UI_colours          colour_name;
+
+    viewport = get_volume_menu_viewport_index( volume_index );
+
+    if( over_or_under == 0 )
+    {
+        widget_index = UNDER_BUTTON;
+        IF_set_under_colour( volume_index, colour );
+        IF_set_under_colour( MERGED_VOLUME_INDEX + volume_index, colour );
+    }
+    else
+    {
+        widget_index = OVER_BUTTON;
+        IF_set_over_colour( volume_index, colour );
+        IF_set_over_colour( MERGED_VOLUME_INDEX + volume_index, colour );
+    }
+
+    if( volume_index == 0 && over_or_under == 0 )
+        colour_name = VOLUME1_UNDER_COLOUR;
+    else if( volume_index == 0 && over_or_under == 1 )
+        colour_name = VOLUME1_OVER_COLOUR;
+    else if( volume_index == 1 && over_or_under == 0 )
+        colour_name = VOLUME2_UNDER_COLOUR;
+    else if( volume_index == 1 && over_or_under == 1 )
+        colour_name = VOLUME2_OVER_COLOUR;
+ 
+    set_ui_colour( ui_info, colour_name, colour );
+
+    update_widget_colours( ui_info->widget_list[viewport].widgets
+                                 [get_colour_bar_start_index() +
+                                  widget_indices[widget_index]] );
 }

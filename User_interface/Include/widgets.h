@@ -28,6 +28,7 @@ typedef  struct
     void                     *callback_data;
     polygons_struct          *polygons;
     text_struct              *text;
+    int                      update_counter;
 
     UI_colours               active_colour;
     UI_colours               selected_colour;
@@ -42,6 +43,7 @@ typedef  struct
 {
     Boolean                  label_only_flag;
     Boolean                  in_edit_mode;
+    Boolean                  clear_text_when_selected;
     String                   string;
     String                   saved_string;
     int                      left_index;

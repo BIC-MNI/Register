@@ -15,10 +15,13 @@ typedef  enum
     Volume_1_menu_viewport,
     Volume_2_menu_viewport,
     Merged_menu_viewport,
+    Main_volume_1_separator_viewport,
     Volume_1_2_separator_viewport,
     Volume_2_merged_separator_viewport,
     Slice_1_2_separator_viewport,
     Slice_2_3_separator_viewport,
+    Slice_3_menu_separator_viewport,
+    Tag_volume_menu_separator_viewport,
     N_UI_viewports,
     Whole_window_event_viewport = N_UI_viewports,
     N_VIEWPORT_TYPES
@@ -53,9 +56,13 @@ typedef  struct
     int                      x_mouse_start;
     int                      y_mouse_start;
     Real                     slice_position_start;
+
+    Transform                resampling_transform;
+    String                   original_filename_volume_2;
+    String                   resampled_filename;
 } UI_struct;
 
-typedef  struct
+typedef  struct popup_struct
 {
     graphics_window_struct  graphics;
     widgets_struct          widgets;
@@ -64,6 +71,7 @@ popup_struct;
 
 typedef  struct
 {
+    Boolean                   this_is_resampled_volume;
     int                       volume_index;
     volume_input_struct       input;
     volume_struct             volume;
@@ -72,5 +80,15 @@ typedef  struct
     polygons_struct           *meter;
 }
 load_struct;
+
+typedef  struct
+{
+    resample_struct           resample;
+    volume_struct             resampled_volume;
+    popup_struct              popup;
+    polygons_struct           *meter_background;
+    polygons_struct           *meter;
+}
+resample_volume_struct;
 
 #endif

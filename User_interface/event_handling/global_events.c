@@ -71,10 +71,12 @@ public  Boolean  mouse_must_be_in_window(
 public  void  add_global_event_callback(
     Event_types               event_type,
     event_function_type       callback,
+    Event_modifiers           modifier,
     void                      *callback_data )
 {
     add_event_callback_function( &global_event_table[event_type],
-                                 -1, -1, -1, -1, callback, callback_data );
+                                 -1, -1, -1, -1, callback, modifier,
+                                 callback_data );
 }
 
 public  void  remove_global_event_callback(
@@ -87,10 +89,12 @@ public  void  remove_global_event_callback(
 }
 
 public  Boolean  execute_global_event_callbacks(
+    Boolean                 shift_state,
     Event_types             event_type,
     int                     key_pressed )
 {
-    return( execute_event_callback_functions( &global_event_table[event_type],
+    return( execute_event_callback_functions( shift_state,
+                                              &global_event_table[event_type],
                                               0, 0, 0,
                                               key_pressed ) );
 }

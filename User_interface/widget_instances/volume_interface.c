@@ -5,7 +5,7 @@ typedef  enum
     RESET_VIEW_BUTTON,
     LOAD_BUTTON,
     LOAD_FILENAME_TEXT,
-    VOXEL_LABEL,
+    RESAMPLED_LABEL,
 
     N_VOLUME_WIDGETS
 }
@@ -34,9 +34,14 @@ private  DEFINE_WIDGET_CALLBACK( load_volume_callback ) /* ARGSUSED */
                      get_ui_struct()->widget_list[viewport_index].widgets
                                  [widget_indices[LOAD_FILENAME_TEXT]] );
 
-    (void) initialize_loading_volume( get_ui_struct(),
+    if( blank_string( filename ) )
+        print( "You must enter a filename before pressing load.\n" );
+    else
+    {
+        (void) initialize_loading_volume( get_ui_struct(),
                                       get_viewport_volume_index(viewport_index),
                                       filename, FALSE );
+    }
 }
 
 private  DEFINE_WIDGET_CALLBACK( volume_filename_callback ) /* ARGSUSED */
@@ -70,6 +75,18 @@ public  void  add_volume_widgets(
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                    Button_text_font, Button_text_font_size,
                    reset_view_callback, (void *) NULL ) );
+
+    widget_indices[RESAMPLED_LABEL] =
+                   add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_label( &ui_info->graphics_window, viewport_index,
+                   x + Interface_x_spacing + Volume_button_width, y,
+                   Load_filename_width, Volume_button_height,
+                   "Volume Resampled", OFF, LABEL_ACTIVE_COLOUR,
+                   LABEL_SELECTED_COLOUR,
+                   BACKGROUND_COLOUR,
+                   BACKGROUND_COLOUR,
+                   Label_text_font, Label_text_font_size ) );
 
     y += Volume_button_height + Interface_y_spacing;
 
@@ -150,9 +167,24 @@ public  void  set_volume_widgets_activity(
 
     for_enum( widget_index, N_VOLUME_WIDGETS, Volume_widgets )
     {
+        if( widget_index != RESAMPLED_LABEL )
+        {
+            set_widget_activity( ui_info->widget_list[viewport_index].widgets
+                                                [widget_indices[widget_index]],
+                                 activity );
+        }
+    }
+
+    if( volume_index == RESAMPLED_VOLUME_INDEX )
+    {
+        set_resampled_label_activity( ui_info, activity &&
+                                      IF_is_resampled_volume_loaded() );
+    }
+    else
+    {
         set_widget_activity( ui_info->widget_list[viewport_index].widgets
-                                            [widget_indices[widget_index]],
-                             activity );
+                                         [widget_indices[RESAMPLED_LABEL]],
+                             OFF );
     }
 
     set_colour_bar_widgets_activity( ui_info, viewport_index,
@@ -166,4 +198,18 @@ public  void  set_volume_widgets_activity(
 public  int  get_colour_bar_start_index()
 {
     return( colour_bar_start_index );
+}
+
+public  void  set_resampled_label_activity(
+    UI_struct         *ui_info,
+    Boolean           state )
+{
+    Viewport_types       viewport_index;
+
+    viewport_index = get_volume_menu_viewport_index( RESAMPLED_VOLUME_INDEX );
+
+    set_widget_activity( ui_info->widget_list
+                                 [viewport_index].widgets
+                                 [widget_indices[RESAMPLED_LABEL]],
+                         state );
 }

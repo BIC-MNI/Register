@@ -85,8 +85,7 @@ private  void      recreate_text_entry_text(
 
         if( get_object_visibility( text_entry->cursor ))
         {
-            position_rectangle( (polygons_struct *) get_object_pointer(
-                                                       text_entry->cursor),
+            position_rectangle( get_polygons_ptr( text_entry->cursor),
                                 widget->x + cursor_pos, widget->y,
                                 Text_entry_cursor_size, widget->y_size );
         }
@@ -341,8 +340,7 @@ public  void  update_text_entry_colours(
     }
 
     colour_map_state = G_get_colour_map_state( widget->graphics->window );
-    cursor_polygons = (polygons_struct *) get_object_pointer(
-                                         text_entry->cursor );
+    cursor_polygons = get_polygons_ptr( text_entry->cursor );
 
     if( widget->use_ui_colours )
     {
@@ -388,7 +386,7 @@ private  void  create_text_entry_graphics(
     /*  create background rectangle */
 
     object = create_rectangle( BLACK );
-    text_entry->polygons = (polygons_struct *) get_object_pointer( object );
+    text_entry->polygons = get_polygons_ptr( object );
 
     add_object_to_viewport( &widget->graphics->graphics,
                             widget->viewport_index, NORMAL_PLANES, object );
@@ -406,7 +404,7 @@ private  void  create_text_entry_graphics(
 
     object = create_text( BLACK, text_font, font_size );
 
-    text_entry->text = (text_struct *) get_object_pointer( object );
+    text_entry->text = get_text_ptr( object );
 
     recreate_text_entry_text( widget );
 

@@ -16,6 +16,23 @@ public  Boolean  IF_volume_is_loaded(
     return( is_volume_active( get_main_struct(), volume_index ) );
 }
 
+public  Boolean  IF_is_resampled_volume_loaded()
+{
+    return( is_resampled_volume_loaded( get_main_struct() ) );
+}
+
+public  Status  IF_do_resampling(
+    char   resampled_filename[] )
+{
+    return( resample_the_volume( get_main_struct(), resampled_filename ) );
+}
+
+public  char  *IF_get_volume_filename(
+    int  volume_index )
+{
+    return( get_volume_filename( get_main_struct(), volume_index ) );
+}
+
 public  Boolean  IF_get_merged_slice_visibility()
 {
     return( get_merged_volume_activity(get_main_struct()) );
@@ -32,6 +49,15 @@ public  void  IF_set_volume(
     volume_struct  *volume )
 {
     set_register_volume( get_main_struct(), volume_index, volume );
+}
+
+public  void  IF_set_resampled_volume(
+    volume_struct  *volume,
+    char           original_filename[],
+    Transform      *resampling_transform )
+{
+    set_register_resampled_volume( get_main_struct(), volume, original_filename,
+                                   resampling_transform );
 }
 
 public  void  IF_delete_volume(
@@ -55,7 +81,7 @@ public  void  IF_reset_slice_view(
     int             volume,
     int             view )
 {
-    reset_slice_view( get_main_struct(), volume, view );
+    initialize_slice_view( get_main_struct(), volume, view );
 }
 
 public  void  IF_set_update_slice_viewport_flag(
@@ -100,6 +126,20 @@ public  void  IF_get_volume_world_position(
     Real      position[] )
 {
     get_volume_world_position( get_main_struct(), volume, position );
+}
+
+public  void  IF_set_volume_original_world_position(
+    int       volume,
+    Real      position[] )
+{
+    set_volume_original_world_position( get_main_struct(), volume, position );
+}
+
+public  void  IF_get_volume_original_world_position(
+    int       volume,
+    Real      position[] )
+{
+    get_volume_original_world_position( get_main_struct(), volume, position );
 }
 
 public  int   IF_get_slice_axis(
@@ -210,7 +250,23 @@ public  void  IF_set_merged_volume_opacity(
     set_merged_volume_opacity( get_main_struct(), which_volume, opacity );
 }
 
+public  Real  IF_get_merged_volume_opacity(
+    int    which_volume )
+{
+    return( get_merged_volume_opacity( get_main_struct(), which_volume ) );
+}
+
 /* ----------------------- tag points -------------------------------- */
+
+public  Boolean  IF_get_tags_visibility( void )
+{
+    return( get_tags_visibility(get_main_struct()) );
+}
+
+public  void  IF_set_tags_visibility( Boolean  visibility )
+{
+    set_tags_visibility( get_main_struct(), visibility );
+}
 
 public  void  IF_create_new_tag_point( void )
 {
@@ -305,7 +361,15 @@ public  void  IF_save_transform(
 
 public  Boolean  IF_does_transform_exist()
 {
-    return( get_tag_point_transform( get_main_struct(), (Transform *) NULL ) );
+    return( get_tag_point_transform( get_main_struct(), (Transform **) NULL,
+                                     (Transform **) NULL ) );
+}
+
+public  Boolean  IF_get_resampling_transform(
+    Transform  **transform )
+{
+    return( get_tag_point_transform( get_main_struct(), transform,
+                                     (Transform **) NULL ) );
 }
 
 public  Boolean  IF_tag_points_have_been_saved()

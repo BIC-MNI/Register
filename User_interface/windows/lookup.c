@@ -6,7 +6,7 @@ private  graphics_window_struct     **windows;
 public  void  record_graphics_window(
     graphics_window_struct   *graphics_window )
 {
-    ADD_ELEMENT_TO_ARRAY( n_windows, windows,
+    ADD_ELEMENT_TO_ARRAY( windows, n_windows,
                           graphics_window, DEFAULT_CHUNK_SIZE );
 }
 
@@ -45,7 +45,7 @@ public  void  unrecord_graphics_window(
 
     if( i >= 0 )
     {
-        DELETE_ELEMENT_FROM_ARRAY( n_windows, windows, i, DEFAULT_CHUNK_SIZE );
+        DELETE_ELEMENT_FROM_ARRAY( windows, n_windows, i, DEFAULT_CHUNK_SIZE );
     }
 }
 
@@ -79,4 +79,21 @@ public  void  make_windows_up_to_date()
                 windows[i]->current_buffer = 1 - windows[i]->current_buffer;
         }
     }
+}
+
+public  void  delete_all_graphics_windows()
+{
+    int   i;
+
+    for_less( i, 0, n_windows )
+    {
+        delete_graphics_struct( &windows[i]->graphics );
+
+        delete_event_viewports( &windows[i]->event_viewports );
+
+        (void) G_delete_window( windows[i]->window );
+    }
+
+    if( n_windows > 0 )
+        FREE( windows );
 }

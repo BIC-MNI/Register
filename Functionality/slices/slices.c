@@ -1,8 +1,10 @@
 
 #include  <def_register.h>
 
-private   int     x_axes[] = { Y, X, X };
-private   int     y_axes[] = { Z, Z, Y };
+private   int         x_axes[] = { Y, X, X };
+private   int         y_axes[] = { Z, Z, Y };
+private   Boolean     x_axes_flip[] = { FALSE, FALSE, FALSE };
+private   Boolean     y_axes_flip[] = { FALSE, FALSE, FALSE };
 
 private  void  check_axes_assigned()
 {
@@ -17,6 +19,12 @@ private  void  check_axes_assigned()
         y_axes[0] = Slice_1_y_axis_index;
         y_axes[1] = Slice_2_y_axis_index;
         y_axes[2] = Slice_3_y_axis_index;
+        x_axes_flip[0] = Slice_1_x_axis_flip;
+        x_axes_flip[1] = Slice_2_x_axis_flip;
+        x_axes_flip[2] = Slice_3_x_axis_flip;
+        y_axes_flip[0] = Slice_1_y_axis_flip;
+        y_axes_flip[1] = Slice_2_y_axis_flip;
+        y_axes_flip[2] = Slice_3_y_axis_flip;
     }
 }
 
@@ -29,6 +37,17 @@ public  void  get_slice_axes(
 
     *x_axis_index = x_axes[view_index];
     *y_axis_index = y_axes[view_index];
+}
+
+public  void  get_slice_axes_flip(
+    int       view_index,
+    Boolean   *x_axis_flip,
+    Boolean   *y_axis_flip )
+{
+    check_axes_assigned();
+
+    *x_axis_flip = x_axes_flip[view_index];
+    *y_axis_flip = y_axes_flip[view_index];
 }
 
 public  int  get_slice_axis(
@@ -172,7 +191,7 @@ public  void  get_volume_voxel_position(
     position[Z] = cursor_ptr[Z];
 }
 
-private  void  convert_original_world_to_world(
+public  void  convert_original_world_to_world(
     main_struct    *main,
     int            volume_index,
     Real           x_original,

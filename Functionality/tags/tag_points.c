@@ -19,6 +19,21 @@ public  void  initialize_tag_points(
     main->tags.transform_out_of_date = TRUE;
     main->tags.transform_exists = FALSE;
     main->tags.saved_flag = TRUE;
+    main->tags.tags_visible = Initial_tags_visible;
+}
+
+public  Boolean  get_tags_visibility(
+    main_struct      *main )
+{
+    return( main->tags.tags_visible );
+}
+
+public  void  set_tags_visibility(
+    main_struct      *main,
+    Boolean          visibility )
+{
+    main->tags.tags_visible = visibility;
+    update_all_tag_objects( main );
 }
 
 public  void  delete_tag_points(
@@ -26,6 +41,7 @@ public  void  delete_tag_points(
 {
     if( main->tags.n_tag_points > 0 )
         FREE( main->tags.tag_points );
+    set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
 public  void  create_new_tag_point(
@@ -40,6 +56,8 @@ public  void  create_new_tag_point(
         fill_Point( tag.position[volume_index], 0.0, 0.0, 0.0 );
     }
 
+    create_tag_objects( main, &tag );
+
     tag.name[0] = (char) 0;
     tag.activity = ON;
 
@@ -51,10 +69,12 @@ public  void  delete_tag_point(
     main_struct      *main,
     int              ind )
 {
+    delete_tag_objects( main, &main->tags.tag_points[ind] );
     DELETE_ELEMENT_FROM_ARRAY( main->tags.tag_points, main->tags.n_tag_points,
                                ind, DEFAULT_CHUNK_SIZE );
     main->tags.transform_out_of_date = TRUE;
     main->tags.saved_flag = FALSE;
+    set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
 public  int  get_n_tag_points(
@@ -105,8 +125,11 @@ public  void  set_tag_point_position(
         fill_Point( main->tags.tag_points[ind].position[volume_index],
                     position[X], position[Y], position[Z] );
 
+        update_tag_objects( main, &main->tags.tag_points[ind] );
+
         main->tags.transform_out_of_date = TRUE;
         main->tags.saved_flag = FALSE;
+        set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
     }
 }
 
@@ -197,6 +220,8 @@ public  void  set_tag_point_activity(
         main->tags.tag_points[ind].activity = activity;
         main->tags.transform_out_of_date = TRUE;
         main->tags.saved_flag = FALSE;
+        update_tag_objects( main, &main->tags.tag_points[ind] );
+        set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
     }
 }
 
@@ -216,20 +241,25 @@ public  Boolean  get_tag_point_activity(
 
 public  Boolean  get_tag_point_transform(
     main_struct   *main,
-    Transform     *transform )
+    Transform     **transform,
+    Transform     **inverse_transform )
 {
     Boolean  exists;
 
     if( check_update_transform_and_rms_error( main ) )
     {
-        if( transform != (Transform *) NULL )
-            *transform = main->tags.v2_to_v1_transform;
+        if( transform != (Transform **) NULL )
+            *transform = &main->tags.v2_to_v1_transform;
+        if( inverse_transform != (Transform **) NULL )
+            *inverse_transform = &main->tags.inverse_v2_to_v1_transform;
         exists = TRUE;
     }
     else
     {
-        if( transform != (Transform *) NULL )
-            make_identity_transform( transform );
+        if( transform != (Transform **) NULL )
+            *transform = (Transform *) NULL;
+        if( inverse_transform != (Transform **) NULL )
+            *inverse_transform = (Transform *) NULL;
         exists = FALSE;
     }
 

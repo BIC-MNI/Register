@@ -49,9 +49,10 @@ public  Status   initialize_user_interface( UI_struct  *ui )
                   (Colour_coding_types) Volume_1_default_colour_coding );
     IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX+1,
                   (Colour_coding_types) Volume_2_default_colour_coding );
-    IF_set_merge_method( (Merge_methods) Initial_merge_method );
 
     colour_map_state_has_changed( ui );
+
+    install_tag_events( ui );
 
     return( status );
 }

@@ -71,7 +71,7 @@ private  void  initialize_slice(
                             get_slice_viewport_index(volume,view),
                             NORMAL_PLANES, object );
 
-    slice->pixels = (pixels_struct *) get_object_pointer( object );
+    slice->pixels = get_pixels_ptr( object );
 
     /* create cursor */
 

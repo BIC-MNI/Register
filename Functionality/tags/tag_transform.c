@@ -87,6 +87,8 @@ public  void  recompute_tag_transform(
         FREE2D( rotation );
         FREE2D( transformation );
 
+        compute_transform_inverse( &tags->v2_to_v1_transform,
+                                   &tags->inverse_v2_to_v1_transform );
         recompute_tag_rms_errors( tags );
 
         tags->transform_exists = TRUE;

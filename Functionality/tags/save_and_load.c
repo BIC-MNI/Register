@@ -33,6 +33,28 @@ private  void   create_tags_array(
     }
 }
 
+private  void  create_comments(
+    main_struct   *main,
+    char          comments[] )
+{
+    char    temp[1000];
+
+    comments[0] = (char) 0;
+
+    if( main->trislice[0].input_flag )
+    {
+        (void) sprintf( comments, "Volume: %s\n",
+                        main->trislice[0].volume.filename );
+    }
+
+    if( main->trislice[1].input_flag )
+    {
+        (void) sprintf( temp, "Volume: %s\n",
+                        main->trislice[1].volume.filename );
+        (void) strcat( comments, temp );
+    }
+}
+
 public  Status   save_tag_points(
     main_struct   *main,
     char          filename[] )
@@ -45,10 +67,11 @@ public  Status   save_tag_points(
     char             **labels;
     tag_list_struct  *tags;
     Boolean          *tag_is_valid, both_volumes_flag;
+    char             comments[1000];
 
     tags = &main->tags;
 
-    if( tags->n_tag_points == 0 )
+    if( tags->n_tag_points > 0 )
         ALLOC( tag_is_valid, tags->n_tag_points );
 
     both_volumes_flag = (main->trislice[0].input_flag &&
@@ -100,6 +123,7 @@ public  Status   save_tag_points(
         create_tags_array( n_valid_tags, tag_is_valid,
                            tags->n_tag_points, tags->tag_points,
                            n_volumes, ptr );
+        ++n_volumes;
     }
 
     ALLOC2D( labels, n_valid_tags, MAX_STRING_LENGTH+1 );
@@ -119,7 +143,9 @@ public  Status   save_tag_points(
 
     if( status == OK )
     {
-        (void) output_tag_points( file, (char *) NULL, n_volumes,
+        create_comments( main, comments );
+
+        (void) output_tag_points( file, comments, n_volumes,
                                   n_valid_tags,
                                   tags_volume1, tags_volume2, labels );
     }
@@ -200,6 +226,10 @@ public  Status   load_tag_points(
     if( file_status == OK )
         (void) close_file( file );
 
+    update_all_tag_objects( main );
+
+    main->tags.saved_flag = TRUE;
+
     return( status );
 }
 
@@ -210,27 +240,30 @@ public  Status   save_transform(
     int              i, j;
     FILE             *file;
     Status           file_status, status;
-    Transform        transform;
+    Transform        *transform;
     double           mni_transform[3][4];
+    char             comments[1000];
 
     status = OK;
 
-    if( get_tag_point_transform( main, &transform ) )
+    if( get_tag_point_transform( main, &transform, (Transform **) NULL ) )
     {
         for_less( i, 0, 3 )
         {
             for_less( j, 0, 4 )
             {
-                mni_transform[i][j] = (double) Transform_elem(transform,i,j);
+                mni_transform[i][j] = (double) Transform_elem(*transform,i,j);
             }
         }
 
         file_status = open_file_with_default_suffix( filename, "xfm",
                              WRITE_FILE, ASCII_FORMAT, &file );
 
+        create_comments( main, comments );
+
         if( file_status == OK )
         {
-            if( !output_transform( file, (char *) NULL, mni_transform ) )
+            if( !output_transform( file, comments, mni_transform ) )
                 status = ERROR;
 
             (void) close_file( file );

@@ -13,8 +13,7 @@ public  void  create_tag_objects(
         {
             tag->objects[volume][view] = create_object( LINES );
 
-            lines = (lines_struct *)
-                        get_object_pointer( tag->objects[volume][view] );
+            lines = get_lines_ptr( tag->objects[volume][view] );
 
             initialize_lines( lines, BLACK );
 
@@ -59,7 +58,7 @@ public  void  update_slice_tag_colours(
     lines_struct    *lines;
     Colour          inside_colour, outside_colour;
 
-    lines = (lines_struct *) get_object_pointer( tag->objects[volume][view] );
+    lines = get_lines_ptr( tag->objects[volume][view] );
 
     if( G_get_colour_map_state( main->window ) )
     {
@@ -214,8 +213,7 @@ public  void  update_tag_object(
         is_volume_active( main, volume ) &&
         convert_tag_to_pixel( main, volume, view, tag, &x, &y, &radius ) )
     {
-        lines = (lines_struct *)
-                        get_object_pointer( tag->objects[volume][view] );
+        lines = get_lines_ptr( tag->objects[volume][view] );
         position_tag_circle( lines, x, y, radius );
         update_slice_tag_colours( main, volume, view, tag );
         visibility = ON;

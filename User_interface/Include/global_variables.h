@@ -7,6 +7,7 @@ START_GLOBALS
 
     DEF_GLOBAL( Colour_table_start, int, 256 )
     DEF_GLOBAL( Default_UI_background_colour, Colour, DARK_SLATE_BLUE )
+    DEF_GLOBAL( Default_divider_colour, Colour, WHITE )
     DEF_GLOBAL( Default_button_active_colour, Colour, YELLOW )
     DEF_GLOBAL( Default_button_selected_colour, Colour, RED )
     DEF_GLOBAL( Default_button_inactive_colour, Colour, DIM_GRAY )
@@ -27,11 +28,22 @@ START_GLOBALS
     DEF_GLOBAL( Default_slider_inactive_colour, Colour, DIM_GRAY )
     DEF_GLOBAL( Default_slider_peg_colour, Colour, GREEN )
 
+    DEF_GLOBAL( Default_volume1_under_colour, Colour, BLACK )
+    DEF_GLOBAL( Default_volume1_over_colour, Colour, WHITE )
+    DEF_GLOBAL( Default_volume2_under_colour, Colour, BLACK )
+    DEF_GLOBAL( Default_volume2_over_colour, Colour, WHITE )
+
     DEF_GLOBAL( Initial_window_x_size, int, 1000 )
     DEF_GLOBAL( Initial_window_y_size, int, 900 )
     DEF_GLOBAL( Default_main_menu_width, int, 100 )
-    DEF_GLOBAL( Default_tag_panel_height, int, 100 )
+    DEF_GLOBAL( Default_tag_panel_height, int, 110 )
     DEF_GLOBAL( Default_volume_panel_height, int, 150 )
+
+    DEF_GLOBAL( Slice_top_view_height, Real, 0.4 )
+    DEF_GLOBAL( Slice_middle_view_height, Real, 0.3 )
+    DEF_GLOBAL( Slice_left_view_width, Real, 0.3333 )
+    DEF_GLOBAL( Slice_middle_view_width, Real, 0.3333 )
+
     DEF_GLOBAL( Default_divider_width, int, 4 )
 
     DEF_GLOBAL( Main_menu_x_offset, int, 10 )
@@ -77,9 +89,17 @@ START_GLOBALS
     DEF_GLOBAL( Load_meter_y_size, int, 15 )
     DEF_GLOBAL( Load_meter_background_colour, Colour, WHITE )
     DEF_GLOBAL( Load_meter_colour, Colour, BLUE )
+
+    DEF_GLOBAL( Resample_popup_x_size, int, 250 )
+    DEF_GLOBAL( Resample_popup_y_size, int, 80 )
+    DEF_GLOBAL( Resample_meter_x_size, int, 200 )
+    DEF_GLOBAL( Resample_meter_y_size, int, 15 )
+    DEF_GLOBAL( Resample_meter_background_colour, Colour, WHITE )
+    DEF_GLOBAL( Resample_meter_colour, Colour, BLUE )
+
     DEF_GLOBAL( Popup_background_colour, Colour, DIM_GREY )
 
-    DEF_GLOBAL( Move_slice_speed, Real, 0.5 )
+    DEF_GLOBAL( Move_slice_speed, Real, 0.25 )
 
     DEF_GLOBAL( Volume_1_default_colour_coding, int, (int) SPECTRAL )
     DEF_GLOBAL( Volume_2_default_colour_coding, int, (int) GRAY_SCALE )
@@ -101,14 +121,14 @@ START_GLOBALS
     DEF_GLOBAL( Opacity_slider_height, int, 10 )
     DEF_GLOBAL_STRING( Opacity_text_format, "%.2lf" )
 
-    DEF_GLOBAL( Avg_rms_label_width, int, 50 )
-    DEF_GLOBAL( Avg_rms_number_width, int, 50 )
-    DEF_GLOBAL( Rms_button_width, int, 50 )
+    DEF_GLOBAL( Avg_rms_label_width, int, 35 )
+    DEF_GLOBAL( Avg_rms_number_width, int, 45 )
+    DEF_GLOBAL( Rms_button_width, int, 35 )
+    DEF_GLOBAL( Rms_number_width, int, 45 )
     DEF_GLOBAL( Tag_world_button_width, int, 50 )
-    DEF_GLOBAL( Rms_number_width, int, 50 )
     DEF_GLOBAL_STRING( Rms_error_format, "%5.1f" )
     DEF_GLOBAL_STRING( Tag_number_format, "%2d:" )
-    DEF_GLOBAL( Default_n_tag_points, int, 3 )
+    DEF_GLOBAL( Default_n_tag_points, int, 5 )
     DEF_GLOBAL( Tag_number_button_width, int, 30 )
     DEF_GLOBAL( Tag_position_label_width, int, 40 )
     DEF_GLOBAL( Tag_position_width, int, 40 )
@@ -116,6 +136,8 @@ START_GLOBALS
     DEF_GLOBAL( Tag_name_width, int, 150 )
     DEF_GLOBAL( Tag_activity_width, int, 30 )
     DEF_GLOBAL( Advance_tags_button_width, int, 30 )
+    DEF_GLOBAL( Tags_x_spacing, int, 5 )
+    DEF_GLOBAL( Tags_y_spacing, int, 5 )
 
     DEF_GLOBAL( Message_text_colour, Colour, WHITE )
     DEF_GLOBAL( Message_font, int, (int) SIZED_FONT )
@@ -127,4 +149,14 @@ START_GLOBALS
     DEF_GLOBAL( Message_ok_button_width, Real, 60.0 )
     DEF_GLOBAL( Message_expiration_time, Real, 15.0 * 60.0 )
 
+    DEF_GLOBAL( Colour_selection_x_size, int, 300 )
+    DEF_GLOBAL( Colour_selection_y_size, int, 120 )
+    DEF_GLOBAL( Colour_selection_n_across, int, 3 )
+
+    DEF_GLOBAL( Initial_volumes_synced, Boolean, FALSE )
+
+    DEF_GLOBAL( Quit_x_size, int, 350 )
+    DEF_GLOBAL( Quit_y_size, int, 100 )
+
+    DEF_GLOBAL( Seconds_per_resample, Real, 0.1 )
 END_GLOBALS

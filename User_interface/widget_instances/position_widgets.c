@@ -86,7 +86,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start, y,
                        Position_values_width, Text_entry_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -101,7 +101,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + dx, y,
                        Position_values_width, Text_entry_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -116,7 +116,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + 2 * dx, y,
                        Position_values_width, Text_entry_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -144,7 +144,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start, y,
                        Position_values_width, Text_entry_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -159,7 +159,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + dx, y,
                        Position_values_width, Text_entry_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -174,7 +174,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + 2 * dx, y,
                        Position_values_width, Text_entry_height,
-                       "", OFF,
+                       TRUE, "", OFF,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -281,7 +281,7 @@ private  void   set_world_position_callback(
 
     volume_index = get_viewport_volume_index( widget->viewport_index );
 
-    IF_get_volume_world_position( volume_index, position );
+    IF_get_volume_original_world_position( volume_index, position );
 
     if( get_text_entry_real_value( ui_info->widget_list
                                      [widget->viewport_index].widgets
@@ -292,5 +292,5 @@ private  void   set_world_position_callback(
         position[axis] = value;
     }
 
-    ui_set_volume_world_position( ui_info, volume_index, position );
+    ui_set_volume_original_world_position( ui_info, volume_index, position );
 }

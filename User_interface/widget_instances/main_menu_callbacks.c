@@ -47,7 +47,7 @@ private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback ) /* ARGSUSED
     }
     else
     {
-        start_resampling( get_ui_struct(), transform, filename );
+        do_resampling( get_ui_struct(), transform, filename );
     }
 }
 

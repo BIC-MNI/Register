@@ -29,12 +29,14 @@ private  DEFINE_EVENT_FUNCTION( resize_window_callback )   /* ARGSUSED */
 }
 
 public  void   create_popup_window(
-    popup_struct      *popup,
-    char              title[],
-    int               x_position,
-    int               y_position,
-    int               x_size,
-    int               y_size )
+    popup_struct          *popup,
+    char                  title[],
+    int                   x_position,
+    int                   y_position,
+    int                   x_size,
+    int                   y_size,
+    event_function_type   quit_popup_callback,
+    void                  *quit_callback_data )
 {
     Bitplane_types    bitplane;
 
@@ -76,6 +78,11 @@ public  void   create_popup_window(
                                  0, WINDOW_RESIZE_EVENT, -1, -1, -1, -1,
                                  resize_window_callback, ANY_MODIFIER,
                                  (void *) popup );
+
+    add_event_viewport_callback( &popup->graphics.event_viewports,
+                                 0, WINDOW_QUIT_EVENT, -1, -1, -1, -1,
+                                 quit_popup_callback, ANY_MODIFIER,
+                                 quit_callback_data );
 
     for_enum( bitplane, N_BITPLANE_TYPES, Bitplane_types )
     {
