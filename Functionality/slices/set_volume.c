@@ -36,7 +36,7 @@ private  void   record_register_volume(
     char           filename[] )
 {
     int     view, axis, sizes[N_DIMENSIONS];
-    Real    min_value, max_value, position[N_DIMENSIONS];
+    Real    min_value, max_value, *cursor_ptr;
 
     if( is_volume_active( main, volume_index ) )
     {
@@ -50,10 +50,10 @@ private  void   record_register_volume(
 
     get_volume_sizes( volume, sizes );
 
+    cursor_ptr = get_volume_cursor( main, volume_index );
+
     for_less( axis, 0, N_DIMENSIONS )
-    {
-        position[axis] = (Real) (sizes[axis]-1) / 2.0;
-    }
+        cursor_ptr[axis] = (Real) (sizes[axis]-1) / 2.0;
 
     for_less( view, 0, N_VIEWS )
     {
@@ -62,11 +62,10 @@ private  void   record_register_volume(
                                 ON );
 
         initialize_slice_view( main, volume_index, view );
-
+        update_slice_tag_objects( main, volume_index, view );
+        update_volume_cursors( main, volume_index );
         set_recreate_slice_flag( main, volume_index, view );
     }
-
-    set_volume_voxel_position( main, volume_index, position );
 
     if( volume_index < N_VOLUMES )
     {

@@ -79,7 +79,7 @@ public  void  get_slice_plane(
 {
     Volume   volume;
     int      c, axis, x_index, y_index;
-    Real     *slice_position;
+    Real     *slice_position, separations[MAX_DIMENSIONS];
     BOOLEAN  x_flip, y_flip;
 
     get_slice_axes( view, &x_index, &y_index );
@@ -88,6 +88,7 @@ public  void  get_slice_plane(
     get_slice_axes_flip( view, &x_flip, &y_flip );
 
     volume = get_slice_volume( main, volume_index );
+    get_volume_separations( volume, separations );
 
     for_less( c, 0, get_volume_n_dimensions(volume) )
     {
@@ -101,14 +102,14 @@ public  void  get_slice_plane(
     origin[axis] = slice_position[axis];
 
     if( x_flip )
-        x_axis[x_index] = -1.0;
+        x_axis[x_index] = -SIGN(separations[x_index]);
     else
-        x_axis[x_index] = 1.0;
+        x_axis[x_index] = SIGN(separations[x_index]);
 
     if( y_flip )
-        y_axis[y_index] = -1.0;
+        y_axis[y_index] = -SIGN(separations[y_index]);
     else
-        y_axis[y_index] = 1.0;
+        y_axis[y_index] = SIGN(separations[y_index]);
 }
 
 public  int  get_slice_viewport_index( int volume, int view )

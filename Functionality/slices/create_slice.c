@@ -79,7 +79,7 @@ public  void  create_merged_pixels(
     int              x_axis_index, y_axis_index;
     int              x_size, y_size, axis;
     int              c, sizes1[N_DIMENSIONS];
-    Real             separations2[N_DIMENSIONS];
+    Real             separations2[N_DIMENSIONS], x_len, y_len;
     Pixel_types      pixel_type;
     Filter_types     filter_type;
     Real             filter_width;
@@ -130,6 +130,8 @@ public  void  create_merged_pixels(
                             &x_upper_left_pixel, &y_upper_left_pixel );
     voxel1[y_axis_index] = 0.0;
 
+    /*--- this assumes that x_axis1 and y_axis1 are principal axes */
+
     dx_pixel = x_lower_right_pixel - x_lower_left_pixel;
     if( dx_pixel == 0.0 )
         dx_pixel = 1.0;
@@ -139,15 +141,32 @@ public  void  create_merged_pixels(
 
     for_less( c, 0, get_volume_n_dimensions(volume2) )
     {
-        x_axis2[c] = (lower_right_voxel2[c] - lower_left_voxel2[c]) / dx_pixel *
-                     separations2[c];
-        y_axis2[c] = (upper_left_voxel2[c] - lower_left_voxel2[c]) / dy_pixel *
-                     separations2[c];
+        x_axis2[c] = (lower_right_voxel2[c] - lower_left_voxel2[c]) / dx_pixel;
+        y_axis2[c] = (upper_left_voxel2[c] - lower_left_voxel2[c]) / dy_pixel;
         origin2[c] = lower_left_voxel2[c];
     }
 
-    x_scale2 = 1.0;
-    y_scale2 = 1.0;
+    x_len = 0.0;
+    y_len = 0.0;
+    for_less( c, 0, get_volume_n_dimensions(volume2) )
+    {
+        Real  comp;
+
+        comp = x_axis2[c] * separations2[c];
+        x_len += comp * comp;
+        comp = y_axis2[c] * separations2[c];
+        y_len += comp * comp;
+    }
+
+    x_len = sqrt( x_len );
+    if( x_len == 0.0 )
+        x_len = 1.0;
+    y_len = sqrt( y_len );
+    if( y_len == 0.0 )
+        y_len = 1.0;
+
+    x_scale2 = 1.0 / x_len;
+    y_scale2 = 1.0 / y_len;
     x_translation2 = x_lower_left_pixel;
     y_translation2 = y_lower_left_pixel;
 

@@ -230,7 +230,7 @@ public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )  /* ARGSUSED */
         advance_current_tag_point( get_ui_struct() );
         break;
 
-    case  's':
+    case  'S':
         save_current_viewport( get_ui_struct(), event_viewport_index );
         break;
     }
