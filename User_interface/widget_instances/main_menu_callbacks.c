@@ -75,10 +75,42 @@ private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback ) /* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
 {
+    int      volume, tag_index;
+    Real     position[N_DIMENSIONS];
+
+    tag_index = get_current_tag_index( get_ui_struct() );
+
+    if( tag_index >= IF_get_n_tag_points() )
+        IF_create_new_tag_point();
+
+    for_less( volume, 0, N_VOLUMES )
+    {
+        if( IF_volume_is_loaded( volume ) )
+        {
+            IF_get_volume_world_position( volume, position );
+            IF_set_tag_point_position( tag_index, volume, position );
+        }
+    }
+
+    if( tag_index == IF_get_n_tag_points() - 1 )
+        ++tag_index;
+
+    set_current_tag_index( get_ui_struct(), tag_index );
 }
 
 private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback ) /* ARGSUSED */
 {
+    int      tag_index;
+
+    tag_index = get_current_tag_index( get_ui_struct() );
+
+    if( tag_index < IF_get_n_tag_points() )
+    {
+        IF_delete_tag_point( tag_index );
+        if( tag_index > IF_get_n_tag_points() )
+            --tag_index;
+        set_current_tag_index( get_ui_struct(), tag_index );
+    }
 }
 
 public  void  add_main_widgets(
@@ -207,7 +239,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Record Tag",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   ON, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -220,7 +252,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Delete Tag",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   ON, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
