@@ -11,6 +11,8 @@ public  void  create_slice_pixels(
     Real             x_translation, y_translation, x_scale, y_scale;
     volume_struct    *volume;
     Real             *position;
+    unsigned short   *cmode_colour_map;
+    Colour           *rgb_colour_map;
 
     volume = get_slice_volume( main, volume_index );
     position = get_volume_cursor( main, volume_index );
@@ -26,7 +28,10 @@ public  void  create_slice_pixels(
     get_slice_viewport( main, volume_index, view,
                         &x_min, &x_max, &y_min, &y_max );
 
-    create_volume_slice( volume, position[view],
+    cmode_colour_map = main->trislice[volume_index].cmode_colour_map;
+    rgb_colour_map = main->trislice[volume_index].rgb_colour_map;
+
+    create_volume_slice( volume, (volume_struct *) NULL, position[view],
                     x_axis_index, FALSE,
                     y_axis_index, FALSE,
                     x_translation, y_translation, x_scale, y_scale,
@@ -34,47 +39,39 @@ public  void  create_slice_pixels(
                     y_max - y_min + 1,
                     pixel_type,
                     main->interpolation_flag,
-                    main->trislice[volume_index].cmode_colour_map,
-                    main->trislice[volume_index].rgb_colour_map,
+                    &cmode_colour_map,
+                    &rgb_colour_map,
                     &main->trislice[volume_index].slices[view].n_pixels_alloced,
                     main->trislice[volume_index].slices[view].pixels );
 }
 
-public  void  create_merged_colour_map_pixels(
+public  void  create_merged_pixels(
     main_struct   *main,
-    int           view )
-{
-    modify_pixels_size(
-          &main->merged.slices[view].n_pixels_alloced[0],
-          (pixels_struct *) get_object_pointer(
-                        main->merged.slices[view].pixels_objects[0]),
-          0, 0, COLOUR_INDEX_16BIT_PIXEL );
-}
-
-public  void  create_merged_rgb_pixels(
-    main_struct   *main,
-    int           merge_volume,
     int           view )
 {
     int              x_axis_index, y_axis_index;
     int              x_min, x_max, y_min, y_max;
     Pixel_types      pixel_type;
     Real             x_translation, y_translation, x_scale, y_scale;
-    volume_struct    *volume;
+    volume_struct    *volume1, *volume2;
     Real             *position;
 
-    volume = get_slice_volume( main, merge_volume );
+    volume1 = get_slice_volume( main, 0 );
+    volume2 = get_slice_volume( main, 1 );
     position = get_volume_cursor( main, MERGED_VOLUME_INDEX );
     get_slice_axes( view, &x_axis_index, &y_axis_index );
     get_slice_transform( main, MERGED_VOLUME_INDEX, view,
                          &x_translation, &y_translation, &x_scale, &y_scale );
 
-    pixel_type = RGB_PIXEL;
+    if( G_get_colour_map_state(main->window) )
+        pixel_type = COLOUR_INDEX_16BIT_PIXEL;
+    else
+        pixel_type = RGB_PIXEL;
 
     get_slice_viewport( main, MERGED_VOLUME_INDEX, view,
                         &x_min, &x_max, &y_min, &y_max );
 
-    create_volume_slice( volume, position[view],
+    create_volume_slice( volume1, volume2, position[view],
                     x_axis_index, FALSE,
                     y_axis_index, FALSE,
                     x_translation, y_translation, x_scale, y_scale,
@@ -82,11 +79,10 @@ public  void  create_merged_rgb_pixels(
                     y_max - y_min + 1,
                     pixel_type,
                     main->interpolation_flag,
-                    (unsigned short *) NULL,
-                    main->merged.rgb_colour_map[merge_volume],
-                    &main->merged.slices[view].n_pixels_alloced[merge_volume],
-                    (pixels_struct *) get_object_pointer(
-                     main->merged.slices[view].pixels_objects[merge_volume]) );
+                    main->merged.cmode_colour_map,
+                    main->merged.rgb_colour_map,
+                    &main->merged.slices[view].n_pixels_alloced,
+                    main->merged.slices[view].pixels );
 }
 
 public  Boolean   convert_pixel_to_voxel(
