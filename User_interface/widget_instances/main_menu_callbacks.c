@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.31 1995-10-02 18:34:59 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.32 1995-10-02 19:04:20 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -602,6 +602,14 @@ public  void  set_delete_tags_button_activity(
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[DELETE_ALL_TAGS_BUTTON]], activity );
+}
+
+public  void  set_transform_type_button_activity(
+    UI_struct         *ui_info,
+    BOOLEAN           activity )
+{
+    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
+                         [widget_indices[TRANSFORM_TYPE_BUTTON]], activity );
 }
 
 public  void  update_avg_rms_error(
