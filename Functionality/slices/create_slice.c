@@ -54,6 +54,9 @@ public  void  create_merged_pixels(
     int              x_axis_index, y_axis_index;
     int              x_size, y_size, axis;
     int              sizes1[N_DIMENSIONS], sizes2[N_DIMENSIONS];
+#ifdef OLD
+    Real             separations2[N_DIMENSIONS];
+#endif
     Pixel_types      pixel_type;
     Real             x_scale1, y_scale1, x_scale2, y_scale2;
     Real             x_translation1, y_translation1;
@@ -146,12 +149,13 @@ public  void  create_merged_pixels(
         convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view,
                                 tmp, &x_pixel_max, &y_pixel_max );
 
+        get_volume_separations( volume2, separations2 );
         x_translation2 = x_pixel_min;
         y_translation2 = y_pixel_min;
         x_scale2 = (x_pixel_max - x_pixel_min) / (Real) sizes2[x_axis_index] /
-                   volume2->separation[x_axis_index];
+                   separations2[x_axis_index];
         y_scale2 = (y_pixel_max - y_pixel_min) / (Real) sizes2[y_axis_index] /
-                   volume2->separation[y_axis_index];
+                   separations2[y_axis_index];
 #else
         x_translation2 = x_pixel_min;
         y_translation2 = y_pixel_min;
@@ -314,7 +318,7 @@ public  void  fit_slice_to_view(
     int            viewport_size[2], axis, axis_index[2];
     Real           voxel_diff[2];
     Real           scales[2], sign_scales[2];
-    Real           translation[2], n_pixels;
+    Real           translation[2], separations[N_DIMENSIONS], n_pixels;
     Volume         volume;
     slice_struct   *slice;
 
@@ -323,6 +327,7 @@ public  void  fit_slice_to_view(
     get_slice_axes( view, &axis_index[0], &axis_index[1] );
     get_slice_viewport_size( main, volume_index, view, &viewport_size[0],
                              &viewport_size[1] );
+    get_volume_separations( volume, separations );
 
     for_less( axis, 0, 2 )
     {
@@ -330,7 +335,7 @@ public  void  fit_slice_to_view(
                            slice->lower_display_limits[axis];
 
         scales[axis] = (Real) viewport_size[axis] / voxel_diff[axis] /
-                       volume->separation[axis_index[axis]]; 
+                       separations[axis_index[axis]]; 
 
         if( scales[axis] < 0.0 )
             sign_scales[axis] = -1.0;
@@ -345,13 +350,13 @@ public  void  fit_slice_to_view(
 
     for_less( axis, 0, 2 )
     {
-        n_pixels = scales[axis] * volume->separation[axis_index[axis]] *
+        n_pixels = scales[axis] * separations[axis_index[axis]] *
                    voxel_diff[axis];
 
         translation[axis] = ((Real) viewport_size[axis] - n_pixels) / 2.0 -
                             slice->lower_display_limits[axis] *
                             scales[axis] *
-                            volume->separation[axis_index[axis]] + 0.5;
+                            separations[axis_index[axis]] + 0.5;
     }
 
     set_slice_translation( main, volume_index, view,
@@ -371,6 +376,7 @@ public  void  initialize_slice_view(
 {
     int            x_axis_index, y_axis_index, sizes[N_DIMENSIONS];
     Real           x_voxel[2], y_voxel[2], x_boundary, y_boundary;
+    Real           separations[N_DIMENSIONS];
     Boolean        x_flip, y_flip;
     Volume         volume;
     slice_struct   *slice;
@@ -380,14 +386,15 @@ public  void  initialize_slice_view(
     slice = get_slice_struct( main, volume_index, view );
     get_slice_axes( view, &x_axis_index, &y_axis_index );
     get_slice_axes_flip( view, &x_flip, &y_flip );
+    get_volume_separations( volume, separations );
 
     x_boundary = (1.0-Slice_fit_size)/2.0*(Real) sizes[x_axis_index];
     y_boundary = (1.0-Slice_fit_size)/2.0*(Real) sizes[y_axis_index];
 
-    if( volume->separation[x_axis_index] < 0.0 )
+    if( separations[x_axis_index] < 0.0 )
         x_flip = !x_flip;
 
-    if( volume->separation[y_axis_index] < 0.0 )
+    if( separations[y_axis_index] < 0.0 )
         y_flip = !y_flip;
 
     x_voxel[  x_flip] = - 0.5 - x_boundary;
