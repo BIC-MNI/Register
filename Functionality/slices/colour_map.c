@@ -141,7 +141,7 @@ private  void  update_merged_cmode_indices(
 
     for_inclusive( i, min_value1, max_value1 )
     {
-        i1 = CONVERT_INTEGER_RANGE( i, min_value1, min_value1, 0, n1-1 );
+        i1 = CONVERT_INTEGER_RANGE( i, min_value1, max_value1, 0, n1-1 );
         for_less( j, 0, N_VOXEL_VALUES )
             main->merged.cmode_colour_map[i][j] = min_ind + IJ(i1,i2[j],n2);
     }
@@ -287,8 +287,8 @@ public  void  repartition_colour_maps(
     get_volume_value_range( main, 0, &min_value1, &max_value1 );
     get_volume_value_range( main, 1, &min_value2, &max_value2 );
 
-    max_colours_1 = max_value1 - min_value1;
-    max_colours_2 = max_value2 - min_value2;
+    max_colours_1 = max_value1 - min_value1 + 1;
+    max_colours_2 = max_value2 - min_value2 + 1;
     max_colours_merged = max_colours_1 * max_colours_2;
 
     n_merged = Merged_colour_table_fraction * total_colours;
@@ -323,16 +323,31 @@ public  void  repartition_colour_maps(
     }
     else
     {
-        ratio = sqrt( (Real) n_merged / (Real) (n_volume_1 * n_volume_2) );
-        n_merged_1 = ROUND( (Real) n_merged * ratio );
+        n_merged_1 = (int) sqrt( (double) n_merged );
         if( n_merged_1 < 1 )
             n_merged_1 = 1;
-        n_merged_2 = n_merged / n_merged_1;
+
+        if( max_colours_1 <= n_merged_1 )
+        {
+            n_merged_1 = max_colours_1;
+            n_merged_2 = MAX( max_colours_2, n_merged / n_merged_1 );
+        }
+        else if( max_colours_2 <= n_merged_1 )
+        {
+            n_merged_2 = max_colours_2;
+            n_merged_1 = MAX( max_colours_1, n_merged / n_merged_2 );
+        }
+        else
+        {
+            n_merged_2 = n_merged / n_merged_1;
+        }
     }
 
-print( "%d %d  (%d * %d) = %d   total = %d\n",
+#ifdef  DEBUG
+(void) printf( "%d %d  (%d * %d) = %d   total = %d\n",
        n_volume_1, n_volume_2, n_merged_1, n_merged_2, n_merged_1 * n_merged_2,
        n_volume_1 + n_volume_2 + n_merged_1 * n_merged_2 );
+#endif
 
     main->trislice[0].start_colour_map = start_index;
     main->trislice[0].n_colour_entries = n_volume_1;

@@ -422,6 +422,28 @@ public  volume_struct  *get_slice_volume(
         return( &main->trislice[volume_index-MERGED_VOLUME_INDEX].volume );
 }
 
+public  void  get_volume_value_range(
+    main_struct   *main,
+    int           volume_index,
+    int           *min_value,
+    int           *max_value )
+{
+    volume_struct  *volume;
+
+    if( is_volume_active( main, volume_index ) )
+    {
+        volume = get_slice_volume( main, volume_index );
+
+        *min_value = volume->min_value;
+        *max_value = volume->max_value;
+    }
+    else
+    {
+        *min_value = 0;
+        *max_value = 0;
+    }
+}
+
 public  Real  *get_volume_cursor(
     main_struct   *main,
     int           volume_index )
