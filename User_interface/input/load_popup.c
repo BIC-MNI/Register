@@ -1,5 +1,9 @@
 #include  <def_user_interface.h>
 
+private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )  /* ARGSUSED */
+{
+}
+
 public  void  initialize_load_popup(
     load_meter_popup_struct   *popup,
     int                       x_position,
@@ -21,7 +25,9 @@ public  void  initialize_load_popup(
     popup->meter_background = (polygons_struct *) get_object_pointer( object );
 
     x = (Load_popup_x_size - Load_meter_x_size) / 2;
-    y = (Load_popup_y_size - Load_meter_y_size) / 2;
+    y = Interface_y_spacing + Button_height +
+          (Load_popup_y_size - Interface_y_spacing - Button_height -
+           Load_meter_y_size) / 2;
 
     position_rectangle( popup->meter_background, x, y,
                         Load_meter_x_size, Load_meter_y_size );
@@ -48,11 +54,22 @@ public  void  initialize_load_popup(
         set_viewport_update_flag( &popup->graphics_window.graphics, 0,
                                   bitplane );
     }
+
+    popup->cancel_widget = create_button( &popup->graphics_window,
+                   0, Interface_x_spacing, Interface_y_spacing,
+                   Button_width, Button_height,
+                   "Cancel",
+                   ON, BUTTON_ACTIVE_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   cancel_button_callback, (void *) popup );
 }
 
 public  void  delete_load_popup(
     load_meter_popup_struct   *popup )
 {
+    delete_widget( popup->cancel_widget );
     delete_popup_window( &popup->graphics_window );
 }
 

@@ -55,7 +55,7 @@ public  Status  initialize_loading_volume(
         }
 
         get_graphics_viewport( &ui_info->graphics_window.graphics, 
-                               Volume_1_menu_viewport + volume,
+                               get_volume_menu_viewport_index(volume),
                                &x_min, &x_max, &y_min, &y_max );
 
         G_get_window_position( ui_info->graphics_window.window,
@@ -87,6 +87,12 @@ private  void  volume_has_been_loaded(
     delete_load_popup( &data->popup );
 
     update_position_counters( ui_info, data->volume_index );
+
+    if( IF_volume_is_loaded( 0 ) &&
+        IF_volume_is_loaded( 1 ) )
+    {
+        set_merged_activity( ui_info, ON );
+    }
 
     FREE( data );
 }
