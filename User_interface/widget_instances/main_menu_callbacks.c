@@ -15,6 +15,8 @@ typedef  enum
     TRANSFORM_FILENAME_ENTRY,
     RECORD_TAG_BUTTON,
     DELETE_TAG_BUTTON,
+    AVG_RMS_LABEL,
+    AVG_RMS_ERROR,
     N_MAIN_WIDGETS
 } Main_widgets;
 
@@ -279,7 +281,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Save Transform",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
@@ -327,6 +329,27 @@ public  void  add_main_widgets(
                    Button_text_font, Button_text_font_size,
                    delete_tag_button_callback, (void *) 0 ) );
 
+    widget_indices[AVG_RMS_LABEL] = add_widget_to_list(
+                  &ui_info->widget_list[Main_menu_viewport],
+                  create_label( &ui_info->graphics_window, Main_menu_viewport,
+                  0, 0, Avg_rms_label_width, Text_entry_height,
+                  "Avg:", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
+                  LABEL_INACTIVE_COLOUR,
+                  LABEL_TEXT_COLOUR,
+                  Label_text_font, Label_text_font_size ) );
+
+    widget_indices[AVG_RMS_ERROR] = add_widget_to_list(
+                  &ui_info->widget_list[Main_menu_viewport],
+                  create_label( &ui_info->graphics_window, Main_menu_viewport,
+                  0, 0,
+                  Avg_rms_number_width, Text_entry_height,
+                  "", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
+                  LABEL_INACTIVE_COLOUR,
+                  LABEL_TEXT_COLOUR,
+                  Label_text_font, Label_text_font_size ) );
+
+
+
     position_main_widgets( ui_info );
 }
 
@@ -359,6 +382,19 @@ public  void  position_main_widgets(
                                                       widgets[widget] ) +
                  Interface_y_spacing;
     }
+
+    y_pos = Main_menu_y_offset;
+
+    position_widget( ui_info->
+                     widget_list[Main_menu_viewport].
+                               widgets[widget_indices[AVG_RMS_LABEL]],
+                     Tags_x_spacing, y_pos );
+
+    position_widget( ui_info->
+                     widget_list[Main_menu_viewport].
+                               widgets[widget_indices[AVG_RMS_ERROR]],
+                     Tags_x_spacing + Interface_x_spacing + Avg_rms_label_width,
+                     y_pos );
 }
 
 public  void  set_transform_buttons_activity(
@@ -377,4 +413,22 @@ public  void  set_quit_button_activity(
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[QUIT_BUTTON]], activity );
+}
+
+public  void  update_avg_rms_error(
+    UI_struct         *ui_info )
+{
+    Real           avg_rms;
+    widget_struct  *widget;
+
+    widget = ui_info->widget_list[Main_menu_viewport].
+                       widgets[widget_indices[AVG_RMS_ERROR]];
+    if( IF_get_tag_point_avg_rms_error( &avg_rms ) )
+    {
+        set_text_entry_real_value( widget, Rms_error_format, avg_rms );
+    }
+    else
+    {
+        set_text_entry_string( widget, "" );
+    }
 }
