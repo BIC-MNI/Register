@@ -262,7 +262,8 @@ public  void  fit_slice_to_view(
     int          view )
 {
     int            viewport_size[2], axis, axis_index[2];
-    Real           voxel_diff[2], start_voxel[2];
+    Real           voxel_diff[2], start_voxel;
+    Real           sign_flip;
     Real           scales[2], scale_factor;
     Real           translation[2];
     volume_struct  *volume;
@@ -279,6 +280,8 @@ public  void  fit_slice_to_view(
         voxel_diff[axis] = slice->upper_display_limits[axis] -
                            slice->lower_display_limits[axis];
 
+        voxel_diff[axis] = ABS( voxel_diff[axis] );
+
         scales[axis] = (Real) (viewport_size[axis] - 1) / voxel_diff[axis] /
                        volume->thickness[axis_index[axis]]; 
     }
@@ -287,13 +290,21 @@ public  void  fit_slice_to_view(
 
     for_less( axis, 0, 2 )
     {
-        start_voxel[axis] = slice->lower_display_limits[axis] -
+        if( volume->flip_axis[axis_index[axis]] )
+            sign_flip = 1.0;
+        else
+            sign_flip = -1.0;
+
+        start_voxel = slice->lower_display_limits[axis] + sign_flip * 
               ((Real) (viewport_size[axis] - 1) / scale_factor /
                volume->thickness[axis_index[axis]] - voxel_diff[axis]) / 2.0;
 
-        translation[axis] = -scale_factor *
+        if( volume->flip_axis[axis_index[axis]] )
+            start_voxel = start_voxel - (Real)(volume->sizes[axis_index[axis]]);
+
+        translation[axis] = sign_flip * scale_factor *
                             volume->thickness[axis_index[axis]] *
-                            start_voxel[axis] + 0.5;
+                            start_voxel + 0.5;
     }
 
     set_slice_translation( main, volume_index, view,
@@ -312,7 +323,7 @@ public  void  reset_slice_view(
     int          view )
 {
     int            x_axis_index, y_axis_index;
-    Real           x_max_voxel, y_max_voxel, x_boundary, y_boundary;
+    Real           x_voxel[2], y_voxel[2], x_boundary, y_boundary;
     volume_struct  *volume;
     slice_struct   *slice;
 
@@ -320,16 +331,21 @@ public  void  reset_slice_view(
     slice = get_slice_struct( main, volume_index, view );
     get_slice_axes( view, &x_axis_index, &y_axis_index );
 
-    x_max_voxel = (Real) volume->sizes[x_axis_index] - 0.5;
-    y_max_voxel = (Real) volume->sizes[y_axis_index] - 0.5;
+    x_boundary = (1.0-Slice_fit_size)/2.0*(Real) volume->sizes[x_axis_index];
+    y_boundary = (1.0-Slice_fit_size)/2.0*(Real) volume->sizes[y_axis_index];
 
-    x_boundary = (1.0-Slice_fit_size)/2.0*x_max_voxel;
-    y_boundary = (1.0-Slice_fit_size)/2.0*y_max_voxel;
+    x_voxel[volume->flip_axis[x_axis_index]] = - 0.5 - x_boundary;
+    x_voxel[1-volume->flip_axis[x_axis_index]] =
+                     (Real) volume->sizes[x_axis_index] - 0.5 + x_boundary;
 
-    slice->lower_display_limits[0] = -x_boundary;
-    slice->upper_display_limits[0] = x_max_voxel + x_boundary;
-    slice->lower_display_limits[1] = -y_boundary;
-    slice->upper_display_limits[1] = y_max_voxel + y_boundary;
+    y_voxel[volume->flip_axis[y_axis_index]] = - 0.5 - y_boundary;
+    y_voxel[1-volume->flip_axis[y_axis_index]] =
+                     (Real) volume->sizes[y_axis_index] - 0.5 + y_boundary;
+
+    slice->lower_display_limits[0] = x_voxel[0];
+    slice->upper_display_limits[0] = x_voxel[1];
+    slice->lower_display_limits[1] = y_voxel[0];
+    slice->upper_display_limits[1] = y_voxel[1];
 
     fit_slice_to_view( main, volume_index, view );
 }
