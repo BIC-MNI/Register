@@ -54,16 +54,14 @@ Makefile.objects: Makefile
 
 main/main.o:  Include/global_variables.h
 
-include $(C_DEV_DIRECTORY)/Make/Makefile.include
-include $(GRAPHICS_DIRECTORY)/Makefile.include
+include ../Makefile.include
 
 OPT = -O
 
 INCLUDE = -IInclude -I.. \
           -I../UI_calls_F/Include \
-          -I$(C_DEV_DIRECTORY)/Include \
-          $(GRAPHICS_INCLUDE) \
-          -I/usr/local/include
+          $(C_UTILS_INCLUDE) \
+          $(GRAPHICS_INCLUDE)
 
 # ------------------------------
 
