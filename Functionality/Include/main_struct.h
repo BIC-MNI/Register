@@ -7,6 +7,13 @@
 #define  N_VOXEL_VALUES       256
 #define  N_MERGED               2
 
+typedef enum { BACKGROUND_COLOUR,
+               TAG_INSIDE_COLOUR,
+               TAG_OUTSIDE_COLOUR,
+               TAG_INSIDE_INACTIVE_COLOUR,
+               TAG_OUTSIDE_INACTIVE_COLOUR,
+               N_MAIN_COLOURS } Main_colours;
+
 typedef  struct
 {
     Real            x_translation, y_translation;
@@ -43,6 +50,7 @@ typedef  struct
     int                    start_colour_map;
     int                    n_colour_entries1;
     int                    n_colour_entries2;
+    Merge_methods          merge_method;
     Real                   opacity[N_MERGED];
     colour_coding_struct   colour_coding[N_MERGED];
 }
@@ -55,6 +63,7 @@ typedef  struct
     Point                  position[N_VOLUMES];
     String                 name;
     Boolean                activity;
+    object_struct          *objects[N_VOLUMES_DISPLAYED][N_VIEWS];
 } tag_point_struct;
 
 typedef  struct
@@ -75,6 +84,8 @@ typedef  struct
     Boolean                  interpolation_flag;
     trislice_struct          trislice[N_VOLUMES];
     merged_struct            merged;
+
+    int                      start_colour_index;
 
     tag_list_struct          tags;
 } main_struct;

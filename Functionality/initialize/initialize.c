@@ -14,9 +14,9 @@ public  main_struct  *get_main_struct()
 
 public  Status   initialize_register( window_struct  *window )
 {
-    int            volume, view;
-    object_struct  *object;
-    Status         status;
+    Status          status;
+    int             volume, view;
+    Bitplane_types  bitplane;
 
     if( file_exists( REGISTER_GLOBALS_FILENAME ) )
     {
@@ -30,41 +30,21 @@ public  Status   initialize_register( window_struct  *window )
 
     main_info.window = window;
 
-    initialize_slices( &main_info );
-
     initialize_graphics_struct( &main_info.graphics );
 
-    for_less( volume, 0, N_VOLUMES )
-    {
-        initialize_colour_coding( &main_info.trislice[volume].colour_coding,
-                                  GRAY_SCALE,
-                                  -0.5, (Real) N_VOXEL_VALUES - 0.5 );
+    initialize_slices( &main_info );
 
+    initialize_tag_points( &main_info );
+
+    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    {
         for_less( view, 0, N_VIEWS )
         {
-            set_graphics_viewport_background( &main_info.graphics,
-                                get_slice_viewport_index(volume,view),
-                                Slice_background_colour, 0 );
-
-            /* create pixels */
-
-            object = create_object( PIXELS );
-
-            add_object_to_viewport( &main_info.graphics,
-                                    get_slice_viewport_index(volume,view),
-                                    NORMAL_PLANES, object );
-
-            main_info.trislice[volume].slices[view].pixels =
-                             (pixels_struct *) get_object_pointer( object );
-
-            /* create cursor */
-
-            main_info.trislice[volume].slices[view].cursor_lines =
-                          create_cursor( &main_info, volume, view );
-
-            set_viewport_objects_visibility( &main_info.graphics,
-                                    get_slice_viewport_index(volume,view),
-                                    OFF );
+            for_enum( bitplane, N_BITPLANE_TYPES, Bitplane_types )
+            {
+                set_update_slice_viewport_flag( &main_info, volume,
+                                                view, bitplane );
+            }
         }
     }
 
@@ -75,4 +55,5 @@ public  void   terminate_register()
 {
     terminate_slices( &main_info );
     delete_graphics_struct( &main_info.graphics );
+    delete_tag_points( &main_info );
 }
