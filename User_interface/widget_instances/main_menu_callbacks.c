@@ -63,6 +63,13 @@ private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback ) /* ARGSUSED */
 
 private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback ) /* ARGSUSED */
 {
+    char   *filename;
+
+    filename = get_text_entry_string(
+                     get_ui_struct()->widget_list[Main_menu_viewport].widgets
+                                 [widget_indices[TAGS_FILENAME_ENTRY]] );
+
+    IF_load_tags_file( filename );
 }
 
 private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback ) /* ARGSUSED */
@@ -71,6 +78,13 @@ private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback ) /* ARGSUSED
 
 private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback ) /* ARGSUSED */
 {
+    char   *filename;
+
+    filename = get_text_entry_string(
+                     get_ui_struct()->widget_list[Main_menu_viewport].widgets
+                                 [widget_indices[TAGS_FILENAME_ENTRY]] );
+
+    IF_save_tags_file( filename );
 }
 
 private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback ) /* ARGSUSED */
@@ -226,7 +240,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Save Tags",
-                   OFF, BUTTON_ACTIVE_COLOUR,
+                   ON, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,

@@ -11,19 +11,32 @@ Merged_widgets;
 
 static  int  widget_indices[N_MERGED_WIDGETS];
 
+private  void  opacity_callback(
+    widget_struct  *widget,
+    int            which_volume )
+{
+    Real  value, ignored;
+
+    get_slider_values( widget, &value, &ignored );
+
+    IF_set_merged_volume_opacity( which_volume, value );
+}
+
 private  DEFINE_WIDGET_CALLBACK( opacity_2_callback ) /* ARGSUSED */
 {
+    opacity_callback( widget, 1 );
 }
 
 private  DEFINE_WIDGET_CALLBACK( opacity_1_callback ) /* ARGSUSED */
 {
+    opacity_callback( widget, 0 );
 }
 
 public  void  add_merged_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index )
 {
-    int            x, y, height;
+    int      x, y, height;
 
     x = Volume_menu_x_offset;
     y = Volume_menu_y_offset;
@@ -33,7 +46,7 @@ public  void  add_merged_widgets(
                    create_slider( &ui_info->graphics_window,
                    viewport_index, x, y, Opacity_slider_width,
                    Opacity_slider_height,
-                   0.5, 0.0, 1.0,
+                   0.5, 0.0, 1.0, Opacity_text_format,
                    OFF,
                    SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
                    SLIDER_PEG_COLOUR,
@@ -47,7 +60,7 @@ public  void  add_merged_widgets(
                    create_slider( &ui_info->graphics_window,
                    viewport_index, x, y, Opacity_slider_width,
                    Opacity_slider_height,
-                   0.5, 0.0, 1.0,
+                   0.5, 0.0, 1.0, Opacity_text_format,
                    OFF,
                    SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
                    SLIDER_PEG_COLOUR,
@@ -63,6 +76,7 @@ public  void  add_merged_widgets(
                Volume_button_width, Volume_button_height,
                "Reset View",
                OFF, BUTTON_ACTIVE_COLOUR,
+               BUTTON_SELECTED_COLOUR,
                BUTTON_INACTIVE_COLOUR,
                BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
                Button_text_font, Button_text_font_size,
@@ -72,7 +86,7 @@ public  void  add_merged_widgets(
 
     ui_info->position_text_start_index[2] =
                                 add_cursor_position_widgets(
-                                ui_info, viewport_index, x, y, &height );
+                                ui_info, viewport_index, &height );
 }
 
 public  void  set_merged_widgets_activity(

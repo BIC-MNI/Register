@@ -11,6 +11,8 @@ typedef  enum
     RED_BUTTON,
     GREEN_BUTTON,
     BLUE_BUTTON,
+    UNDER_BUTTON,
+    OVER_BUTTON,
     COLOUR_BAR_SLIDER,
 
     N_COLOUR_BAR_WIDGETS
@@ -76,6 +78,26 @@ private  DEFINE_WIDGET_CALLBACK( green_callback ) /* ARGSUSED */
 private  DEFINE_WIDGET_CALLBACK( blue_callback ) /* ARGSUSED */
 {
     set_colour_coding( widget, BLUE_COLOUR_MAP );
+}
+
+private  DEFINE_WIDGET_CALLBACK( under_button_callback ) /* ARGSUSED */
+{
+    int   volume_index;
+
+    volume_index = get_viewport_volume_index(widget->viewport_index);
+
+    set_widget_activity( widget, OFF );
+    popup_colour_selection( get_ui_struct(), volume_index, 0 );
+}
+
+private  DEFINE_WIDGET_CALLBACK( over_button_callback ) /* ARGSUSED */
+{
+    int   volume_index;
+
+    volume_index = get_viewport_volume_index(widget->viewport_index);
+
+    set_widget_activity( widget, OFF );
+    popup_colour_selection( get_ui_struct(), volume_index, 1 );
 }
 
 private  void  change_limits(
@@ -191,6 +213,20 @@ public  int  add_colour_bar_widgets(
 
     y += Volume_button_height + Interface_y_spacing;
 
+    widget_indices[UNDER_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
+                   x, y, Colour_bar_button_width, Volume_button_height,
+                   "Under",
+                   OFF, VOLUME1_UNDER_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   under_button_callback, (void *) NULL ) ) - start_index;
+
+    x += Colour_bar_button_width + Interface_x_spacing;
+
     widget_indices[COLOUR_BAR_SLIDER] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_colour_bar_slider( &ui_info->graphics_window,
@@ -202,6 +238,20 @@ public  int  add_colour_bar_widgets(
                    SLIDER_PEG_COLOUR,
                    lower_limit_callback, (void *) NULL,
                    upper_limit_callback, (void *) NULL ) ) - start_index;
+
+    x += Colour_bar_slider_width + Interface_x_spacing;
+
+    widget_indices[OVER_BUTTON] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_button( &ui_info->graphics_window, viewport_index, 
+                   x, y, Colour_bar_button_width, Volume_button_height,
+                   "Over",
+                   OFF, VOLUME1_OVER_COLOUR,
+                   BUTTON_SELECTED_COLOUR,
+                   BUTTON_INACTIVE_COLOUR,
+                   BUTTON_PUSHED_COLOUR, BUTTON_TEXT_COLOUR,
+                   Button_text_font, Button_text_font_size,
+                   over_button_callback, (void *) NULL ) ) - start_index;
 
     *height = y + Colour_bar_slider_height;
 
@@ -244,10 +294,9 @@ public  void  set_colour_bar_widgets_activity(
     {
         type = IF_get_colour_coding_type(
                           get_viewport_volume_index(viewport_index) );
-        set_widget_activity( 
+        set_widget_selected(
                      ui_info->widget_list[viewport_index].widgets
                      [start_widget_index + widget_indices[
-                           get_colour_coding_widget_index(type)]],
-                     OFF );
+                           get_colour_coding_widget_index(type)]], ON );
     }
 }

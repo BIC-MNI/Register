@@ -55,18 +55,25 @@ private  DEFINE_WIDGET_CALLBACK( pos_z_world_callback ) /* ARGSUSED */
 public  int  add_cursor_position_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
-    int               x,
-    int               y,
     int               *height )
 {
-    int    start_index, x_start, dx;
+    int           x, y, start_index, x_start, dx;
+    int           x_min, x_max, y_min, y_max;
 
-    start_index = create_label( ui_info, viewport_index, 
+    get_graphics_viewport( &ui_info->graphics_window.graphics,
+                           viewport_index, &x_min, &x_max, &y_min, &y_max );
+
+    x = Interface_x_spacing;
+    y = y_max - y_min - 1 - Interface_y_spacing - Text_entry_height;;
+
+    start_index = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_label( &ui_info->graphics_window, viewport_index, 
                   x, y, Position_label_width, Text_entry_height,
                   "V:", OFF, LABEL_ACTIVE_COLOUR,
-                  LABEL_INACTIVE_COLOUR,
+                  LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size );
+                  Label_text_font, Label_text_font_size ) );
 
     widget_indices[VOXEL_LABEL] = 0;
 
@@ -74,94 +81,108 @@ public  int  add_cursor_position_widgets(
 
     dx = Position_values_width + Position_values_separation;
 
-    widget_indices[X_VOXEL_TEXT] = create_text_entry( ui_info, viewport_index,
+    widget_indices[X_VOXEL_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start, y,
                        Position_values_width, Text_entry_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       pos_x_voxel_callback ) - start_index;
+                       pos_x_voxel_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[Y_VOXEL_TEXT] = create_text_entry( ui_info, viewport_index,
+    widget_indices[Y_VOXEL_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + dx, y,
                        Position_values_width, Text_entry_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       pos_y_voxel_callback ) - start_index;
+                       pos_y_voxel_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[Z_VOXEL_TEXT] = create_text_entry( ui_info, viewport_index,
+    widget_indices[Z_VOXEL_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + 2 * dx, y,
                        Position_values_width, Text_entry_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       pos_z_voxel_callback ) - start_index;
+                       pos_z_voxel_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[WORLD_LABEL] = create_label( ui_info, viewport_index, 
+    widget_indices[WORLD_LABEL] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_label( &ui_info->graphics_window, viewport_index, 
                   x_start + 3 * dx + Position_values_separation, y,
                   Position_label_width, Text_entry_height,
-                  "W:", OFF, LABEL_ACTIVE_COLOUR,
+                  "W:", OFF, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
-                  Label_text_font, Label_text_font_size ) - start_index;
+                  Label_text_font, Label_text_font_size ) ) - start_index;
 
     x_start = x_start + 3 * dx + Position_values_separation +
               Position_label_width + Position_values_separation;
 
-    widget_indices[X_WORLD_TEXT] = create_text_entry( ui_info, viewport_index,
+    widget_indices[X_WORLD_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start, y,
                        Position_values_width, Text_entry_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       pos_x_world_callback ) - start_index;
+                       pos_x_world_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[Y_WORLD_TEXT] = create_text_entry( ui_info, viewport_index,
+    widget_indices[Y_WORLD_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + dx, y,
                        Position_values_width, Text_entry_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       pos_y_world_callback ) - start_index;
+                       pos_y_world_callback, (void *) NULL ) ) - start_index;
 
-    widget_indices[Z_WORLD_TEXT] = create_text_entry( ui_info, viewport_index,
+    widget_indices[Z_WORLD_TEXT] = add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                  create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + 2 * dx, y,
                        Position_values_width, Text_entry_height,
                        "", OFF,
-                       TEXT_ENTRY_ACTIVE_COLOUR,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
                        TEXT_ENTRY_EDIT_COLOUR,
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        Text_entry_font, Text_entry_font_size,
-                       pos_z_world_callback ) - start_index;
+                       pos_z_world_callback, (void *) NULL ) ) - start_index;
 
     *height = Text_entry_height;
 
@@ -178,8 +199,7 @@ public  void  set_voxel_position_widgets_activity(
 
     for_enum( widget_index, N_POSITION_WIDGETS, Position_widgets )
     {
-        set_widget_activity_and_update( ui_info,
-                             ui_info->widget_list[viewport_index].widgets
+        set_widget_activity( ui_info->widget_list[viewport_index].widgets
                              [start_widget_index+widget_indices[widget_index]],
                              activity );
     }
@@ -191,19 +211,15 @@ public  void  set_volume_voxel_text(
     int               view_index,
     Real              value )
 {
-    String          string;
     Viewport_types  viewport_index;
 
     viewport_index = get_volume_menu_viewport_index( volume_index );
 
-    (void) sprintf( string, Position_values_format, value );
-
-    set_text_entry_string( ui_info,
-                           ui_info->widget_list
-                           [viewport_index].widgets
+    set_text_entry_real_value( ui_info->widget_list[viewport_index].widgets
                            [ui_info->position_text_start_index[volume_index]+
                             widget_indices[X_VOXEL_TEXT+view_index]],
-                           string );
+                            Position_values_format,
+                            value );
 }
 
 public  void  set_volume_world_text(
@@ -212,19 +228,15 @@ public  void  set_volume_world_text(
     int               view_index,
     Real              value )
 {
-    String          string;
     Viewport_types  viewport_index;
 
     viewport_index = get_volume_menu_viewport_index( volume_index );
 
-    (void) sprintf( string, Position_values_format, value );
-
-    set_text_entry_string( ui_info,
-                           ui_info->widget_list
-                           [viewport_index].widgets
+    set_text_entry_real_value( ui_info->widget_list[viewport_index].widgets
                            [ui_info->position_text_start_index[volume_index]+
                             widget_indices[X_WORLD_TEXT+view_index]],
-                           string );
+                            Position_values_format,
+                            value );
 }
 
 private  void   set_voxel_position_callback(
