@@ -1,6 +1,8 @@
 See INSTALL for generic installation instructions.
 
+
 		Required Libraries
+		------------------
 
 Register requires several libraries to be installed before it
 can successfully be configured and built.  Please install all
@@ -18,6 +20,7 @@ of the following before continuing.
 
 
 		Configuring Register
+		--------------------
 
 Often, you can configure and build register simply:
 
@@ -50,9 +53,24 @@ then
 
 will do the trick.
 
-If you have a more complicated setup, and, e.g. need to choose among multiple
-installed versions of some library (it happens!), use the "--with-foo-library"
-and "--with-foo-includes" options.  See the output of "./configure --help".
+
+		register_UI.globals
+		-------------------
+
+
+Register can run in either RGB mode or ColourMap mode. If register
+emits the message
+
+	visual with necessary capabilities not found
+
+when run, then you need to use the other mode.
+
+You can change the default mode for register by copying the file
+named "register_UI.globals" to the ${prefix}/lib directory, and
+edit to taste.  The sample file tells register to start in rgb mode.
+
+
+
 
 Good luck.
 

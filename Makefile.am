@@ -5,7 +5,12 @@ SUBDIRS = Graphics Functionality UI_calls_F User_interface \
 
 bin_PROGRAMS = register
 
-EXTRA_DIST = INSTALL.register
+
+EXTRA_DIST = INSTALL.register  \
+	register_UI.globals    \
+	m4/smr_OPTIONAL_LIB.m4 \
+	m4/smr_REQUIRED_LIB.m4 \
+	m4/smr_WITH_BUILD_PATH.m4
 
 # Adding a dummy source file to register is a work-around for a bug in 
 # automake, which does not (in version 1.4) allow linking together
@@ -19,12 +24,10 @@ dummy.c:
 CLEANFILES = dummy.c
 
 
-register_LDADD = $(objects) \
-	Graphics/libbicgl.a \
-	-lglut -lGL -lGLU \
-	$(X_LIBS) $(X_PRE_LIBS) -lX11 -lXmu $(X_EXTRA_LIBS) \
-	$(MNI_LIBS) -lm
-
+# All the required libs are in LIBS, which is automatically
+# added to the link line.
+register_LDADD = $(objects) Graphics/libbicgl.a \
+	$(X_LIBS) $(X_PRE_LIBS) -lX11 -lXmu $(X_EXTRA_LIBS)
 
 
 objects = \
