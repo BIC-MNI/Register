@@ -130,10 +130,18 @@ private  DEFINE_EVENT_FUNCTION( select_lower_slider )   /* ARGSUSED */
 private  void  update_one_slider_colours(
     slider_struct   *slider,
     int             ind,
+    Boolean         use_ui_colours,
     Boolean         colour_map_state )
 {
-    slider->pegs[ind]->colours[0] = get_ui_colour(colour_map_state,
-                                                  slider->peg_colour);
+    if( use_ui_colours )
+    {
+        slider->pegs[ind]->colours[0] = get_ui_colour(colour_map_state,
+                                                      slider->peg_colour);
+    }
+    else
+    {
+        slider->pegs[ind]->colours[0] = slider->peg_colour;
+    }
 
     update_widget_colours( slider->text_widgets[ind] );
 }
@@ -154,13 +162,18 @@ public  void  update_slider_colours(
     else
         rectangle_colour = slider->inactive_colour;
 
-    slider->polygons->colours[0] = get_ui_colour(colour_map_state,
-                                                 rectangle_colour);
+    if( widget->use_ui_colours )
+        slider->polygons->colours[0] = get_ui_colour(colour_map_state,
+                                                     rectangle_colour);
+    else
+        slider->polygons->colours[0] = rectangle_colour;
 
-    update_one_slider_colours( slider, 0, colour_map_state );
+    update_one_slider_colours( slider, 0, widget->use_ui_colours,
+                               colour_map_state );
 
     if( slider->colour_bar_flag )
-        update_one_slider_colours( slider, 1, colour_map_state );
+        update_one_slider_colours( slider, 1, widget->use_ui_colours,
+                                   colour_map_state );
 }
 
 private  Real  convert_position_to_slider_value(
@@ -271,20 +284,32 @@ public  Boolean  set_slider_values(
 
     slider = get_widget_slider( widget );
 
-    if( low_value != slider->values[0] &&
-        low_value >= slider->min_value && low_value <= slider->max_value )
+    if( low_value < slider->min_value )
+        low_value = slider->min_value;
+    else if( low_value > slider->max_value )
+             low_value = slider->max_value;
+
+    if( low_value != slider->values[0] )
     {
         slider->values[0] = low_value;
         changed = TRUE;
     }
 
-    if( slider->colour_bar_flag &&
-        high_value != slider->values[1] &&
-        high_value >= slider->min_value && high_value <= slider->max_value )
+    if( slider->colour_bar_flag )
     {
-        if( high_value < low_value )  high_value = low_value;
-        slider->values[1] = high_value;
-        changed = TRUE;
+        if( high_value < slider->min_value )
+            high_value = slider->min_value;
+        else if( high_value > slider->max_value )
+                 high_value = slider->max_value;
+
+        if( high_value < low_value )
+            high_value = low_value;
+
+        if( high_value != slider->values[1] )
+        {
+            slider->values[1] = high_value;
+            changed = TRUE;
+        }
     }
 
     update_slider_position( widget );
@@ -405,7 +430,7 @@ private  widget_struct  *create_a_slider(
     slider_struct      *slider;
 
     widget = create_widget( SLIDER, x, y, x_size, y_size, initial_activity,
-                            graphics, viewport_index );
+                            TRUE, graphics, viewport_index );
 
     slider = get_widget_slider( widget );
 
