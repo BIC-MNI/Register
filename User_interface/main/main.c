@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.17 1996-12-09 20:21:54 david Exp $";
+static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.18 1997-04-17 17:29:20 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  STRING  version = "1.0      Dec. 19, 1995";
+private  STRING  version = "1.1      Apr. 17, 1997";
 
 #define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
 #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
