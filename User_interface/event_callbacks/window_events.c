@@ -25,10 +25,12 @@ public  void  install_window_events(
     add_event_viewport_callback( &ui->graphics_window.event_viewports,
                                  Whole_window_event_viewport,
                                  WINDOW_REDRAW_EVENT, -1, -1, -1, -1,
-                                 redraw_window_callback, (void *) NULL );
+                                 redraw_window_callback, ANY_MODIFIER,
+                                 (void *) NULL );
 
     add_event_viewport_callback( &ui->graphics_window.event_viewports,
                                  Whole_window_event_viewport,
                                  WINDOW_RESIZE_EVENT, -1, -1, -1, -1,
-                                 resize_window_callback, (void *) NULL );
+                                 resize_window_callback, ANY_MODIFIER,
+                                 (void *) NULL );
 }
