@@ -1,3 +1,9 @@
+2004-06-28  Bert Vincent <bert@bic.mni.mcgill.ca>
+	* Remove old m4 directory contents
+	* Update autogen.sh to require checkout of m4 from 
+	libraries/mni-acmacros 
+	* Update configure.in to use mni_REQUIRE_BICPL
+	
 2003-12-16  Steve M. Robbins  <steve@nyongwa.montreal.qc.ca>
 
 	* configure.in: Set version to 1.3.4.  Use -lXi and -lm when
