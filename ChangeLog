@@ -1,3 +1,16 @@
+2001-05-22  Steve M. Robbins  <steve@nyongwa.montreal.qc.ca>
+
+	* User_interface/event_callbacks/tag_events.c:	Rolled back
+	to version 1.7.
+
+	* Functionality/initialize/main.c:
+	* Functionality/tags/matrix_basics.c:
+	* Functionality/tags/matrix_procrustes.c: Removed.
+
+	* tagged as david-source-2001-05-22.  This set of sources is
+	identical to the current contents of ~david/Source/Register (with
+	this ChangeLog added).
+
 2000-10-07  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 	* tagged as release-1_3: sources copied from
