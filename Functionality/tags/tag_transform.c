@@ -1,5 +1,20 @@
 #include  <register.h>
 
+public  Trans_type  get_tag_transform_type(
+    main_struct  *main )
+{
+    return( main->tags.transform_type );
+}
+
+public  void  set_tag_transform_type(
+    main_struct  *main,
+    Trans_type   type )
+{
+    main->tags.transform_type = type;
+    main->tags.transform_out_of_date = TRUE;
+    set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
+}
+
 private  void  recompute_tag_rms_errors(
     tag_list_struct   *tags )
 {
@@ -38,15 +53,20 @@ private  void  recompute_tag_rms_errors(
 public  void  recompute_tag_transform(
     tag_list_struct   *tags )
 {
-    int        i, j, c, n_valid;
-    float      **Apoints, **Bpoints;
-    float      translation[N_DIMENSIONS+1], centre_of_rotation[N_DIMENSIONS+1];
-    float      scale;
-    float      **rotation, **transformation;
-    Transform  linear_transform;
+    int        i, c, n_valid;
+    Real       **Apoints, **Bpoints;
 
-    ALLOC2D( Apoints, tags->n_tag_points+1, N_DIMENSIONS+1 );
-    ALLOC2D( Bpoints, tags->n_tag_points+1, N_DIMENSIONS+1 );
+    if( tags->transform_exists )
+        delete_general_transform( &tags->v2_to_v1_transform );
+
+    if( tags->n_tag_points < 4 )
+    {
+        tags->transform_exists = FALSE;
+        return;
+    }
+    
+    ALLOC2D( Apoints, tags->n_tag_points, N_DIMENSIONS );
+    ALLOC2D( Bpoints, tags->n_tag_points, N_DIMENSIONS );
 
     n_valid = 0;
 
@@ -58,44 +78,20 @@ public  void  recompute_tag_transform(
         {
             for_less( c, 0, N_DIMENSIONS )
             {
-                Apoints[n_valid+1][c+1] =
+                Apoints[n_valid][c] =
                     Point_coord(tags->tag_points[i].position[0],c);
-                Bpoints[n_valid+1][c+1] =
+                Bpoints[n_valid][c] =
                     Point_coord(tags->tag_points[i].position[1],c);
             }
             ++n_valid;
         }
     }
 
-    if( tags->transform_exists )
-        delete_general_transform( &tags->v2_to_v1_transform );
-
     if( n_valid >= 4 )
     {
-        ALLOC2D( rotation, N_DIMENSIONS+2, N_DIMENSIONS+2 );
-        ALLOC2D( transformation, N_DIMENSIONS+2, N_DIMENSIONS+2 );
-        procrustes( n_valid, N_DIMENSIONS, Apoints, Bpoints,
-                    translation, centre_of_rotation, rotation, &scale );
-
-        if( !Scaling_allowed )
-            scale = 1.0;
-
-        transformations_to_homogeneous( N_DIMENSIONS, translation, 
-                                        centre_of_rotation, rotation, scale,
-                                        transformation );
-
-        for_less( i, 0, 4 )
-        {
-            for_less( j, 0, 4 )
-            {
-                Transform_elem(linear_transform,i,j) = transformation[j+1][i+1];
-            }
-        }
-
-        FREE2D( rotation );
-        FREE2D( transformation );
-
-        create_linear_transform( &tags->v2_to_v1_transform, &linear_transform );
+        compute_transform_from_tags( n_valid, Apoints, Bpoints,
+                                     tags->transform_type,
+                                     &tags->v2_to_v1_transform );
         tags->transform_exists = TRUE;
         recompute_tag_rms_errors( tags );
     }
