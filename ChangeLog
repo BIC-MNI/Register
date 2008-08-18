@@ -1,3 +1,7 @@
+2008-08-18  Andrew L Janke <a.janke@gmail.com>
+	* configure.in: added error output if missing GLUT/GL
+	* epm-header.in: removed netcdf, changed from Register to register
+
 2005-02-28  Bert Vincent <bert@bic.mni.mcgill.ca>
 	* Fix save_image.c to calculate the correct parameters to pass to
 	the ImageMagick "import" utility.
