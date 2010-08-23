@@ -1,3 +1,8 @@
+2010-08-23  Andrew L Janke <a.janke@gmail.com>
+   * Graphics/GLUT_windows/glut_windows.c: munted the create_GLUT_window
+      function to always return a RGB double buffered window in an attempt
+      to get around display problems on Nvidia + Ubuntu Lucid issues
+
 2008-08-18  Andrew L Janke <a.janke@gmail.com>
 	* configure.in: added error output if missing GLUT/GL
 	* epm-header.in: removed netcdf, changed from Register to register

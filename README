@@ -1,7 +1,6 @@
 MNI-register is an interactive program to display and merge 2 volumes and
 pick homologous points for manually registering one volume to the other.
 
-
 The following libraries must be installed before building Register:
 
   NetCDF and MINC 
