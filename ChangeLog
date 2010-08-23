@@ -2,6 +2,7 @@
    * Graphics/GLUT_windows/glut_windows.c: munted the create_GLUT_window
       function to always return a RGB double buffered window in an attempt
       to get around display problems on Nvidia + Ubuntu Lucid issues
+      With thanks to Hugh Fisher
 
 2008-08-18  Andrew L Janke <a.janke@gmail.com>
 	* configure.in: added error output if missing GLUT/GL
