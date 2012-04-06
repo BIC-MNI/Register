@@ -18,17 +18,17 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 #include  <register.h>
 
-#define  GLOBALS_LOOKUP_NAME  functional_globals
-#include  <bicpl/globals.h>
-
-#define   REGISTER_GLOBALS_FILENAME   "register.globals"
+// #define  GLOBALS_LOOKUP_NAME  functional_globals
+// #include  <bicpl/globals.h>
+// 
+// #define   REGISTER_GLOBALS_FILENAME   "register.globals"
 
 #define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
 #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
 
 
-private  void  read_global_files(
-    STRING  executable_name );
+// private  void  read_global_files(
+//     STRING  executable_name );
 
 private   main_struct      main_info;
 
@@ -48,7 +48,7 @@ public  Status   initialize_register(
 
     initialize_global_colours();
 
-    read_global_files( executable_name );
+    //read_global_files( executable_name );
 
     if( Disable_alloc_checking )
         set_alloc_checking( OFF );
@@ -134,51 +134,51 @@ private  void    initialize_global_colours( void )
     Initial_over_colour = WHITE;
 }
 
-private  void  read_global_files(
-    STRING  executable_name )
-{
-    int      dir, n_directories;
-    STRING   runtime_directory, *directories, globals_filename;
+// private  void  read_global_files(
+//     STRING  executable_name )
+// {
+//     int      dir, n_directories;
+//     STRING   runtime_directory, *directories, globals_filename;
+// 
+//     runtime_directory = extract_directory( executable_name );
+// 
+//     n_directories = 0;
+//     directories = NULL;
+// 
+//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+//                           HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );
+//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+//                           HARD_CODED_REGISTER_DIRECTORY1, DEFAULT_CHUNK_SIZE );
+//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+//                           runtime_directory, DEFAULT_CHUNK_SIZE );
+//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
+//                           getenv("HOME"), DEFAULT_CHUNK_SIZE );
+//     ADD_ELEMENT_TO_ARRAY( directories, n_directories, ".", DEFAULT_CHUNK_SIZE );
+// 
+//     for_less( dir, 0, n_directories )
+//     {
+//         globals_filename = get_absolute_filename( REGISTER_GLOBALS_FILENAME,
+//                                                   directories[dir] );
+// 
+//         if( file_exists( globals_filename ) )
+//         {
+//             (void) input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
+//                                        functional_globals, globals_filename );
+//         }
+// 
+//         delete_string( globals_filename );
+//     }
+// 
+//     delete_string( runtime_directory );
+// 
+//     FREE( directories );
+// }
 
-    runtime_directory = extract_directory( executable_name );
-
-    n_directories = 0;
-    directories = NULL;
-
-    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-                          HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );
-    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-                          HARD_CODED_REGISTER_DIRECTORY1, DEFAULT_CHUNK_SIZE );
-    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-                          runtime_directory, DEFAULT_CHUNK_SIZE );
-    ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-                          getenv("HOME"), DEFAULT_CHUNK_SIZE );
-    ADD_ELEMENT_TO_ARRAY( directories, n_directories, ".", DEFAULT_CHUNK_SIZE );
-
-    for_less( dir, 0, n_directories )
-    {
-        globals_filename = get_absolute_filename( REGISTER_GLOBALS_FILENAME,
-                                                  directories[dir] );
-
-        if( file_exists( globals_filename ) )
-        {
-            (void) input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
-                                       functional_globals, globals_filename );
-        }
-
-        delete_string( globals_filename );
-    }
-
-    delete_string( runtime_directory );
-
-    FREE( directories );
-}
-
-public  Status  set_functional_global_variable(
-    STRING  variable_name,
-    STRING  value_to_set )
-{
-    return( set_global_variable( SIZEOF_STATIC_ARRAY(functional_globals),
-                                 functional_globals, variable_name,
-                                 value_to_set ) );
-}
+// public  Status  set_functional_global_variable(
+//     STRING  variable_name,
+//     STRING  value_to_set )
+// {
+//     return( set_global_variable( SIZEOF_STATIC_ARRAY(functional_globals),
+//                                  functional_globals, variable_name,
+//                                  value_to_set ) );
+// }

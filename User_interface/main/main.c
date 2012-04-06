@@ -246,3 +246,12 @@ private  void  read_global_files(
 
     FREE( directories );
 }
+
+public  Status  set_functional_global_variable(
+    STRING  variable_name,
+    STRING  value_to_set )
+{
+    return( set_global_variable( SIZEOF_STATIC_ARRAY(UI_globals_list),
+                                 UI_globals_list, variable_name,
+                                 value_to_set ) );
+}

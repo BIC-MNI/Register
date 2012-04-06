@@ -21,10 +21,9 @@ IF(NOT MINC_TOOLKIT_BUILD)
 
   FIND_PACKAGE( MINC2 REQUIRED )
   FIND_PACKAGE( BICPL REQUIRED )
-  FIND_PACKAGE( Perl REQUIRED )
+#  FIND_PACKAGE( Perl REQUIRED )
   FIND_PACKAGE( Threads )
-  FIND_PACKAGE( GL REQUIRED )
-  FIND_PACKAGE( GLU REQUIRED )
+  FIND_PACKAGE( OpenGL REQUIRED )
   FIND_PACKAGE( GLUT REQUIRED )
 ENDIF(NOT MINC_TOOLKIT_BUILD)
 
@@ -46,10 +45,10 @@ INCLUDE( ${BICPL_USE_FILE} )
 SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${MINC2_INCLUDE_DIRS} ${BICPL_INCLUDE_DIRS})
 
 ADD_DEFINITIONS(-DHAVE_CONFIG_H)
+ADD_DEFINITIONS()
 
 # aliases
 SET(VERSION "${PACKAGE_VERSION}")
-
 
 # check for prereqs
 INCLUDE(CheckIncludeFiles)
@@ -83,21 +82,14 @@ ELSE(WINDOWS)
   SET(HAVE_WINDOWS_H OFF)
 ENDIF(WINDOWS)
 
-# IF(NOT HAVE_DEFORM_H)
-#   message(WARNING "cannot find deform.h - make sure you have bicpl 1.4.0 or later")
-# ENDIF(NOT HAVE_DEFORM_H)
-
 # others
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/epm-header.in  ${CMAKE_CURRENT_BINARY_DIR}/epm-header)
 
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/Include )
-
-SET(PERL ${PERL_EXECUTABLE})
-
-
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR}/Graphics/Include )
-
+INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES( ${GLUT_INCLUDE_DIR} )
+INCLUDE_DIRECTORIES( Graphics/OpenGL_graphics/Include Graphics/Include Graphics/GLUT_windows/Include )
+INCLUDE_DIRECTORIES( User_interface/Include Functionality/Include UI_calls_F/Include  )
 
 SET(PRINT_X_COLOURS print_X_colours)
 
@@ -150,7 +142,7 @@ SET(BICGL_SRC
 
 ADD_LIBRARY(register_bicgl ${BICGL_SRC})
 
-ADD_EXECUTABLE(register 
+SET(FUNCTIONALITY_SRC
   Functionality/initialize/initialize.c 
   Functionality/slices/colour_map.c 
   Functionality/slices/cursor.c 
@@ -166,9 +158,16 @@ ADD_EXECUTABLE(register
   Functionality/tags/tag_points.c 
   Functionality/tags/tag_transform.c 
   Functionality/update/update_window.c 
-  UI_calls_F/UI_calls_F.c 
-  User_interface/main/main.c 
-  User_interface/main/initialize.c 
+)
+
+
+SET(UI_CALLS_F_SRC
+  UI_calls_F/UI_calls_F.c
+)
+
+
+
+SET(USER_INTERFACE_SRC
   User_interface/colour_popup/colour_selection.c 
   User_interface/delete_tags_popup/delete_tags.c 
   User_interface/event_callbacks/save_image.c 
@@ -209,8 +208,17 @@ ADD_EXECUTABLE(register
   User_interface/windows/popup.c 
   User_interface/windows/update.c 
   User_interface/windows/xsect.c  
+  User_interface/main/main.c 
+  User_interface/main/initialize.c
 )
 
-TARGET_LINK_LIBRARIES(register register_bicgl ${BICPL_LIBRARIES} ${VOLUME_IO_LIBRARIES} ${MINC2_LIBRARIES})
+
+ADD_EXECUTABLE(register 
+  ${FUNCTIONALITY_SRC}
+  ${UI_CALLS_F_SRC}
+  ${USER_INTERFACE_SRC}
+)
+
+TARGET_LINK_LIBRARIES(register register_bicgl ${BICPL_LIBRARIES} ${VOLUME_IO_LIBRARIES} ${MINC2_LIBRARIES} ${GLUT_LIBRARIES})
 
 INSTALL(TARGETS register DESTINATION bin)
