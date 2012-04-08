@@ -140,7 +140,7 @@ SET(BICGL_SRC
   ${OPENGL_X_SRC}
 )
 
-ADD_LIBRARY(register_bicgl ${BICGL_SRC})
+ADD_LIBRARY(register_bicgl STATIC ${BICGL_SRC})
 
 SET(FUNCTIONALITY_SRC
   Functionality/initialize/initialize.c 
