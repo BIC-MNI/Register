@@ -10,7 +10,7 @@ SET(REGISTER_PACKAGE_VERSION_PATCH 00)
 
 IF(NOT MINC_TOOLKIT_BUILD)
 
-  PROJECT(ray_trace "C")
+  PROJECT(Register "C")
 
   # Packaging defines
   SET(CPACK_GENERATOR TGZ)
@@ -88,59 +88,10 @@ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/epm-header.in  ${CMAKE_CURRENT_BINARY
 
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES( ${GLUT_INCLUDE_DIR} )
-INCLUDE_DIRECTORIES( Graphics/OpenGL_graphics/Include Graphics/Include Graphics/GLUT_windows/Include )
+INCLUDE_DIRECTORIES( ${BICGL_INCLUDE_DIRS} )
 INCLUDE_DIRECTORIES( User_interface/Include Functionality/Include UI_calls_F/Include  )
+LINK_DIRECTORIES( ${BICGL_LIBRARY_DIRS} )
 
-SET(PRINT_X_COLOURS print_X_colours)
-
-SET(GLX_SRC Graphics/GLX_windows/glx_windows.c 
-          Graphics/GLX_windows/stored_font.c )
-
-SET(GLUT_SRC 
-  Graphics/GLUT_windows/glut_windows.c 
-  Graphics/GLUT_windows/copy_x_colours.c)
-
-SET(X_SRC   Graphics/X_windows/x_windows.c )
-
-SET(GL_SRC 
-         Graphics/IrisGL_graphics/colour_def.c 
-         Graphics/IrisGL_graphics/draw.c 
-         Graphics/IrisGL_graphics/event_loop.c 
-         Graphics/IrisGL_graphics/lights.c 
-         Graphics/IrisGL_graphics/render.c 
-         Graphics/IrisGL_graphics/view.c 
-         Graphics/IrisGL_graphics/windows.c )
-
-SET(OPENGL_SRC 
-             Graphics/OpenGL_graphics/colour_def.c 
-             Graphics/OpenGL_graphics/draw.c 
-             Graphics/OpenGL_graphics/event_loop.c 
-             Graphics/OpenGL_graphics/lights.c 
-             Graphics/OpenGL_graphics/render.c 
-             Graphics/OpenGL_graphics/view.c 
-             Graphics/OpenGL_graphics/windows.c
-        )
-
-SET(G_SRC 
-        Graphics/G_graphics/draw.c 
-        Graphics/G_graphics/draw_objects.c 
-        Graphics/G_graphics/event_loop.c 
-        Graphics/G_graphics/graphics_structs.c 
-        Graphics/G_graphics/lights.c 
-        Graphics/G_graphics/random_order.c 
-        Graphics/G_graphics/render.c 
-        Graphics/G_graphics/view.c 
-        Graphics/G_graphics/windows.c)
-
-
-SET(OPENGL_X_SRC ${G_SRC} ${OPENGL_SRC} ${GLUT_SRC})
-
-
-SET(BICGL_SRC 
-  ${OPENGL_X_SRC}
-)
-
-ADD_LIBRARY(register_bicgl STATIC ${BICGL_SRC})
 
 SET(FUNCTIONALITY_SRC
   Functionality/initialize/initialize.c 
@@ -219,6 +170,6 @@ ADD_EXECUTABLE(register
   ${USER_INTERFACE_SRC}
 )
 
-TARGET_LINK_LIBRARIES(register register_bicgl ${BICPL_LIBRARIES} ${VOLUME_IO_LIBRARIES} ${MINC2_LIBRARIES} ${GLUT_LIBRARIES})
+TARGET_LINK_LIBRARIES(register bicgl ${BICPL_LIBRARIES} ${VOLUME_IO_LIBRARIES} ${MINC2_LIBRARIES} ${GLUT_LIBRARIES})
 
 INSTALL(TARGETS register DESTINATION bin)
