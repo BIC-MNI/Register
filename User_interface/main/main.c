@@ -28,9 +28,9 @@ private  STRING  version = VERSION;
  * Hard coded directories 2 and 3 are deprecated and will be removed
  * in a future release.
  */
-#define  HARD_CODED_REGISTER_DIRECTORY1    LIBDIR
-#define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/mni/lib"
-#define  HARD_CODED_REGISTER_DIRECTORY3    "/usr/local/lib"
+// #define  HARD_CODED_REGISTER_DIRECTORY1    LIBDIR
+// #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/mni/lib"
+// #define  HARD_CODED_REGISTER_DIRECTORY3    "/usr/local/lib"
 
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
 #include  <bicpl/globals.h>

@@ -11,6 +11,9 @@
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
 ---------------------------------------------------------------------------- */
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif //HAVE_CONFIG_H
 
 #ifndef lint
 static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.21 2001-05-23 04:12:45 stever Exp $";
@@ -23,8 +26,8 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 // 
 // #define   REGISTER_GLOBALS_FILENAME   "register.globals"
 
-#define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
-#define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
+// #define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
+// #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
 
 
 // private  void  read_global_files(

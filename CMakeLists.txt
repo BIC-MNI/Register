@@ -45,10 +45,14 @@ INCLUDE( ${BICPL_USE_FILE} )
 SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${MINC2_INCLUDE_DIRS} ${BICPL_INCLUDE_DIRS})
 
 ADD_DEFINITIONS(-DHAVE_CONFIG_H)
-ADD_DEFINITIONS()
 
 # aliases
 SET(VERSION "${PACKAGE_VERSION}")
+
+set(HARD_CODED_REGISTER_DIRECTORY1 "${CMAKE_INSTALL_PREFIX}/lib")
+set(HARD_CODED_REGISTER_DIRECTORY2 "/usr/local/bic/lib")
+set(HARD_CODED_REGISTER_DIRECTORY2 "/usr/local/lib")
+
 
 # check for prereqs
 INCLUDE(CheckIncludeFiles)
@@ -164,6 +168,22 @@ SET(USER_INTERFACE_SRC
 )
 
 
+#----------------------------------------------------------------------
+# RPATH handling
+# use, i.e. don't skip the full RPATH for the build tree
+SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+
+# when building, don't use the install RPATH already
+# (but later on when installing)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
+
+#SET(CMAKE_INSTALL_RPATH "${MINC_INCLUDE_DIR}/../lib")
+
+# add the automatically determined parts of the RPATH
+# which point to directories outside the build tree to the install RPATH
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+
 ADD_EXECUTABLE(register 
   ${FUNCTIONALITY_SRC}
   ${UI_CALLS_F_SRC}
@@ -173,3 +193,5 @@ ADD_EXECUTABLE(register
 TARGET_LINK_LIBRARIES(register bicgl ${BICPL_LIBRARIES} ${VOLUME_IO_LIBRARIES} ${MINC2_LIBRARIES} ${GLUT_LIBRARIES})
 
 INSTALL(TARGETS register DESTINATION bin)
+INSTALL(FILES register_UI.globals DESTINATION lib)
+
