@@ -190,8 +190,19 @@ ADD_EXECUTABLE(register
   ${USER_INTERFACE_SRC}
 )
 
+ADD_EXECUTABLE(tagtoxfm 
+ Tagtoxfm/ParseArgv.c  
+ Tagtoxfm/ParseArgv.h  
+ Tagtoxfm/tagtoxfm.c  
+ Tagtoxfm/tagtoxfm.h 
+)
+
+
 TARGET_LINK_LIBRARIES(register bicgl ${BICPL_LIBRARIES} ${VOLUME_IO_LIBRARIES} ${MINC2_LIBRARIES} ${GLUT_LIBRARIES})
 
-INSTALL(TARGETS register DESTINATION bin)
+TARGET_LINK_LIBRARIES(tagtoxfm ${BICPL_LIBRARIES} ${VOLUME_IO_LIBRARIES} ${MINC2_LIBRARIES} ${GLUT_LIBRARIES})
+
+
+INSTALL(TARGETS register tagtoxfm DESTINATION bin)
 INSTALL(FILES register_UI.globals DESTINATION lib)
 
