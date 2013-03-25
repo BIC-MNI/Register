@@ -52,7 +52,7 @@ private  const  NO_VOLUME = -1;
 private  void  set_readout_activity(
     UI_struct  *ui,
     int        which_volume,
-    BOOLEAN    activity )
+    VIO_BOOL    activity )
 {
     if( which_volume < N_VOLUMES )
     {

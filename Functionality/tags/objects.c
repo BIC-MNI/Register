@@ -137,7 +137,7 @@ public   void  update_all_tag_colours(
         update_tag_colours( main, &main->tags.tag_points[i] );
 }
 
-private  BOOLEAN  convert_tag_to_pixel(
+private  VIO_BOOL  convert_tag_to_pixel(
     main_struct       *main,
     int               volume,
     int               view,
@@ -146,7 +146,7 @@ private  BOOLEAN  convert_tag_to_pixel(
     Real              *y,
     Real              *radius )
 {
-    BOOLEAN  visible;
+    VIO_BOOL  visible;
     int      which_volume, axis;
     Real     x_trans, y_trans, x_scale, y_scale;
     Real     *cursor_ptr, separations[MAX_DIMENSIONS];
@@ -233,7 +233,7 @@ public  void  update_tag_object(
 {
     Real            x, y;
     Real            radius;
-    BOOLEAN         visibility;
+    VIO_BOOL         visibility;
     lines_struct    *lines;
 
     if( main->tags.tags_visible &&

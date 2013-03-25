@@ -104,10 +104,10 @@ public  void  position_text_centred(
                               (Real) y + ((Real) y_size - height) / 2.0, 0 );
 }
 
-public  BOOLEAN  get_toggle_button_state(
+public  VIO_BOOL  get_toggle_button_state(
     widget_struct  *widget )
 {
-    BOOLEAN        state;
+    VIO_BOOL        state;
     button_struct  *button;
 
     state = FALSE;
@@ -131,11 +131,11 @@ public  BOOLEAN  get_toggle_button_state(
     return( state );
 }
 
-public  BOOLEAN  get_text_entry_real_value(
+public  VIO_BOOL  get_text_entry_real_value(
     widget_struct  *widget,
     Real           *value )
 {
-    BOOLEAN            found;
+    VIO_BOOL            found;
     double             double_value;
 
     found = FALSE;

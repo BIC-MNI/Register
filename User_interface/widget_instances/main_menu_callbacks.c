@@ -67,7 +67,7 @@ private  DEFINE_WIDGET_CALLBACK( transform_type_callback )
 
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback )
 {
-    General_transform  *transform;
+    VIO_General_transform  *transform;
     STRING             filename;
 
     filename = get_text_entry_string(
@@ -278,7 +278,7 @@ private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )
 
 private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback )
 {
-    BOOLEAN   visibility;
+    VIO_BOOL   visibility;
 
     visibility = get_toggle_button_state( widget );
 
@@ -289,7 +289,7 @@ private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback )
 
 private  DEFINE_WIDGET_CALLBACK( cursor_visibility_button_callback )
 {
-    BOOLEAN   visibility;
+    VIO_BOOL   visibility;
 
     visibility = get_toggle_button_state( widget );
 
@@ -300,7 +300,7 @@ private  DEFINE_WIDGET_CALLBACK( cursor_visibility_button_callback )
 
 private  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
 {
-    BOOLEAN   smooth_flag;
+    VIO_BOOL   smooth_flag;
 
     smooth_flag = get_toggle_button_state( widget );
 
@@ -633,7 +633,7 @@ public  void  position_main_widgets(
 
 public  void  set_transform_buttons_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[SAVE_TRANSFORM_BUTTON]], activity );
@@ -643,7 +643,7 @@ public  void  set_transform_buttons_activity(
 
 public  void  set_quit_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[QUIT_BUTTON]], activity );
@@ -651,7 +651,7 @@ public  void  set_quit_button_activity(
 
 public  void  set_resample_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[RESAMPLE_BUTTON]], activity );
@@ -659,7 +659,7 @@ public  void  set_resample_button_activity(
 
 public  void  set_delete_tags_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[DELETE_ALL_TAGS_BUTTON]], activity );
@@ -667,7 +667,7 @@ public  void  set_delete_tags_button_activity(
 
 public  void  set_transform_type_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[TRANSFORM_TYPE_BUTTON]], activity );
@@ -694,7 +694,7 @@ public  void  update_avg_rms_error(
 public  void  update_colour_map_toggle_activity(
     UI_struct         *ui_info )
 {
-    BOOLEAN   activity;
+    VIO_BOOL   activity;
 
     activity = IF_can_switch_colour_modes();
 

@@ -25,7 +25,7 @@ typedef  struct
 } message_struct;
 
 static  STRING   output = NULL;
-static  BOOLEAN  create_new_window = TRUE;
+static  VIO_BOOL  create_new_window = TRUE;
 
 private  void  output_chars( STRING );
 private  void  create_message_popup( STRING );

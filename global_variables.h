@@ -2,9 +2,9 @@ START_GLOBALS
 //User_interface
     DEF_GLOBAL( Main_window_name, STRING, "Register" )
 
-    DEF_GLOBAL( Initial_rgb_state, BOOLEAN, FALSE )
-    DEF_GLOBAL( Initial_double_buffer_state, BOOLEAN, TRUE )
-    DEF_GLOBAL( Initial_interpolation_state, BOOLEAN, FALSE )
+    DEF_GLOBAL( Initial_rgb_state, VIO_BOOL, FALSE )
+    DEF_GLOBAL( Initial_double_buffer_state, VIO_BOOL, TRUE )
+    DEF_GLOBAL( Initial_interpolation_state, VIO_BOOL, FALSE )
 
     DEF_GLOBAL( Timer_interval, Real, 0.017 )
 
@@ -172,7 +172,7 @@ START_GLOBALS
     DEF_GLOBAL( Colour_selection_y_size, int, 120 )
     DEF_GLOBAL( Colour_selection_n_across, int, 3 )
 
-    DEF_GLOBAL( Initial_volumes_synced, BOOLEAN, FALSE )
+    DEF_GLOBAL( Initial_volumes_synced, VIO_BOOL, FALSE )
 
     DEF_GLOBAL( Transform_selection_x_size, int, 350 )
     DEF_GLOBAL( Transform_selection_y_size, int, 200 )
@@ -189,15 +189,15 @@ START_GLOBALS
 
     DEF_GLOBAL( Seconds_per_resample, Real, 0.1 )
 
-    DEF_GLOBAL( Activity_9_10, BOOLEAN, TRUE )
+    DEF_GLOBAL( Activity_9_10, VIO_BOOL, TRUE )
 
 //Functionality
-    DEF_GLOBAL( Disable_alloc_checking, BOOLEAN, TRUE )
-    DEF_GLOBAL( Alloc_debugging, BOOLEAN, FALSE )
+    DEF_GLOBAL( Disable_alloc_checking, VIO_BOOL, TRUE )
+    DEF_GLOBAL( Alloc_debugging, VIO_BOOL, FALSE )
 
     DEF_GLOBAL( Default_transform_type, int, (int) TRANS_LSQ6 )
 
-    DEF_GLOBAL( Use_overlay_planes, BOOLEAN, FALSE )
+    DEF_GLOBAL( Use_overlay_planes, VIO_BOOL, FALSE )
     DEF_GLOBAL_COLOUR( Overlay_colour_1 )
     DEF_GLOBAL_COLOUR( Overlay_colour_2 )
     DEF_GLOBAL_COLOUR( Overlay_colour_3 )
@@ -209,12 +209,12 @@ START_GLOBALS
     DEF_GLOBAL( Slice_3_x_axis_index, int, X )
     DEF_GLOBAL( Slice_3_y_axis_index, int, Z )
 
-    DEF_GLOBAL( Slice_1_x_axis_flip, BOOLEAN, FALSE )
-    DEF_GLOBAL( Slice_1_y_axis_flip, BOOLEAN, FALSE )
-    DEF_GLOBAL( Slice_2_x_axis_flip, BOOLEAN, FALSE )
-    DEF_GLOBAL( Slice_2_y_axis_flip, BOOLEAN, FALSE )
-    DEF_GLOBAL( Slice_3_x_axis_flip, BOOLEAN, FALSE )
-    DEF_GLOBAL( Slice_3_y_axis_flip, BOOLEAN, FALSE )
+    DEF_GLOBAL( Slice_1_x_axis_flip, VIO_BOOL, FALSE )
+    DEF_GLOBAL( Slice_1_y_axis_flip, VIO_BOOL, FALSE )
+    DEF_GLOBAL( Slice_2_x_axis_flip, VIO_BOOL, FALSE )
+    DEF_GLOBAL( Slice_2_y_axis_flip, VIO_BOOL, FALSE )
+    DEF_GLOBAL( Slice_3_x_axis_flip, VIO_BOOL, FALSE )
+    DEF_GLOBAL( Slice_3_y_axis_flip, VIO_BOOL, FALSE )
     DEF_GLOBAL( Slice_fit_size, Real, 0.9 )
     DEF_GLOBAL_COLOUR( Slice_background_colour )
 
@@ -236,17 +236,17 @@ START_GLOBALS
     DEF_GLOBAL_COLOUR( Initial_under_colour )
     DEF_GLOBAL_COLOUR( Initial_over_colour )
 
-    DEF_GLOBAL( Initial_tags_visible, BOOLEAN, TRUE )
+    DEF_GLOBAL( Initial_tags_visible, VIO_BOOL, TRUE )
 
     DEF_GLOBAL( Initial_merge_method, int, 2 )
     DEF_GLOBAL( Initial_merged_1_weight, Real, 0.5 )
     DEF_GLOBAL( Initial_merged_2_weight, Real, 0.5 )
-    DEF_GLOBAL( Use_over_under_colour_in_weights, BOOLEAN, TRUE )
+    DEF_GLOBAL( Use_over_under_colour_in_weights, VIO_BOOL, TRUE )
 
     DEF_GLOBAL( Resample_command_name, STRING, "register_resample" )
 
     DEF_GLOBAL( Initial_slice_filter_type, int, 0 )
     DEF_GLOBAL( Initial_slice_filter_width, Real, 1.0 )
 
-    DEF_GLOBAL( Convert_vectors_to_rgb, BOOLEAN, TRUE )
+    DEF_GLOBAL( Convert_vectors_to_rgb, VIO_BOOL, TRUE )
 END_GLOBALS

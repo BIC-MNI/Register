@@ -67,7 +67,7 @@ public  void  set_event_callback_enabled(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data,
-    BOOLEAN                      enabled );
+    VIO_BOOL                      enabled );
 
 public  void  add_event_callback_function(
     event_callback_list_struct   *callback_list,
@@ -93,8 +93,8 @@ public  void  remove_event_callback_function(
     event_function_type          callback_function,
     void                         *callback_data );
 
-public  BOOLEAN  execute_event_callback_functions(
-    BOOLEAN                      shift_state,
+public  VIO_BOOL  execute_event_callback_functions(
+    VIO_BOOL                      shift_state,
     event_callback_list_struct   *callback_list,
     int                          mouse_x,
     int                          mouse_y,
@@ -138,7 +138,7 @@ public  void  set_event_viewport_callback_enabled(
     Event_types             event_type,
     event_function_type     callback_function,
     void                    *callback_data,
-    BOOLEAN                 enabled );
+    VIO_BOOL                 enabled );
 
 public  void  set_event_viewport_callback_viewport(
     event_viewports_struct  *event_viewports,
@@ -171,26 +171,26 @@ public  void  remove_event_viewport_callback(
     void                    *callback_data );
 
 public  void  execute_event_viewport_events(
-    BOOLEAN                 shift_state,
+    VIO_BOOL                 shift_state,
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,
     Event_types             event_type,
     int                     key_pressed );
 
-public  BOOLEAN  find_viewport_containing_mouse(
+public  VIO_BOOL  find_viewport_containing_mouse(
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,
     Viewport_types          *viewport_index );
 
-public  BOOLEAN  event_is_allowable(
+public  VIO_BOOL  event_is_allowable(
     Event_types     event_type );
 
 public  void  set_interaction_in_progress(
-    BOOLEAN  state );
+    VIO_BOOL  state );
 
-public  BOOLEAN  mouse_must_be_in_window(
+public  VIO_BOOL  mouse_must_be_in_window(
     Event_types     event_type );
 
 public  void  add_global_event_callback(
@@ -204,8 +204,8 @@ public  void  remove_global_event_callback(
     event_function_type       callback,
     void                      *callback_data );
 
-public  BOOLEAN  execute_global_event_callbacks(
-    BOOLEAN                 shift_state,
+public  VIO_BOOL  execute_global_event_callbacks(
+    VIO_BOOL                 shift_state,
     Event_types             event_type,
     int                     key_pressed );
 
@@ -224,7 +224,7 @@ public  Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
     STRING     filename,
-    BOOLEAN    this_is_resampled_volume );
+    VIO_BOOL    this_is_resampled_volume );
 
 public  void  cancel_loading(
     load_struct    *data );
@@ -254,7 +254,7 @@ public  Colour  get_ui_rgb_colour(
     UI_colours  colour_name );
 
 public  Colour  get_ui_colour(
-    BOOLEAN        colour_map_state,
+    VIO_BOOL        colour_map_state,
     UI_colours     colour_name );
 
 public  void  set_ui_colour(
@@ -270,7 +270,7 @@ public  void  initialize_layout( UI_struct  *ui_info );
 
 public  void  resize_layout( UI_struct  *ui_info );
 
-public  BOOLEAN  is_slice_viewport(
+public  VIO_BOOL  is_slice_viewport(
     Viewport_types   viewport );
 
 public  void  ui_get_volume_view_index(
@@ -291,7 +291,7 @@ public  void  popup_quit_confirm(
 
 public  void  do_resampling(
     UI_struct           *ui,
-    General_transform   *resampling_transform,
+    VIO_General_transform   *resampling_transform,
     STRING              resampled_filename );
 
 public  void  update_position_counters(
@@ -325,9 +325,9 @@ public  int  get_viewport_volume_index(
 
 public  void  set_merged_activity(
     UI_struct  *ui_info,
-    BOOLEAN    activity );
+    VIO_BOOL    activity );
 
-public  BOOLEAN   get_voxel_under_mouse(
+public  VIO_BOOL   get_voxel_under_mouse(
     UI_struct        *ui_info,
     Viewport_types   event_viewport_index,
     int              *volume,
@@ -354,13 +354,13 @@ public  void  set_colour_bar_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  set_over_under_colour_activity(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  set_over_under_colour(
     UI_struct         *ui_info,
@@ -402,23 +402,23 @@ public  void  position_main_widgets(
 
 public  void  set_transform_buttons_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  set_quit_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  set_resample_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  set_delete_tags_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  set_transform_type_button_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  update_avg_rms_error(
     UI_struct         *ui_info );
@@ -432,7 +432,7 @@ public  void  add_merged_widgets(
 
 public  void  set_merged_widgets_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  widget_struct  *get_merged_readout_widget(
     UI_struct     *ui_info,
@@ -462,7 +462,7 @@ public  void  set_voxel_position_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  set_volume_voxel_text(
     UI_struct         *ui_info,
@@ -536,7 +536,7 @@ public  void  add_volume_widgets(
 public  void  set_load_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    BOOLEAN           state );
+    VIO_BOOL           state );
 
 public  void  set_load_filename(
     UI_struct         *ui_info,
@@ -546,14 +546,14 @@ public  void  set_load_filename(
 public  void  set_volume_widgets_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    BOOLEAN           activity,
-    BOOLEAN           is_rgb_volume );
+    VIO_BOOL           activity,
+    VIO_BOOL           is_rgb_volume );
 
 public  int  get_colour_bar_start_index( void );
 
 public  void  set_resampled_label_activity(
     UI_struct         *ui_info,
-    BOOLEAN           state );
+    VIO_BOOL           state );
 
 public  widget_struct  *get_volume_readout_widget(
     UI_struct     *ui_info,
@@ -562,7 +562,7 @@ public  widget_struct  *get_volume_readout_widget(
 public  void  set_filter_popup_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    BOOLEAN           activity );
+    VIO_BOOL           activity );
 
 public  void  define_radio_buttons(
     int            n_widgets,
@@ -588,7 +588,7 @@ public  void  position_button(
 
 public  void  set_toggle_button_state(
     widget_struct    *widget,
-    BOOLEAN          state );
+    VIO_BOOL          state );
 
 public  void  set_button_text(
     widget_struct    *widget,
@@ -605,8 +605,8 @@ public  widget_struct *create_button(
     int                        x_size,
     int                        y_size,
     STRING                     label,
-    BOOLEAN                    initial_activity,
-    BOOLEAN                    use_ui_colours,
+    VIO_BOOL                    initial_activity,
+    VIO_BOOL                    use_ui_colours,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,
@@ -625,9 +625,9 @@ public  widget_struct  *create_toggle_button(
     int                        y_size,
     STRING                     off_text,
     STRING                     on_text,
-    BOOLEAN                    initial_state,
-    BOOLEAN                    initial_activity,
-    BOOLEAN                    use_ui_colours,
+    VIO_BOOL                    initial_state,
+    VIO_BOOL                    initial_activity,
+    VIO_BOOL                    use_ui_colours,
     Colour                     active_colour,
     Colour                     inactive_colour,
     Colour                     text_colour,
@@ -676,7 +676,7 @@ public  widget_struct  *create_slider(
     Real                       min_value,
     Real                       max_value,
     STRING                     format_string,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     inactive_colour,
     Colour                     peg_colour,
@@ -695,7 +695,7 @@ public  widget_struct  *create_colour_bar_slider(
     Real                       min_value,
     Real                       max_value,
     STRING                     format_string,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     inactive_colour,
     Colour                     peg_colour,
@@ -735,9 +735,9 @@ public  widget_struct  *create_text_entry(
     int                        y,
     int                        x_size,
     int                        y_size,
-    BOOLEAN                    clear_text_when_selected,
+    VIO_BOOL                    clear_text_when_selected,
     STRING                     initial_text,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,
@@ -758,7 +758,7 @@ public  widget_struct  *create_label(
     int                        x_size,
     int                        y_size,
     STRING                     initial_text,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,
@@ -794,10 +794,10 @@ public  void  position_text_centred(
     int            x_size,
     int            y_size );
 
-public  BOOLEAN  get_toggle_button_state(
+public  VIO_BOOL  get_toggle_button_state(
     widget_struct  *widget );
 
-public  BOOLEAN  get_text_entry_real_value(
+public  VIO_BOOL  get_text_entry_real_value(
     widget_struct  *widget,
     Real           *value );
 
@@ -831,8 +831,8 @@ public  widget_struct  *create_widget(
     int                     y,
     int                     x_size,
     int                     y_size,
-    BOOLEAN                 initial_activity,
-    BOOLEAN                 use_ui_colours,
+    VIO_BOOL                 initial_activity,
+    VIO_BOOL                 use_ui_colours,
     graphics_window_struct  *graphics,
     Viewport_types          viewport_index );
 
@@ -855,11 +855,11 @@ public  slider_struct  *get_widget_slider(
 
 public  void  set_widget_activity(
     widget_struct  *widget,
-    BOOLEAN        activity );
+    VIO_BOOL        activity );
 
 public  void  set_widget_selected(
     widget_struct  *widget,
-    BOOLEAN        selected );
+    VIO_BOOL        selected );
 
 public  void  update_widget_colours(
     widget_struct  *widget );
@@ -876,7 +876,7 @@ public  void  record_graphics_window(
 public  void  unrecord_graphics_window(
     graphics_window_struct   *graphics_window );
 
-public  BOOLEAN   lookup_event_viewports(
+public  VIO_BOOL   lookup_event_viewports(
     window_struct           *window,
     event_viewports_struct  **event_viewports );
 
@@ -900,7 +900,7 @@ public  void   create_popup_window(
 public  void  delete_popup_window(
     popup_struct   *popup );
 
-public  BOOLEAN  make_window_up_to_date(
+public  VIO_BOOL  make_window_up_to_date(
     window_struct    *window,
     graphics_struct  *graphics,
     int              current_buffer );

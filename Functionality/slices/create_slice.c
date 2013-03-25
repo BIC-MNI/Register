@@ -296,7 +296,7 @@ public  void  create_merged_pixels(
     delete_pixels( &pixels2 );
 }
 
-public  BOOLEAN   convert_pixel_to_voxel(
+public  VIO_BOOL   convert_pixel_to_voxel(
     main_struct     *main,
     int             volume_index,
     int             view_index,
@@ -304,7 +304,7 @@ public  BOOLEAN   convert_pixel_to_voxel(
     int             y_pixel,
     Real            voxel_position[N_DIMENSIONS] )
 {
-    BOOLEAN        in_volume;
+    VIO_BOOL        in_volume;
     Real           x_translation, y_translation, x_scale, y_scale;
     Volume         volume;
     Real           origin[MAX_DIMENSIONS];

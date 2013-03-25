@@ -77,7 +77,7 @@ public  void  composite_merged_pixels(
     pixels_struct        *pixels2,
     pixels_struct        *result );
 
-public  BOOLEAN  can_switch_colour_modes(
+public  VIO_BOOL  can_switch_colour_modes(
     main_struct          *main );
 
 public  object_struct  *create_cursor(
@@ -106,12 +106,12 @@ public  void  update_volume_cursors(
     main_struct   *main,
     int           volume_index );
 
-public  BOOLEAN  get_cursor_visibility(
+public  VIO_BOOL  get_cursor_visibility(
     main_struct  *main );
 
 public  void  set_cursor_visibility(
     main_struct  *main,
-    BOOLEAN      state );
+    VIO_BOOL      state );
 
 public  void  create_slice_pixels(
     main_struct   *main,
@@ -122,7 +122,7 @@ public  void  create_merged_pixels(
     main_struct   *main,
     int           view );
 
-public  BOOLEAN   convert_pixel_to_voxel(
+public  VIO_BOOL   convert_pixel_to_voxel(
     main_struct     *main,
     int             volume_index,
     int             view_index,
@@ -178,11 +178,11 @@ public  void  save_image(
     int           volume_index,
     int           view_index );
 
-public  BOOLEAN  is_volume_active(
+public  VIO_BOOL  is_volume_active(
     main_struct    *main,
     int            volume_index );
 
-public  BOOLEAN  is_resampled_volume_loaded(
+public  VIO_BOOL  is_resampled_volume_loaded(
     main_struct    *main );
 
 public  STRING  get_volume_filename(
@@ -199,7 +199,7 @@ public  void   set_register_resampled_volume(
     int                    volume_index,
     STRING                 filename,
     STRING                 original_filename,
-    General_transform      *resampling_transform );
+    VIO_General_transform      *resampling_transform );
 
 public  void  delete_register_volume(
     main_struct    *main,
@@ -207,9 +207,9 @@ public  void  delete_register_volume(
 
 public  void  set_merged_volume_activity(
     main_struct    *main,
-    BOOLEAN        activity );
+    VIO_BOOL        activity );
 
-public  BOOLEAN  get_merged_volume_activity(
+public  VIO_BOOL  get_merged_volume_activity(
     main_struct    *main );
 
 public  Status  start_loading_volume(
@@ -217,7 +217,7 @@ public  Status  start_loading_volume(
     int            volume_index,
     STRING         filename );
 
-public  BOOLEAN  load_more_of_volume(
+public  VIO_BOOL  load_more_of_volume(
     main_struct    *main,
     int            volume_index,
     Real           max_time,
@@ -227,7 +227,7 @@ public  void  cancel_loading_volume(
     main_struct    *main,
     int            volume_index );
 
-public  BOOLEAN  is_volume_rgb(
+public  VIO_BOOL  is_volume_rgb(
     main_struct    *main,
     int            volume_index );
 
@@ -238,8 +238,8 @@ public  void  get_slice_axes(
 
 public  void  get_slice_axes_flip(
     int       view_index,
-    BOOLEAN   *x_axis_flip,
-    BOOLEAN   *y_axis_flip );
+    VIO_BOOL   *x_axis_flip,
+    VIO_BOOL   *y_axis_flip );
 
 public  int  get_slice_axis(
     int   view_index );
@@ -433,9 +433,9 @@ public  Real  get_slice_filter_width(
 
 public  void  set_interpolation_mode(
     main_struct   *main,
-    BOOLEAN       smooth_flag );
+    VIO_BOOL       smooth_flag );
 
-public  BOOLEAN  get_interpolation_mode(
+public  VIO_BOOL  get_interpolation_mode(
     main_struct   *main );
 
 public  void  set_recreate_3_slices_flags(
@@ -511,12 +511,12 @@ public  Status   save_transform(
 public  void  initialize_tag_points(
     main_struct      *main );
 
-public  BOOLEAN  get_tags_visibility(
+public  VIO_BOOL  get_tags_visibility(
     main_struct      *main );
 
 public  void  set_tags_visibility(
     main_struct      *main,
-    BOOLEAN          visibility );
+    VIO_BOOL          visibility );
 
 public  void  delete_tag_points(
     main_struct      *main );
@@ -531,7 +531,7 @@ public  void  delete_tag_point(
 public  int  get_n_tag_points(
     main_struct      *main );
 
-public  BOOLEAN  get_tag_point_position(
+public  VIO_BOOL  get_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
@@ -552,11 +552,11 @@ public  void  set_tag_point_name(
     int              ind,
     STRING           name );
 
-public  BOOLEAN  get_tag_point_avg_rms_error(
+public  VIO_BOOL  get_tag_point_avg_rms_error(
     main_struct      *main,
     Real             *error );
 
-public  BOOLEAN  get_tag_point_rms_error(
+public  VIO_BOOL  get_tag_point_rms_error(
     main_struct      *main,
     int              ind,
     Real             *error );
@@ -569,17 +569,17 @@ public  void  set_tag_point_rms_error(
 public  void  set_tag_point_activity(
     main_struct      *main,
     int              ind,
-    BOOLEAN          activity );
+    VIO_BOOL          activity );
 
-public  BOOLEAN  get_tag_point_activity(
+public  VIO_BOOL  get_tag_point_activity(
     main_struct      *main,
     int              ind );
 
-public  BOOLEAN  get_tag_point_transform(
+public  VIO_BOOL  get_tag_point_transform(
     main_struct           *main,
-    General_transform     **transform );
+    VIO_General_transform     **transform );
 
-public  BOOLEAN  get_tag_points_saved(
+public  VIO_BOOL  get_tag_points_saved(
     main_struct   *main );
 
 public  Trans_type  get_tag_transform_type(
@@ -592,11 +592,11 @@ public  void  set_tag_transform_type(
 public  void  recompute_tag_transform(
     tag_list_struct   *tags );
 
-public  BOOLEAN  update_slice_display(
+public  VIO_BOOL  update_slice_display(
     main_struct     *main,
     int             current_buffer );
 
-public  BOOLEAN  slices_to_be_updated(
+public  VIO_BOOL  slices_to_be_updated(
     main_struct     *main,
     int             current_buffer );
 

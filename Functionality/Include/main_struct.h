@@ -44,7 +44,7 @@ typedef  struct
     int             used_viewport_y_size;
     Filter_types    filter_type;
     Real            filter_width;
-    BOOLEAN         pixels_are_up_to_date;
+    VIO_BOOL         pixels_are_up_to_date;
     int             n_pixels_alloced;
     pixels_struct   *pixels;
     object_struct   *cursor_lines;
@@ -52,7 +52,7 @@ typedef  struct
 
 typedef struct
 {
-    BOOLEAN                    input_flag;
+    VIO_BOOL                    input_flag;
     Volume                     volume;
     STRING                     filename;
     slice_struct               slices[N_VIEWS];
@@ -73,7 +73,7 @@ trislice_struct;
 
 typedef  struct
 {
-    BOOLEAN                active_flag;
+    VIO_BOOL                active_flag;
     slice_struct           slices[N_VIEWS];
     Real                   position[N_DIMENSIONS];
     int                    start_colour_map;
@@ -88,10 +88,10 @@ merged_struct;
 typedef  struct
 {
     Real                   rms_error;
-    BOOLEAN                position_exists[N_VOLUMES];
+    VIO_BOOL                position_exists[N_VOLUMES];
     Point                  position[N_VOLUMES];
     STRING                 name;
-    BOOLEAN                activity;
+    VIO_BOOL                activity;
     object_struct          *objects[N_VOLUMES_DISPLAYED][N_VIEWS];
 } tag_point_struct;
 
@@ -100,12 +100,12 @@ typedef  struct
     Trans_type             transform_type;
     int                    n_tag_points;
     tag_point_struct       *tag_points;
-    BOOLEAN                transform_out_of_date;
-    General_transform      v2_to_v1_transform;
+    VIO_BOOL                transform_out_of_date;
+    VIO_General_transform      v2_to_v1_transform;
     Real                   avg_rms_error;
-    BOOLEAN                transform_exists;
-    BOOLEAN                saved_flag;
-    BOOLEAN                tags_visible;
+    VIO_BOOL                transform_exists;
+    VIO_BOOL                saved_flag;
+    VIO_BOOL                tags_visible;
 } tag_list_struct;
 
 typedef  struct
@@ -116,11 +116,11 @@ typedef  struct
     trislice_struct          trislice[N_VOLUMES];
     merged_struct            merged;
 
-    BOOLEAN                  cursor_visibility;
+    VIO_BOOL                  cursor_visibility;
 
-    BOOLEAN                  resampled_file_loaded;
+    VIO_BOOL                  resampled_file_loaded;
     STRING                   original_volume_filename;
-    General_transform        resampling_transform;
+    VIO_General_transform        resampling_transform;
 
     int                      start_colour_index;
 

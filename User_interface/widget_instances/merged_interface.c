@@ -64,7 +64,7 @@ private  void  set_merge_sliders_activity(
     UI_struct      *ui,
     Merge_methods  method )
 {
-    BOOLEAN  slider1_on, slider2_on;
+    VIO_BOOL  slider1_on, slider2_on;
 
     switch( method )
     {
@@ -308,7 +308,7 @@ public  void  add_merged_widgets(
 
 public  void  set_merged_widgets_activity(
     UI_struct         *ui_info,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     Merged_widgets       widgets;
     Merge_methods        merge_method;

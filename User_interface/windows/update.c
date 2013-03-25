@@ -18,12 +18,12 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 
 #include  <user_interface.h>
 
-public  BOOLEAN  make_window_up_to_date(
+public  VIO_BOOL  make_window_up_to_date(
     window_struct    *window,
     graphics_struct  *graphics,
     int              current_buffer )
 {
-    BOOLEAN          something_was_drawn;
+    VIO_BOOL          something_was_drawn;
 
     something_was_drawn = redraw_out_of_date_viewports( graphics, window,
                                                         current_buffer );

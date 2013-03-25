@@ -129,9 +129,9 @@ public  int  get_viewport_volume_index(
 
 public  void  set_merged_activity(
     UI_struct  *ui_info,
-    BOOLEAN    activity )
+    VIO_BOOL    activity )
 {
-    BOOLEAN  changed;
+    VIO_BOOL  changed;
 
     changed = ( activity != IF_get_merged_slice_visibility());
 
@@ -152,7 +152,7 @@ public  void  set_merged_activity(
     }
 }
 
-public  BOOLEAN   get_voxel_under_mouse(
+public  VIO_BOOL   get_voxel_under_mouse(
     UI_struct        *ui_info,
     Viewport_types   event_viewport_index,
     int              *volume,

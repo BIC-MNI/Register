@@ -67,7 +67,7 @@ public  void  unrecord_graphics_window(
     }
 }
 
-public  BOOLEAN   lookup_event_viewports(
+public  VIO_BOOL   lookup_event_viewports(
     window_struct           *window,
     event_viewports_struct  **event_viewports )
 {

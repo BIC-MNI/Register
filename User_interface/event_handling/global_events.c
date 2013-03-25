@@ -20,7 +20,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 
 private  event_callback_list_struct    global_event_table[N_EVENT_TYPES];
 
-private  BOOLEAN   interaction_in_progress = FALSE;
+private  VIO_BOOL   interaction_in_progress = FALSE;
 
 private  Event_types  interaction_starting_events[] = {
                             LEFT_MOUSE_DOWN_EVENT,
@@ -28,12 +28,12 @@ private  Event_types  interaction_starting_events[] = {
                             RIGHT_MOUSE_DOWN_EVENT
                          };
 
-private  BOOLEAN      event_can_start_interaction[N_EVENT_TYPES];
+private  VIO_BOOL      event_can_start_interaction[N_EVENT_TYPES];
 
-public  BOOLEAN  event_is_allowable(
+public  VIO_BOOL  event_is_allowable(
     Event_types     event_type )
 {
-    static  BOOLEAN  first = TRUE;
+    static  VIO_BOOL  first = TRUE;
     int              i;
     Event_types      type;
 
@@ -51,7 +51,7 @@ public  BOOLEAN  event_is_allowable(
 }
 
 public  void  set_interaction_in_progress(
-    BOOLEAN  state )
+    VIO_BOOL  state )
 {
     interaction_in_progress = state;
 }
@@ -65,12 +65,12 @@ private  Event_types  in_window_events[] = {
                             RIGHT_MOUSE_DOWN_EVENT
                          };
 
-private  BOOLEAN      event_must_be_in_window[N_EVENT_TYPES];
+private  VIO_BOOL      event_must_be_in_window[N_EVENT_TYPES];
 
-public  BOOLEAN  mouse_must_be_in_window(
+public  VIO_BOOL  mouse_must_be_in_window(
     Event_types     event_type )
 {
-    static  BOOLEAN  first = TRUE;
+    static  VIO_BOOL  first = TRUE;
     int              i;
     Event_types      type;
 
@@ -106,8 +106,8 @@ public  void  remove_global_event_callback(
                                     callback_data );
 }
 
-public  BOOLEAN  execute_global_event_callbacks(
-    BOOLEAN                 shift_state,
+public  VIO_BOOL  execute_global_event_callbacks(
+    VIO_BOOL                 shift_state,
     Event_types             event_type,
     int                     key_pressed )
 {

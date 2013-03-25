@@ -26,7 +26,7 @@ public  Status  resample_the_volume(
     char               command_str[EXTREMELY_LARGE_STRING_SIZE];
     char               tmp_name[L_tmpnam];
     STRING             tmp_transform_filename;
-    General_transform  *transform;
+    VIO_General_transform  *transform;
 
     status = OK;
 

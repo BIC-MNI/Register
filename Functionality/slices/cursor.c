@@ -229,7 +229,7 @@ public  void  update_volume_cursor(
     int           volume_index,
     int           view_index )
 {
-    BOOLEAN        activity;
+    VIO_BOOL        activity;
     Real           x_pixel, y_pixel;
     Real           position[N_DIMENSIONS];
     object_struct  *cursor;
@@ -265,7 +265,7 @@ public  void  update_volume_cursors(
         update_volume_cursor( main, volume_index, view_index );
 }
 
-public  BOOLEAN  get_cursor_visibility(
+public  VIO_BOOL  get_cursor_visibility(
     main_struct  *main )
 {
     return( main->cursor_visibility );
@@ -273,7 +273,7 @@ public  BOOLEAN  get_cursor_visibility(
 
 public  void  set_cursor_visibility(
     main_struct  *main,
-    BOOLEAN      state )
+    VIO_BOOL      state )
 {
     int   volume;
 

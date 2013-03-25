@@ -241,7 +241,7 @@ public  void  resize_layout( UI_struct  *ui_info )
     }
 }
 
-public  BOOLEAN  is_slice_viewport(
+public  VIO_BOOL  is_slice_viewport(
     Viewport_types   viewport )
 {
     return( viewport >= N_VIEWPORT_TYPES );

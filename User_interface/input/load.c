@@ -26,7 +26,7 @@ private  void  volume_has_been_loaded( UI_struct  *, load_struct * );
 
 private  DEFINE_EVENT_FUNCTION( more_input )
 {
-    BOOLEAN       done_loading;
+    VIO_BOOL       done_loading;
     load_struct   *data;
     Real          fraction_done;
 
@@ -68,7 +68,7 @@ public  Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
     STRING     filename,
-    BOOLEAN    this_is_resampled_volume )
+    VIO_BOOL    this_is_resampled_volume )
 {
     Status        status;
     load_struct   *data;

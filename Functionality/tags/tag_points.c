@@ -18,7 +18,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 #include  <register.h>
 
-private  BOOLEAN  check_update_transform_and_rms_error(
+private  VIO_BOOL  check_update_transform_and_rms_error(
     main_struct   *main )
 {
     if( main->tags.transform_out_of_date )
@@ -41,7 +41,7 @@ public  void  initialize_tag_points(
     main->tags.tags_visible = Initial_tags_visible;
 }
 
-public  BOOLEAN  get_tags_visibility(
+public  VIO_BOOL  get_tags_visibility(
     main_struct      *main )
 {
     return( main->tags.tags_visible );
@@ -49,7 +49,7 @@ public  BOOLEAN  get_tags_visibility(
 
 public  void  set_tags_visibility(
     main_struct      *main,
-    BOOLEAN          visibility )
+    VIO_BOOL          visibility )
 {
     main->tags.tags_visible = visibility;
     update_all_tag_objects( main );
@@ -117,13 +117,13 @@ public  int  get_n_tag_points(
     return( main->tags.n_tag_points );
 }
 
-public  BOOLEAN  get_tag_point_position(
+public  VIO_BOOL  get_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
     Real             position[] )
 {
-    BOOLEAN  exists;
+    VIO_BOOL  exists;
     int      dim;
 
     if( ind < main->tags.n_tag_points &&
@@ -193,11 +193,11 @@ public  void  set_tag_point_name(
     }
 }
 
-public  BOOLEAN  get_tag_point_avg_rms_error(
+public  VIO_BOOL  get_tag_point_avg_rms_error(
     main_struct      *main,
     Real             *error )
 {
-    BOOLEAN  exists;
+    VIO_BOOL  exists;
 
     if( check_update_transform_and_rms_error( main ) )
     {
@@ -213,12 +213,12 @@ public  BOOLEAN  get_tag_point_avg_rms_error(
     return( exists );
 }
 
-public  BOOLEAN  get_tag_point_rms_error(
+public  VIO_BOOL  get_tag_point_rms_error(
     main_struct      *main,
     int              ind,
     Real             *error )
 {
-    BOOLEAN  exists;
+    VIO_BOOL  exists;
 
     if( ind < main->tags.n_tag_points &&
         check_update_transform_and_rms_error( main ) )
@@ -247,7 +247,7 @@ public  void  set_tag_point_rms_error(
 public  void  set_tag_point_activity(
     main_struct      *main,
     int              ind,
-    BOOLEAN          activity )
+    VIO_BOOL          activity )
 {
     if( ind < main->tags.n_tag_points )
     {
@@ -259,11 +259,11 @@ public  void  set_tag_point_activity(
     }
 }
 
-public  BOOLEAN  get_tag_point_activity(
+public  VIO_BOOL  get_tag_point_activity(
     main_struct      *main,
     int              ind )
 {
-    BOOLEAN  activity;
+    VIO_BOOL  activity;
 
     if( ind < main->tags.n_tag_points )
         activity = main->tags.tag_points[ind].activity;
@@ -273,29 +273,29 @@ public  BOOLEAN  get_tag_point_activity(
     return( activity );
 }
 
-public  BOOLEAN  get_tag_point_transform(
+public  VIO_BOOL  get_tag_point_transform(
     main_struct           *main,
-    General_transform     **transform )
+    VIO_General_transform     **transform )
 {
-    BOOLEAN  exists;
+    VIO_BOOL  exists;
 
     if( check_update_transform_and_rms_error( main ) )
     {
-        if( transform != (General_transform **) NULL )
+        if( transform != (VIO_General_transform **) NULL )
             *transform = &main->tags.v2_to_v1_transform;
         exists = TRUE;
     }
     else
     {
-        if( transform != (General_transform **) NULL )
-            *transform = (General_transform *) NULL;
+        if( transform != (VIO_General_transform **) NULL )
+            *transform = (VIO_General_transform *) NULL;
         exists = FALSE;
     }
 
     return( exists );
 }
 
-public  BOOLEAN  get_tag_points_saved(
+public  VIO_BOOL  get_tag_points_saved(
     main_struct   *main )
 {
     return( main->tags.saved_flag );

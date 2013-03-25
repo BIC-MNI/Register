@@ -22,7 +22,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 #define  CONTROL_E    5
 #define  CONTROL_U    21
 
-private  BOOLEAN  fit_text_within_widget(
+private  VIO_BOOL  fit_text_within_widget(
     STRING       string,
     Real         x_size,
     int          left_index,
@@ -353,7 +353,7 @@ public  void  restore_text_entry_string(
 public  void  update_text_entry_colours(
     widget_struct  *widget )
 {
-    BOOLEAN            colour_map_state;
+    VIO_BOOL            colour_map_state;
     polygons_struct    *cursor_polygons;
     text_entry_struct  *text_entry;
     Colour             rectangle_colour, text_colour;
@@ -480,10 +480,10 @@ private  widget_struct  *create_a_text_entry(
     int                        y,
     int                        x_size,
     int                        y_size,
-    BOOLEAN                    label_only_flag,
-    BOOLEAN                    clear_text_when_selected,
+    VIO_BOOL                    label_only_flag,
+    VIO_BOOL                    clear_text_when_selected,
     STRING                     initial_text,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,
@@ -553,9 +553,9 @@ public  widget_struct  *create_text_entry(
     int                        y,
     int                        x_size,
     int                        y_size,
-    BOOLEAN                    clear_text_when_selected,
+    VIO_BOOL                    clear_text_when_selected,
     STRING                     initial_text,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,
@@ -586,7 +586,7 @@ public  widget_struct  *create_label(
     int                        x_size,
     int                        y_size,
     STRING                     initial_text,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,

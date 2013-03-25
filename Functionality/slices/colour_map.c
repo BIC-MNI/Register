@@ -47,7 +47,7 @@ private  Colour  merge_colours(
 
 private  Colour  get_merged_colour(
     Merge_methods  method,
-    BOOLEAN        use_under_over_colour_with_weights,
+    VIO_BOOL        use_under_over_colour_with_weights,
     Colour         under_colour,
     Colour         over_colour,
     Range_flags    range_flag1,
@@ -605,7 +605,7 @@ public  void  composite_merged_pixels(
     }
 }
 
-public  BOOLEAN  can_switch_colour_modes(
+public  VIO_BOOL  can_switch_colour_modes(
     main_struct          *main )
 {
     int    v;

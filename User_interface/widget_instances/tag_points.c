@@ -637,7 +637,7 @@ private  void  update_tag_position(
     int               volume_index,
     int               tag )
 {
-    BOOLEAN        exists;
+    VIO_BOOL        exists;
     int            i;
     Real           position[N_DIMENSIONS];
     widget_struct  *widget;
@@ -670,7 +670,7 @@ private  void  update_tag_name(
 {
     STRING         name;
     int            tag_index;
-    BOOLEAN        exists;
+    VIO_BOOL        exists;
     widget_struct  *widget;
 
     tag_index = get_tag_index(ui_info,tag);
@@ -710,8 +710,8 @@ private  void  update_tag_name(
 
 private  void  set_widget_activity_and_selected(
     widget_struct  *widget,
-    BOOLEAN        activity,
-    BOOLEAN        selected )
+    VIO_BOOL        activity,
+    VIO_BOOL        selected )
 {
     set_widget_activity( widget, activity );
     set_widget_selected( widget, selected );
@@ -725,7 +725,7 @@ public  void  update_tag_widgets(
     Rms_widgets      rms_widget_index;
     Position_widgets pos_widget_index;
     Tag_name_widgets tag_widget_index;
-    BOOLEAN          exists, selected;
+    VIO_BOOL          exists, selected;
 
     exists = (ui_info->tag_points.first_tag_displayed + tag <=
               IF_get_n_tag_points());

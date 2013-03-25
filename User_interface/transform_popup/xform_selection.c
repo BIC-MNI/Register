@@ -61,7 +61,7 @@ public  void  popup_transform_dialog(
     int                          i, x, y;
     popup_struct                 *popup;
     STRING                       window_name = "Transform Type Selection";
-    BOOLEAN                      activity;
+    VIO_BOOL                      activity;
     Trans_type                   transform_type;
     static  struct
             {

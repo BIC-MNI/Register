@@ -37,7 +37,7 @@ private  void  deselect_other_radio_buttons(
     }
 }
 
-private  BOOLEAN  is_radio_button(
+private  VIO_BOOL  is_radio_button(
     button_struct  *button )
 {
     return( button->next_radio_button != (widget_struct *) NULL );
@@ -142,7 +142,7 @@ public  void  update_button_activity(
 public  void  update_button_colours(
     widget_struct   *widget )
 {
-    BOOLEAN        colour_map_state;
+    VIO_BOOL        colour_map_state;
     Colour         rectangle_colour;
     button_struct  *button;
 
@@ -230,7 +230,7 @@ public  void  position_button(
 
 public  void  set_toggle_button_state(
     widget_struct    *widget,
-    BOOLEAN          state )
+    VIO_BOOL          state )
 {
     button_struct    *button;
 
@@ -316,12 +316,12 @@ private  widget_struct  *create_a_button(
     int                        y,
     int                        x_size,
     int                        y_size,
-    BOOLEAN                    toggle_flag,
-    BOOLEAN                    initial_state,
+    VIO_BOOL                    toggle_flag,
+    VIO_BOOL                    initial_state,
     STRING                     text1,
     STRING                     text2,
-    BOOLEAN                    initial_activity,
-    BOOLEAN                    use_ui_colours,
+    VIO_BOOL                    initial_activity,
+    VIO_BOOL                    use_ui_colours,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,
@@ -390,8 +390,8 @@ public  widget_struct *create_button(
     int                        x_size,
     int                        y_size,
     STRING                     label,
-    BOOLEAN                    initial_activity,
-    BOOLEAN                    use_ui_colours,
+    VIO_BOOL                    initial_activity,
+    VIO_BOOL                    use_ui_colours,
     Colour                     active_colour,
     Colour                     selected_colour,
     Colour                     inactive_colour,
@@ -419,9 +419,9 @@ public  widget_struct  *create_toggle_button(
     int                        y_size,
     STRING                     off_text,
     STRING                     on_text,
-    BOOLEAN                    initial_state,
-    BOOLEAN                    initial_activity,
-    BOOLEAN                    use_ui_colours,
+    VIO_BOOL                    initial_state,
+    VIO_BOOL                    initial_activity,
+    VIO_BOOL                    use_ui_colours,
     Colour                     active_colour,
     Colour                     inactive_colour,
     Colour                     text_colour,

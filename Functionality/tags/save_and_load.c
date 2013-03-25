@@ -19,7 +19,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 #include  <register.h>
 
 private  void   create_tags_array(
-    BOOLEAN            valid_tags[],
+    VIO_BOOL            valid_tags[],
     int                n_tag_points,
     tag_point_struct   tag_points[],
     int                which_volume,
@@ -91,7 +91,7 @@ public  Status   save_tag_points(
     Real             **tags_volume1, **tags_volume2, ***ptr;
     STRING           *labels;
     tag_list_struct  *tags;
-    BOOLEAN          *tag_is_valid;
+    VIO_BOOL          *tag_is_valid;
     STRING           comments;
 
     tags = &main->tags;
@@ -269,7 +269,7 @@ public  Status   save_transform(
     STRING        filename )
 {
     Status                   status;
-    General_transform        *transform;
+    VIO_General_transform        *transform;
     STRING                   comments;
 
     status = OK;

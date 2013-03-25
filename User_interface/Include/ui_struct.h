@@ -35,7 +35,7 @@ typedef  struct
 {
     graphics_window_struct   graphics_window;
 
-    BOOLEAN                  volumes_synced;
+    VIO_BOOL                  volumes_synced;
 
     widgets_struct           widget_list[N_UI_viewports];
     int                      position_text_start_index[N_VOLUMES_DISPLAYED];
@@ -55,7 +55,7 @@ typedef  struct
     int                      prev_y_mouse;
     Real                     slice_position_start;
 
-    General_transform        resampling_transform;
+    VIO_General_transform        resampling_transform;
     STRING                   original_filename_volume_2;
     STRING                   resampled_filename;
 
@@ -73,7 +73,7 @@ popup_struct;
 
 typedef  struct
 {
-    BOOLEAN                   this_is_resampled_volume;
+    VIO_BOOL                   this_is_resampled_volume;
     STRING                    filename;
     int                       volume_index;
     popup_struct              popup;

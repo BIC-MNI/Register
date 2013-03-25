@@ -18,7 +18,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 
 #include  <user_interface.h>
 
-private  BOOLEAN   quit_flag = FALSE;
+private  VIO_BOOL   quit_flag = FALSE;
 
 public  void  set_quit_program_flag( void )
 {

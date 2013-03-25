@@ -65,7 +65,7 @@ public  void  set_event_callback_enabled(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data,
-    BOOLEAN                      enabled )
+    VIO_BOOL                      enabled )
 {
     int    i;
 
@@ -142,8 +142,8 @@ public  void  remove_event_callback_function(
     }
 }
 
-private  BOOLEAN  is_correct_shift_modifier(
-    BOOLEAN           shift_state,
+private  VIO_BOOL  is_correct_shift_modifier(
+    VIO_BOOL           shift_state,
     Event_modifiers   modifier )
 {
     switch( modifier )
@@ -157,8 +157,8 @@ private  BOOLEAN  is_correct_shift_modifier(
 
 #define  STATIC_SIZE  20
 
-public  BOOLEAN  execute_event_callback_functions(
-    BOOLEAN                      shift_state,
+public  VIO_BOOL  execute_event_callback_functions(
+    VIO_BOOL                      shift_state,
     event_callback_list_struct   *callback_list,
     int                          mouse_x,
     int                          mouse_y,

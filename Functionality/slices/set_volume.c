@@ -19,7 +19,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 #include  <register.h>
 
-public  BOOLEAN  is_volume_active(
+public  VIO_BOOL  is_volume_active(
     main_struct    *main,
     int            volume_index )
 {
@@ -29,7 +29,7 @@ public  BOOLEAN  is_volume_active(
         return( main->trislice[volume_index].input_flag );
 }
 
-public  BOOLEAN  is_resampled_volume_loaded(
+public  VIO_BOOL  is_resampled_volume_loaded(
     main_struct    *main )
 {
     return( main->resampled_file_loaded );
@@ -118,7 +118,7 @@ public  void   set_register_resampled_volume(
     int                    volume_index,
     STRING                 filename,
     STRING                 original_filename,
-    General_transform      *resampling_transform )
+    VIO_General_transform      *resampling_transform )
 {
     record_register_volume( main, RESAMPLED_VOLUME_INDEX,
                             main->trislice[volume_index].volume_being_input,
@@ -151,7 +151,7 @@ public  void  delete_register_volume(
 
 private  void  set_merged_volume_visibility(
     main_struct    *main,
-    BOOLEAN        visible )
+    VIO_BOOL        visible )
 {
     int   view;
 
@@ -165,7 +165,7 @@ private  void  set_merged_volume_visibility(
 
 public  void  set_merged_volume_activity(
     main_struct    *main,
-    BOOLEAN        activity )
+    VIO_BOOL        activity )
 {
     int     view, axis, sizes[N_DIMENSIONS];
     Real    position[N_DIMENSIONS];
@@ -195,7 +195,7 @@ public  void  set_merged_volume_activity(
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
-public  BOOLEAN  get_merged_volume_activity(
+public  VIO_BOOL  get_merged_volume_activity(
     main_struct    *main )
 {
     return( main->merged.active_flag );
@@ -242,13 +242,13 @@ public  Status  start_loading_volume(
     return( status );
 }
 
-public  BOOLEAN  load_more_of_volume(
+public  VIO_BOOL  load_more_of_volume(
     main_struct    *main,
     int            volume_index,
     Real           max_time,
     Real           *fraction_done )
 {
-    BOOLEAN       done_loading;
+    VIO_BOOL       done_loading;
     Real          end_time;
 
     end_time = current_realtime_seconds() + max_time;
@@ -278,7 +278,7 @@ public  void  cancel_loading_volume(
     delete_volume( main->trislice[volume_index].volume_being_input );
 }
 
-public  BOOLEAN  is_volume_rgb(
+public  VIO_BOOL  is_volume_rgb(
     main_struct    *main,
     int            volume_index )
 {

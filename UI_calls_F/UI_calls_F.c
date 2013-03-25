@@ -44,7 +44,7 @@ public  Status  IF_start_loading_volume(
     return( start_loading_volume( get_main_struct(), volume_index, filename ) );
 }
 
-public  BOOLEAN  IF_load_more_of_volume(
+public  VIO_BOOL  IF_load_more_of_volume(
     int     volume_index,
     Real    max_time,
     Real    *fraction_done )
@@ -59,19 +59,19 @@ public  void  IF_cancel_loading_volume(
     cancel_loading_volume( get_main_struct(), volume_index );
 }
 
-public  BOOLEAN  IF_volume_is_loaded(
+public  VIO_BOOL  IF_volume_is_loaded(
     int            volume_index )
 {
     return( is_volume_active( get_main_struct(), volume_index ) );
 }
 
-public  BOOLEAN  IF_is_an_rgb_volume(
+public  VIO_BOOL  IF_is_an_rgb_volume(
     int            volume_index )
 {
     return( is_volume_rgb( get_main_struct(), volume_index ) );
 }
 
-public  BOOLEAN  IF_is_resampled_volume_loaded( void )
+public  VIO_BOOL  IF_is_resampled_volume_loaded( void )
 {
     return( is_resampled_volume_loaded( get_main_struct() ) );
 }
@@ -95,13 +95,13 @@ public  void  IF_save_image(
     save_image( get_main_struct(), volume, view );
 }
 
-public  BOOLEAN  IF_get_merged_slice_visibility( void )
+public  VIO_BOOL  IF_get_merged_slice_visibility( void )
 {
     return( get_merged_volume_activity(get_main_struct()) );
 }
 
 public  void  IF_set_merged_slice_visibility(
-    BOOLEAN  visible )
+    VIO_BOOL  visible )
 {
     set_merged_volume_activity( get_main_struct(), visible );
 }
@@ -117,7 +117,7 @@ public  void  IF_set_resampled_volume(
     int                    volume_index,
     STRING                 filename,
     STRING                 original_filename,
-    General_transform      *resampling_transform )
+    VIO_General_transform      *resampling_transform )
 {
     set_register_resampled_volume( get_main_struct(), volume_index, filename,
                                    original_filename, resampling_transform );
@@ -148,12 +148,12 @@ public  void  IF_delete_volume(
     delete_register_volume( get_main_struct(), volume_index );
 }
 
-public  BOOLEAN  IF_get_interpolation_flag( void )
+public  VIO_BOOL  IF_get_interpolation_flag( void )
 {
     return( get_interpolation_mode( get_main_struct() ) );
 }
 
-public  void  IF_set_interpolation_flag( BOOLEAN  flag )
+public  void  IF_set_interpolation_flag( VIO_BOOL  flag )
 {
     set_interpolation_mode( get_main_struct(), flag );
 }
@@ -181,13 +181,13 @@ public  void  IF_set_update_slice_viewport_flag(
                                     bitplane );
 }
 
-public  BOOLEAN  IF_slices_to_be_updated(
+public  VIO_BOOL  IF_slices_to_be_updated(
     int   current_buffer )
 {
     return( slices_to_be_updated( get_main_struct(), current_buffer ) );
 }
 
-public  BOOLEAN  IF_redraw_slices(
+public  VIO_BOOL  IF_redraw_slices(
     int             current_buffer )
 {
     return( update_slice_display( get_main_struct(), current_buffer ) );
@@ -285,7 +285,7 @@ public  void  IF_set_slice_viewport(
                         x_min, x_max, y_min, y_max );
 }
 
-public  BOOLEAN  IF_convert_pixel_to_voxel(
+public  VIO_BOOL  IF_convert_pixel_to_voxel(
     int    volume,
     int    view,
     int    x_pixel,
@@ -296,7 +296,7 @@ public  BOOLEAN  IF_convert_pixel_to_voxel(
                                     x_pixel, y_pixel, voxel_position ) );
 }
 
-public  BOOLEAN  IF_can_switch_colour_modes( void )
+public  VIO_BOOL  IF_can_switch_colour_modes( void )
 {
     return( can_switch_colour_modes( get_main_struct() ) );
 }
@@ -411,12 +411,12 @@ public  Real  IF_get_slice_filter_width(
 
 /* ----------------------- tag points -------------------------------- */
 
-public  BOOLEAN  IF_get_tags_visibility( void )
+public  VIO_BOOL  IF_get_tags_visibility( void )
 {
     return( get_tags_visibility(get_main_struct()) );
 }
 
-public  void  IF_set_tags_visibility( BOOLEAN  visibility )
+public  void  IF_set_tags_visibility( VIO_BOOL  visibility )
 {
     set_tags_visibility( get_main_struct(), visibility );
 }
@@ -437,7 +437,7 @@ public  int  IF_get_n_tag_points( void )
     return( get_n_tag_points( get_main_struct() ) );
 }
 
-public  BOOLEAN  IF_get_tag_point_position(
+public  VIO_BOOL  IF_get_tag_point_position(
     int              ind,
     int              volume_index,
     Real             position[] )
@@ -468,20 +468,20 @@ public  void  IF_set_tag_point_name(
     set_tag_point_name( get_main_struct(), ind, name );
 }
 
-public  BOOLEAN  IF_get_tag_point_rms_error(
+public  VIO_BOOL  IF_get_tag_point_rms_error(
     int              ind,
     Real             *rms_error )
 {
     return( get_tag_point_rms_error( get_main_struct(), ind, rms_error ) );
 }
 
-public  BOOLEAN  IF_get_tag_point_avg_rms_error(
+public  VIO_BOOL  IF_get_tag_point_avg_rms_error(
     Real             *avg_rms_error )
 {
     return( get_tag_point_avg_rms_error( get_main_struct(), avg_rms_error ) );
 }
 
-public  BOOLEAN  IF_get_tag_point_activity(
+public  VIO_BOOL  IF_get_tag_point_activity(
     int              ind )
 {
     return( get_tag_point_activity( get_main_struct(), ind ) );
@@ -489,7 +489,7 @@ public  BOOLEAN  IF_get_tag_point_activity(
 
 public  void  IF_set_tag_point_activity(
     int              ind,
-    BOOLEAN          activity )
+    VIO_BOOL          activity )
 {
     set_tag_point_activity( get_main_struct(), ind, activity );
 }
@@ -512,19 +512,19 @@ public  void  IF_save_transform(
     (void) save_transform( get_main_struct(), filename );
 }
 
-public  BOOLEAN  IF_does_transform_exist( void )
+public  VIO_BOOL  IF_does_transform_exist( void )
 {
     return( get_tag_point_transform( get_main_struct(),
-                                     (General_transform **) NULL ) );
+                                     (VIO_General_transform **) NULL ) );
 }
 
-public  BOOLEAN  IF_get_resampling_transform(
-    General_transform  **transform )
+public  VIO_BOOL  IF_get_resampling_transform(
+    VIO_General_transform  **transform )
 {
     return( get_tag_point_transform( get_main_struct(), transform ) );
 }
 
-public  BOOLEAN  IF_tag_points_have_been_saved( void )
+public  VIO_BOOL  IF_tag_points_have_been_saved( void )
 {
     return( get_tag_points_saved( get_main_struct() ) );
 }
@@ -540,12 +540,12 @@ public  void  IF_set_transform_type(
     set_tag_transform_type( get_main_struct(), type );
 }
 
-public  BOOLEAN  IF_get_cursor_visibility( void )
+public  VIO_BOOL  IF_get_cursor_visibility( void )
 {
     return( get_cursor_visibility(get_main_struct()) );
 }
 
-public  void  IF_set_cursor_visibility( BOOLEAN  visibility )
+public  void  IF_set_cursor_visibility( VIO_BOOL  visibility )
 {
     set_cursor_visibility( get_main_struct(), visibility );
 }

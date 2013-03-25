@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
    char *pname, *tagfile, *xfmfile;
    int n_volumes, n_tag_points;
    Real **tags_volume1, **tags_volume2, **temp_tags;
-   General_transform transform;
+   VIO_General_transform transform;
    FILE *fp;
    char *type_string, *inverse_string, comment[512];
 

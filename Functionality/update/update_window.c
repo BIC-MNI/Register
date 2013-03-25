@@ -18,11 +18,11 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 #include  <register.h>
 
-public  BOOLEAN  update_slice_display(
+public  VIO_BOOL  update_slice_display(
     main_struct     *main,
     int             current_buffer )
 {
-    BOOLEAN   drawn;
+    VIO_BOOL   drawn;
     int       volume, view;
 
     for_less( volume, 0, N_VOLUMES )
@@ -71,11 +71,11 @@ public  BOOLEAN  update_slice_display(
     return( drawn );
 }
 
-public  BOOLEAN  slices_to_be_updated(
+public  VIO_BOOL  slices_to_be_updated(
     main_struct     *main,
     int             current_buffer )
 {
-    BOOLEAN   update_required;
+    VIO_BOOL   update_required;
     int       volume, view;
 
     update_required = FALSE;

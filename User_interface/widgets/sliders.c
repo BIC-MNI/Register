@@ -235,8 +235,8 @@ private  DEFINE_EVENT_FUNCTION( select_both_sliders )
 private  void  update_one_slider_colours(
     slider_struct   *slider,
     int             ind,
-    BOOLEAN         use_ui_colours,
-    BOOLEAN         colour_map_state )
+    VIO_BOOL         use_ui_colours,
+    VIO_BOOL         colour_map_state )
 {
     if( use_ui_colours )
     {
@@ -255,7 +255,7 @@ public  void  update_slider_colours(
     widget_struct   *widget )
 {
     Colour         rectangle_colour;
-    BOOLEAN        colour_map_state;
+    VIO_BOOL        colour_map_state;
     slider_struct  *slider;
 
     colour_map_state = G_get_colour_map_state( widget->graphics->window );
@@ -390,7 +390,7 @@ public  void  set_slider_values(
     Real                    low_value,
     Real                    high_value )
 {
-    BOOLEAN          changed[2];
+    VIO_BOOL          changed[2];
     slider_struct    *slider;
 
     changed[0] = FALSE;
@@ -569,14 +569,14 @@ private  widget_struct  *create_a_slider(
     int                        y,
     int                        x_size,
     int                        y_size,
-    BOOLEAN                    colour_bar_flag,
+    VIO_BOOL                    colour_bar_flag,
     Real                       initial_low_value,
     Real                       initial_high_value,
     Real                       min_value,
     Real                       max_value,
-    BOOLEAN                    values_allowed_outside_range,
+    VIO_BOOL                    values_allowed_outside_range,
     STRING                     format_string,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     inactive_colour,
     Colour                     peg_colour,
@@ -689,7 +689,7 @@ public  widget_struct  *create_slider(
     Real                       min_value,
     Real                       max_value,
     STRING                     format_string,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     inactive_colour,
     Colour                     peg_colour,
@@ -717,7 +717,7 @@ public  widget_struct  *create_colour_bar_slider(
     Real                       min_value,
     Real                       max_value,
     STRING                     format_string,
-    BOOLEAN                    initial_activity,
+    VIO_BOOL                    initial_activity,
     Colour                     active_colour,
     Colour                     inactive_colour,
     Colour                     peg_colour,

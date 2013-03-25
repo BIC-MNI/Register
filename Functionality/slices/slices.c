@@ -20,12 +20,12 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 private   int         x_axes[] = { Y, X, X };
 private   int         y_axes[] = { Z, Z, Y };
-private   BOOLEAN     x_axes_flip[] = { FALSE, FALSE, FALSE };
-private   BOOLEAN     y_axes_flip[] = { FALSE, FALSE, FALSE };
+private   VIO_BOOL     x_axes_flip[] = { FALSE, FALSE, FALSE };
+private   VIO_BOOL     y_axes_flip[] = { FALSE, FALSE, FALSE };
 
 private  void  check_axes_assigned( void )
 {
-    private  BOOLEAN  first = TRUE;
+    private  VIO_BOOL  first = TRUE;
 
     if( first )
     {
@@ -58,8 +58,8 @@ public  void  get_slice_axes(
 
 public  void  get_slice_axes_flip(
     int       view_index,
-    BOOLEAN   *x_axis_flip,
-    BOOLEAN   *y_axis_flip )
+    VIO_BOOL   *x_axis_flip,
+    VIO_BOOL   *y_axis_flip )
 {
     check_axes_assigned();
 
@@ -97,7 +97,7 @@ public  void  get_slice_plane(
     Volume   volume;
     int      c, axis, x_index, y_index;
     Real     *slice_position, separations[MAX_DIMENSIONS];
-    BOOLEAN  x_flip, y_flip;
+    VIO_BOOL  x_flip, y_flip;
 
     get_slice_axes( view, &x_index, &y_index );
     axis = get_slice_axis( view );
@@ -197,7 +197,7 @@ public  void  set_volume_voxel_position(
     int            volume_index,
     Real           position[N_DIMENSIONS] )
 {
-    BOOLEAN        changed;
+    VIO_BOOL        changed;
     Volume         volume;
     int            view, axis, sizes[MAX_DIMENSIONS];
     Real           pos;
@@ -302,7 +302,7 @@ public  void  convert_original_world_to_world(
     Real           *y_world,
     Real           *z_world )
 {
-    General_transform  *transform;
+    VIO_General_transform  *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX &&
         get_tag_point_transform( main, &transform ) )
@@ -328,7 +328,7 @@ public  void  convert_world_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
-    General_transform  *transform;
+    VIO_General_transform  *transform;
 
     if( volume_index == RESAMPLED_VOLUME_INDEX &&
         get_tag_point_transform( main, &transform ) )
@@ -744,7 +744,7 @@ public  Real  get_slice_filter_width(
 
 public  void  set_interpolation_mode(
     main_struct   *main,
-    BOOLEAN       smooth_flag )
+    VIO_BOOL       smooth_flag )
 {
     int   volume;
 
@@ -757,7 +757,7 @@ public  void  set_interpolation_mode(
         set_recreate_3_slices_flags( main, volume );
 }
 
-public  BOOLEAN  get_interpolation_mode(
+public  VIO_BOOL  get_interpolation_mode(
     main_struct   *main )
 {
     return( main->degrees_continuity == 0 );

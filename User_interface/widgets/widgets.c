@@ -66,8 +66,8 @@ public  widget_struct  *create_widget(
     int                     y,
     int                     x_size,
     int                     y_size,
-    BOOLEAN                 initial_activity,
-    BOOLEAN                 use_ui_colours,
+    VIO_BOOL                 initial_activity,
+    VIO_BOOL                 use_ui_colours,
     graphics_window_struct  *graphics,
     Viewport_types          viewport_index )
 {
@@ -229,7 +229,7 @@ public  slider_struct  *get_widget_slider(
 
 public  void  set_widget_activity(
     widget_struct  *widget,
-    BOOLEAN        activity )
+    VIO_BOOL        activity )
 {
     widget->active_flag = activity;
 
@@ -241,7 +241,7 @@ public  void  set_widget_activity(
 
 public  void  set_widget_selected(
     widget_struct  *widget,
-    BOOLEAN        selected )
+    VIO_BOOL        selected )
 {
     widget->selected_flag = selected;
 

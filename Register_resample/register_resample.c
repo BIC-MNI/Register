@@ -97,7 +97,7 @@ typedef struct {
 /* Function prototypes */
 void get_file_info(char *filename, FileInfo *file);
 void calc_pet_resample(FileInfo *vol1, FileInfo *vol2, FileInfo *out,
-                       General_transform *the_transform);
+                       VIO_General_transform *the_transform);
 char *dtoa(double dval);
 char *ltoa(long lval);
 
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
    int do_pet_resample;
    char *nargv[100];
    int nargc, iarg;
-   General_transform the_transform;
+   VIO_General_transform the_transform;
 
    /* Check for the arguments */
    pname = argv[0];
@@ -343,7 +343,7 @@ void get_file_info(char *filename, FileInfo *file)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
 void calc_pet_resample(FileInfo *vol1, FileInfo *vol2, FileInfo *out,
-                       General_transform *the_transform)
+                       VIO_General_transform *the_transform)
 {
    int idim, icol, irow, islc;
    Real bottom[WORLD_NDIMS], top[WORLD_NDIMS], coord[WORLD_NDIMS];

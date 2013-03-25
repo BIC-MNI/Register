@@ -191,7 +191,7 @@ public  void  add_volume_widgets(
 public  void  set_load_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    BOOLEAN           state )
+    VIO_BOOL           state )
 {
     Viewport_types   viewport_index;
 
@@ -224,8 +224,8 @@ public  void  set_load_filename(
 public  void  set_volume_widgets_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    BOOLEAN           activity,
-    BOOLEAN           is_rgb_volume )
+    VIO_BOOL           activity,
+    VIO_BOOL           is_rgb_volume )
 {
     Viewport_types       viewport_index;
     Volume_widgets       widget_index;
@@ -269,7 +269,7 @@ public  int  get_colour_bar_start_index( void )
 
 public  void  set_resampled_label_activity(
     UI_struct         *ui_info,
-    BOOLEAN           state )
+    VIO_BOOL           state )
 {
     Viewport_types       viewport_index;
 
@@ -296,7 +296,7 @@ public  widget_struct  *get_volume_readout_widget(
 public  void  set_filter_popup_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     Viewport_types      viewport;
 

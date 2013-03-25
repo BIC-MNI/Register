@@ -73,7 +73,7 @@ public  Colour  get_ui_rgb_colour(
 }
 
 public  Colour  get_ui_colour(
-    BOOLEAN        colour_map_state,
+    VIO_BOOL        colour_map_state,
     UI_colours     colour_name )
 {
     if( colour_map_state )

@@ -40,8 +40,8 @@ typedef  void  (*widget_callback_type) ( struct  widget_struct *, void * );
 
 typedef  struct
 {
-    BOOLEAN                  toggle_flag;
-    BOOLEAN                  state;
+    VIO_BOOL                  toggle_flag;
+    VIO_BOOL                  state;
     STRING                   toggle_text[2];
     Real                     time_to_unpush;
     widget_callback_type     push_callback;
@@ -60,9 +60,9 @@ typedef  struct
 
 typedef  struct
 {
-    BOOLEAN                  label_only_flag;
-    BOOLEAN                  in_edit_mode;
-    BOOLEAN                  clear_text_when_selected;
+    VIO_BOOL                  label_only_flag;
+    VIO_BOOL                  in_edit_mode;
+    VIO_BOOL                  clear_text_when_selected;
     STRING                   string;
     STRING                   saved_string;
     int                      left_index;
@@ -84,9 +84,9 @@ typedef  struct
 
 typedef  struct
 {
-    BOOLEAN                  colour_bar_flag;
+    VIO_BOOL                  colour_bar_flag;
     Real                     min_value, max_value;
-    BOOLEAN                  values_allowed_outside_range;
+    VIO_BOOL                  values_allowed_outside_range;
     Real                     values[2];
     STRING                   format_string;
 
@@ -113,9 +113,9 @@ typedef  struct  widget_struct
     graphics_window_struct   *graphics;
     Viewport_types           viewport_index;
     int                      x, y, x_size, y_size;
-    BOOLEAN                  active_flag;
-    BOOLEAN                  selected_flag;
-    BOOLEAN                  use_ui_colours;
+    VIO_BOOL                  active_flag;
+    VIO_BOOL                  selected_flag;
+    VIO_BOOL                  use_ui_colours;
     union
     {
     button_struct            button;

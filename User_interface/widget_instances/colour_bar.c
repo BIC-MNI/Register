@@ -318,7 +318,7 @@ public  void  set_colour_bar_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     Colour_coding_types  type;
     Colour_bar_widgets   widget_index;
@@ -346,7 +346,7 @@ public  void  set_over_under_colour_activity(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     Viewport_types      viewport;
     Colour_bar_widgets  widget_index;

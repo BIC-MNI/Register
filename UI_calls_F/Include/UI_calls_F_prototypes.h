@@ -15,7 +15,7 @@ public  Status  IF_start_loading_volume(
     int     volume_index,
     STRING  filename );
 
-public  BOOLEAN  IF_load_more_of_volume(
+public  VIO_BOOL  IF_load_more_of_volume(
     int     volume_index,
     Real    max_time,
     Real    *fraction_done );
@@ -23,13 +23,13 @@ public  BOOLEAN  IF_load_more_of_volume(
 public  void  IF_cancel_loading_volume(
     int     volume_index );
 
-public  BOOLEAN  IF_volume_is_loaded(
+public  VIO_BOOL  IF_volume_is_loaded(
     int            volume_index );
 
-public  BOOLEAN  IF_is_an_rgb_volume(
+public  VIO_BOOL  IF_is_an_rgb_volume(
     int            volume_index );
 
-public  BOOLEAN  IF_is_resampled_volume_loaded( void );
+public  VIO_BOOL  IF_is_resampled_volume_loaded( void );
 
 public  Status  IF_do_resampling(
     STRING   resampled_filename );
@@ -41,10 +41,10 @@ public  void  IF_save_image(
     int   volume,
     int   view );
 
-public  BOOLEAN  IF_get_merged_slice_visibility( void );
+public  VIO_BOOL  IF_get_merged_slice_visibility( void );
 
 public  void  IF_set_merged_slice_visibility(
-    BOOLEAN  visible );
+    VIO_BOOL  visible );
 
 public  void  IF_set_volume(
     int     volume_index,
@@ -54,7 +54,7 @@ public  void  IF_set_resampled_volume(
     int                    volume_index,
     STRING                 filename,
     STRING                 original_filename,
-    General_transform      *resampling_transform );
+    VIO_General_transform      *resampling_transform );
 
 public  Real  IF_get_voxel_value(
     int     volume_index,
@@ -70,9 +70,9 @@ public  void  IF_get_volume_value_range(
 public  void  IF_delete_volume(
     int            volume_index );
 
-public  BOOLEAN  IF_get_interpolation_flag( void );
+public  VIO_BOOL  IF_get_interpolation_flag( void );
 
-public  void  IF_set_interpolation_flag( BOOLEAN  flag );
+public  void  IF_set_interpolation_flag( VIO_BOOL  flag );
 
 public  void  IF_set_recreate_slice_flag(
     int    volume,
@@ -87,10 +87,10 @@ public  void  IF_set_update_slice_viewport_flag(
     int             view,
     Bitplane_types  bitplane );
 
-public  BOOLEAN  IF_slices_to_be_updated(
+public  VIO_BOOL  IF_slices_to_be_updated(
     int   current_buffer );
 
-public  BOOLEAN  IF_redraw_slices(
+public  VIO_BOOL  IF_redraw_slices(
     int             current_buffer );
 
 public  void  IF_set_volume_voxel_position(
@@ -139,14 +139,14 @@ public  void  IF_set_slice_viewport(
     int       y_min,
     int       y_max );
 
-public  BOOLEAN  IF_convert_pixel_to_voxel(
+public  VIO_BOOL  IF_convert_pixel_to_voxel(
     int    volume,
     int    view,
     int    x_pixel,
     int    y_pixel,
     Real   voxel_position[] );
 
-public  BOOLEAN  IF_can_switch_colour_modes( void );
+public  VIO_BOOL  IF_can_switch_colour_modes( void );
 
 public  void  IF_colour_mode_has_toggled(
     int  start_index );
@@ -206,9 +206,9 @@ public  Real  IF_get_slice_filter_width(
     int           volume_index,
     int           view_index );
 
-public  BOOLEAN  IF_get_tags_visibility( void );
+public  VIO_BOOL  IF_get_tags_visibility( void );
 
-public  void  IF_set_tags_visibility( BOOLEAN  visibility );
+public  void  IF_set_tags_visibility( VIO_BOOL  visibility );
 
 public  void  IF_create_new_tag_point( void );
 
@@ -217,7 +217,7 @@ public  void  IF_delete_tag_point(
 
 public  int  IF_get_n_tag_points( void );
 
-public  BOOLEAN  IF_get_tag_point_position(
+public  VIO_BOOL  IF_get_tag_point_position(
     int              ind,
     int              volume_index,
     Real             position[] );
@@ -234,19 +234,19 @@ public  void  IF_set_tag_point_name(
     int              ind,
     STRING           name );
 
-public  BOOLEAN  IF_get_tag_point_rms_error(
+public  VIO_BOOL  IF_get_tag_point_rms_error(
     int              ind,
     Real             *rms_error );
 
-public  BOOLEAN  IF_get_tag_point_avg_rms_error(
+public  VIO_BOOL  IF_get_tag_point_avg_rms_error(
     Real             *avg_rms_error );
 
-public  BOOLEAN  IF_get_tag_point_activity(
+public  VIO_BOOL  IF_get_tag_point_activity(
     int              ind );
 
 public  void  IF_set_tag_point_activity(
     int              ind,
-    BOOLEAN          activity );
+    VIO_BOOL          activity );
 
 public  void  IF_save_tags_file(
     STRING   filename );
@@ -257,21 +257,21 @@ public  void  IF_load_tags_file(
 public  void  IF_save_transform(
     STRING   filename );
 
-public  BOOLEAN  IF_does_transform_exist( void );
+public  VIO_BOOL  IF_does_transform_exist( void );
 
-public  BOOLEAN  IF_get_resampling_transform(
-    General_transform  **transform );
+public  VIO_BOOL  IF_get_resampling_transform(
+    VIO_General_transform  **transform );
 
-public  BOOLEAN  IF_tag_points_have_been_saved( void );
+public  VIO_BOOL  IF_tag_points_have_been_saved( void );
 
 public  Trans_type  IF_get_transform_type( void );
 
 public  void  IF_set_transform_type(
     Trans_type  type );
 
-public  BOOLEAN  IF_get_cursor_visibility( void );
+public  VIO_BOOL  IF_get_cursor_visibility( void );
 
-public  void  IF_set_cursor_visibility( BOOLEAN  visibility );
+public  void  IF_set_cursor_visibility( VIO_BOOL  visibility );
 
 public void IF_get_volume_time_position(int volume_index, Real *tpos_ptr);
 

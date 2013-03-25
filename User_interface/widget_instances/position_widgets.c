@@ -281,7 +281,7 @@ public  void  set_voxel_position_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    BOOLEAN           activity )
+    VIO_BOOL           activity )
 {
     Position_widgets       widget_index;
 
