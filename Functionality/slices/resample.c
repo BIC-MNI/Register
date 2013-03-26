@@ -18,14 +18,14 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 #include  <register.h>
 
-public  Status  resample_the_volume(
+public  VIO_Status  resample_the_volume(
     main_struct  *main,
-    STRING       resampled_filename )
+    VIO_STR       resampled_filename )
 {
-    Status             status;
+    VIO_Status             status;
     char               command_str[EXTREMELY_LARGE_STRING_SIZE];
     char               tmp_name[L_tmpnam];
-    STRING             tmp_transform_filename;
+    VIO_STR             tmp_transform_filename;
     VIO_General_transform  *transform;
 
     status = OK;

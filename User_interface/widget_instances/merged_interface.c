@@ -39,7 +39,7 @@ private  void  opacity_callback(
     widget_struct  *widget,
     int            which_volume )
 {
-    Real  value, ignored;
+    VIO_Real  value, ignored;
 
     get_slider_values( widget, &value, &ignored );
 

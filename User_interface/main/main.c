@@ -19,7 +19,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 #include "config.h"
 #include  <user_interface.h>
 
-private  STRING  version = VERSION;
+private  VIO_STR  version = VERSION;
 
 /* Search for "register_UI.globals in  the following
  * three directories, then in the directory containing argv[0],
@@ -39,7 +39,7 @@ private  STRING  version = VERSION;
 
 private  void     initialize_global_colours( void );
 private  void  read_global_files(
-    STRING  executable_name );
+    VIO_STR  executable_name );
 
 private  UI_struct  ui_struct;
 
@@ -51,7 +51,7 @@ public  UI_struct  *get_ui_struct( void )
 private  void  print_usage(
     char   executable[] )
 {
-    static  STRING  usage =
+    static  VIO_STR  usage =
 "Usage: %s  [-help] [-rgb] [-cmap] [-single] [-double] [volume1.mnc] \n\
                                 [volume2.mnc] [tags.tag]\n\
 \n\
@@ -72,10 +72,10 @@ int  main(
     char  *argv[] )
 {
     int              volume, n_volumes;
-    STRING           argument;
-    STRING           volume_filenames[2], tag_filename;
-    STRING           variable_name, variable_value;
-    Status           status;
+    VIO_STR           argument;
+    VIO_STR           volume_filenames[2], tag_filename;
+    VIO_STR           variable_name, variable_value;
+    VIO_Status           status;
 
     initialize_global_colours();
 
@@ -206,10 +206,10 @@ private  void     initialize_global_colours( void )
 }
 
 private  void  read_global_files(
-    STRING  executable_name )
+    VIO_STR  executable_name )
 {
     int      dir, n_directories;
-    STRING   runtime_directory, *directories, globals_filename;
+    VIO_STR   runtime_directory, *directories, globals_filename;
 
     runtime_directory = extract_directory( executable_name );
 
@@ -247,9 +247,9 @@ private  void  read_global_files(
     FREE( directories );
 }
 
-public  Status  set_functional_global_variable(
-    STRING  variable_name,
-    STRING  value_to_set )
+public  VIO_Status  set_functional_global_variable(
+    VIO_STR  variable_name,
+    VIO_STR  value_to_set )
 {
     return( set_global_variable( SIZEOF_STATIC_ARRAY(UI_globals_list),
                                  UI_globals_list, variable_name,

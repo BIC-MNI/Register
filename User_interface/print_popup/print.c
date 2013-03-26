@@ -21,14 +21,14 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 typedef  struct
 {
     popup_struct            popup_window;
-    Real                    expiration_time;
+    VIO_Real                    expiration_time;
 } message_struct;
 
-static  STRING   output = NULL;
+static  VIO_STR   output = NULL;
 static  VIO_BOOL  create_new_window = TRUE;
 
-private  void  output_chars( STRING );
-private  void  create_message_popup( STRING );
+private  void  output_chars( VIO_STR );
+private  void  create_message_popup( VIO_STR );
 private  DEFINE_EVENT_FUNCTION( check_to_expire_popup );
 
 public  void  initialize_print_popup( void )
@@ -62,7 +62,7 @@ private  DEFINE_EVENT_FUNCTION( create_the_window )
 }
 
 private  void  output_chars(
-    STRING   str )
+    VIO_STR   str )
 {
     disable_print_popup();
 
@@ -118,12 +118,12 @@ private  DEFINE_EVENT_FUNCTION( check_to_expire_popup )
 }
 
 private  void  create_message_popup(
-    STRING   string )
+    VIO_STR   string )
 {
     int                     i, n_lines, x, y, x_size, y_size;
-    Real                    max_length, graphics_length;
-    Point                   point;
-    STRING                  ptr;
+    VIO_Real                    max_length, graphics_length;
+    VIO_Point                   point;
+    VIO_STR                  ptr;
     object_struct           *object;
     object_struct           **text_objects;
     widget_struct           *widget;
@@ -167,7 +167,7 @@ private  void  create_message_popup(
 
     x_size = ROUND( max_length + 2.0 * Message_x_offset );
     y_size = ROUND( 2.0 * Message_y_offset +
-                    (Real) n_lines * Message_text_y_offset +
+                    (VIO_Real) n_lines * Message_text_y_offset +
                     Message_ok_button_height );
 
     create_popup_window( &popup->popup_window, "Register Message",
@@ -181,8 +181,8 @@ private  void  create_message_popup(
     {
         text = get_text_ptr( text_objects[i] );
         Point_y( text->origin ) = (Point_coord_type)
-                                  ((Real) y_size - 1.0 - Message_y_offset -
-                                   (Real) i * Message_text_y_offset);
+                                  ((VIO_Real) y_size - 1.0 - Message_y_offset -
+                                   (VIO_Real) i * Message_text_y_offset);
         
         add_object_to_viewport( &popup->popup_window.graphics.graphics, 0,
                                 NORMAL_PLANES, text_objects[i] );

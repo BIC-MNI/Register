@@ -87,8 +87,8 @@ private  DEFINE_WIDGET_CALLBACK( pos_time_callback )
 {
     int    volume_index;
     int    start_widget_index;
-    Real   value;
-    Real   tpos;
+    VIO_Real   value;
+    VIO_Real   tpos;
     UI_struct *ui_info = get_ui_struct();
 
     volume_index = get_viewport_volume_index( widget->viewport_index );
@@ -297,7 +297,7 @@ public  void  set_volume_voxel_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
-    Real              value )
+    VIO_Real              value )
 {
     Viewport_types  viewport_index;
 
@@ -314,7 +314,7 @@ public  void  set_volume_world_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
-    Real              value )
+    VIO_Real              value )
 {
     Viewport_types  viewport_index;
 
@@ -330,7 +330,7 @@ public  void  set_volume_world_text(
 public  void  set_volume_time_text(
     UI_struct         *ui_info,
     int               volume_index,
-    Real              value )
+    VIO_Real              value )
 {
     Viewport_types  viewport_index;
 
@@ -350,8 +350,8 @@ private  void   set_voxel_position_callback(
 {
     int    volume_index;
     int    start_widget_index;
-    Real   value;
-    Real   position[N_DIMENSIONS];
+    VIO_Real   value;
+    VIO_Real   position[VIO_N_DIMENSIONS];
 
     volume_index = get_viewport_volume_index( widget->viewport_index );
     start_widget_index = ui_info->position_text_start_index[volume_index];
@@ -376,9 +376,9 @@ private  void   set_world_position_callback(
     int            axis )
 {
     int    volume_index;
-    Real   value;
+    VIO_Real   value;
     int    start_widget_index;
-    Real   position[N_DIMENSIONS];
+    VIO_Real   position[VIO_N_DIMENSIONS];
 
     volume_index = get_viewport_volume_index( widget->viewport_index );
     start_widget_index = ui_info->position_text_start_index[volume_index];

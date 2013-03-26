@@ -62,7 +62,7 @@ public  DEFINE_WIDGET_CALLBACK( popup_filter_callback )
 
 private  DEFINE_WIDGET_CALLBACK( load_volume_callback )
 {
-    STRING                filename;
+    VIO_STR                filename;
     Viewport_types        viewport_index;
 
     viewport_index = widget->viewport_index;
@@ -107,7 +107,7 @@ public  void  add_volume_widgets(
                    &ui_info->widget_list[viewport_index],
                    create_label( &ui_info->graphics_window, viewport_index,
                    x, y, Load_filename_width, Volume_button_height,
-                   "Volume Resampled", OFF, LABEL_ACTIVE_COLOUR,
+                   "VIO_Volume Resampled", OFF, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
@@ -210,7 +210,7 @@ public  void  set_load_activity(
 public  void  set_load_filename(
     UI_struct         *ui_info,
     int               volume_index,
-    STRING            filename )
+    VIO_STR            filename )
 {
     Viewport_types   viewport_index;
 

@@ -18,15 +18,15 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 
 #include  <user_interface.h>
 
-private  Real  convert_position_to_slider_value( slider_struct *, int, int );
+private  VIO_Real  convert_position_to_slider_value( slider_struct *, int, int );
 
-private  int  convert_slider_value_to_position( slider_struct *, int, Real );
+private  int  convert_slider_value_to_position( slider_struct *, int, VIO_Real );
 
 private  void  update_value_from_text(
     widget_struct  *widget,
     int            ind )
 {
-    Real            value, values[2];
+    VIO_Real            value, values[2];
     slider_struct   *slider;
 
     slider = get_widget_slider( widget );
@@ -68,7 +68,7 @@ private  void  update_slider_position_from_mouse(
     widget_struct  *widget )
 {
     int             ind, x_mouse, y_mouse;
-    Real            values[2];
+    VIO_Real            values[2];
     slider_struct   *slider;
 
     slider = get_widget_slider( widget );
@@ -96,7 +96,7 @@ private  void  update_both_slider_position_from_mouse(
     widget_struct  *widget )
 {
     int             x_mouse, y_mouse;
-    Real            value, diff;
+    VIO_Real            value, diff;
     slider_struct   *slider;
 
     slider = get_widget_slider( widget );
@@ -254,7 +254,7 @@ private  void  update_one_slider_colours(
 public  void  update_slider_colours(
     widget_struct   *widget )
 {
-    Colour         rectangle_colour;
+    VIO_Colour         rectangle_colour;
     VIO_BOOL        colour_map_state;
     slider_struct  *slider;
 
@@ -281,15 +281,15 @@ public  void  update_slider_colours(
                                    colour_map_state );
 }
 
-private  Real  convert_position_to_slider_value(
+private  VIO_Real  convert_position_to_slider_value(
     slider_struct *slider,
     int           x_position,
     int           x_size )
 {
-    Real  value;
+    VIO_Real  value;
 
     value = slider->min_value + (slider->max_value - slider->min_value) *
-            ((Real) x_position) / (Real) (x_size-1);
+            ((VIO_Real) x_position) / (VIO_Real) (x_size-1);
 
     return( value );
 }
@@ -297,9 +297,9 @@ private  Real  convert_position_to_slider_value(
 private  int  convert_slider_value_to_position(
     slider_struct *slider,
     int           x_size,
-    Real          value )
+    VIO_Real          value )
 {
-    Real  ratio;
+    VIO_Real  ratio;
     int   x_position;
 
     ratio = (value - slider->min_value) /
@@ -310,7 +310,7 @@ private  int  convert_slider_value_to_position(
     else if( ratio >= 1.0 )
         x_position = x_size - 1;
     else
-        x_position = (int) ((Real) (x_size-1) * ratio);
+        x_position = (int) ((VIO_Real) (x_size-1) * ratio);
 
     return( x_position );
 }
@@ -372,8 +372,8 @@ private  void  update_slider_position(
 
 public  void  get_slider_values(
     widget_struct           *widget,
-    Real                    *low_value,
-    Real                    *high_value )
+    VIO_Real                    *low_value,
+    VIO_Real                    *high_value )
 {
     slider_struct    *slider;
 
@@ -387,8 +387,8 @@ public  void  get_slider_values(
 
 public  void  set_slider_values(
     widget_struct           *widget,
-    Real                    low_value,
-    Real                    high_value )
+    VIO_Real                    low_value,
+    VIO_Real                    high_value )
 {
     VIO_BOOL          changed[2];
     slider_struct    *slider;
@@ -449,8 +449,8 @@ public  void  set_slider_values(
 
 public  void  set_slider_limits(
     widget_struct  *widget,
-    Real           min_value,
-    Real           max_value )
+    VIO_Real           min_value,
+    VIO_Real           max_value )
 {
     slider_struct   *slider;
 
@@ -570,16 +570,16 @@ private  widget_struct  *create_a_slider(
     int                        x_size,
     int                        y_size,
     VIO_BOOL                    colour_bar_flag,
-    Real                       initial_low_value,
-    Real                       initial_high_value,
-    Real                       min_value,
-    Real                       max_value,
+    VIO_Real                       initial_low_value,
+    VIO_Real                       initial_high_value,
+    VIO_Real                       min_value,
+    VIO_Real                       max_value,
     VIO_BOOL                    values_allowed_outside_range,
-    STRING                     format_string,
+    VIO_STR                     format_string,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     inactive_colour,
-    Colour                     peg_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     peg_colour,
     widget_callback_type       lower_value_callback,
     void                       *lower_value_callback_data,
     widget_callback_type       upper_value_callback,
@@ -593,7 +593,7 @@ private  widget_struct  *create_a_slider(
 
     slider = get_widget_slider( widget );
 
-    slider->peg_width = (Real) Slider_text_peg_width;
+    slider->peg_width = (VIO_Real) Slider_text_peg_width;
 
     slider->active_colour = active_colour;
     slider->inactive_colour = inactive_colour;
@@ -685,14 +685,14 @@ public  widget_struct  *create_slider(
     int                        y,
     int                        x_size,
     int                        y_size,
-    Real                       initial_value,
-    Real                       min_value,
-    Real                       max_value,
-    STRING                     format_string,
+    VIO_Real                       initial_value,
+    VIO_Real                       min_value,
+    VIO_Real                       max_value,
+    VIO_STR                     format_string,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     inactive_colour,
-    Colour                     peg_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     peg_colour,
     widget_callback_type       value_changed_callback,
     void                       *value_changed_data )
 {
@@ -712,15 +712,15 @@ public  widget_struct  *create_colour_bar_slider(
     int                        y,
     int                        x_size,
     int                        y_size,
-    Real                       initial_low_value,
-    Real                       initial_high_value,
-    Real                       min_value,
-    Real                       max_value,
-    STRING                     format_string,
+    VIO_Real                       initial_low_value,
+    VIO_Real                       initial_high_value,
+    VIO_Real                       min_value,
+    VIO_Real                       max_value,
+    VIO_STR                     format_string,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     inactive_colour,
-    Colour                     peg_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     peg_colour,
     widget_callback_type       lower_value_changed_callback,
     void                       *lower_value_callback_data,
     widget_callback_type       upper_value_changed_callback,

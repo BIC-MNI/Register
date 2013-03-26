@@ -18,17 +18,17 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 
 #include  <user_interface.h>
 
-public  Status   initialize_user_interface(
+public  VIO_Status   initialize_user_interface(
     UI_struct  *ui,
-    STRING     executable_name )
+    VIO_STR     executable_name )
 {
-    Status      status;
+    VIO_Status      status;
 
     ui->volumes_synced = Initial_volumes_synced;
     ui->original_filename_volume_2 = create_string( NULL );
     ui->resampled_filename = create_string( NULL );
 
-    create_linear_transform( &ui->resampling_transform, (Transform *) NULL );
+    create_linear_transform( &ui->resampling_transform, (VIO_Transform *) NULL );
 
     initialize_ui_colours();
 

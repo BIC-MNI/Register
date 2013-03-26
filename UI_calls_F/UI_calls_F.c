@@ -20,14 +20,14 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls
 
 public  void  IF_initialize_register(
     Gwindow  window,
-    STRING   executable_name )
+    VIO_STR   executable_name )
 {
     (void) initialize_register( window, executable_name );
 }
 
-public  Status   UI_set_global_variable(
-    STRING  variable_name,
-    STRING  value_to_set )
+public  VIO_Status   UI_set_global_variable(
+    VIO_STR  variable_name,
+    VIO_STR  value_to_set )
 {
     return( set_functional_global_variable( variable_name, value_to_set ) );
 }
@@ -37,17 +37,17 @@ public  void  IF_terminate_register( void )
     terminate_register();
 }
 
-public  Status  IF_start_loading_volume(
+public  VIO_Status  IF_start_loading_volume(
     int     volume_index,
-    STRING  filename )
+    VIO_STR  filename )
 {
     return( start_loading_volume( get_main_struct(), volume_index, filename ) );
 }
 
 public  VIO_BOOL  IF_load_more_of_volume(
     int     volume_index,
-    Real    max_time,
-    Real    *fraction_done )
+    VIO_Real    max_time,
+    VIO_Real    *fraction_done )
 {
     return( load_more_of_volume( get_main_struct(), volume_index, max_time,
                                  fraction_done ) );
@@ -76,13 +76,13 @@ public  VIO_BOOL  IF_is_resampled_volume_loaded( void )
     return( is_resampled_volume_loaded( get_main_struct() ) );
 }
 
-public  Status  IF_do_resampling(
-    STRING   resampled_filename )
+public  VIO_Status  IF_do_resampling(
+    VIO_STR   resampled_filename )
 {
     return( resample_the_volume( get_main_struct(), resampled_filename ) );
 }
 
-public  STRING  IF_get_volume_filename(
+public  VIO_STR  IF_get_volume_filename(
     int  volume_index )
 {
     return( get_volume_filename( get_main_struct(), volume_index ) );
@@ -108,26 +108,26 @@ public  void  IF_set_merged_slice_visibility(
 
 public  void  IF_set_volume(
     int     volume_index,
-    STRING  filename )
+    VIO_STR  filename )
 {
     set_register_volume( get_main_struct(), volume_index, filename );
 }
 
 public  void  IF_set_resampled_volume(
     int                    volume_index,
-    STRING                 filename,
-    STRING                 original_filename,
+    VIO_STR                 filename,
+    VIO_STR                 original_filename,
     VIO_General_transform      *resampling_transform )
 {
     set_register_resampled_volume( get_main_struct(), volume_index, filename,
                                    original_filename, resampling_transform );
 }
 
-public  Real  IF_get_voxel_value(
+public  VIO_Real  IF_get_voxel_value(
     int     volume_index,
-    Real    x_voxel,
-    Real    y_voxel,
-    Real    z_voxel )
+    VIO_Real    x_voxel,
+    VIO_Real    y_voxel,
+    VIO_Real    z_voxel )
 {
     return( get_voxel_value( get_main_struct(), volume_index,
             x_voxel, y_voxel, z_voxel ) );
@@ -135,8 +135,8 @@ public  Real  IF_get_voxel_value(
 
 public  void  IF_get_volume_value_range(
     int     volume_index,
-    Real    *min_value,
-    Real    *max_value )
+    VIO_Real    *min_value,
+    VIO_Real    *max_value )
 {
     get_volume_value_range( get_main_struct(), volume_index,
                             min_value, max_value );
@@ -195,56 +195,56 @@ public  VIO_BOOL  IF_redraw_slices(
 
 public  void  IF_set_volume_voxel_position(
     int       volume,
-    Real      position[] )
+    VIO_Real      position[] )
 {
     set_volume_voxel_position( get_main_struct(), volume, position );
 }
 
 public  void  IF_get_volume_voxel_position(
     int       volume,
-    Real      position[] )
+    VIO_Real      position[] )
 {
     get_volume_voxel_position( get_main_struct(), volume, position );
 }
 
 public  void  IF_set_volume_time_position(
     int       volume_index,
-    Real      tpos )
+    VIO_Real      tpos )
 {
     set_volume_time_position( get_main_struct(), volume_index, tpos );
 }
 
 public  void  IF_get_volume_time_position(
     int       volume_index,
-    Real      *tpos_ptr )
+    VIO_Real      *tpos_ptr )
 {
     get_volume_time_position( get_main_struct(), volume_index, tpos_ptr );
 }
 
 public  void  IF_set_volume_world_position(
     int       volume,
-    Real      position[] )
+    VIO_Real      position[] )
 {
     set_volume_world_position( get_main_struct(), volume, position );
 }
 
 public  void  IF_get_volume_world_position(
     int       volume,
-    Real      position[] )
+    VIO_Real      position[] )
 {
     get_volume_world_position( get_main_struct(), volume, position );
 }
 
 public  void  IF_set_volume_original_world_position(
     int       volume,
-    Real      position[] )
+    VIO_Real      position[] )
 {
     set_volume_original_world_position( get_main_struct(), volume, position );
 }
 
 public  void  IF_get_volume_original_world_position(
     int       volume,
-    Real      position[] )
+    VIO_Real      position[] )
 {
     get_volume_original_world_position( get_main_struct(), volume, position );
 }
@@ -268,7 +268,7 @@ public  void  IF_translate_slice(
 public  void  IF_scale_slice(
     int       volume,
     int       view,
-    Real      scale_factor )
+    VIO_Real      scale_factor )
 {
     scale_slice( get_main_struct(), volume, view, scale_factor );
 }
@@ -290,7 +290,7 @@ public  VIO_BOOL  IF_convert_pixel_to_voxel(
     int    view,
     int    x_pixel,
     int    y_pixel,
-    Real   voxel_position[] )
+    VIO_Real   voxel_position[] )
 {
     return( convert_pixel_to_voxel( get_main_struct(), volume, view,
                                     x_pixel, y_pixel, voxel_position ) );
@@ -309,7 +309,7 @@ public  void  IF_colour_mode_has_toggled(
 
 public  void  IF_set_under_colour(
     int        volume_index,
-    Colour     colour )
+    VIO_Colour     colour )
 {
     set_volume_under_colour( get_main_struct(), volume_index, colour );
 }
@@ -327,7 +327,7 @@ public  Merge_methods  IF_get_merge_method( void )
 
 public  void  IF_set_over_colour(
     int        volume_index,
-    Colour     colour )
+    VIO_Colour     colour )
 {
     set_volume_over_colour( get_main_struct(), volume_index, colour );
 }
@@ -348,8 +348,8 @@ public  Colour_coding_types  IF_get_colour_coding_type(
 
 public  void  IF_set_colour_coding_limits(
     int    volume_index,
-    Real   min_value,
-    Real   max_value )
+    VIO_Real   min_value,
+    VIO_Real   max_value )
 {
     set_volume_colour_coding_limits( get_main_struct(), volume_index,
                                      min_value, max_value );
@@ -357,8 +357,8 @@ public  void  IF_set_colour_coding_limits(
 
 public  void  IF_get_colour_coding_limits(
     int    volume_index,
-    Real   *min_value,
-    Real   *max_value )
+    VIO_Real   *min_value,
+    VIO_Real   *max_value )
 {
     get_volume_colour_coding_limits( get_main_struct(), volume_index,
                                      min_value, max_value );
@@ -366,12 +366,12 @@ public  void  IF_get_colour_coding_limits(
 
 public  void  IF_set_merged_volume_opacity(
     int    which_volume,
-    Real   opacity )
+    VIO_Real   opacity )
 {
     set_merged_volume_opacity( get_main_struct(), which_volume, opacity );
 }
 
-public  Real  IF_get_merged_volume_opacity(
+public  VIO_Real  IF_get_merged_volume_opacity(
     int    which_volume )
 {
     return( get_merged_volume_opacity( get_main_struct(), which_volume ) );
@@ -396,13 +396,13 @@ public  Filter_types  IF_get_slice_filter_type(
 public  void  IF_set_slice_filter_width(
     int      volume_index,
     int      view_index,
-    Real     filter_width )
+    VIO_Real     filter_width )
 {
     set_slice_filter_width( get_main_struct(), volume_index, view_index,
                             filter_width );
 }
 
-public  Real  IF_get_slice_filter_width(
+public  VIO_Real  IF_get_slice_filter_width(
     int           volume_index,
     int           view_index )
 {
@@ -440,7 +440,7 @@ public  int  IF_get_n_tag_points( void )
 public  VIO_BOOL  IF_get_tag_point_position(
     int              ind,
     int              volume_index,
-    Real             position[] )
+    VIO_Real             position[] )
 {
     return( get_tag_point_position( get_main_struct(),
                                     ind, volume_index, position ) );
@@ -449,13 +449,13 @@ public  VIO_BOOL  IF_get_tag_point_position(
 public  void  IF_set_tag_point_position(
     int              ind,
     int              volume_index,
-    Real             position[] )
+    VIO_Real             position[] )
 {
     set_tag_point_position( get_main_struct(),
                             ind, volume_index, position );
 }
 
-public  STRING  IF_get_tag_point_name(
+public  VIO_STR  IF_get_tag_point_name(
     int              ind )
 {
     return( get_tag_point_name( get_main_struct(), ind ) );
@@ -463,20 +463,20 @@ public  STRING  IF_get_tag_point_name(
 
 public  void  IF_set_tag_point_name(
     int              ind,
-    STRING           name )
+    VIO_STR           name )
 {
     set_tag_point_name( get_main_struct(), ind, name );
 }
 
 public  VIO_BOOL  IF_get_tag_point_rms_error(
     int              ind,
-    Real             *rms_error )
+    VIO_Real             *rms_error )
 {
     return( get_tag_point_rms_error( get_main_struct(), ind, rms_error ) );
 }
 
 public  VIO_BOOL  IF_get_tag_point_avg_rms_error(
-    Real             *avg_rms_error )
+    VIO_Real             *avg_rms_error )
 {
     return( get_tag_point_avg_rms_error( get_main_struct(), avg_rms_error ) );
 }
@@ -495,19 +495,19 @@ public  void  IF_set_tag_point_activity(
 }
 
 public  void  IF_save_tags_file(
-    STRING   filename )
+    VIO_STR   filename )
 {
     (void) save_tag_points( get_main_struct(), filename );
 }
 
 public  void  IF_load_tags_file(
-    STRING   filename )
+    VIO_STR   filename )
 {
     (void) load_tag_points( get_main_struct(), filename );
 }
 
 public  void  IF_save_transform(
-    STRING   filename )
+    VIO_STR   filename )
 {
     (void) save_transform( get_main_struct(), filename );
 }

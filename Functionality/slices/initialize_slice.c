@@ -31,7 +31,7 @@ public  void  initialize_slices( main_struct  *main )
                                   GRAY_SCALE,
                                   Initial_under_colour,
                                   Initial_over_colour,
-                                  -0.5, (Real) 255 - 0.5 );
+                                  -0.5, (VIO_Real) 255 - 0.5 );
     }
 
     for_less( volume, 0, N_VOLUMES_DISPLAYED )
@@ -47,7 +47,7 @@ public  void  initialize_slices( main_struct  *main )
         initialize_colour_coding( &main->merged.colour_coding[volume],
                                   GRAY_SCALE,
                                   Initial_under_colour, Initial_over_colour,
-                                  -0.5, (Real) 255 - 0.5 );
+                                  -0.5, (VIO_Real) 255 - 0.5 );
     }
 
     main->merged.opacity[0] = Initial_merged_1_weight;

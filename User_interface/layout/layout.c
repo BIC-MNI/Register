@@ -63,10 +63,10 @@ public  void  resize_layout( UI_struct  *ui_info )
     x_volume_1_start = x_main_end + 1 + divider_width;
     x_merged_end = x_size - 1;
 
-    divider1 = ROUND( (Real) x_volume_1_start + ui_info->x_slice_divider[0] *
-                      (Real) (x_merged_end - x_volume_1_start) );
-    divider2 = ROUND( (Real) x_volume_1_start + ui_info->x_slice_divider[1] *
-                      (Real) (x_merged_end - x_volume_1_start) );
+    divider1 = ROUND( (VIO_Real) x_volume_1_start + ui_info->x_slice_divider[0] *
+                      (VIO_Real) (x_merged_end - x_volume_1_start) );
+    divider2 = ROUND( (VIO_Real) x_volume_1_start + ui_info->x_slice_divider[1] *
+                      (VIO_Real) (x_merged_end - x_volume_1_start) );
 
     x_volume_1_end = divider1 - divider_width/2 - 1;
     x_volume_2_start = x_volume_1_end + divider_width + 1;
@@ -83,10 +83,10 @@ public  void  resize_layout( UI_struct  *ui_info )
     y_slice_3_start = y_volume_panel_end + 1 + divider_width;
     y_slice_1_end = y_size - 1;
 
-    divider1 = ROUND( (Real) y_slice_3_start + ui_info->y_slice_divider[0] *
-                      (Real) (y_slice_1_end - y_slice_3_start) );
-    divider2 = ROUND( (Real) y_slice_3_start + ui_info->y_slice_divider[1] *
-                      (Real) (y_slice_1_end - y_slice_3_start) );
+    divider1 = ROUND( (VIO_Real) y_slice_3_start + ui_info->y_slice_divider[0] *
+                      (VIO_Real) (y_slice_1_end - y_slice_3_start) );
+    divider2 = ROUND( (VIO_Real) y_slice_3_start + ui_info->y_slice_divider[1] *
+                      (VIO_Real) (y_slice_1_end - y_slice_3_start) );
 
     y_slice_3_end = divider1 - divider_width/2 - 1;
     y_slice_2_start = y_slice_3_end + divider_width + 1;

@@ -20,24 +20,24 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 typedef  enum  { UNDER_RANGE, WITHIN_RANGE, OVER_RANGE } Range_flags;
 
-private  Colour  merge_colours(
-    Real      alpha1,
-    Colour    col1,
-    Real      alpha2,
-    Colour    col2 )
+private  VIO_Colour  merge_colours(
+    VIO_Real      alpha1,
+    VIO_Colour    col1,
+    VIO_Real      alpha2,
+    VIO_Colour    col2 )
 {
     int   r, g, b;
 
-    r = (int) (alpha1 * (Real) get_Colour_r(col1) +
-               alpha2 * (Real) get_Colour_r(col2));
+    r = (int) (alpha1 * (VIO_Real) get_Colour_r(col1) +
+               alpha2 * (VIO_Real) get_Colour_r(col2));
     if( r > 255 ) r = 255;
 
-    g = (int) (alpha1 * (Real) get_Colour_g(col1) +
-               alpha2 * (Real) get_Colour_g(col2));
+    g = (int) (alpha1 * (VIO_Real) get_Colour_g(col1) +
+               alpha2 * (VIO_Real) get_Colour_g(col2));
     if( g > 255 ) g = 255;
 
-    b = (int) (alpha1 * (Real) get_Colour_b(col1) +
-               alpha2 * (Real) get_Colour_b(col2));
+    b = (int) (alpha1 * (VIO_Real) get_Colour_b(col1) +
+               alpha2 * (VIO_Real) get_Colour_b(col2));
     if( b > 255 ) b = 255;
 
     return( make_Colour( r, g, b ) );
@@ -45,17 +45,17 @@ private  Colour  merge_colours(
 
 /* ARGSUSED */
 
-private  Colour  get_merged_colour(
+private  VIO_Colour  get_merged_colour(
     Merge_methods  method,
     VIO_BOOL        use_under_over_colour_with_weights,
-    Colour         under_colour,
-    Colour         over_colour,
+    VIO_Colour         under_colour,
+    VIO_Colour         over_colour,
     Range_flags    range_flag1,
-    Real           alpha1,
-    Colour         col1,
+    VIO_Real           alpha1,
+    VIO_Colour         col1,
     Range_flags    range_flag2,
-    Real           alpha2,
-    Colour         col2 )
+    VIO_Real           alpha2,
+    VIO_Colour         col2 )
 {
     if( (!use_under_over_colour_with_weights ||
          method == ONE_ON_TWO || method == TWO_ON_ONE) &&
@@ -96,15 +96,15 @@ private  Colour  get_merged_colour(
 }
 
 private  Range_flags  lookup_colour_code(
-    Volume                volume,
+    VIO_Volume                volume,
     colour_coding_struct  *colour_coding,
     int                   voxel,
-    Colour                *col )
+    VIO_Colour                *col )
 {
-    Real          value;
+    VIO_Real          value;
     Range_flags   flag;
 
-    value = CONVERT_VOXEL_TO_VALUE( volume, (Real) voxel );
+    value = CONVERT_VOXEL_TO_VALUE( volume, (VIO_Real) voxel );
 
     *col = get_colour_code( colour_coding, value );
     if( value < colour_coding->min_value )
@@ -123,8 +123,8 @@ private  void  update_rgb_colour_maps(
 {
     int            i;
     int            min_value, max_value;
-    Volume         volume;
-    Colour         *tmp_ptr;
+    VIO_Volume         volume;
+    VIO_Colour         *tmp_ptr;
 
     volume = get_slice_volume( main, volume_index );
 
@@ -154,7 +154,7 @@ private  void  update_rgb_colour_maps(
         main->trislice[volume_index].rgb_colour_map[i] =
                     get_colour_code(
                         &main->trislice[volume_index].colour_coding,
-                        CONVERT_VOXEL_TO_VALUE(volume,(Real) i) );
+                        CONVERT_VOXEL_TO_VALUE(volume,(VIO_Real) i) );
     }
 }
 
@@ -200,7 +200,7 @@ private  void  update_cmode_colour_maps(
 {
     int            i, voxel_value, min_ind, max_ind;
     int            min_value, max_value;
-    Volume         volume;
+    VIO_Volume         volume;
 
     min_ind = main->trislice[volume_index].start_colour_map;
     max_ind = min_ind + main->trislice[volume_index].n_colour_entries-1;
@@ -216,7 +216,7 @@ private  void  update_cmode_colour_maps(
         G_set_colour_map_entry( main->window, i, 
                     get_colour_code(
                          &main->trislice[volume_index].colour_coding,
-                         CONVERT_VOXEL_TO_VALUE(volume,(Real) voxel_value) ) );
+                         CONVERT_VOXEL_TO_VALUE(volume,(VIO_Real) voxel_value) ) );
     }
 }
 
@@ -241,7 +241,7 @@ public  void  repartition_colour_maps(
     int        min_value1, max_value1, min_value2, max_value2;
     int        max_colours_1, max_colours_2, max_colours_merged, total_volume;
     int        n_volume_1, n_volume_2, n_merged_1, n_merged_2;
-    Real       ratio;
+    VIO_Real       ratio;
 
     start_index = main->start_colour_index + N_MAIN_COLOURS;
 
@@ -255,7 +255,7 @@ public  void  repartition_colour_maps(
 
     max_colours_merged = max_colours_1 * max_colours_2;
 
-    n_merged = ROUND( Merged_colour_table_fraction * (Real) total_colours );
+    n_merged = ROUND( Merged_colour_table_fraction * (VIO_Real) total_colours );
 
     if( n_merged > max_colours_merged )
         n_merged = max_colours_merged;
@@ -270,8 +270,8 @@ public  void  repartition_colour_maps(
     }
     else
     {
-        ratio = (Real) max_colours_1 / (Real) (max_colours_1 + max_colours_2);
-        n_volume_1 = ROUND( (Real) total_volume * ratio );
+        ratio = (VIO_Real) max_colours_1 / (VIO_Real) (max_colours_1 + max_colours_2);
+        n_volume_1 = ROUND( (VIO_Real) total_volume * ratio );
         if( n_volume_1 < 1 && max_colours_1 > 0 )
             n_volume_1 = 1;
         n_volume_2 = total_volume - n_volume_1;
@@ -451,8 +451,8 @@ public  Colour_coding_types   get_volume_colour_coding_type(
 public  void  set_volume_colour_coding_limits(
     main_struct          *main,
     int                  volume_index,
-    Real                 min_value,
-    Real                 max_value )
+    VIO_Real                 min_value,
+    VIO_Real                 max_value )
 {
     set_colour_coding_min_max( get_volume_colour_coding(main,volume_index),
                                min_value, max_value );
@@ -463,8 +463,8 @@ public  void  set_volume_colour_coding_limits(
 public  void  get_volume_colour_coding_limits(
     main_struct          *main,
     int                  volume_index,
-    Real                 *min_value,
-    Real                 *max_value )
+    VIO_Real                 *min_value,
+    VIO_Real                 *max_value )
 {
     get_colour_coding_min_max( get_volume_colour_coding(main,volume_index),
                                min_value, max_value );
@@ -473,14 +473,14 @@ public  void  get_volume_colour_coding_limits(
 public  void  set_merged_volume_opacity(
     main_struct          *main,
     int                  which_volume,
-    Real                 opacity )
+    VIO_Real                 opacity )
 {
     main->merged.opacity[which_volume] = opacity;
 
     colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
 }
 
-public  Real  get_merged_volume_opacity(
+public  VIO_Real  get_merged_volume_opacity(
     main_struct          *main,
     int                  which_volume )
 {
@@ -505,7 +505,7 @@ public  Merge_methods  get_merged_method(
 public  void   set_volume_under_colour( 
     main_struct          *main,
     int                  volume_index,
-    Colour               colour )
+    VIO_Colour               colour )
 {
     set_colour_coding_under_colour( get_volume_colour_coding(main,volume_index),
                                     colour );
@@ -515,7 +515,7 @@ public  void   set_volume_under_colour(
 public  void   set_volume_over_colour( 
     main_struct          *main,
     int                  volume_index,
-    Colour               colour )
+    VIO_Colour               colour )
 {
     set_colour_coding_over_colour( get_volume_colour_coding(main,volume_index),
                                    colour );
@@ -529,11 +529,11 @@ public  void  composite_merged_pixels(
     pixels_struct        *result )
 {
     int            p, n_pixels;
-    Colour         col1, col2;
-    Colour         *p1, *p2, *res_ptr;
+    VIO_Colour         col1, col2;
+    VIO_Colour         *p1, *p2, *res_ptr;
     int            r1, g1, b1, r2, g2, b2, r, g, b;
     Merge_methods  method;
-    Real           alpha1, alpha2, a1, a2;
+    VIO_Real           alpha1, alpha2, a1, a2;
 
     n_pixels = pixels1->x_size * pixels2->y_size;
 
@@ -582,9 +582,9 @@ public  void  composite_merged_pixels(
         g2 = get_Colour_g( col2 );
         b2 = get_Colour_b( col2 );
 
-        r = (int) (a1 * (Real) r1 + a2 * (Real) r2);
-        g = (int) (a1 * (Real) g1 + a2 * (Real) g2);
-        b = (int) (a1 * (Real) b1 + a2 * (Real) b2);
+        r = (int) (a1 * (VIO_Real) r1 + a2 * (VIO_Real) r2);
+        g = (int) (a1 * (VIO_Real) g1 + a2 * (VIO_Real) g2);
+        b = (int) (a1 * (VIO_Real) b1 + a2 * (VIO_Real) b2);
 
         if( r < 0 )
             r = 0;

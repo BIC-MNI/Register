@@ -119,45 +119,45 @@ public  void  position_cursor(
     fill_Point( lines->points[6], x - offset, y, 0.0 );
     fill_Point( lines->points[7], x - offset - length, y, 0.0 );
 
-    fill_Point( lines->points[8], (Real) Point_x(lines->points[0]) - 1.0,
+    fill_Point( lines->points[8], (VIO_Real) Point_x(lines->points[0]) - 1.0,
                                          Point_y(lines->points[0]), 0.0 );
-    fill_Point( lines->points[9], (Real) Point_x(lines->points[1]) - 1.0,
+    fill_Point( lines->points[9], (VIO_Real) Point_x(lines->points[1]) - 1.0,
                                          Point_y(lines->points[1]), 0.0 );
 
-    fill_Point( lines->points[10], (Real) Point_x(lines->points[0]) + 1.0,
+    fill_Point( lines->points[10], (VIO_Real) Point_x(lines->points[0]) + 1.0,
                                           Point_y(lines->points[0]), 0.0 );
-    fill_Point( lines->points[11], (Real) Point_x(lines->points[1]) + 1.0,
+    fill_Point( lines->points[11], (VIO_Real) Point_x(lines->points[1]) + 1.0,
                                           Point_y(lines->points[1]), 0.0 );
 
-    fill_Point( lines->points[12], (Real) Point_x(lines->points[2]) - 1.0,
+    fill_Point( lines->points[12], (VIO_Real) Point_x(lines->points[2]) - 1.0,
                                           Point_y(lines->points[2]), 0.0 );
-    fill_Point( lines->points[13], (Real) Point_x(lines->points[3]) - 1.0,
+    fill_Point( lines->points[13], (VIO_Real) Point_x(lines->points[3]) - 1.0,
                                           Point_y(lines->points[3]), 0.0 );
 
-    fill_Point( lines->points[14], (Real) Point_x(lines->points[2]) + 1.0,
+    fill_Point( lines->points[14], (VIO_Real) Point_x(lines->points[2]) + 1.0,
                                           Point_y(lines->points[2]), 0.0 );
-    fill_Point( lines->points[15], (Real) Point_x(lines->points[3]) + 1.0,
+    fill_Point( lines->points[15], (VIO_Real) Point_x(lines->points[3]) + 1.0,
                                           Point_y(lines->points[3]), 0.0 );
 
     fill_Point( lines->points[16],        Point_x(lines->points[4]),
-                                (Real) Point_y(lines->points[4]) - 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[4]) - 1.0, 0.0 );
     fill_Point( lines->points[17],        Point_x(lines->points[5]),
-                                (Real) Point_y(lines->points[5]) - 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[5]) - 1.0, 0.0 );
 
     fill_Point( lines->points[18],        Point_x(lines->points[4]),
-                                (Real) Point_y(lines->points[4]) + 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[4]) + 1.0, 0.0 );
     fill_Point( lines->points[19],        Point_x(lines->points[5]),
-                                (Real) Point_y(lines->points[5]) + 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[5]) + 1.0, 0.0 );
 
     fill_Point( lines->points[20],        Point_x(lines->points[6]),
-                                (Real) Point_y(lines->points[6]) - 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[6]) - 1.0, 0.0 );
     fill_Point( lines->points[21],        Point_x(lines->points[7]),
-                                (Real) Point_y(lines->points[7]) - 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[7]) - 1.0, 0.0 );
 
     fill_Point( lines->points[22],        Point_x(lines->points[6]),
-                                (Real) Point_y(lines->points[6]) + 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[6]) + 1.0, 0.0 );
     fill_Point( lines->points[23],        Point_x(lines->points[7]),
-                                (Real) Point_y(lines->points[7]) + 1.0, 0.0 );
+                                (VIO_Real) Point_y(lines->points[7]) + 1.0, 0.0 );
 }
 
 private  object_struct  *get_cursor_lines(
@@ -179,7 +179,7 @@ private  void  set_cursor_colours(
     main_struct    *main,
     lines_struct   *lines )
 {
-    Colour         inside, outside;
+    VIO_Colour         inside, outside;
 
     if( get_cursor_bitplane() == OVERLAY_PLANES )
     {
@@ -188,8 +188,8 @@ private  void  set_cursor_colours(
     }
     else if( G_get_colour_map_state( main->window ) )
     {
-        inside = (Colour) (main->start_colour_index + CURSOR_INSIDE_COLOUR);
-        outside = (Colour) (main->start_colour_index + CURSOR_OUTSIDE_COLOUR);
+        inside = (VIO_Colour) (main->start_colour_index + CURSOR_INSIDE_COLOUR);
+        outside = (VIO_Colour) (main->start_colour_index + CURSOR_OUTSIDE_COLOUR);
     }
     else
     {
@@ -230,8 +230,8 @@ public  void  update_volume_cursor(
     int           view_index )
 {
     VIO_BOOL        activity;
-    Real           x_pixel, y_pixel;
-    Real           position[N_DIMENSIONS];
+    VIO_Real           x_pixel, y_pixel;
+    VIO_Real           position[VIO_N_DIMENSIONS];
     object_struct  *cursor;
 
     cursor = get_cursor_lines( main, volume_index, view_index );

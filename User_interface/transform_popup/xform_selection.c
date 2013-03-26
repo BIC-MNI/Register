@@ -60,13 +60,13 @@ public  void  popup_transform_dialog(
 {
     int                          i, x, y;
     popup_struct                 *popup;
-    STRING                       window_name = "Transform Type Selection";
+    VIO_STR                       window_name = "Transform Type Selection";
     VIO_BOOL                      activity;
     Trans_type                   transform_type;
     static  struct
             {
                 Trans_type           transform_type;
-                STRING               name;
+                VIO_STR               name;
             }                            choices[] = {
          { TRANS_LSQ6,  "3 Rot'ns & 3 Transl'ns" },
          { TRANS_LSQ7,  "3 Rot'ns & 3 Transl'ns & 1 Scale" },

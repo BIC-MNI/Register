@@ -74,7 +74,7 @@ public  void  update_slice_tag_colours(
     tag_point_struct   *tag )
 {
     lines_struct    *lines;
-    Colour          inside_colour, outside_colour;
+    VIO_Colour          inside_colour, outside_colour;
 
     lines = get_lines_ptr( tag->objects[volume][view] );
 
@@ -82,16 +82,16 @@ public  void  update_slice_tag_colours(
     {
         if( tag->activity )
         {
-            inside_colour = (Colour) (main->start_colour_index +
+            inside_colour = (VIO_Colour) (main->start_colour_index +
                                       TAG_INSIDE_COLOUR);
-            outside_colour = (Colour) (main->start_colour_index +
+            outside_colour = (VIO_Colour) (main->start_colour_index +
                                        TAG_OUTSIDE_COLOUR);
         }
         else
         {
-            inside_colour = (Colour) (main->start_colour_index +
+            inside_colour = (VIO_Colour) (main->start_colour_index +
                                       TAG_INSIDE_INACTIVE_COLOUR);
-            outside_colour = (Colour) (main->start_colour_index+
+            outside_colour = (VIO_Colour) (main->start_colour_index+
                                        TAG_OUTSIDE_INACTIVE_COLOUR);
         }
     }
@@ -149,8 +149,8 @@ private  VIO_BOOL  convert_tag_to_pixel(
     VIO_BOOL  visible;
     int      which_volume, axis;
     Real     x_trans, y_trans, x_scale, y_scale;
-    Real     *cursor_ptr, separations[MAX_DIMENSIONS];
-    Real     diff, voxel_position[N_DIMENSIONS];
+    Real     *cursor_ptr, separations[VIO_MAX_DIMENSIONS];
+    Real     diff, voxel_position[VIO_N_DIMENSIONS];
 
     visible = FALSE;
 
@@ -197,7 +197,7 @@ private  void  fill_in_circle_points(
     Real    y,
     Real    radius,
     int     n_points,
-    Point   points[] )
+    VIO_Point   points[] )
 {
     int    i;
     Real   angle;

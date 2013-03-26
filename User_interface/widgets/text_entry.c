@@ -23,15 +23,15 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 #define  CONTROL_U    21
 
 private  VIO_BOOL  fit_text_within_widget(
-    STRING       string,
-    Real         x_size,
+    VIO_STR       string,
+    VIO_Real         x_size,
     int          left_index,
     int          cursor_index,
     text_struct  *text,
-    Real         *cursor_position )
+    VIO_Real         *cursor_position )
 {
     int      i, len;
-    Real     width;
+    VIO_Real     width;
 
     i = 0;
 
@@ -68,14 +68,14 @@ private  void      recreate_text_entry_text(
     widget_struct   *widget )
 {
     text_entry_struct   *text_entry;
-    Real                cursor_pos;
+    VIO_Real                cursor_pos;
 
     text_entry = get_widget_text_entry( widget );
 
     if( text_entry->label_only_flag )
     {
         (void) fit_text_within_widget( text_entry->string,
-                                       (Real) widget->x_size,
+                                       (VIO_Real) widget->x_size,
                                        0, 0, text_entry->text, &cursor_pos );
     }
     else
@@ -86,7 +86,7 @@ private  void      recreate_text_entry_text(
 #ifdef OLD
         while( text_entry->left_index >= 0 &&
                fit_text_within_widget( text_entry->string,
-                                    (Real) widget->x_size,
+                                    (VIO_Real) widget->x_size,
                                     text_entry->left_index,
                                     text_entry->string_index, text_entry->text,
                                     &cursor_pos ) )
@@ -98,7 +98,7 @@ private  void      recreate_text_entry_text(
 #endif
 
         while( !fit_text_within_widget( text_entry->string,
-                                    (Real) widget->x_size,
+                                    (VIO_Real) widget->x_size,
                                     text_entry->left_index,
                                     text_entry->string_index, text_entry->text,
                                     &cursor_pos ) )
@@ -120,7 +120,7 @@ private  void  insert_character_in_text_entry(
     int                key )
 {
     int     i, len;
-    STRING  inserted;
+    VIO_STR  inserted;
     
     len = string_length( text_entry->string );
 
@@ -313,7 +313,7 @@ public  void  position_text_entry(
     }
 }
 
-public  STRING  get_text_entry_string(
+public  VIO_STR  get_text_entry_string(
     widget_struct  *widget )
 {
     text_entry_struct   *text_entry;
@@ -324,7 +324,7 @@ public  STRING  get_text_entry_string(
 
 public  void  set_text_entry_string(
     widget_struct  *widget,
-    STRING         string )
+    VIO_STR         string )
 {
     text_entry_struct   *text_entry;
 
@@ -356,7 +356,7 @@ public  void  update_text_entry_colours(
     VIO_BOOL            colour_map_state;
     polygons_struct    *cursor_polygons;
     text_entry_struct  *text_entry;
-    Colour             rectangle_colour, text_colour;
+    VIO_Colour             rectangle_colour, text_colour;
 
     text_entry = get_widget_text_entry( widget );
 
@@ -419,7 +419,7 @@ public  void  update_text_entry_activity(
 private  void  create_text_entry_graphics(
     widget_struct        *widget,
     Font_types           text_font,
-    Real                 font_size )
+    VIO_Real                 font_size )
 {
     text_entry_struct    *text_entry;
     object_struct        *object;
@@ -482,17 +482,17 @@ private  widget_struct  *create_a_text_entry(
     int                        y_size,
     VIO_BOOL                    label_only_flag,
     VIO_BOOL                    clear_text_when_selected,
-    STRING                     initial_text,
+    VIO_STR                     initial_text,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
-    Colour                     edit_colour,
-    Colour                     text_edit_colour,
-    Colour                     cursor_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
+    VIO_Colour                     edit_colour,
+    VIO_Colour                     text_edit_colour,
+    VIO_Colour                     cursor_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       hit_return_callback,
     void                       *callback_data )
 {
@@ -554,17 +554,17 @@ public  widget_struct  *create_text_entry(
     int                        x_size,
     int                        y_size,
     VIO_BOOL                    clear_text_when_selected,
-    STRING                     initial_text,
+    VIO_STR                     initial_text,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
-    Colour                     edit_colour,
-    Colour                     text_edit_colour,
-    Colour                     cursor_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
+    VIO_Colour                     edit_colour,
+    VIO_Colour                     text_edit_colour,
+    VIO_Colour                     cursor_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       hit_return_callback,
     void                       *callback_data )
 {
@@ -585,14 +585,14 @@ public  widget_struct  *create_label(
     int                        y,
     int                        x_size,
     int                        y_size,
-    STRING                     initial_text,
+    VIO_STR                     initial_text,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
     Font_types                 text_font,
-    Real                       font_size )
+    VIO_Real                       font_size )
 {
     return( create_a_text_entry( graphics, viewport_index, x, y, x_size, y_size,
                          TRUE, FALSE,

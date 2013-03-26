@@ -7,7 +7,7 @@
 #define X_PIXELS_PER_TICK 64
 
 extern void *get_main_struct();
-extern Volume get_slice_volume(void *, int);
+extern VIO_Volume get_slice_volume(void *, int);
 
 struct xs_window {
     struct popup_struct popup;
@@ -68,12 +68,12 @@ private DEFINE_WIDGET_CALLBACK(xs_save_callback)
     Real x_min, x_max;
     int x_start, x_end;
     void *main_ptr;
-    Volume volume;
-    Real voxelpos[MAX_DIMENSIONS];
-    Real worldpos[MAX_DIMENSIONS];
-    int sizes[MAX_DIMENSIONS];
-    Real separations[MAX_DIMENSIONS];
-    Real starts[MAX_DIMENSIONS];
+    VIO_Volume volume;
+    Real voxelpos[VIO_MAX_DIMENSIONS];
+    Real worldpos[VIO_MAX_DIMENSIONS];
+    int sizes[VIO_MAX_DIMENSIONS];
+    Real separations[VIO_MAX_DIMENSIONS];
+    Real starts[VIO_MAX_DIMENSIONS];
     int volume_index;
     int view_index;
     Real vx, vy, vz;
@@ -238,7 +238,7 @@ static object_struct * display_text(struct xs_window *xswin,
 {
     object_struct *obj_ptr = create_object( TEXT );
     text_struct *txt_obj_ptr = get_text_ptr( obj_ptr );
-    Point point;
+    VIO_Point point;
 
     fill_Point( point, x, y, 0.0);
     initialize_text( txt_obj_ptr, &point, BLUE,
@@ -413,12 +413,12 @@ void xs_display(UI_struct *ui_info,
     int i, j;
     int volume_index;
     int view_index;
-    Real voxelpos[MAX_DIMENSIONS];
-    Real worldpos[MAX_DIMENSIONS];
-    int sizes[MAX_DIMENSIONS];
-    Real separations[MAX_DIMENSIONS];
-    Real starts[MAX_DIMENSIONS];
-    Volume volume;
+    Real voxelpos[VIO_MAX_DIMENSIONS];
+    Real worldpos[VIO_MAX_DIMENSIONS];
+    int sizes[VIO_MAX_DIMENSIONS];
+    Real separations[VIO_MAX_DIMENSIONS];
+    Real starts[VIO_MAX_DIMENSIONS];
+    VIO_Volume volume;
     void *main_ptr;
     widget_struct *widget;
     int x, y;
@@ -426,7 +426,7 @@ void xs_display(UI_struct *ui_info,
     object_struct *obj_ptr;
     text_struct *txt_obj_ptr;
     lines_struct *lines_obj_ptr;
-    Point point;
+    VIO_Point point;
     int ticks;
     Real x_min, x_max;
     Real y_min, y_max;

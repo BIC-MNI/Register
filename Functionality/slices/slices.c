@@ -74,7 +74,7 @@ public  int  get_slice_axis(
 
     check_axes_assigned();
 
-    for_less( axis, 0, N_DIMENSIONS )
+    for_less( axis, 0, VIO_N_DIMENSIONS )
     {
         if( x_axes[view_index] != axis && 
             y_axes[view_index] != axis )
@@ -94,9 +94,9 @@ public  void  get_slice_plane(
     Real          x_axis[],
     Real          y_axis[] )
 {
-    Volume   volume;
+    VIO_Volume   volume;
     int      c, axis, x_index, y_index;
-    Real     *slice_position, separations[MAX_DIMENSIONS];
+    Real     *slice_position, separations[VIO_MAX_DIMENSIONS];
     VIO_BOOL  x_flip, y_flip;
 
     get_slice_axes( view, &x_index, &y_index );
@@ -195,11 +195,11 @@ public  void  set_slice_viewport(
 public  void  set_volume_voxel_position(
     main_struct    *main,
     int            volume_index,
-    Real           position[N_DIMENSIONS] )
+    Real           position[VIO_N_DIMENSIONS] )
 {
     VIO_BOOL        changed;
-    Volume         volume;
-    int            view, axis, sizes[MAX_DIMENSIONS];
+    VIO_Volume         volume;
+    int            view, axis, sizes[VIO_MAX_DIMENSIONS];
     Real           pos;
     Real           *cursor_ptr;
 
@@ -209,7 +209,7 @@ public  void  set_volume_voxel_position(
 
     changed = FALSE;
 
-    for_less( axis, 0, N_DIMENSIONS )
+    for_less( axis, 0, VIO_N_DIMENSIONS )
     {
         if( position[axis] < -0.5 )
             pos = -0.5;
@@ -242,12 +242,12 @@ public  void  set_volume_voxel_position(
 public  void  get_volume_voxel_position(
     main_struct   *main,
     int           volume,
-    Real          position[N_DIMENSIONS] )
+    Real          position[VIO_N_DIMENSIONS] )
 {
     Real           *cursor_ptr;
-    Real           original_world_position1[N_DIMENSIONS];
-    Real           original_world_position2[N_DIMENSIONS];
-    Real           world_position[N_DIMENSIONS];
+    Real           original_world_position1[VIO_N_DIMENSIONS];
+    Real           original_world_position2[VIO_N_DIMENSIONS];
+    Real           world_position[VIO_N_DIMENSIONS];
 
     if( volume <= MERGED_VOLUME_INDEX )
     {
@@ -347,10 +347,10 @@ public  void  convert_world_to_original_world(
 public  void  set_volume_world_position(
     main_struct    *main,
     int            volume_index,
-    Real           world_position[N_DIMENSIONS] )
+    Real           world_position[VIO_N_DIMENSIONS] )
 {
-    Real           original_world[N_DIMENSIONS];
-    Real           voxel_position[N_DIMENSIONS];
+    Real           original_world[VIO_N_DIMENSIONS];
+    Real           voxel_position[VIO_N_DIMENSIONS];
 
     convert_world_to_original_world( main, volume_index,
                                      world_position[X],
@@ -373,10 +373,10 @@ public  void  set_volume_world_position(
 public  void  get_volume_world_position(
     main_struct   *main,
     int           volume_index,
-    Real          world_position[N_DIMENSIONS] )
+    Real          world_position[VIO_N_DIMENSIONS] )
 {
-    Real           voxel_position[N_DIMENSIONS];
-    Real           original_world[N_DIMENSIONS];
+    Real           voxel_position[VIO_N_DIMENSIONS];
+    Real           original_world[VIO_N_DIMENSIONS];
 
     get_volume_voxel_position( main, volume_index, voxel_position );
 
@@ -406,7 +406,7 @@ public  void  convert_original_world_to_voxel(
     Real           *y_voxel,
     Real           *z_voxel )
 {
-    Real   x_world, y_world, z_world, voxel[MAX_DIMENSIONS];
+    Real   x_world, y_world, z_world, voxel[VIO_MAX_DIMENSIONS];
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
@@ -439,7 +439,7 @@ public  void  convert_voxel_to_original_world(
     Real           *y_original,
     Real           *z_original )
 {
-    Real   voxel[MAX_DIMENSIONS], world_position[N_DIMENSIONS];
+    Real   voxel[VIO_MAX_DIMENSIONS], world_position[VIO_N_DIMENSIONS];
 
     voxel[X] = x_voxel;
     voxel[Y] = y_voxel;
@@ -468,9 +468,9 @@ public  void  convert_voxel_to_original_world(
 public  void  set_volume_original_world_position(
     main_struct    *main,
     int            volume_index,
-    Real           original_world_position[N_DIMENSIONS] )
+    Real           original_world_position[VIO_N_DIMENSIONS] )
 {
-    Real           voxel_position[N_DIMENSIONS];
+    Real           voxel_position[VIO_N_DIMENSIONS];
 
     convert_original_world_to_voxel( main, volume_index,
                                      original_world_position[X],
@@ -495,8 +495,8 @@ public  void  set_volume_time_position(main_struct *main_ptr,
                                        int volume_index,
                                        Real tpos)
 {
-    int sizes[MAX_DIMENSIONS];
-    Volume volume;
+    int sizes[VIO_MAX_DIMENSIONS];
+    VIO_Volume volume;
 
     volume = get_slice_volume( main_ptr, volume_index );
 
@@ -526,9 +526,9 @@ public  void  set_volume_time_position(main_struct *main_ptr,
 public  void  get_volume_original_world_position(
     main_struct   *main,
     int           volume_index,
-    Real          original_world_position[N_DIMENSIONS] )
+    Real          original_world_position[VIO_N_DIMENSIONS] )
 {
-    Real           voxel_position[N_DIMENSIONS];
+    Real           voxel_position[VIO_N_DIMENSIONS];
 
     get_volume_voxel_position( main, volume_index, voxel_position );
 
@@ -541,7 +541,7 @@ public  void  get_volume_original_world_position(
                                      &original_world_position[Z] );
 }
 
-public  Volume  get_slice_volume(
+public  VIO_Volume  get_slice_volume(
     main_struct   *main,
     int           volume_index )
 {
@@ -558,7 +558,7 @@ public  void  get_volume_range_of_voxels(
     int           *max_value )
 {
     Real    real_min, real_max;
-    Volume  volume;
+    VIO_Volume  volume;
 
     *min_value = 0;
     *max_value = -1;
@@ -663,8 +663,8 @@ public  Real  get_voxel_value(
     Real          y_voxel,
     Real          z_voxel )
 {
-    Real           value, position[MAX_DIMENSIONS];
-    Volume         volume;
+    Real           value, position[VIO_MAX_DIMENSIONS];
+    VIO_Volume         volume;
     Real           tpos;
 
     volume = get_slice_volume( main, volume_index );

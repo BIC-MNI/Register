@@ -21,7 +21,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 public  void  do_resampling(
     UI_struct           *ui,
     VIO_General_transform   *resampling_transform,
-    STRING              resampled_filename )
+    VIO_STR              resampled_filename )
 {
     replace_string( &ui->original_filename_volume_2,
                create_string(IF_get_volume_filename(RESAMPLED_VOLUME_INDEX)) );

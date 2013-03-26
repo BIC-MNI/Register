@@ -23,7 +23,7 @@ private  void   create_tags_array(
     int                n_tag_points,
     tag_point_struct   tag_points[],
     int                which_volume,
-    Real               ***tag_array )
+    VIO_Real               ***tag_array )
 {
     int   i, tag_index, d, n_valid;
 
@@ -35,7 +35,7 @@ private  void   create_tags_array(
 
     if( n_valid > 0 )
     {
-        ALLOC2D( *tag_array, n_valid, N_DIMENSIONS );
+        VIO_ALLOC2D( *tag_array, n_valid, VIO_N_DIMENSIONS );
 
         tag_index = 0;
 
@@ -43,9 +43,9 @@ private  void   create_tags_array(
         {
             if( valid_tags[i] )
             {
-                for_less( d, 0, N_DIMENSIONS )
+                for_less( d, 0, VIO_N_DIMENSIONS )
                 {
-                    (*tag_array)[tag_index][d] = (Real) Point_coord
+                    (*tag_array)[tag_index][d] = (VIO_Real) Point_coord
                                     (tag_points[i].position[which_volume], d );
                 }
 
@@ -55,7 +55,7 @@ private  void   create_tags_array(
     }
 }
 
-private  STRING  create_comments(
+private  VIO_STR  create_comments(
     main_struct   *main )
 {
     char    buffer1[EXTREMELY_LARGE_STRING_SIZE];
@@ -63,7 +63,7 @@ private  STRING  create_comments(
 
     if( main->trislice[0].input_flag )
     {
-        (void) sprintf( buffer1, "Volume: %s\n",
+        (void) sprintf( buffer1, "VIO_Volume: %s\n",
                         get_volume_filename(main,0) );
     }
     else
@@ -71,7 +71,7 @@ private  STRING  create_comments(
 
     if( main->trislice[1].input_flag )
     {
-        (void) sprintf( buffer2, "Volume: %s\n",
+        (void) sprintf( buffer2, "VIO_Volume: %s\n",
                         get_volume_filename(main,1) );
     }
     else
@@ -80,19 +80,19 @@ private  STRING  create_comments(
     return( concat_strings( buffer1, buffer2 ) );
 }
 
-public  Status   save_tag_points(
+public  VIO_Status   save_tag_points(
     main_struct   *main,
-    STRING        filename )
+    VIO_STR        filename )
 {
     int              i, n_valid_tags;
     FILE             *file;
-    Status           status;
+    VIO_Status           status;
     int              n_volumes, tag_index;
-    Real             **tags_volume1, **tags_volume2, ***ptr;
-    STRING           *labels;
+    VIO_Real             **tags_volume1, **tags_volume2, ***ptr;
+    VIO_STR           *labels;
     tag_list_struct  *tags;
     VIO_BOOL          *tag_is_valid;
-    STRING           comments;
+    VIO_STR           comments;
 
     tags = &main->tags;
     tags_volume2 = NULL;
@@ -169,7 +169,7 @@ public  Status   save_tag_points(
         status = output_tag_points( file, comments, n_volumes,
                                     n_valid_tags,
                                     tags_volume1, tags_volume2,
-                                    (Real *) NULL, (int *) NULL, (int *) NULL,
+                                    (VIO_Real *) NULL, (int *) NULL, (int *) NULL,
                                     labels );
 
         delete_string( comments );
@@ -177,7 +177,7 @@ public  Status   save_tag_points(
 
     if( n_valid_tags > 0 )
     {
-        FREE2D( tags_volume1 );
+        VIO_FREE2D( tags_volume1 );
 
         for_less( i, 0, n_valid_tags )
             delete_string( labels[i] );
@@ -185,7 +185,7 @@ public  Status   save_tag_points(
         FREE( labels );
 
         if( n_volumes == 2 )
-           FREE2D( tags_volume2 );
+           VIO_FREE2D( tags_volume2 );
     }
 
     if( status == OK )
@@ -199,17 +199,17 @@ public  Status   save_tag_points(
     return( status );
 }
 
-public  Status   load_tag_points(
+public  VIO_Status   load_tag_points(
     main_struct   *main,
-    STRING        filename )
+    VIO_STR        filename )
 {
     int              i, d, n_tag_points;
     FILE             *file;
-    Status           file_status, status;
+    VIO_Status           file_status, status;
     int              n_volumes;
-    Real             **tags_volume1, **tags_volume2;
-    STRING           *labels;
-    Real             position[N_DIMENSIONS];
+    VIO_Real             **tags_volume1, **tags_volume2;
+    VIO_STR           *labels;
+    VIO_Real             position[VIO_N_DIMENSIONS];
 
     file_status = open_file_with_default_suffix( filename, TAG_FILE_SUFFIX,
                                                  READ_FILE,
@@ -219,7 +219,7 @@ public  Status   load_tag_points(
 
     if( status == OK &&
         input_tag_points( file, &n_volumes, &n_tag_points, &tags_volume1,
-                          &tags_volume2, (Real **) NULL, (int **) NULL,
+                          &tags_volume2, (VIO_Real **) NULL, (int **) NULL,
                           (int **) NULL, &labels ) != OK )
     {
         status = ERROR;
@@ -234,14 +234,14 @@ public  Status   load_tag_points(
         {
             create_new_tag_point( main );
 
-            for_less( d, 0, N_DIMENSIONS )
+            for_less( d, 0, VIO_N_DIMENSIONS )
                 position[d] = tags_volume1[i][d];
 
             set_tag_point_position( main, i, 0, position );
 
             if( n_volumes == 2 )
             {
-                for_less( d, 0, N_DIMENSIONS )
+                for_less( d, 0, VIO_N_DIMENSIONS )
                     position[d] = tags_volume2[i][d];
 
                 set_tag_point_position( main, i, 1, position );
@@ -251,7 +251,7 @@ public  Status   load_tag_points(
         }
 
         free_tag_points( n_volumes, n_tag_points, tags_volume1, tags_volume2,
-                         (Real *) NULL, (int *) 0, (int *) 0, labels );
+                         (VIO_Real *) NULL, (int *) 0, (int *) 0, labels );
     }
 
     if( file_status == OK )
@@ -264,13 +264,13 @@ public  Status   load_tag_points(
     return( status );
 }
 
-public  Status   save_transform(
+public  VIO_Status   save_transform(
     main_struct   *main,
-    STRING        filename )
+    VIO_STR        filename )
 {
-    Status                   status;
+    VIO_Status                   status;
     VIO_General_transform        *transform;
-    STRING                   comments;
+    VIO_STR                   comments;
 
     status = OK;
 

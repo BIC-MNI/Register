@@ -22,8 +22,8 @@ public  void  update_volume_readout(
     UI_struct  *ui,
     int        volume_index )
 {
-    Real   value;
-    Real   voxel[N_DIMENSIONS];
+    VIO_Real   value;
+    VIO_Real   voxel[VIO_N_DIMENSIONS];
 
     if( volume_index < MERGED_VOLUME_INDEX )
     {
@@ -73,8 +73,8 @@ private  void  modify_readout(
     int        *volume_index )
 {
     int    viewport_index;
-    Real   value;
-    Real   voxel_position[N_DIMENSIONS];
+    VIO_Real   value;
+    VIO_Real   voxel_position[VIO_N_DIMENSIONS];
 
     if( find_viewport_containing_mouse( &ui->graphics_window.event_viewports,
                                         x_mouse, y_mouse, &viewport_index ) &&

@@ -35,7 +35,7 @@ public  VIO_BOOL  is_resampled_volume_loaded(
     return( main->resampled_file_loaded );
 }
 
-public  STRING  get_volume_filename(
+public  VIO_STR  get_volume_filename(
     main_struct    *main,
     int            volume_index )
 {
@@ -51,11 +51,11 @@ public  STRING  get_volume_filename(
 private  void   record_register_volume(
     main_struct    *main,
     int            volume_index,
-    Volume         volume,
-    STRING         filename )
+    VIO_Volume         volume,
+    VIO_STR         filename )
 {
-    int     view, axis, sizes[N_DIMENSIONS];
-    Real    min_value, max_value, *cursor_ptr;
+    int     view, axis, sizes[VIO_N_DIMENSIONS];
+    VIO_Real    min_value, max_value, *cursor_ptr;
 
     if( is_volume_active( main, volume_index ) )
     {
@@ -72,8 +72,8 @@ private  void   record_register_volume(
 
     cursor_ptr = get_volume_cursor( main, volume_index );
 
-    for_less( axis, 0, N_DIMENSIONS )
-        cursor_ptr[axis] = (Real) (sizes[axis]-1) / 2.0;
+    for_less( axis, 0, VIO_N_DIMENSIONS )
+        cursor_ptr[axis] = (VIO_Real) (sizes[axis]-1) / 2.0;
 
     for_less( view, 0, N_VIEWS )
     {
@@ -103,7 +103,7 @@ private  void   record_register_volume(
 public  void   set_register_volume(
     main_struct    *main,
     int            volume_index,
-    STRING         filename )
+    VIO_STR         filename )
 {
     record_register_volume( main, volume_index,
                             main->trislice[volume_index].volume_being_input,
@@ -116,8 +116,8 @@ public  void   set_register_volume(
 public  void   set_register_resampled_volume(
     main_struct            *main,
     int                    volume_index,
-    STRING                 filename,
-    STRING                 original_filename,
+    VIO_STR                 filename,
+    VIO_STR                 original_filename,
     VIO_General_transform      *resampling_transform )
 {
     record_register_volume( main, RESAMPLED_VOLUME_INDEX,
@@ -167,8 +167,8 @@ public  void  set_merged_volume_activity(
     main_struct    *main,
     VIO_BOOL        activity )
 {
-    int     view, axis, sizes[N_DIMENSIONS];
-    Real    position[N_DIMENSIONS];
+    int     view, axis, sizes[VIO_N_DIMENSIONS];
+    VIO_Real    position[VIO_N_DIMENSIONS];
 
     if( activity )
     {
@@ -177,8 +177,8 @@ public  void  set_merged_volume_activity(
 
         get_volume_sizes( get_slice_volume(main,0), sizes );
 
-        for_less( axis, 0, N_DIMENSIONS )
-            position[axis] = (Real) (sizes[axis]-1) / 2.0;
+        for_less( axis, 0, VIO_N_DIMENSIONS )
+            position[axis] = (VIO_Real) (sizes[axis]-1) / 2.0;
 
         set_volume_voxel_position( main, MERGED_VOLUME_INDEX, position );
     }
@@ -203,12 +203,12 @@ public  VIO_BOOL  get_merged_volume_activity(
 
 char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime };
 
-public  Status  start_loading_volume(
+public  VIO_Status  start_loading_volume(
     main_struct    *main,
     int            volume_index,
-    STRING         filename )
+    VIO_STR         filename )
 {
-    Status                 status;
+    VIO_Status                 status;
     minc_input_options     options;
 
     set_default_minc_input_options( &options );
@@ -245,11 +245,11 @@ public  Status  start_loading_volume(
 public  VIO_BOOL  load_more_of_volume(
     main_struct    *main,
     int            volume_index,
-    Real           max_time,
-    Real           *fraction_done )
+    VIO_Real           max_time,
+    VIO_Real           *fraction_done )
 {
     VIO_BOOL       done_loading;
-    Real          end_time;
+    VIO_Real          end_time;
 
     end_time = current_realtime_seconds() + max_time;
 

@@ -44,7 +44,7 @@ private  void  update_move_voxel_cursor(
      UI_struct *ui_info )
 {
     int    volume_index;
-    Real   voxel_position[MAX_DIMENSIONS];
+    Real   voxel_position[VIO_MAX_DIMENSIONS];
 
     if( get_voxel_under_mouse( ui_info, ui_info->interaction_viewport_index,
                                &volume_index, voxel_position ) )
@@ -87,7 +87,7 @@ private  void  update_move_slice(
      UI_struct *ui_info )
 {
     int   volume, view, x_mouse, y_mouse;
-    Real  position[MAX_DIMENSIONS], delta_slice;
+    Real  position[VIO_MAX_DIMENSIONS], delta_slice;
 
     ui_get_volume_view_index( ui_info->interaction_viewport_index,
                               &volume, &view );
@@ -131,7 +131,7 @@ private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )
 private  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )
 {
     int   volume, view;
-    Real  position[MAX_DIMENSIONS];
+    Real  position[VIO_MAX_DIMENSIONS];
 
     start_interaction( get_ui_struct(), event_viewport_index,
                        MIDDLE_MOUSE_UP_EVENT, middle_mouse_up_callback,
@@ -256,7 +256,7 @@ private  void  increment_slice(
      int              increment )
 {
     int   volume, view, axis;
-    Real  position[MAX_DIMENSIONS];
+    Real  position[VIO_MAX_DIMENSIONS];
 
     if( is_slice_viewport( viewport ) )
     {

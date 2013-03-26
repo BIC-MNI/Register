@@ -18,7 +18,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 
 #include  <user_interface.h>
 
-static  Colour  colours[N_UI_COLOURS];
+static  VIO_Colour  colours[N_UI_COLOURS];
 
 public  void  initialize_ui_colours( void )
 {
@@ -66,18 +66,18 @@ public  int  get_ui_colour_index(
     return( colour_name + start_colour_table );
 }
 
-public  Colour  get_ui_rgb_colour(
+public  VIO_Colour  get_ui_rgb_colour(
     UI_colours  colour_name )
 {
     return( colours[colour_name] );
 }
 
-public  Colour  get_ui_colour(
+public  VIO_Colour  get_ui_colour(
     VIO_BOOL        colour_map_state,
     UI_colours     colour_name )
 {
     if( colour_map_state )
-        return( (Colour) get_ui_colour_index(colour_name) );
+        return( (VIO_Colour) get_ui_colour_index(colour_name) );
     else
         return( get_ui_rgb_colour(colour_name) );
 }
@@ -85,7 +85,7 @@ public  Colour  get_ui_colour(
 public  void  set_ui_colour(
     UI_struct    *ui,
     UI_colours   colour_name,
-    Colour       colour )
+    VIO_Colour       colour )
 {
     colours[colour_name] = colour;
 
@@ -114,7 +114,7 @@ public  void  set_window_colours( window_struct *window )
     if( G_get_colour_map_state(window) )
     {
         G_set_background_colour( window,
-                                 (Colour)
+                                 (VIO_Colour)
                                  get_ui_colour_index(BACKGROUND_COLOUR) );
     }
     else

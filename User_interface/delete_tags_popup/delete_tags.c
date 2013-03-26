@@ -55,7 +55,7 @@ public  void  popup_delete_tags(
     UI_struct   *ui )
 {
     int               x, y;
-    Point             point;
+    VIO_Point             point;
     object_struct     *object;
     text_struct       *text;
     widget_struct     *widget;
@@ -76,7 +76,7 @@ public  void  popup_delete_tags(
 
     object = create_object( TEXT );
     text = get_text_ptr( object );
-    fill_Point( point, x, (Real) y - Message_font_size, 0.0 );
+    fill_Point( point, x, (VIO_Real) y - Message_font_size, 0.0 );
     initialize_text( text, &point, Message_text_colour,
                      (Font_types) Message_font, Message_font_size );
 

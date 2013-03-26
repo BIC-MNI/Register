@@ -28,7 +28,7 @@ private  DEFINE_EVENT_FUNCTION( more_input )
 {
     VIO_BOOL       done_loading;
     load_struct   *data;
-    Real          fraction_done;
+    VIO_Real          fraction_done;
 
     data = (load_struct *) callback_data;
 
@@ -64,13 +64,13 @@ private  void  delete_popup_interaction(
     FREE( data );
 }
 
-public  Status  initialize_loading_volume(
+public  VIO_Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
-    STRING     filename,
+    VIO_STR     filename,
     VIO_BOOL    this_is_resampled_volume )
 {
-    Status        status;
+    VIO_Status        status;
     load_struct   *data;
     int           x_window, y_window;
     int           x_min, y_min, x_max, y_max;
@@ -110,7 +110,7 @@ private  void  volume_has_been_loaded(
     UI_struct      *ui_info,
     load_struct    *data )
 {
-    Real   min_value, max_value;
+    VIO_Real   min_value, max_value;
 
     if( !IF_volume_is_loaded( data->volume_index ) )
     {

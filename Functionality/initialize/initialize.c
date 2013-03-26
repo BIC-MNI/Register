@@ -31,7 +31,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 
 
 // private  void  read_global_files(
-//     STRING  executable_name );
+//     VIO_STR  executable_name );
 
 private   main_struct      main_info;
 
@@ -42,9 +42,9 @@ public  main_struct  *get_main_struct( void )
     return( &main_info );
 }
 
-public  Status   initialize_register(
+public  VIO_Status   initialize_register(
     Gwindow   window,
-    STRING    executable_name )
+    VIO_STR    executable_name )
 {
     int             volume, view;
     Bitplane_types  bitplane;
@@ -92,7 +92,7 @@ public  Status   initialize_register(
     main_info.cursor_visibility = ON;
     main_info.degrees_continuity = -1;
     create_linear_transform( &main_info.resampling_transform,
-                             (Transform *) NULL );
+                             (VIO_Transform *) NULL );
 
     main_info.render_storage = initialize_render_storage();
 
@@ -138,10 +138,10 @@ private  void    initialize_global_colours( void )
 }
 
 // private  void  read_global_files(
-//     STRING  executable_name )
+//     VIO_STR  executable_name )
 // {
 //     int      dir, n_directories;
-//     STRING   runtime_directory, *directories, globals_filename;
+//     VIO_STR   runtime_directory, *directories, globals_filename;
 // 
 //     runtime_directory = extract_directory( executable_name );
 // 
@@ -177,9 +177,9 @@ private  void    initialize_global_colours( void )
 //     FREE( directories );
 // }
 
-// public  Status  set_functional_global_variable(
-//     STRING  variable_name,
-//     STRING  value_to_set )
+// public  VIO_Status  set_functional_global_variable(
+//     VIO_STR  variable_name,
+//     VIO_STR  value_to_set )
 // {
 //     return( set_global_variable( SIZEOF_STATIC_ARRAY(functional_globals),
 //                                  functional_globals, variable_name,

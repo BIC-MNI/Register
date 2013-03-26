@@ -22,8 +22,8 @@ public  void  initialize_meter(
     popup_struct     *popup,
     int              x_size,
     int              y_size,
-    Colour           background_colour,
-    Colour           colour,
+    VIO_Colour           background_colour,
+    VIO_Colour           colour,
     polygons_struct  **meter_background,
     polygons_struct  **meter )
 {
@@ -63,7 +63,7 @@ public  void  set_meter_position(
     popup_struct      *popup,
     polygons_struct   *meter_background,
     polygons_struct   *meter,
-    Real              fraction_done )
+    VIO_Real              fraction_done )
 {
     int   x, y, x_size, y_size, new_pos;
 
@@ -72,7 +72,7 @@ public  void  set_meter_position(
     x_size = (int) Point_x(meter_background->points[1]) - x + 1;
     y_size = (int) Point_y(meter_background->points[2]) - y + 1;
 
-    new_pos = ROUND( fraction_done * (Real) x_size );
+    new_pos = ROUND( fraction_done * (VIO_Real) x_size );
 
     if( new_pos != (int) Point_x(meter->points[0]) )
     {

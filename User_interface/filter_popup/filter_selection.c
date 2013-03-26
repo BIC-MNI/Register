@@ -112,7 +112,7 @@ private  DEFINE_WIDGET_CALLBACK( gaussian_callback )
 
 private  DEFINE_WIDGET_CALLBACK( filter_width_callback )
 {
-    Real             value;
+    VIO_Real             value;
     callback_struct  *callback;
 
     if( get_text_entry_real_value( widget, &value ) && value >= 0.0 )
@@ -278,9 +278,9 @@ public  void  popup_filter_selection(
     filter_selection_struct   *popup;
     int                       view_start_index, height;
     Filter_types              filter_type;
-    Real                      filter_width;
+    VIO_Real                      filter_width;
     char                      window_name[EXTREMELY_LARGE_STRING_SIZE];
-    static STRING             view_names[3];
+    static VIO_STR             view_names[3];
 
     view_names[0] = Filter_name1;
     view_names[1] = Filter_name2;

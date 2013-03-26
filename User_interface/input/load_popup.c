@@ -36,7 +36,7 @@ public  void  initialize_load_popup(
     load_struct   *load_data,
     int           x_position,
     int           y_position,
-    STRING        filename )
+    VIO_STR        filename )
 {
     widget_struct  *widget;
 
@@ -47,8 +47,8 @@ public  void  initialize_load_popup(
 
     initialize_meter( &load_data->popup,
                       Load_meter_x_size, Load_meter_y_size,
-                      (Colour) Load_meter_background_colour,
-                      (Colour) Load_meter_colour,
+                      (VIO_Colour) Load_meter_background_colour,
+                      (VIO_Colour) Load_meter_colour,
                       &load_data->meter_background,
                       &load_data->meter );
 
@@ -74,7 +74,7 @@ public  void  delete_load_popup(
 
 public  void  set_load_popup_meter(
     load_struct   *load_data,
-    Real          fraction_done )
+    VIO_Real          fraction_done )
 {
     set_meter_position( &load_data->popup, load_data->meter_background,
                         load_data->meter, fraction_done );

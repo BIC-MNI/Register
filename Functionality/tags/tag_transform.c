@@ -37,8 +37,8 @@ private  void  recompute_tag_rms_errors(
     tag_list_struct   *tags )
 {
     int    i, n_active;
-    Real   dist, rms_error, x, y, z;
-    Point  transformed;
+    VIO_Real   dist, rms_error, x, y, z;
+    VIO_Point  transformed;
 
     rms_error = 0.0;
     n_active = 0;
@@ -46,9 +46,9 @@ private  void  recompute_tag_rms_errors(
     for_less( i, 0, tags->n_tag_points )
     {
         general_transform_point( &tags->v2_to_v1_transform,
-                               (Real) Point_x(tags->tag_points[i].position[1]),
-                               (Real) Point_y(tags->tag_points[i].position[1]),
-                               (Real) Point_z(tags->tag_points[i].position[1]),
+                               (VIO_Real) Point_x(tags->tag_points[i].position[1]),
+                               (VIO_Real) Point_y(tags->tag_points[i].position[1]),
+                               (VIO_Real) Point_z(tags->tag_points[i].position[1]),
                                &x, &y, &z );
 
         fill_Point( transformed, x, y, z );
@@ -68,14 +68,14 @@ private  void  recompute_tag_rms_errors(
     if( n_active == 0 )
         tags->avg_rms_error = 0.0;
     else
-        tags->avg_rms_error = sqrt( rms_error / (Real) n_active );
+        tags->avg_rms_error = sqrt( rms_error / (VIO_Real) n_active );
 }
 
 public  void  recompute_tag_transform(
     tag_list_struct   *tags )
 {
     int        i, c, n_valid;
-    Real       **Apoints, **Bpoints;
+    VIO_Real       **Apoints, **Bpoints;
 
     if( tags->transform_exists )
         delete_general_transform( &tags->v2_to_v1_transform );
@@ -86,8 +86,8 @@ public  void  recompute_tag_transform(
         return;
     }
     
-    ALLOC2D( Apoints, tags->n_tag_points, N_DIMENSIONS );
-    ALLOC2D( Bpoints, tags->n_tag_points, N_DIMENSIONS );
+    VIO_ALLOC2D( Apoints, tags->n_tag_points, VIO_N_DIMENSIONS );
+    VIO_ALLOC2D( Bpoints, tags->n_tag_points, VIO_N_DIMENSIONS );
 
     n_valid = 0;
 
@@ -97,11 +97,11 @@ public  void  recompute_tag_transform(
             tags->tag_points[i].position_exists[0] &&
             tags->tag_points[i].position_exists[1] )
         {
-            for_less( c, 0, N_DIMENSIONS )
+            for_less( c, 0, VIO_N_DIMENSIONS )
             {
-                Apoints[n_valid][c] = (Real) Point_coord(tags->tag_points[i]
+                Apoints[n_valid][c] = (VIO_Real) Point_coord(tags->tag_points[i]
                                                          .position[0],c);
-                Bpoints[n_valid][c] = (Real) Point_coord(tags->tag_points[i]
+                Bpoints[n_valid][c] = (VIO_Real) Point_coord(tags->tag_points[i]
                                                          .position[1],c);
             }
             ++n_valid;
@@ -119,6 +119,6 @@ public  void  recompute_tag_transform(
     else
         tags->transform_exists = FALSE;
 
-    FREE2D( Apoints );
-    FREE2D( Bpoints );
+    VIO_FREE2D( Apoints );
+    VIO_FREE2D( Bpoints );
 }

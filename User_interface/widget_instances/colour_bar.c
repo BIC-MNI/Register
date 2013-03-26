@@ -134,7 +134,7 @@ private  DEFINE_WIDGET_CALLBACK( over_button_callback )
 private  void  change_limits(
     widget_struct  *widget )
 {
-    Real   min_val, max_val;
+    VIO_Real   min_val, max_val;
     int    volume_index;
 
     volume_index = get_viewport_volume_index( widget->viewport_index );
@@ -256,7 +256,7 @@ public  int  add_colour_bar_widgets(
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Under",
                    OFF, TRUE,
-                   (Colour) (volume == 0 ? VOLUME1_UNDER_COLOUR :
+                   (VIO_Colour) (volume == 0 ? VOLUME1_UNDER_COLOUR :
                                            VOLUME2_UNDER_COLOUR),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
@@ -286,7 +286,7 @@ public  int  add_colour_bar_widgets(
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Over",
                    OFF, TRUE,
-                   (Colour) (volume == 0 ? VOLUME1_OVER_COLOUR :
+                   (VIO_Colour) (volume == 0 ? VOLUME1_OVER_COLOUR :
                                            VOLUME2_OVER_COLOUR),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
@@ -368,7 +368,7 @@ public  void  set_over_under_colour(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
-    Colour            colour )
+    VIO_Colour            colour )
 {
     Viewport_types      viewport;
     Colour_bar_widgets  widget_index;
@@ -408,8 +408,8 @@ public  void  set_over_under_colour(
 public  void  set_colour_bar_limits(
     UI_struct         *ui_info,
     int               volume_index,
-    Real              min_value,
-    Real              max_value )
+    VIO_Real              min_value,
+    VIO_Real              max_value )
 {
     Viewport_types      viewport;
 
@@ -424,8 +424,8 @@ public  void  set_colour_bar_limits(
 public  void  set_colour_bar_values(
     UI_struct         *ui_info,
     int               volume_index,
-    Real              min_value,
-    Real              max_value )
+    VIO_Real              min_value,
+    VIO_Real              max_value )
 {
     Viewport_types      viewport;
 

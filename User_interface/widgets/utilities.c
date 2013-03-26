@@ -19,22 +19,22 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 #include  <user_interface.h>
 
 public  object_struct  *create_rectangle(
-    Colour       colour )
+    VIO_Colour       colour )
 {
-    Point             point;
+    VIO_Point             point;
     object_struct     *object;
     polygons_struct   *polygons;
 
     object = create_object( POLYGONS );
     polygons = get_polygons_ptr( object );
 
-    initialize_polygons( polygons, colour, (Surfprop *) 0 );
+    initialize_polygons( polygons, colour, (VIO_Surfprop *) 0 );
 
     fill_Point( point, 0.0, 0.0, 0.0 );
-    add_point_to_polygon( polygons, &point, (Vector *) 0 );
-    add_point_to_polygon( polygons, &point, (Vector *) 0 );
-    add_point_to_polygon( polygons, &point, (Vector *) 0 );
-    add_point_to_polygon( polygons, &point, (Vector *) 0 );
+    add_point_to_polygon( polygons, &point, (VIO_Vector *) 0 );
+    add_point_to_polygon( polygons, &point, (VIO_Vector *) 0 );
+    add_point_to_polygon( polygons, &point, (VIO_Vector *) 0 );
+    add_point_to_polygon( polygons, &point, (VIO_Vector *) 0 );
 
     return( object );
 }
@@ -53,11 +53,11 @@ public  void  position_rectangle(
 }
 
 public  object_struct  *create_text(
-    Colour           colour,
+    VIO_Colour           colour,
     Font_types       text_font,
-    Real             font_size )
+    VIO_Real             font_size )
 {
-    Point             point;
+    VIO_Point             point;
     object_struct     *object;
     text_struct       *text;
 
@@ -78,12 +78,12 @@ public  void  position_text(
     int           y,
     int           y_size )
 {
-    Real            height;
+    VIO_Real            height;
 
     height = G_get_text_height( text->font, text->size );
 
     x = x;
-    y = y + ROUND( ((Real) y_size - height) / 2.0 );
+    y = y + ROUND( ((VIO_Real) y_size - height) / 2.0 );
 
     fill_Point( text->origin, x, y, 0.0 );
 }
@@ -95,13 +95,13 @@ public  void  position_text_centred(
     int            x_size,
     int            y_size )
 {
-    Real            width, height;
+    VIO_Real            width, height;
 
     width = G_get_text_length( text->string, text->font, text->size );
     height = G_get_text_height( text->font, text->size );
 
-    fill_Point( text->origin, (Real) x + ((Real) x_size - width) / 2.0,
-                              (Real) y + ((Real) y_size - height) / 2.0, 0 );
+    fill_Point( text->origin, (VIO_Real) x + ((VIO_Real) x_size - width) / 2.0,
+                              (VIO_Real) y + ((VIO_Real) y_size - height) / 2.0, 0 );
 }
 
 public  VIO_BOOL  get_toggle_button_state(
@@ -133,7 +133,7 @@ public  VIO_BOOL  get_toggle_button_state(
 
 public  VIO_BOOL  get_text_entry_real_value(
     widget_struct  *widget,
-    Real           *value )
+    VIO_Real           *value )
 {
     VIO_BOOL            found;
     double             double_value;
@@ -142,7 +142,7 @@ public  VIO_BOOL  get_text_entry_real_value(
 
     if( sscanf( get_text_entry_string(widget), "%lf", &double_value ) == 1 )
     {
-        *value = (Real) double_value;
+        *value = (VIO_Real) double_value;
         found = TRUE;
     }
     else
@@ -155,8 +155,8 @@ public  VIO_BOOL  get_text_entry_real_value(
 
 public  void  set_text_entry_real_value(
     widget_struct     *widget,
-    STRING            format,
-    Real              value )
+    VIO_STR            format,
+    VIO_Real              value )
 {
     char          buffer[EXTREMELY_LARGE_STRING_SIZE];
 
@@ -167,7 +167,7 @@ public  void  set_text_entry_real_value(
 
 public  void  set_button_int_value(
     widget_struct     *widget,
-    STRING            format,
+    VIO_STR            format,
     int               value )
 {
     char          buffer[EXTREMELY_LARGE_STRING_SIZE];

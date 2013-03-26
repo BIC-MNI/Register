@@ -108,7 +108,7 @@ private  DEFINE_WIDGET_CALLBACK( world_z_position2_callback )
 private  void  set_and_jump_to_tag(
      int  tag_index )
 {
-    Real  position[N_DIMENSIONS];
+    VIO_Real  position[VIO_N_DIMENSIONS];
     int   volume_index, tag_volume;
 
     set_current_tag_index( get_ui_struct(), tag_index );
@@ -143,7 +143,7 @@ private  void  set_current_tag_from_button(
 private  DEFINE_WIDGET_CALLBACK( tag_name_callback )
 {
     int     tag_index;
-    STRING  name;
+    VIO_STR  name;
 
     name = get_text_entry_string( widget );
     tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
@@ -278,7 +278,7 @@ public  void  set_tag_world_text(
     int               volume_index,
     int               tag_index,
     int               axis_index,
-    Real              value )
+    VIO_Real              value )
 {
     Viewport_types  viewport_index;
 
@@ -301,9 +301,9 @@ public  void  add_tag_point_widgets(
 {
     int      tag, x, y, x_left, y_top, x_min, x_max, y_min, y_max;
 
-    ALLOC2D( rms_widget_indices, n_tag_points, N_RMS_WIDGETS );
-    ALLOC3D( position_widgets_indices, 2, n_tag_points, N_POSITION_WIDGETS );
-    ALLOC2D( tag_name_widget_indices, n_tag_points, N_TAG_NAME_WIDGETS );
+    VIO_ALLOC2D( rms_widget_indices, n_tag_points, N_RMS_WIDGETS );
+    VIO_ALLOC3D( position_widgets_indices, 2, n_tag_points, N_POSITION_WIDGETS );
+    VIO_ALLOC2D( tag_name_widget_indices, n_tag_points, N_TAG_NAME_WIDGETS );
 
     get_graphics_viewport( &ui_info->graphics_window.graphics,
                            (int) rms_viewport_index,
@@ -606,16 +606,16 @@ public  void  add_tag_point_widgets(
 
 public  void  delete_tag_point_widgets_indices( void )
 {
-    FREE2D( rms_widget_indices );
-    FREE3D( position_widgets_indices );
-    FREE2D( tag_name_widget_indices );
+    VIO_FREE2D( rms_widget_indices );
+    VIO_FREE3D( position_widgets_indices );
+    VIO_FREE2D( tag_name_widget_indices );
 }
 
 private  void  update_rms_error(
     UI_struct         *ui_info,
     int               tag )
 {
-    Real           rms;
+    VIO_Real           rms;
     widget_struct  *widget;
 
     widget = ui_info->widget_list[RMS_error_viewport].widgets
@@ -639,14 +639,14 @@ private  void  update_tag_position(
 {
     VIO_BOOL        exists;
     int            i;
-    Real           position[N_DIMENSIONS];
+    VIO_Real           position[VIO_N_DIMENSIONS];
     widget_struct  *widget;
 
     exists = get_tag_index(ui_info,tag) < IF_get_n_tag_points() &&
              IF_get_tag_point_position( get_tag_index(ui_info,tag),
                                         volume_index, position );
 
-    for_less( i, 0, N_DIMENSIONS )
+    for_less( i, 0, VIO_N_DIMENSIONS )
     {
         widget = ui_info->widget_list[Volume_1_tags_viewport+volume_index].
                  widgets[position_widgets_indices[volume_index][tag]
@@ -668,7 +668,7 @@ private  void  update_tag_name(
     UI_struct         *ui_info,
     int               tag )
 {
-    STRING         name;
+    VIO_STR         name;
     int            tag_index;
     VIO_BOOL        exists;
     widget_struct  *widget;
@@ -787,8 +787,8 @@ private  void   type_in_world_position_callback(
     int            axis )
 {
     int    tag_index;
-    Real   value;
-    Real   position[N_DIMENSIONS];
+    VIO_Real   value;
+    VIO_Real   position[VIO_N_DIMENSIONS];
 
     if( get_text_entry_real_value( widget, &value ) )
     {

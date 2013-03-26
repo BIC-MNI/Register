@@ -23,7 +23,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 private  int  frame_number = 1;
 
 private  void  save_rgb_image(
-    STRING   filename,
+    VIO_STR   filename,
     int      x_min,
     int      x_max,
     int      y_min,
@@ -44,9 +44,9 @@ public  void  save_image(
     int           volume_index,
     int           view_index )
 {
-    int     axis, sizes[MAX_DIMENSIONS];
-    Real    *position, voxel[MAX_DIMENSIONS];
-    Volume  volume;
+    int     axis, sizes[VIO_MAX_DIMENSIONS];
+    Real    *position, voxel[VIO_MAX_DIMENSIONS];
+    VIO_Volume  volume;
     Real    x_min_real, y_min_real, x_max_real, y_max_real;
     int     x_min, y_min, x_max, y_max;
     int     x_size, y_size;

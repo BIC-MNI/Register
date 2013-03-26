@@ -22,16 +22,16 @@ public  void  update_position_counters(
     UI_struct  *ui_info,
     int        volume_index )
 {
-    Real   voxel_position[N_DIMENSIONS];
-    Real   original_world_position[N_DIMENSIONS];
-    Real   tpos;
+    VIO_Real   voxel_position[VIO_N_DIMENSIONS];
+    VIO_Real   original_world_position[VIO_N_DIMENSIONS];
+    VIO_Real   tpos;
     int    axis;
 
     IF_get_volume_voxel_position( volume_index, voxel_position );
     IF_get_volume_original_world_position( volume_index,
                                            original_world_position );
 
-    for_less( axis, 0, N_DIMENSIONS )
+    for_less( axis, 0, VIO_N_DIMENSIONS )
     {
         set_volume_voxel_text( ui_info, volume_index, axis,
                                voxel_position[axis] );
@@ -50,7 +50,7 @@ public  void  update_other_volume_positions(
     int         volume_index )
 {
     int   i;
-    Real  position[N_DIMENSIONS];
+    VIO_Real  position[VIO_N_DIMENSIONS];
 
     if( ui_info->volumes_synced && IF_volume_is_loaded(volume_index) )
     {
@@ -71,7 +71,7 @@ public  void  update_other_volume_positions(
 public  void  ui_set_volume_voxel_position(
     UI_struct  *ui_info,
     int        volume_index,
-    Real       position[N_DIMENSIONS] )
+    VIO_Real       position[VIO_N_DIMENSIONS] )
 {
     IF_set_volume_voxel_position( volume_index, position );
 
@@ -83,7 +83,7 @@ public  void  ui_set_volume_voxel_position(
 
 public void ui_set_volume_time_position(UI_struct *ui_info,
                                         int volume_index,
-                                        Real tpos)
+                                        VIO_Real tpos)
 {
     IF_set_volume_time_position( volume_index, tpos );
 
@@ -94,7 +94,7 @@ public void ui_set_volume_time_position(UI_struct *ui_info,
 public  void  ui_set_volume_original_world_position(
     UI_struct  *ui_info,
     int        volume_index,
-    Real       position[N_DIMENSIONS] )
+    VIO_Real       position[VIO_N_DIMENSIONS] )
 {
     IF_set_volume_original_world_position( volume_index, position );
 
@@ -156,7 +156,7 @@ public  VIO_BOOL   get_voxel_under_mouse(
     UI_struct        *ui_info,
     Viewport_types   event_viewport_index,
     int              *volume,
-    Real             voxel_position[N_DIMENSIONS] )
+    VIO_Real             voxel_position[VIO_N_DIMENSIONS] )
 {
     int        view, x_mouse, y_mouse;
 

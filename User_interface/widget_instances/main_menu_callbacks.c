@@ -68,7 +68,7 @@ private  DEFINE_WIDGET_CALLBACK( transform_type_callback )
 private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback )
 {
     VIO_General_transform  *transform;
-    STRING             filename;
+    VIO_STR             filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
@@ -155,7 +155,7 @@ private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback )
 
 public  void  load_tags_file(
     UI_struct  *ui,
-    STRING     filename )
+    VIO_STR     filename )
 {
     IF_load_tags_file( filename );
 
@@ -167,7 +167,7 @@ public  void  load_tags_file(
 
 private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback )
 {
-    STRING   filename;
+    VIO_STR   filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
@@ -191,7 +191,7 @@ private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback )
 
 private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback )
 {
-    STRING   filename;
+    VIO_STR   filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
@@ -213,7 +213,7 @@ private  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback )
 
 private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback )
 {
-    STRING   filename;
+    VIO_STR   filename;
 
     filename = get_text_entry_string(
                      get_ui_struct()->widget_list[Main_menu_viewport].widgets
@@ -230,7 +230,7 @@ public  void  record_tag(
     int        tag_index )
 {
     int      volume;
-    Real     position[N_DIMENSIONS];
+    VIO_Real     position[VIO_N_DIMENSIONS];
 
     if( tag_index >= IF_get_n_tag_points() )
         IF_create_new_tag_point();
@@ -369,7 +369,7 @@ public  void  add_main_widgets(
                    create_toggle_button( &ui_info->graphics_window,
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
-                   "RGB", "Colour Map",
+                   "RGB", "VIO_Colour Map",
                    G_get_colour_map_state(ui_info->graphics_window.window),
                    FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
@@ -676,7 +676,7 @@ public  void  set_transform_type_button_activity(
 public  void  update_avg_rms_error(
     UI_struct         *ui_info )
 {
-    Real           avg_rms;
+    VIO_Real           avg_rms;
     widget_struct  *widget;
 
     widget = ui_info->widget_list[Main_menu_viewport].

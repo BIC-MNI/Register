@@ -121,7 +121,7 @@ public  VIO_BOOL  get_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
-    Real             position[] )
+    VIO_Real             position[] )
 {
     VIO_BOOL  exists;
     int      dim;
@@ -129,16 +129,16 @@ public  VIO_BOOL  get_tag_point_position(
     if( ind < main->tags.n_tag_points &&
         main->tags.tag_points[ind].position_exists[volume_index] )
     {
-        for_less( dim, 0, N_DIMENSIONS )
+        for_less( dim, 0, VIO_N_DIMENSIONS )
         {
-            position[dim] = (Real) Point_coord(main->tags.tag_points[ind]
+            position[dim] = (VIO_Real) Point_coord(main->tags.tag_points[ind]
                                                .position[volume_index],dim);
         }
         exists = TRUE;
     }
     else
     {
-        for_less( dim, 0, N_DIMENSIONS )
+        for_less( dim, 0, VIO_N_DIMENSIONS )
             position[dim] = 0.0;
         exists = FALSE;
     }
@@ -150,7 +150,7 @@ public  void  set_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
-    Real             position[] )
+    VIO_Real             position[] )
 {
     if( ind < main->tags.n_tag_points )
     {
@@ -167,11 +167,11 @@ public  void  set_tag_point_position(
     }
 }
 
-public  STRING  get_tag_point_name(
+public  VIO_STR  get_tag_point_name(
     main_struct      *main,
     int              ind )
 {
-    STRING   name;
+    VIO_STR   name;
 
     if( ind < main->tags.n_tag_points )
         name = main->tags.tag_points[ind].name;
@@ -184,7 +184,7 @@ public  STRING  get_tag_point_name(
 public  void  set_tag_point_name(
     main_struct      *main,
     int              ind,
-    STRING           name )
+    VIO_STR           name )
 {
     if( ind < main->tags.n_tag_points )
     {
@@ -195,7 +195,7 @@ public  void  set_tag_point_name(
 
 public  VIO_BOOL  get_tag_point_avg_rms_error(
     main_struct      *main,
-    Real             *error )
+    VIO_Real             *error )
 {
     VIO_BOOL  exists;
 
@@ -216,7 +216,7 @@ public  VIO_BOOL  get_tag_point_avg_rms_error(
 public  VIO_BOOL  get_tag_point_rms_error(
     main_struct      *main,
     int              ind,
-    Real             *error )
+    VIO_Real             *error )
 {
     VIO_BOOL  exists;
 
@@ -238,7 +238,7 @@ public  VIO_BOOL  get_tag_point_rms_error(
 public  void  set_tag_point_rms_error(
     main_struct      *main,
     int              ind,
-    Real             rms_error )
+    VIO_Real             rms_error )
 {
     if( ind < main->tags.n_tag_points )
         main->tags.tag_points[ind].rms_error = rms_error;

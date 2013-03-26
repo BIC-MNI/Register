@@ -54,7 +54,7 @@ private  DEFINE_EVENT_FUNCTION( resize_window_callback )
 
 public  void   create_popup_window(
     popup_struct          *popup,
-    STRING                title,
+    VIO_STR                title,
     int                   x_position,
     int                   y_position,
     int                   x_size,

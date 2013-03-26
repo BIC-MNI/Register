@@ -143,7 +143,7 @@ public  void  update_button_colours(
     widget_struct   *widget )
 {
     VIO_BOOL        colour_map_state;
-    Colour         rectangle_colour;
+    VIO_Colour         rectangle_colour;
     button_struct  *button;
 
     button = get_widget_button( widget );
@@ -185,7 +185,7 @@ public  void  update_button_colours(
 
 public  void  set_button_active_colour(
     widget_struct   *widget,
-    Colour          col )
+    VIO_Colour          col )
 {
     button_struct  *button;
 
@@ -196,7 +196,7 @@ public  void  set_button_active_colour(
     update_widget_colours( widget );
 }
 
-public  Colour  get_button_colour(
+public  VIO_Colour  get_button_colour(
     widget_struct   *widget )
 {
     button_struct  *button;
@@ -243,7 +243,7 @@ public  void  set_toggle_button_state(
 
 public  void  set_button_text(
     widget_struct    *widget,
-    STRING           text_string )
+    VIO_STR           text_string )
 {
     button_struct    *button;
 
@@ -259,9 +259,9 @@ public  void  set_button_text(
 
 private  void  create_button_graphics(
     widget_struct    *widget,
-    STRING           label,
+    VIO_STR           label,
     Font_types       text_font,
-    Real             font_size )
+    VIO_Real             font_size )
 {
     object_struct     *object;
     button_struct     *button;
@@ -318,16 +318,16 @@ private  widget_struct  *create_a_button(
     int                        y_size,
     VIO_BOOL                    toggle_flag,
     VIO_BOOL                    initial_state,
-    STRING                     text1,
-    STRING                     text2,
+    VIO_STR                     text1,
+    VIO_STR                     text2,
     VIO_BOOL                    initial_activity,
     VIO_BOOL                    use_ui_colours,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       push_callback,
     void                       *callback_data )
 {
@@ -389,15 +389,15 @@ public  widget_struct *create_button(
     int                        y,
     int                        x_size,
     int                        y_size,
-    STRING                     label,
+    VIO_STR                     label,
     VIO_BOOL                    initial_activity,
     VIO_BOOL                    use_ui_colours,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       push_callback,
     void                       *callback_data )
 {
@@ -417,16 +417,16 @@ public  widget_struct  *create_toggle_button(
     int                        y,
     int                        x_size,
     int                        y_size,
-    STRING                     off_text,
-    STRING                     on_text,
+    VIO_STR                     off_text,
+    VIO_STR                     on_text,
     VIO_BOOL                    initial_state,
     VIO_BOOL                    initial_activity,
     VIO_BOOL                    use_ui_colours,
-    Colour                     active_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       push_callback,
     void                       *callback_data )
 {

@@ -72,10 +72,10 @@ public  void  popup_colour_selection(
     int                       i, x, y;
     widget_struct             *widget;
     colour_selection_struct   *popup;
-    static  STRING            over_under_names[] = { "Under", "Over" };
+    static  VIO_STR            over_under_names[] = { "Under", "Over" };
     char                      window_name[EXTREMELY_LARGE_STRING_SIZE];
-    Colour                    colour;
-    static  STRING            colours[] = { "BLACK", "WHITE",
+    VIO_Colour                    colour;
+    static  VIO_STR            colours[] = { "BLACK", "WHITE",
                                             "RED", "GREEN", "BLUE",
                                             "CYAN", "MAGENTA", "YELLOW",
                                             "ORANGE" };
@@ -89,7 +89,7 @@ public  void  popup_colour_selection(
 
     G_get_mouse_screen_position( &x, &y );
 
-    (void) sprintf( window_name, "Volume %d %s Colour Selection", volume + 1,
+    (void) sprintf( window_name, "VIO_Volume %d %s VIO_Colour Selection", volume + 1,
                     over_under_names[over_or_under] );
 
     create_popup_window( &popup->popup_window, window_name, x, y,
