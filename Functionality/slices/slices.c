@@ -13,19 +13,19 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.23 2005-02-28 22:52:01 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.23 2005-02-28 22:52:01 bert Exp $";
 #endif
 
 #include  <register.h>
 
-private   int         x_axes[] = { Y, X, X };
-private   int         y_axes[] = { Z, Z, Y };
-private   VIO_BOOL     x_axes_flip[] = { FALSE, FALSE, FALSE };
-private   VIO_BOOL     y_axes_flip[] = { FALSE, FALSE, FALSE };
+static   int         x_axes[] = { Y, X, X };
+static   int         y_axes[] = { Z, Z, Y };
+static   VIO_BOOL     x_axes_flip[] = { FALSE, FALSE, FALSE };
+static   VIO_BOOL     y_axes_flip[] = { FALSE, FALSE, FALSE };
 
-private  void  check_axes_assigned( void )
+static  void  check_axes_assigned( void )
 {
-    private  VIO_BOOL  first = TRUE;
+    static  VIO_BOOL  first = TRUE;
 
     if( first )
     {
@@ -45,7 +45,7 @@ private  void  check_axes_assigned( void )
     }
 }
 
-public  void  get_slice_axes(
+  void  get_slice_axes(
     int   view_index,
     int   *x_axis_index,
     int   *y_axis_index )
@@ -56,7 +56,7 @@ public  void  get_slice_axes(
     *y_axis_index = y_axes[view_index];
 }
 
-public  void  get_slice_axes_flip(
+  void  get_slice_axes_flip(
     int       view_index,
     VIO_BOOL   *x_axis_flip,
     VIO_BOOL   *y_axis_flip )
@@ -67,7 +67,7 @@ public  void  get_slice_axes_flip(
     *y_axis_flip = y_axes_flip[view_index];
 }
 
-public  int  get_slice_axis(
+  int  get_slice_axis(
     int   view_index )
 {
     int   axis;
@@ -86,7 +86,7 @@ public  int  get_slice_axis(
     return( 0 );
 }
 
-public  void  get_slice_plane(
+  void  get_slice_plane(
     main_struct   *main,
     int           volume_index,
     int           view,
@@ -131,12 +131,12 @@ public  void  get_slice_plane(
         y_axis[y_index] = FSIGN(separations[y_index]);
 }
 
-public  int  get_slice_viewport_index( int volume, int view )
+  int  get_slice_viewport_index( int volume, int view )
 {
     return( volume * N_VIEWS + view );
 }
 
-public  void  get_volume_view_index(
+  void  get_volume_view_index(
     int   viewport_index,
     int   *volume,
     int   *view )
@@ -145,7 +145,7 @@ public  void  get_volume_view_index(
     *view = viewport_index % N_VIEWS;
 }
 
-public  void  get_slice_viewport(
+  void  get_slice_viewport(
     main_struct  *main,
     int          volume,
     int          view,
@@ -159,7 +159,7 @@ public  void  get_slice_viewport(
                            x_min, x_max, y_min, y_max );
 }
 
-public  void  get_slice_viewport_size(
+  void  get_slice_viewport_size(
     main_struct  *main,
     int          volume,
     int          view,
@@ -175,7 +175,7 @@ public  void  get_slice_viewport_size(
     *y_size = y_max - y_min + 1;
 }
 
-public  void  set_slice_viewport(
+  void  set_slice_viewport(
     main_struct  *main,
     int          volume,
     int          view,
@@ -192,7 +192,7 @@ public  void  set_slice_viewport(
         resize_slice( main, volume, view );
 }
 
-public  void  set_volume_voxel_position(
+  void  set_volume_voxel_position(
     main_struct    *main,
     int            volume_index,
     Real           position[VIO_N_DIMENSIONS] )
@@ -239,7 +239,7 @@ public  void  set_volume_voxel_position(
         update_volume_cursors( main, volume_index );
 }
 
-public  void  get_volume_voxel_position(
+  void  get_volume_voxel_position(
     main_struct   *main,
     int           volume,
     Real          position[VIO_N_DIMENSIONS] )
@@ -292,7 +292,7 @@ public  void  get_volume_voxel_position(
     }
 }
 
-public  void  convert_original_world_to_world(
+  void  convert_original_world_to_world(
     main_struct    *main,
     int            volume_index,
     Real           x_original,
@@ -318,7 +318,7 @@ public  void  convert_original_world_to_world(
     }
 }
 
-public  void  convert_world_to_original_world(
+  void  convert_world_to_original_world(
     main_struct    *main,
     int            volume_index,
     Real           x_world,
@@ -344,7 +344,7 @@ public  void  convert_world_to_original_world(
     }
 }
 
-public  void  set_volume_world_position(
+  void  set_volume_world_position(
     main_struct    *main,
     int            volume_index,
     Real           world_position[VIO_N_DIMENSIONS] )
@@ -370,7 +370,7 @@ public  void  set_volume_world_position(
     set_volume_voxel_position( main, volume_index, voxel_position );
 }
 
-public  void  get_volume_world_position(
+  void  get_volume_world_position(
     main_struct   *main,
     int           volume_index,
     Real          world_position[VIO_N_DIMENSIONS] )
@@ -396,7 +396,7 @@ public  void  get_volume_world_position(
                                      &world_position[Z] );
 }
 
-public  void  convert_original_world_to_voxel(
+  void  convert_original_world_to_voxel(
     main_struct    *main,
     int            volume_index,
     Real           x_original,
@@ -429,7 +429,7 @@ public  void  convert_original_world_to_voxel(
     *z_voxel = voxel[Z];
 }
 
-public  void  convert_voxel_to_original_world(
+  void  convert_voxel_to_original_world(
     main_struct    *main,
     int            volume_index,
     Real           x_voxel,
@@ -465,7 +465,7 @@ public  void  convert_voxel_to_original_world(
     }
 }
 
-public  void  set_volume_original_world_position(
+  void  set_volume_original_world_position(
     main_struct    *main,
     int            volume_index,
     Real           original_world_position[VIO_N_DIMENSIONS] )
@@ -484,14 +484,14 @@ public  void  set_volume_original_world_position(
 }
 
 
-public  void  get_volume_time_position(main_struct *main_ptr,
+  void  get_volume_time_position(main_struct *main_ptr,
                                        int volume_index,
                                        Real *tpos_ptr)
 {
     *tpos_ptr = main_ptr->trislice[volume_index].time_pos;
 }
 
-public  void  set_volume_time_position(main_struct *main_ptr,
+  void  set_volume_time_position(main_struct *main_ptr,
                                        int volume_index,
                                        Real tpos)
 {
@@ -523,7 +523,7 @@ public  void  set_volume_time_position(main_struct *main_ptr,
 }
 
 
-public  void  get_volume_original_world_position(
+  void  get_volume_original_world_position(
     main_struct   *main,
     int           volume_index,
     Real          original_world_position[VIO_N_DIMENSIONS] )
@@ -541,7 +541,7 @@ public  void  get_volume_original_world_position(
                                      &original_world_position[Z] );
 }
 
-public  VIO_Volume  get_slice_volume(
+  VIO_Volume  get_slice_volume(
     main_struct   *main,
     int           volume_index )
 {
@@ -551,7 +551,7 @@ public  VIO_Volume  get_slice_volume(
         return( main->trislice[volume_index-MERGED_VOLUME_INDEX].volume );
 }
 
-public  void  get_volume_range_of_voxels(
+  void  get_volume_range_of_voxels(
     main_struct   *main,
     int           volume_index,
     int           *min_value,
@@ -570,13 +570,13 @@ public  void  get_volume_range_of_voxels(
         if( !is_an_rgb_volume(volume) )
         {
             get_volume_voxel_range( volume, &real_min, &real_max );
-            *min_value = ROUND( real_min );
-            *max_value = ROUND( real_max );
+            *min_value = VIO_ROUND( real_min );
+            *max_value = VIO_ROUND( real_max );
         }
     }
 }
 
-public  void  get_volume_value_range(
+  void  get_volume_value_range(
     main_struct   *main,
     int           volume_index,
     Real          *min_value,
@@ -586,7 +586,7 @@ public  void  get_volume_value_range(
                            min_value, max_value );
 }
 
-public  Real  *get_volume_cursor(
+  Real  *get_volume_cursor(
     main_struct   *main,
     int           volume_index )
 {
@@ -596,7 +596,7 @@ public  Real  *get_volume_cursor(
         return( main->trislice[volume_index].position );
 }
 
-public  slice_struct  *get_slice_struct(
+  slice_struct  *get_slice_struct(
     main_struct   *main,
     int           volume_index,
     int           view )
@@ -607,7 +607,7 @@ public  slice_struct  *get_slice_struct(
         return( &main->trislice[volume_index].slices[view] );
 }
 
-public  void  get_slice_transform(
+  void  get_slice_transform(
     main_struct   *main,
     int           volume_index,
     int           view,
@@ -626,7 +626,7 @@ public  void  get_slice_transform(
     *y_scale = slice->y_scale;
 }
 
-public  void  set_slice_translation(
+  void  set_slice_translation(
     main_struct   *main,
     int           volume_index,
     int           view,
@@ -641,7 +641,7 @@ public  void  set_slice_translation(
     slice->y_translation = y_trans;
 }
 
-public  void  set_slice_scale(
+  void  set_slice_scale(
     main_struct   *main,
     int           volume_index,
     int           view,
@@ -656,7 +656,7 @@ public  void  set_slice_scale(
     slice->y_scale = y_scale;
 }
 
-public  Real  get_voxel_value(
+  Real  get_voxel_value(
     main_struct   *main,
     int           volume_index,
     Real          x_voxel,
@@ -678,9 +678,9 @@ public  Real  get_voxel_value(
 
     if( voxel_is_within_volume( volume, position ) )
     {
-        value = get_volume_real_value( volume, ROUND(x_voxel), 
-                                       ROUND(y_voxel), ROUND(z_voxel), 
-                                       ROUND(tpos), 0 );
+        value = get_volume_real_value( volume, VIO_ROUND(x_voxel), 
+                                       VIO_ROUND(y_voxel), VIO_ROUND(z_voxel), 
+                                       VIO_ROUND(tpos), 0 );
     }
     else
         value = 0.0;
@@ -688,7 +688,7 @@ public  Real  get_voxel_value(
     return( value );
 }
 
-public  void  set_slice_filter_type(
+  void  set_slice_filter_type(
     main_struct   *main,
     int           volume_index,
     int           view,
@@ -703,7 +703,7 @@ public  void  set_slice_filter_type(
     set_recreate_slice_flag( main, volume_index, view );
 }
 
-public  Filter_types  get_slice_filter_type(
+  Filter_types  get_slice_filter_type(
     main_struct   *main,
     int           volume_index,
     int           view )
@@ -715,7 +715,7 @@ public  Filter_types  get_slice_filter_type(
     return( slice->filter_type );
 }
 
-public  void  set_slice_filter_width(
+  void  set_slice_filter_width(
     main_struct   *main,
     int           volume_index,
     int           view,
@@ -730,7 +730,7 @@ public  void  set_slice_filter_width(
     set_recreate_slice_flag( main, volume_index, view );
 }
 
-public  Real  get_slice_filter_width(
+  Real  get_slice_filter_width(
     main_struct   *main,
     int           volume_index,
     int           view )
@@ -742,7 +742,7 @@ public  Real  get_slice_filter_width(
     return( slice->filter_width );
 }
 
-public  void  set_interpolation_mode(
+  void  set_interpolation_mode(
     main_struct   *main,
     VIO_BOOL       smooth_flag )
 {
@@ -757,7 +757,7 @@ public  void  set_interpolation_mode(
         set_recreate_3_slices_flags( main, volume );
 }
 
-public  VIO_BOOL  get_interpolation_mode(
+  VIO_BOOL  get_interpolation_mode(
     main_struct   *main )
 {
     return( main->degrees_continuity == 0 );

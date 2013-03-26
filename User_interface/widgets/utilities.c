@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/utilities.c,v 1.9 1998-06-29 15:02:08 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widgets/utilities.c,v 1.9 1998-06-29 15:02:08 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  object_struct  *create_rectangle(
+  object_struct  *create_rectangle(
     VIO_Colour       colour )
 {
     VIO_Point             point;
@@ -39,7 +39,7 @@ public  object_struct  *create_rectangle(
     return( object );
 }
 
-public  void  position_rectangle(
+  void  position_rectangle(
     polygons_struct    *polygons,
     int                x,
     int                y,
@@ -52,7 +52,7 @@ public  void  position_rectangle(
     fill_Point( polygons->points[3], x, y + y_size - 1, 0.0 );
 }
 
-public  object_struct  *create_text(
+  object_struct  *create_text(
     VIO_Colour           colour,
     Font_types       text_font,
     VIO_Real             font_size )
@@ -72,7 +72,7 @@ public  object_struct  *create_text(
     return( object );
 }
 
-public  void  position_text(
+  void  position_text(
     text_struct   *text,
     int           x,
     int           y,
@@ -83,12 +83,12 @@ public  void  position_text(
     height = G_get_text_height( text->font, text->size );
 
     x = x;
-    y = y + ROUND( ((VIO_Real) y_size - height) / 2.0 );
+    y = y + VIO_ROUND( ((VIO_Real) y_size - height) / 2.0 );
 
     fill_Point( text->origin, x, y, 0.0 );
 }
 
-public  void  position_text_centred(
+  void  position_text_centred(
     text_struct    *text,
     int            x,
     int            y,
@@ -104,7 +104,7 @@ public  void  position_text_centred(
                               (VIO_Real) y + ((VIO_Real) y_size - height) / 2.0, 0 );
 }
 
-public  VIO_BOOL  get_toggle_button_state(
+  VIO_BOOL  get_toggle_button_state(
     widget_struct  *widget )
 {
     VIO_BOOL        state;
@@ -131,7 +131,7 @@ public  VIO_BOOL  get_toggle_button_state(
     return( state );
 }
 
-public  VIO_BOOL  get_text_entry_real_value(
+  VIO_BOOL  get_text_entry_real_value(
     widget_struct  *widget,
     VIO_Real           *value )
 {
@@ -153,24 +153,24 @@ public  VIO_BOOL  get_text_entry_real_value(
     return( found );
 }
 
-public  void  set_text_entry_real_value(
+  void  set_text_entry_real_value(
     widget_struct     *widget,
     VIO_STR            format,
     VIO_Real              value )
 {
-    char          buffer[EXTREMELY_LARGE_STRING_SIZE];
+    char          buffer[VIO_EXTREMELY_LARGE_STRING_SIZE];
 
     (void) sprintf( buffer, format, value );
 
     set_text_entry_string( widget, buffer );
 }
 
-public  void  set_button_int_value(
+  void  set_button_int_value(
     widget_struct     *widget,
     VIO_STR            format,
     int               value )
 {
-    char          buffer[EXTREMELY_LARGE_STRING_SIZE];
+    char          buffer[VIO_EXTREMELY_LARGE_STRING_SIZE];
 
     (void) sprintf( buffer, format, value );
 

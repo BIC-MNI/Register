@@ -13,24 +13,24 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/quit_popup/quit.c,v 1.10 1998-06-29 15:02:01 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/quit_popup/quit.c,v 1.10 1998-06-29 15:02:01 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  void  delete_quit_confirm(
+static  void  delete_quit_confirm(
     popup_struct          *popup )
 {
     delete_popup_window( popup );
 
     FREE( popup );
 
-    set_quit_button_activity( get_ui_struct(), ON );
+    set_quit_button_activity( get_ui_struct(), TRUE );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( quit_button_callback )
+static  DEFINE_WIDGET_CALLBACK( quit_button_callback )
 {
     set_quit_program_flag();
 
@@ -39,19 +39,19 @@ private  DEFINE_WIDGET_CALLBACK( quit_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( dont_quit_button_callback )
+static  DEFINE_WIDGET_CALLBACK( dont_quit_button_callback )
 {
     delete_quit_confirm( (popup_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( kill_window_callback )
+static  DEFINE_EVENT_FUNCTION( kill_window_callback )
 {
     delete_quit_confirm( (popup_struct *) callback_data );
 }
 
-public  void  popup_quit_confirm(
+  void  popup_quit_confirm(
     UI_struct   *ui )
 {
     int               x, y;
@@ -61,7 +61,7 @@ public  void  popup_quit_confirm(
     widget_struct     *widget;
     popup_struct      *popup;
 
-    set_quit_button_activity( ui, OFF );
+    set_quit_button_activity( ui, FALSE );
 
     G_get_mouse_screen_position( &x, &y );
 
@@ -109,7 +109,7 @@ public  void  popup_quit_confirm(
 
     widget = create_button( &popup->graphics, (Viewport_types) 0,
                             x, y, Button_width, Button_height,
-                            "Quit", ON, TRUE,
+                            "Quit", TRUE, TRUE,
                             BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,
@@ -123,7 +123,7 @@ public  void  popup_quit_confirm(
 
     widget = create_button( &popup->graphics, (Viewport_types) 0,
                             x, y, Button_width, Button_height,
-                            "Don't Quit", ON, TRUE,
+                            "Don't Quit", TRUE, TRUE,
                             BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,

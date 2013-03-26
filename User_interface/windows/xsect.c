@@ -25,7 +25,7 @@ struct xs_window {
  * implementation . */
 static struct xs_window *_xswin = NULL;
 
-private void
+static void
 xs_delete(struct xs_window *xswin)
 {
     delete_popup_window(&xswin->popup);
@@ -35,17 +35,17 @@ xs_delete(struct xs_window *xswin)
     _xswin = NULL;
 }
 
-private DEFINE_EVENT_FUNCTION( xs_quit_callback )
+static DEFINE_EVENT_FUNCTION( xs_quit_callback )
 {
     xs_delete((struct xs_window *) callback_data);
 }
 
-private DEFINE_WIDGET_CALLBACK(xs_close_callback)
+static DEFINE_WIDGET_CALLBACK(xs_close_callback)
 {
     xs_delete((struct xs_window *) callback_data);
 }
 
-private DEFINE_WIDGET_CALLBACK(xs_yscale_callback)
+static DEFINE_WIDGET_CALLBACK(xs_yscale_callback)
 {
     struct xs_window *xswin = (struct xs_window *) callback_data;
 
@@ -58,7 +58,7 @@ private DEFINE_WIDGET_CALLBACK(xs_yscale_callback)
     xs_display(get_ui_struct(), xswin->viewport_index, 0);
 }
 
-private DEFINE_WIDGET_CALLBACK(xs_save_callback)
+static DEFINE_WIDGET_CALLBACK(xs_save_callback)
 {
     struct xs_window *xswin = (struct xs_window *) callback_data;
     char *filename;
@@ -121,9 +121,9 @@ private DEFINE_WIDGET_CALLBACK(xs_save_callback)
     get_volume_starts(volume, starts);
     get_volume_separations(volume, separations);
 
-    vx = ROUND(voxelpos[0]);
-    vy = ROUND(voxelpos[1]);
-    vz = ROUND(voxelpos[2]);
+    vx = VIO_ROUND(voxelpos[0]);
+    vy = VIO_ROUND(voxelpos[1]);
+    vz = VIO_ROUND(voxelpos[2]);
 
     x_start = 0;
     x_end = sizes[3];
@@ -162,12 +162,12 @@ private DEFINE_WIDGET_CALLBACK(xs_save_callback)
     fclose(fp);
 }
 
-private DEFINE_WIDGET_CALLBACK(xs_name_callback)
+static DEFINE_WIDGET_CALLBACK(xs_name_callback)
 {
     struct xs_window *xswin = (struct xs_window *) callback_data;
 }
 
-private DEFINE_WIDGET_CALLBACK(xs_min_callback)
+static DEFINE_WIDGET_CALLBACK(xs_min_callback)
 {
     struct xs_window *xswin = (struct xs_window *) callback_data;
     Real value;
@@ -195,7 +195,7 @@ private DEFINE_WIDGET_CALLBACK(xs_min_callback)
     xs_display(get_ui_struct(), xswin->viewport_index, 0);
 }
 
-private DEFINE_WIDGET_CALLBACK(x_max_callback)
+static DEFINE_WIDGET_CALLBACK(x_max_callback)
 {
     struct xs_window *xswin = (struct xs_window *) callback_data;
     Real value;
@@ -267,7 +267,7 @@ xs_create_widgets(widgets_struct *widgets,
 
     widget_ptr = create_toggle_button( gwin, (Viewport_types) 0,
                                        x, 2, Button_width, Button_height,
-                                       "Full range", "Scaled", OFF, ON, TRUE, 
+                                       "Full range", "Scaled", FALSE, TRUE, TRUE, 
                                        BUTTON_ACTIVE_COLOUR,
                                        BUTTON_INACTIVE_COLOUR,
                                        BUTTON_TEXT_COLOUR,
@@ -283,7 +283,7 @@ xs_create_widgets(widgets_struct *widgets,
                               x, 2,
                               35, Text_entry_height,
                               "T(min):",
-                              OFF, 
+                              FALSE, 
                               LABEL_ACTIVE_COLOUR,
                               LABEL_SELECTED_COLOUR,
                               LABEL_INACTIVE_COLOUR,
@@ -301,7 +301,7 @@ xs_create_widgets(widgets_struct *widgets,
                                     x, 2,
                                     Position_values_width, 
                                     Text_entry_height,
-                                    TRUE, string, ON,
+                                    TRUE, string, TRUE,
                                     TEXT_ENTRY_ACTIVE_COLOUR, 
                                     TEXT_ENTRY_SELECTED_COLOUR,
                                     TEXT_ENTRY_INACTIVE_COLOUR,
@@ -321,7 +321,7 @@ xs_create_widgets(widgets_struct *widgets,
                               x, 2,
                               35, Text_entry_height,
                               "T(max):",
-                              OFF, 
+                              FALSE, 
                               LABEL_ACTIVE_COLOUR,
                               LABEL_SELECTED_COLOUR,
                               LABEL_INACTIVE_COLOUR,
@@ -339,7 +339,7 @@ xs_create_widgets(widgets_struct *widgets,
                                     x, 2,
                                     Position_values_width, 
                                     Text_entry_height,
-                                    TRUE, string, ON,
+                                    TRUE, string, TRUE,
                                     TEXT_ENTRY_ACTIVE_COLOUR, 
                                     TEXT_ENTRY_SELECTED_COLOUR,
                                     TEXT_ENTRY_INACTIVE_COLOUR,
@@ -359,7 +359,7 @@ xs_create_widgets(widgets_struct *widgets,
                                 x, 2, 
                                 30, Button_height,
                                 "Save",
-                                ON, TRUE, 
+                                TRUE, TRUE, 
                                 BUTTON_ACTIVE_COLOUR, 
                                 BUTTON_SELECTED_COLOUR,
                                 BUTTON_INACTIVE_COLOUR,
@@ -374,7 +374,7 @@ xs_create_widgets(widgets_struct *widgets,
     widget_ptr = create_text_entry( gwin, 0,
                                     x, 2,
                                     Load_filename_width, Text_entry_height,
-                                    FALSE, "", ON,
+                                    FALSE, "", TRUE,
                                     TEXT_ENTRY_ACTIVE_COLOUR, 
                                     TEXT_ENTRY_SELECTED_COLOUR,
                                     TEXT_ENTRY_INACTIVE_COLOUR,
@@ -392,7 +392,7 @@ xs_create_widgets(widgets_struct *widgets,
     widget_ptr = create_button( gwin, (Viewport_types) 0,
                                 x, 2, 
                                 Button_width, Button_height,
-                                "Close", ON, TRUE,
+                                "Close", TRUE, TRUE,
                                 BUTTON_ACTIVE_COLOUR,
                                 BUTTON_SELECTED_COLOUR,
                                 BUTTON_INACTIVE_COLOUR,
@@ -485,9 +485,9 @@ void xs_display(UI_struct *ui_info,
 #define TMARGIN 30
 #define BMARGIN 40
 
-    vx = ROUND(voxelpos[0]);
-    vy = ROUND(voxelpos[1]);
-    vz = ROUND(voxelpos[2]);
+    vx = VIO_ROUND(voxelpos[0]);
+    vy = VIO_ROUND(voxelpos[1]);
+    vz = VIO_ROUND(voxelpos[2]);
 
     x_start = 0;
     x_end = sizes[3];
@@ -693,9 +693,9 @@ void xs_display(UI_struct *ui_info,
             value = y_min;
         }
         value = ((value - y_min) * y_axis_pixels) / (y_max - y_min);
-        value = ROUND(value);
+        value = VIO_ROUND(value);
 
-        x = ROUND((i - x_start) * x_delta);
+        x = VIO_ROUND((i - x_start) * x_delta);
         fill_Point( lines_obj_ptr->points[i-x_start], (Real) x+LMARGIN+1, 
                     value+BMARGIN, 0.0 );
     }

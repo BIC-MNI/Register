@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/layout/layout.c,v 1.10 1998-06-29 15:01:59 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/layout/layout.c,v 1.10 1998-06-29 15:01:59 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  initialize_layout( UI_struct  *ui_info )
+  void  initialize_layout( UI_struct  *ui_info )
 {
     ui_info->main_menu_width = Default_main_menu_width;
     ui_info->tag_panel_height = Default_tag_panel_height;
@@ -35,7 +35,7 @@ public  void  initialize_layout( UI_struct  *ui_info )
     resize_layout( ui_info );
 }
 
-public  void  resize_layout( UI_struct  *ui_info )
+  void  resize_layout( UI_struct  *ui_info )
 {
     graphics_struct         *graphics;
     event_viewports_struct  *event_viewports;
@@ -63,9 +63,9 @@ public  void  resize_layout( UI_struct  *ui_info )
     x_volume_1_start = x_main_end + 1 + divider_width;
     x_merged_end = x_size - 1;
 
-    divider1 = ROUND( (VIO_Real) x_volume_1_start + ui_info->x_slice_divider[0] *
+    divider1 = VIO_ROUND( (VIO_Real) x_volume_1_start + ui_info->x_slice_divider[0] *
                       (VIO_Real) (x_merged_end - x_volume_1_start) );
-    divider2 = ROUND( (VIO_Real) x_volume_1_start + ui_info->x_slice_divider[1] *
+    divider2 = VIO_ROUND( (VIO_Real) x_volume_1_start + ui_info->x_slice_divider[1] *
                       (VIO_Real) (x_merged_end - x_volume_1_start) );
 
     x_volume_1_end = divider1 - divider_width/2 - 1;
@@ -83,9 +83,9 @@ public  void  resize_layout( UI_struct  *ui_info )
     y_slice_3_start = y_volume_panel_end + 1 + divider_width;
     y_slice_1_end = y_size - 1;
 
-    divider1 = ROUND( (VIO_Real) y_slice_3_start + ui_info->y_slice_divider[0] *
+    divider1 = VIO_ROUND( (VIO_Real) y_slice_3_start + ui_info->y_slice_divider[0] *
                       (VIO_Real) (y_slice_1_end - y_slice_3_start) );
-    divider2 = ROUND( (VIO_Real) y_slice_3_start + ui_info->y_slice_divider[1] *
+    divider2 = VIO_ROUND( (VIO_Real) y_slice_3_start + ui_info->y_slice_divider[1] *
                       (VIO_Real) (y_slice_1_end - y_slice_3_start) );
 
     y_slice_3_end = divider1 - divider_width/2 - 1;
@@ -241,13 +241,13 @@ public  void  resize_layout( UI_struct  *ui_info )
     }
 }
 
-public  VIO_BOOL  is_slice_viewport(
+  VIO_BOOL  is_slice_viewport(
     Viewport_types   viewport )
 {
     return( viewport >= N_VIEWPORT_TYPES );
 }
 
-public  void  ui_get_volume_view_index(
+  void  ui_get_volume_view_index(
     Viewport_types   view_index,
     int              *volume,
     int              *view )
@@ -256,7 +256,7 @@ public  void  ui_get_volume_view_index(
     *view = ((int) view_index - N_VIEWPORT_TYPES) % N_VIEWS;
 }
 
-public  Viewport_types  ui_get_slice_viewport_index(
+  Viewport_types  ui_get_slice_viewport_index(
     int   volume,
     int   view )
 {

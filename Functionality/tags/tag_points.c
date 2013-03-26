@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.12 1998-06-29 15:01:48 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.12 1998-06-29 15:01:48 david Exp $";
 #endif
 
 #include  <register.h>
 
-private  VIO_BOOL  check_update_transform_and_rms_error(
+static  VIO_BOOL  check_update_transform_and_rms_error(
     main_struct   *main )
 {
     if( main->tags.transform_out_of_date )
@@ -30,7 +30,7 @@ private  VIO_BOOL  check_update_transform_and_rms_error(
     return( main->tags.transform_exists );
 }
 
-public  void  initialize_tag_points(
+  void  initialize_tag_points(
     main_struct      *main )
 {
     main->tags.transform_type = (Trans_type) Default_transform_type;
@@ -41,13 +41,13 @@ public  void  initialize_tag_points(
     main->tags.tags_visible = Initial_tags_visible;
 }
 
-public  VIO_BOOL  get_tags_visibility(
+  VIO_BOOL  get_tags_visibility(
     main_struct      *main )
 {
     return( main->tags.tags_visible );
 }
 
-public  void  set_tags_visibility(
+  void  set_tags_visibility(
     main_struct      *main,
     VIO_BOOL          visibility )
 {
@@ -55,7 +55,7 @@ public  void  set_tags_visibility(
     update_all_tag_objects( main );
 }
 
-public  void  delete_tag_points(
+  void  delete_tag_points(
     main_struct      *main )
 {
     int   i;
@@ -77,7 +77,7 @@ public  void  delete_tag_points(
         delete_general_transform( &main->tags.v2_to_v1_transform );
 }
 
-public  void  create_new_tag_point(
+  void  create_new_tag_point(
     main_struct      *main )
 {
     int               volume_index;
@@ -90,7 +90,7 @@ public  void  create_new_tag_point(
     }
 
     tag.name = create_string( NULL );
-    tag.activity = ON;
+    tag.activity = TRUE;
 
     create_tag_objects( main, &tag );
 
@@ -98,7 +98,7 @@ public  void  create_new_tag_point(
                           DEFAULT_CHUNK_SIZE );
 }
 
-public  void  delete_tag_point(
+  void  delete_tag_point(
     main_struct      *main,
     int              ind )
 {
@@ -111,13 +111,13 @@ public  void  delete_tag_point(
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
-public  int  get_n_tag_points(
+  int  get_n_tag_points(
     main_struct      *main )
 {
     return( main->tags.n_tag_points );
 }
 
-public  VIO_BOOL  get_tag_point_position(
+  VIO_BOOL  get_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
@@ -146,7 +146,7 @@ public  VIO_BOOL  get_tag_point_position(
     return( exists );
 }
 
-public  void  set_tag_point_position(
+  void  set_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
@@ -167,7 +167,7 @@ public  void  set_tag_point_position(
     }
 }
 
-public  VIO_STR  get_tag_point_name(
+  VIO_STR  get_tag_point_name(
     main_struct      *main,
     int              ind )
 {
@@ -181,7 +181,7 @@ public  VIO_STR  get_tag_point_name(
     return( name );
 }
 
-public  void  set_tag_point_name(
+  void  set_tag_point_name(
     main_struct      *main,
     int              ind,
     VIO_STR           name )
@@ -193,7 +193,7 @@ public  void  set_tag_point_name(
     }
 }
 
-public  VIO_BOOL  get_tag_point_avg_rms_error(
+  VIO_BOOL  get_tag_point_avg_rms_error(
     main_struct      *main,
     VIO_Real             *error )
 {
@@ -213,7 +213,7 @@ public  VIO_BOOL  get_tag_point_avg_rms_error(
     return( exists );
 }
 
-public  VIO_BOOL  get_tag_point_rms_error(
+  VIO_BOOL  get_tag_point_rms_error(
     main_struct      *main,
     int              ind,
     VIO_Real             *error )
@@ -235,7 +235,7 @@ public  VIO_BOOL  get_tag_point_rms_error(
     return( exists );
 }
 
-public  void  set_tag_point_rms_error(
+  void  set_tag_point_rms_error(
     main_struct      *main,
     int              ind,
     VIO_Real             rms_error )
@@ -244,7 +244,7 @@ public  void  set_tag_point_rms_error(
         main->tags.tag_points[ind].rms_error = rms_error;
 }
 
-public  void  set_tag_point_activity(
+  void  set_tag_point_activity(
     main_struct      *main,
     int              ind,
     VIO_BOOL          activity )
@@ -259,7 +259,7 @@ public  void  set_tag_point_activity(
     }
 }
 
-public  VIO_BOOL  get_tag_point_activity(
+  VIO_BOOL  get_tag_point_activity(
     main_struct      *main,
     int              ind )
 {
@@ -268,12 +268,12 @@ public  VIO_BOOL  get_tag_point_activity(
     if( ind < main->tags.n_tag_points )
         activity = main->tags.tag_points[ind].activity;
     else
-        activity = OFF;
+        activity = FALSE;
 
     return( activity );
 }
 
-public  VIO_BOOL  get_tag_point_transform(
+  VIO_BOOL  get_tag_point_transform(
     main_struct           *main,
     VIO_General_transform     **transform )
 {
@@ -295,7 +295,7 @@ public  VIO_BOOL  get_tag_point_transform(
     return( exists );
 }
 
-public  VIO_BOOL  get_tag_points_saved(
+  VIO_BOOL  get_tag_points_saved(
     main_struct   *main )
 {
     return( main->tags.saved_flag );

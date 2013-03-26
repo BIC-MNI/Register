@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/update/update_window.c,v 1.10 1998-06-29 15:01:48 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/update/update_window.c,v 1.10 1998-06-29 15:01:48 david Exp $";
 #endif
 
 #include  <register.h>
 
-public  VIO_BOOL  update_slice_display(
+  VIO_BOOL  update_slice_display(
     main_struct     *main,
     int             current_buffer )
 {
@@ -71,7 +71,7 @@ public  VIO_BOOL  update_slice_display(
     return( drawn );
 }
 
-public  VIO_BOOL  slices_to_be_updated(
+  VIO_BOOL  slices_to_be_updated(
     main_struct     *main,
     int             current_buffer )
 {

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/tag_points.c,v 1.21 1998-06-29 15:02:05 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/tag_points.c,v 1.21 1998-06-29 15:02:05 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -46,11 +46,11 @@ static  int  **rms_widget_indices;
 static  int  ***position_widgets_indices;
 static  int  **tag_name_widget_indices;
 
-private  int  get_tag_index(
+static  int  get_tag_index(
     UI_struct      *ui_info,
     int            tag );
 
-private  void   type_in_world_position_callback(
+static  void   type_in_world_position_callback(
     UI_struct      *ui_info,
     widget_struct  *widget,
     int            tag,
@@ -59,7 +59,7 @@ private  void   type_in_world_position_callback(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
+static  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 0, X );
@@ -67,7 +67,7 @@ private  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
+static  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 0, Y );
@@ -75,7 +75,7 @@ private  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
+static  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 0, Z );
@@ -83,7 +83,7 @@ private  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
+static  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 1, X );
@@ -91,7 +91,7 @@ private  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
+static  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 1, Y );
@@ -99,13 +99,13 @@ private  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world_z_position2_callback )
+static  DEFINE_WIDGET_CALLBACK( world_z_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
                                      (int) callback_data, 1, Z );
 }
 
-private  void  set_and_jump_to_tag(
+static  void  set_and_jump_to_tag(
      int  tag_index )
 {
     VIO_Real  position[VIO_N_DIMENSIONS];
@@ -132,7 +132,7 @@ private  void  set_and_jump_to_tag(
     }
 }
 
-private  void  set_current_tag_from_button(
+static  void  set_current_tag_from_button(
     void           *callback_data )
 {
     set_and_jump_to_tag( get_tag_index(get_ui_struct(), (int) callback_data) );
@@ -140,7 +140,7 @@ private  void  set_current_tag_from_button(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( tag_name_callback )
+static  DEFINE_WIDGET_CALLBACK( tag_name_callback )
 {
     int     tag_index;
     VIO_STR  name;
@@ -155,14 +155,14 @@ private  DEFINE_WIDGET_CALLBACK( tag_name_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( tag_number_button_callback )
+static  DEFINE_WIDGET_CALLBACK( tag_number_button_callback )
 {
     set_current_tag_from_button( callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( tag_activity_callback )
+static  DEFINE_WIDGET_CALLBACK( tag_activity_callback )
 {
     int   tag_index;
 
@@ -175,26 +175,26 @@ private  DEFINE_WIDGET_CALLBACK( tag_activity_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world1_button_callback )
+static  DEFINE_WIDGET_CALLBACK( world1_button_callback )
 {
     set_current_tag_from_button( callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( world2_button_callback )
+static  DEFINE_WIDGET_CALLBACK( world2_button_callback )
 {
     set_current_tag_from_button( callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( rms_error_callback )
+static  DEFINE_WIDGET_CALLBACK( rms_error_callback )
 {
     set_current_tag_from_button( callback_data );
 }
 
-public  void  previous_current_tag_point( UI_struct *ui )
+  void  previous_current_tag_point( UI_struct *ui )
 {
     int  tag_index;
 
@@ -207,7 +207,7 @@ public  void  previous_current_tag_point( UI_struct *ui )
     }
 }
 
-public  void  advance_current_tag_point( UI_struct  *ui )
+  void  advance_current_tag_point( UI_struct  *ui )
 {
     int  tag_index;
 
@@ -222,21 +222,21 @@ public  void  advance_current_tag_point( UI_struct  *ui )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback )
+static  DEFINE_WIDGET_CALLBACK( prev_tag_button_callback )
 {
     previous_current_tag_point( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( next_tag_button_callback )
+static  DEFINE_WIDGET_CALLBACK( next_tag_button_callback )
 {
     advance_current_tag_point( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( end_tags_button_callback )
+static  DEFINE_WIDGET_CALLBACK( end_tags_button_callback )
 {
     int  tag_index;
 
@@ -250,7 +250,7 @@ private  DEFINE_WIDGET_CALLBACK( end_tags_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( start_tags_button_callback )
+static  DEFINE_WIDGET_CALLBACK( start_tags_button_callback )
 {
     int  tag_index;
 
@@ -262,7 +262,7 @@ private  DEFINE_WIDGET_CALLBACK( start_tags_button_callback )
     }
 }
 
-private  Viewport_types  get_tag_menu_viewport_index(
+static  Viewport_types  get_tag_menu_viewport_index(
     int   volume_index )
 {
     switch( volume_index )
@@ -273,7 +273,7 @@ private  Viewport_types  get_tag_menu_viewport_index(
     }
 }
 
-public  void  set_tag_world_text(
+  void  set_tag_world_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               tag_index,
@@ -291,7 +291,7 @@ public  void  set_tag_world_text(
                             Position_values_format, value );
 }
 
-public  void  add_tag_point_widgets(
+  void  add_tag_point_widgets(
     UI_struct         *ui_info,
     int               n_tag_points,
     Viewport_types    rms_viewport_index,
@@ -325,7 +325,7 @@ public  void  add_tag_point_widgets(
                    create_button( &ui_info->graphics_window, rms_viewport_index,
                    x, y, Rms_button_width, Tag_point_height,
                    "Dst:",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -339,7 +339,7 @@ public  void  add_tag_point_widgets(
                    rms_viewport_index,
                    x + Interface_x_spacing + Rms_button_width, y,
                    Rms_number_width, Tag_point_height,
-                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   "", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
@@ -352,7 +352,7 @@ public  void  add_tag_point_widgets(
                    volume1_viewport_index,
                    x, y, Tag_world_button_width, Tag_point_height,
                    "World:",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -368,7 +368,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -386,7 +386,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -404,7 +404,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume1_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -422,7 +422,7 @@ public  void  add_tag_point_widgets(
                    volume2_viewport_index,
                    x, y, Tag_world_button_width, Tag_point_height,
                    "World:",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -439,7 +439,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -457,7 +457,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -475,7 +475,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry(&ui_info->graphics_window,
                        volume2_viewport_index, x, y,
                        Tag_position_width, Tag_point_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -494,7 +494,7 @@ public  void  add_tag_point_widgets(
                    names_viewport_index,
                    x, y, Tag_number_button_width, Tag_point_height,
                    "",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -510,8 +510,8 @@ public  void  add_tag_point_widgets(
                    names_viewport_index,
                    x, y, Tag_activity_width, Tag_point_height,
                    "Ignore", "On",
-                   ON,
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
@@ -525,7 +525,7 @@ public  void  add_tag_point_widgets(
                    create_text_entry( &ui_info->graphics_window,
                        names_viewport_index, x, y,
                        Tag_name_width, Tag_point_height,
-                       FALSE, "", OFF,
+                       FALSE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -545,7 +545,7 @@ public  void  add_tag_point_widgets(
                    names_viewport_index,
                    x, y, Advance_tags_button_width, Tag_point_height,
                    "First",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -560,7 +560,7 @@ public  void  add_tag_point_widgets(
                    names_viewport_index,
                    x, y, Advance_tags_button_width, Tag_point_height,
                    "^",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -575,7 +575,7 @@ public  void  add_tag_point_widgets(
                    names_viewport_index,
                    x, y, Advance_tags_button_width, Tag_point_height,
                    "v",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -590,7 +590,7 @@ public  void  add_tag_point_widgets(
                    names_viewport_index,
                    x, y, Advance_tags_button_width, Tag_point_height,
                    "Last",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -604,14 +604,14 @@ public  void  add_tag_point_widgets(
     update_all_tag_widgets( ui_info );
 }
 
-public  void  delete_tag_point_widgets_indices( void )
+  void  delete_tag_point_widgets_indices( void )
 {
     VIO_FREE2D( rms_widget_indices );
     VIO_FREE3D( position_widgets_indices );
     VIO_FREE2D( tag_name_widget_indices );
 }
 
-private  void  update_rms_error(
+static  void  update_rms_error(
     UI_struct         *ui_info,
     int               tag )
 {
@@ -632,7 +632,7 @@ private  void  update_rms_error(
     }
 }
 
-private  void  update_tag_position(
+static  void  update_tag_position(
     UI_struct         *ui_info,
     int               volume_index,
     int               tag )
@@ -664,7 +664,7 @@ private  void  update_tag_position(
     }
 }
 
-private  void  update_tag_name(
+static  void  update_tag_name(
     UI_struct         *ui_info,
     int               tag )
 {
@@ -708,7 +708,7 @@ private  void  update_tag_name(
     set_text_entry_string( widget, name );
 }
 
-private  void  set_widget_activity_and_selected(
+static  void  set_widget_activity_and_selected(
     widget_struct  *widget,
     VIO_BOOL        activity,
     VIO_BOOL        selected )
@@ -717,7 +717,7 @@ private  void  set_widget_activity_and_selected(
     set_widget_selected( widget, selected );
 }
 
-public  void  update_tag_widgets(
+  void  update_tag_widgets(
     UI_struct         *ui_info,
     int               tag )
 {
@@ -769,7 +769,7 @@ public  void  update_tag_widgets(
     set_transform_buttons_activity( ui_info, IF_does_transform_exist() );
 }
 
-public  void  update_all_tag_widgets(
+  void  update_all_tag_widgets(
     UI_struct         *ui_info )
 {
     int  tag;
@@ -779,7 +779,7 @@ public  void  update_all_tag_widgets(
     update_avg_rms_error( ui_info );
 }
 
-private  void   type_in_world_position_callback(
+static  void   type_in_world_position_callback(
     UI_struct      *ui_info,
     widget_struct  *widget,
     int            tag,
@@ -801,7 +801,7 @@ private  void   type_in_world_position_callback(
     }
 }
 
-public  void  set_current_tag_index(
+  void  set_current_tag_index(
     UI_struct      *ui_info,
     int            tag_index )
 {
@@ -817,27 +817,27 @@ public  void  set_current_tag_index(
     update_all_tag_widgets( ui_info );
 }
 
-private  int  get_tag_index(
+static  int  get_tag_index(
     UI_struct      *ui_info,
     int            tag )
 {
     return( ui_info->tag_points.first_tag_displayed + tag );
 }
 
-public  int  get_current_tag(
+  int  get_current_tag(
     UI_struct      *ui_info )
 {
     return( ui_info->tag_points.current_tag_index -
             ui_info->tag_points.first_tag_displayed );
 }
 
-public  int  get_current_tag_index(
+  int  get_current_tag_index(
     UI_struct      *ui_info )
 {
     return( ui_info->tag_points.current_tag_index );
 }
 
-private  void  delete_tag_point(
+static  void  delete_tag_point(
     UI_struct  *ui,
     int        tag_index )
 {
@@ -850,7 +850,7 @@ private  void  delete_tag_point(
     }
 }
 
-public  void  delete_current_tag_point(
+  void  delete_current_tag_point(
     UI_struct  *ui )
 {
     int      tag_index;
@@ -860,7 +860,7 @@ public  void  delete_current_tag_point(
     delete_tag_point( ui, tag_index );
 }
 
-public  void  delete_all_tag_points(
+  void  delete_all_tag_points(
     UI_struct  *ui )
 {
     while( IF_get_n_tag_points() > 0 )

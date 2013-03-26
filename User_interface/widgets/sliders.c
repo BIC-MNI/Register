@@ -13,16 +13,16 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/sliders.c,v 1.16 1998-06-29 15:02:06 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widgets/sliders.c,v 1.16 1998-06-29 15:02:06 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  VIO_Real  convert_position_to_slider_value( slider_struct *, int, int );
+static  VIO_Real  convert_position_to_slider_value( slider_struct *, int, int );
 
-private  int  convert_slider_value_to_position( slider_struct *, int, VIO_Real );
+static  int  convert_slider_value_to_position( slider_struct *, int, VIO_Real );
 
-private  void  update_value_from_text(
+static  void  update_value_from_text(
     widget_struct  *widget,
     int            ind )
 {
@@ -52,19 +52,19 @@ private  void  update_value_from_text(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( upper_value_hit_return_callback )
+static  DEFINE_WIDGET_CALLBACK( upper_value_hit_return_callback )
 {
     update_value_from_text( (widget_struct *) callback_data, 1 );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( lower_value_hit_return_callback )
+static  DEFINE_WIDGET_CALLBACK( lower_value_hit_return_callback )
 {
     update_value_from_text( (widget_struct *) callback_data, 0 );
 }
 
-private  void  update_slider_position_from_mouse(
+static  void  update_slider_position_from_mouse(
     widget_struct  *widget )
 {
     int             ind, x_mouse, y_mouse;
@@ -92,7 +92,7 @@ private  void  update_slider_position_from_mouse(
     set_slider_values( widget, values[0], values[1] );
 }
 
-private  void  update_both_slider_position_from_mouse(
+static  void  update_both_slider_position_from_mouse(
     widget_struct  *widget )
 {
     int             x_mouse, y_mouse;
@@ -126,14 +126,14 @@ private  void  update_both_slider_position_from_mouse(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( update_slider_position_event )
+static  DEFINE_EVENT_FUNCTION( update_slider_position_event )
 {
     update_slider_position_from_mouse( (widget_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( done_moving_slider )
+static  DEFINE_EVENT_FUNCTION( done_moving_slider )
 {
     update_slider_position_from_mouse( (widget_struct *) callback_data );
 
@@ -148,14 +148,14 @@ private  DEFINE_EVENT_FUNCTION( done_moving_slider )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( update_both_position_event )
+static  DEFINE_EVENT_FUNCTION( update_both_position_event )
 {
     update_both_slider_position_from_mouse( (widget_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( done_moving_both_sliders )
+static  DEFINE_EVENT_FUNCTION( done_moving_both_sliders )
 {
     update_both_slider_position_from_mouse( (widget_struct *) callback_data );
 
@@ -169,7 +169,7 @@ private  DEFINE_EVENT_FUNCTION( done_moving_both_sliders )
     set_interaction_in_progress( FALSE );
 }
 
-private  void  select_slider(
+static  void  select_slider(
     widget_struct   *widget,
     int             ind )
 {
@@ -190,19 +190,19 @@ private  void  select_slider(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( select_upper_slider )
+static  DEFINE_EVENT_FUNCTION( select_upper_slider )
 {
     select_slider( (widget_struct *) callback_data, 1 );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( select_lower_slider )
+static  DEFINE_EVENT_FUNCTION( select_lower_slider )
 {
     select_slider( (widget_struct *) callback_data, 0 );
 }
 
-private  void  select_colour_bar_sliders(
+static  void  select_colour_bar_sliders(
     widget_struct   *widget )
 {
     int             x_mouse, y_mouse;
@@ -227,12 +227,12 @@ private  void  select_colour_bar_sliders(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( select_both_sliders )
+static  DEFINE_EVENT_FUNCTION( select_both_sliders )
 {
     select_colour_bar_sliders( (widget_struct *) callback_data );
 }
 
-private  void  update_one_slider_colours(
+static  void  update_one_slider_colours(
     slider_struct   *slider,
     int             ind,
     VIO_BOOL         use_ui_colours,
@@ -251,7 +251,7 @@ private  void  update_one_slider_colours(
     update_widget_colours( slider->text_widgets[ind] );
 }
 
-public  void  update_slider_colours(
+  void  update_slider_colours(
     widget_struct   *widget )
 {
     VIO_Colour         rectangle_colour;
@@ -281,7 +281,7 @@ public  void  update_slider_colours(
                                    colour_map_state );
 }
 
-private  VIO_Real  convert_position_to_slider_value(
+static  VIO_Real  convert_position_to_slider_value(
     slider_struct *slider,
     int           x_position,
     int           x_size )
@@ -294,7 +294,7 @@ private  VIO_Real  convert_position_to_slider_value(
     return( value );
 }
 
-private  int  convert_slider_value_to_position(
+static  int  convert_slider_value_to_position(
     slider_struct *slider,
     int           x_size,
     VIO_Real          value )
@@ -315,7 +315,7 @@ private  int  convert_slider_value_to_position(
     return( x_position );
 }
 
-private  void  update_one_slider_position(
+static  void  update_one_slider_position(
     widget_struct           *widget,
     int                     ind )
 {
@@ -329,7 +329,7 @@ private  void  update_one_slider_position(
         convert_slider_value_to_position( slider, widget->x_size,
                                           slider->values[ind] );
 
-    peg_x1 = x - ROUND( slider->peg_width / 2.0 );
+    peg_x1 = x - VIO_ROUND( slider->peg_width / 2.0 );
     peg_x2 = peg_x1 + (int) slider->peg_width - 1;
 
     position_rectangle( slider->pegs[ind], peg_x1, widget->y,
@@ -362,7 +362,7 @@ private  void  update_one_slider_position(
                      text_entry_pos, widget->y + Slider_text_entry_y_offset );
 }
 
-private  void  update_slider_position(
+static  void  update_slider_position(
     widget_struct           *widget )
 {
     update_one_slider_position( widget, 0 );
@@ -370,7 +370,7 @@ private  void  update_slider_position(
         update_one_slider_position( widget, 1 );
 }
 
-public  void  get_slider_values(
+  void  get_slider_values(
     widget_struct           *widget,
     VIO_Real                    *low_value,
     VIO_Real                    *high_value )
@@ -385,7 +385,7 @@ public  void  get_slider_values(
         *high_value = slider->values[1];
 }
 
-public  void  set_slider_values(
+  void  set_slider_values(
     widget_struct           *widget,
     VIO_Real                    low_value,
     VIO_Real                    high_value )
@@ -447,7 +447,7 @@ public  void  set_slider_values(
         slider->value_changed_callback[1]( widget, slider->callback_data[1] );
 }
 
-public  void  set_slider_limits(
+  void  set_slider_limits(
     widget_struct  *widget,
     VIO_Real           min_value,
     VIO_Real           max_value )
@@ -460,7 +460,7 @@ public  void  set_slider_limits(
     slider->max_value = max_value;
 }
 
-public  void  update_slider_activity(
+  void  update_slider_activity(
     widget_struct           *widget )
 {
     slider_struct    *slider;
@@ -497,7 +497,7 @@ public  void  update_slider_activity(
 
 /* ARGSUSED */
 
-public  void  position_slider(
+  void  position_slider(
     widget_struct                 *widget,
     int                           x,
     int                           y )
@@ -512,7 +512,7 @@ public  void  position_slider(
     update_slider_position( widget );
 }
 
-private  void  create_slider_graphics(
+static  void  create_slider_graphics(
     widget_struct    *widget )
 {
     object_struct     *object;
@@ -547,7 +547,7 @@ private  void  create_slider_graphics(
 
 /* ARGSUSED */
 
-public  void  delete_slider(
+  void  delete_slider(
     widget_struct  *widget )
 {
     slider_struct     *slider;
@@ -562,7 +562,7 @@ public  void  delete_slider(
         delete_widget( slider->text_widgets[1] );
 }
 
-private  widget_struct  *create_a_slider(
+static  widget_struct  *create_a_slider(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
@@ -619,7 +619,7 @@ private  widget_struct  *create_a_slider(
     slider->text_widgets[0] = (void *) create_text_entry( graphics,
                        viewport_index,
                        0, 0, Slider_text_width, Slider_text_height,
-                       TRUE, "", ON,
+                       TRUE, "", TRUE,
                        TEXT_ENTRY_ACTIVE_COLOUR,
                        TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
@@ -646,7 +646,7 @@ private  widget_struct  *create_a_slider(
         slider->text_widgets[1] = (void *) create_text_entry( graphics,
                        viewport_index,
                        0, 0, Slider_text_width, Slider_text_height,
-                       TRUE, "", ON,
+                       TRUE, "", TRUE,
                        TEXT_ENTRY_ACTIVE_COLOUR,
                        TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
@@ -678,7 +678,7 @@ private  widget_struct  *create_a_slider(
     return( widget );
 }
 
-public  widget_struct  *create_slider(
+  widget_struct  *create_slider(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
@@ -705,7 +705,7 @@ public  widget_struct  *create_slider(
                      (widget_callback_type) 0, (void *) NULL ) );
 }
 
-public  widget_struct  *create_colour_bar_slider(
+  widget_struct  *create_colour_bar_slider(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,

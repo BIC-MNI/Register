@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/colour_bar.c,v 1.13 1998-06-29 15:02:02 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/colour_bar.c,v 1.13 1998-06-29 15:02:02 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -34,7 +34,7 @@ typedef  enum
 }
 Colour_bar_widgets;
 
-private  int  get_colour_coding_widget_index(
+static  int  get_colour_coding_widget_index(
     Colour_coding_types  type )
 {
     switch( type )
@@ -51,7 +51,7 @@ private  int  get_colour_coding_widget_index(
 
 static  int  widget_indices[N_COLOUR_BAR_WIDGETS];
 
-private  void  set_colour_coding(
+static  void  set_colour_coding(
     widget_struct        *widget,
     Colour_coding_types  type )
 {
@@ -67,71 +67,71 @@ private  void  set_colour_coding(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( gray_scale_callback )
+static  DEFINE_WIDGET_CALLBACK( gray_scale_callback )
 {
     set_colour_coding( widget, GRAY_SCALE );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( hot_metal_callback )
+static  DEFINE_WIDGET_CALLBACK( hot_metal_callback )
 {
     set_colour_coding( widget, HOT_METAL );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( spectral_callback )
+static  DEFINE_WIDGET_CALLBACK( spectral_callback )
 {
     set_colour_coding( widget, SPECTRAL );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( red_callback )
+static  DEFINE_WIDGET_CALLBACK( red_callback )
 {
     set_colour_coding( widget, RED_COLOUR_MAP );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( green_callback )
+static  DEFINE_WIDGET_CALLBACK( green_callback )
 {
     set_colour_coding( widget, GREEN_COLOUR_MAP );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( blue_callback )
+static  DEFINE_WIDGET_CALLBACK( blue_callback )
 {
     set_colour_coding( widget, BLUE_COLOUR_MAP );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( under_button_callback )
+static  DEFINE_WIDGET_CALLBACK( under_button_callback )
 {
     int   volume_index;
 
     volume_index = get_viewport_volume_index(widget->viewport_index);
 
-    set_widget_activity( widget, OFF );
+    set_widget_activity( widget, FALSE );
     popup_colour_selection( get_ui_struct(), volume_index, 0 );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( over_button_callback )
+static  DEFINE_WIDGET_CALLBACK( over_button_callback )
 {
     int   volume_index;
 
     volume_index = get_viewport_volume_index(widget->viewport_index);
 
-    set_widget_activity( widget, OFF );
+    set_widget_activity( widget, FALSE );
     popup_colour_selection( get_ui_struct(), volume_index, 1 );
 }
 
-private  void  change_limits(
+static  void  change_limits(
     widget_struct  *widget )
 {
     VIO_Real   min_val, max_val;
@@ -148,19 +148,19 @@ private  void  change_limits(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( lower_limit_callback )
+static  DEFINE_WIDGET_CALLBACK( lower_limit_callback )
 {
     change_limits( widget );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
+static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
 {
     change_limits( widget );
 }
 
-public  int  add_colour_bar_widgets(
+  int  add_colour_bar_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               x,
@@ -179,7 +179,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Gray",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -193,7 +193,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + dx, y, Colour_bar_button_width, Volume_button_height,
                    "Hot",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -205,7 +205,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 2 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Spect",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -217,7 +217,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 3 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Red",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -229,7 +229,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 4 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Green",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -241,7 +241,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x + 5 * dx, y, Colour_bar_button_width, Volume_button_height,
                    "Blue",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -255,7 +255,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Under",
-                   OFF, TRUE,
+                   FALSE, TRUE,
                    (VIO_Colour) (volume == 0 ? VOLUME1_UNDER_COLOUR :
                                            VOLUME2_UNDER_COLOUR),
                    BUTTON_SELECTED_COLOUR,
@@ -272,7 +272,7 @@ public  int  add_colour_bar_widgets(
                    viewport_index, x, y, Colour_bar_slider_width,
                    Colour_bar_slider_height,
                    0.0, 255.0, 0.0, 255.0, Colour_bar_text_format,
-                   OFF,
+                   FALSE,
                    SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
                    SLIDER_PEG_COLOUR,
                    lower_limit_callback, (void *) NULL,
@@ -285,7 +285,7 @@ public  int  add_colour_bar_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Over",
-                   OFF, TRUE,
+                   FALSE, TRUE,
                    (VIO_Colour) (volume == 0 ? VOLUME1_OVER_COLOUR :
                                            VOLUME2_OVER_COLOUR),
                    BUTTON_SELECTED_COLOUR,
@@ -314,7 +314,7 @@ public  int  add_colour_bar_widgets(
     return( start_index );
 }
 
-public  void  set_colour_bar_widgets_activity(
+  void  set_colour_bar_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
@@ -338,11 +338,11 @@ public  void  set_colour_bar_widgets_activity(
         set_widget_selected(
                      ui_info->widget_list[viewport_index].widgets
                      [start_widget_index + widget_indices[
-                           get_colour_coding_widget_index(type)]], ON );
+                           get_colour_coding_widget_index(type)]], TRUE );
     }
 }
 
-public  void  set_over_under_colour_activity(
+  void  set_over_under_colour_activity(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
@@ -364,7 +364,7 @@ public  void  set_over_under_colour_activity(
                              activity );
 }
 
-public  void  set_over_under_colour(
+  void  set_over_under_colour(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
@@ -405,7 +405,7 @@ public  void  set_over_under_colour(
                                   widget_indices[widget_index]] );
 }
 
-public  void  set_colour_bar_limits(
+  void  set_colour_bar_limits(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_Real              min_value,
@@ -421,7 +421,7 @@ public  void  set_colour_bar_limits(
                        min_value, max_value );
 }
 
-public  void  set_colour_bar_values(
+  void  set_colour_bar_values(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_Real              min_value,

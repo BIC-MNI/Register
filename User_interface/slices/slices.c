@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/slices/slices.c,v 1.7 2004-10-25 19:11:08 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/slices/slices.c,v 1.7 2004-10-25 19:11:08 bert Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  update_position_counters(
+  void  update_position_counters(
     UI_struct  *ui_info,
     int        volume_index )
 {
@@ -45,7 +45,7 @@ public  void  update_position_counters(
     update_volume_readout( ui_info, volume_index );
 }
 
-public  void  update_other_volume_positions(
+  void  update_other_volume_positions(
     UI_struct   *ui_info,
     int         volume_index )
 {
@@ -68,7 +68,7 @@ public  void  update_other_volume_positions(
     }
 }
 
-public  void  ui_set_volume_voxel_position(
+  void  ui_set_volume_voxel_position(
     UI_struct  *ui_info,
     int        volume_index,
     VIO_Real       position[VIO_N_DIMENSIONS] )
@@ -81,7 +81,7 @@ public  void  ui_set_volume_voxel_position(
 }
 
 
-public void ui_set_volume_time_position(UI_struct *ui_info,
+ void ui_set_volume_time_position(UI_struct *ui_info,
                                         int volume_index,
                                         VIO_Real tpos)
 {
@@ -91,7 +91,7 @@ public void ui_set_volume_time_position(UI_struct *ui_info,
 }
 
 
-public  void  ui_set_volume_original_world_position(
+  void  ui_set_volume_original_world_position(
     UI_struct  *ui_info,
     int        volume_index,
     VIO_Real       position[VIO_N_DIMENSIONS] )
@@ -103,7 +103,7 @@ public  void  ui_set_volume_original_world_position(
     update_other_volume_positions( ui_info, volume_index );
 }
 
-public  Viewport_types  get_volume_menu_viewport_index(
+  Viewport_types  get_volume_menu_viewport_index(
     int   volume_index )
 {
     switch( volume_index )
@@ -115,7 +115,7 @@ public  Viewport_types  get_volume_menu_viewport_index(
     }
 }
 
-public  int  get_viewport_volume_index(
+  int  get_viewport_volume_index(
     Viewport_types   viewport_index )
 {
     switch( viewport_index )
@@ -127,7 +127,7 @@ public  int  get_viewport_volume_index(
     }
 }
 
-public  void  set_merged_activity(
+  void  set_merged_activity(
     UI_struct  *ui_info,
     VIO_BOOL    activity )
 {
@@ -152,7 +152,7 @@ public  void  set_merged_activity(
     }
 }
 
-public  VIO_BOOL   get_voxel_under_mouse(
+  VIO_BOOL   get_voxel_under_mouse(
     UI_struct        *ui_info,
     Viewport_types   event_viewport_index,
     int              *volume,

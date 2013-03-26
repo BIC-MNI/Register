@@ -13,17 +13,17 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/resample.c,v 1.10 1998-06-29 15:01:46 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/resample.c,v 1.10 1998-06-29 15:01:46 david Exp $";
 #endif
 
 #include  <register.h>
 
-public  VIO_Status  resample_the_volume(
+  VIO_Status  resample_the_volume(
     main_struct  *main,
     VIO_STR       resampled_filename )
 {
     VIO_Status             status;
-    char               command_str[EXTREMELY_LARGE_STRING_SIZE];
+    char               command_str[VIO_EXTREMELY_LARGE_STRING_SIZE];
     char               tmp_name[L_tmpnam];
     VIO_STR             tmp_transform_filename;
     VIO_General_transform  *transform;

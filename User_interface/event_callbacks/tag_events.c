@@ -13,19 +13,19 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/tag_events.c,v 1.9 2001-05-23 04:24:42 stever Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_callbacks/tag_events.c,v 1.9 2001-05-23 04:24:42 stever Exp $";
 #endif
 
 #include  <user_interface.h>
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( add_tag_point_callback )
+static  DEFINE_EVENT_FUNCTION( add_tag_point_callback )
 {
     record_tag( get_ui_struct(), IF_get_n_tag_points() );
 }
 
-public  void  install_tag_events(
+  void  install_tag_events(
     UI_struct                *ui )
 {
     int             volume, view;

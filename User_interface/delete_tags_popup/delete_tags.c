@@ -13,24 +13,24 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/delete_tags_popup/delete_tags.c,v 1.8 1998-06-29 15:01:53 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/delete_tags_popup/delete_tags.c,v 1.8 1998-06-29 15:01:53 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  void  delete_tags_confirm(
+static  void  delete_tags_confirm(
     popup_struct          *popup )
 {
     delete_popup_window( popup );
 
     FREE( popup );
 
-    set_delete_tags_button_activity( get_ui_struct(), ON );
+    set_delete_tags_button_activity( get_ui_struct(), TRUE );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( delete_button_callback )
+static  DEFINE_WIDGET_CALLBACK( delete_button_callback )
 {
     delete_all_tag_points( get_ui_struct() );
 
@@ -39,19 +39,19 @@ private  DEFINE_WIDGET_CALLBACK( delete_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )
+static  DEFINE_WIDGET_CALLBACK( cancel_button_callback )
 {
     delete_tags_confirm( (popup_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( kill_window_callback )
+static  DEFINE_EVENT_FUNCTION( kill_window_callback )
 {
     delete_tags_confirm( (popup_struct *) callback_data );
 }
 
-public  void  popup_delete_tags(
+  void  popup_delete_tags(
     UI_struct   *ui )
 {
     int               x, y;
@@ -61,7 +61,7 @@ public  void  popup_delete_tags(
     widget_struct     *widget;
     popup_struct      *popup;
 
-    set_delete_tags_button_activity( ui, OFF );
+    set_delete_tags_button_activity( ui, FALSE );
 
     G_get_mouse_screen_position( &x, &y );
 
@@ -93,7 +93,7 @@ public  void  popup_delete_tags(
 
     widget = create_button( &popup->graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
-                            "Delete", ON, TRUE,
+                            "Delete", TRUE, TRUE,
                             BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,
@@ -107,7 +107,7 @@ public  void  popup_delete_tags(
 
     widget = create_button( &popup->graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
-                            "Cancel", ON, TRUE,
+                            "Cancel", TRUE, TRUE,
                             BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,

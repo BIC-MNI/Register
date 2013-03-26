@@ -13,26 +13,26 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load_popup.c,v 1.13 1998-06-29 15:01:58 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/input/load_popup.c,v 1.13 1998-06-29 15:01:58 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( cancel_button_callback )
+static  DEFINE_WIDGET_CALLBACK( cancel_button_callback )
 {
     cancel_loading( (load_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )
+static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     cancel_loading( (load_struct *) callback_data );
 }
 
-public  void  initialize_load_popup(
+  void  initialize_load_popup(
     load_struct   *load_data,
     int           x_position,
     int           y_position,
@@ -56,7 +56,7 @@ public  void  initialize_load_popup(
                    (Viewport_types) 0, Interface_x_spacing, Interface_y_spacing,
                    Button_width, Button_height,
                    "Cancel",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -66,13 +66,13 @@ public  void  initialize_load_popup(
     (void) add_widget_to_list( &load_data->popup.widgets, widget );
 }
 
-public  void  delete_load_popup(
+  void  delete_load_popup(
     load_struct   *load_data )
 {
     delete_popup_window( &load_data->popup );
 }
 
-public  void  set_load_popup_meter(
+  void  set_load_popup_meter(
     load_struct   *load_data,
     VIO_Real          fraction_done )
 {

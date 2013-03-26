@@ -16,7 +16,7 @@
  *
  * This file has been modified to not rely on tcl, tk or X11.
  * Based on tkArgv.c from tk2.3 : 
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Tagtoxfm/ParseArgv.c,v 1.1 1999-06-21 20:21:49 stever Exp $ SPRITE (Berkeley)";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Tagtoxfm/ParseArgv.c,v 1.1 1999-06-21 20:21:49 stever Exp $ SPRITE (Berkeley)";
  *
  * Modifications by Peter Neelin (November 27, 1992)
  */

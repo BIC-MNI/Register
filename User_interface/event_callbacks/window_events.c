@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/window_events.c,v 1.13 1998-06-29 15:01:55 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_callbacks/window_events.c,v 1.13 1998-06-29 15:01:55 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( redraw_overlay_callback )
+static  DEFINE_EVENT_FUNCTION( redraw_overlay_callback )
 {
     UI_struct  *ui = (UI_struct *) callback_data;
 
@@ -29,7 +29,7 @@ private  DEFINE_EVENT_FUNCTION( redraw_overlay_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
+static  DEFINE_EVENT_FUNCTION( redraw_window_callback )
 {
     UI_struct  *ui = (UI_struct *) callback_data;
 
@@ -38,7 +38,7 @@ private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( resize_window_callback )
+static  DEFINE_EVENT_FUNCTION( resize_window_callback )
 {
     UI_struct  *ui = (UI_struct *) callback_data;
 
@@ -53,7 +53,7 @@ private  DEFINE_EVENT_FUNCTION( resize_window_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )
+static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     UI_struct  *ui = (UI_struct *) callback_data;
 #ifdef DEBUG
@@ -68,14 +68,14 @@ private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( deiconize_window_callback )
+static  DEFINE_EVENT_FUNCTION( deiconize_window_callback )
 {
     UI_struct  *ui = (UI_struct *) callback_data;
 
     set_window_colours( ui->graphics_window.window );
 }
 
-public  void  install_window_events(
+  void  install_window_events(
     UI_struct  *ui )
 {
     set_event_viewport( &ui->graphics_window.event_viewports,

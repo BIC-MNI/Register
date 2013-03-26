@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.21 1998-08-24 19:52:13 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.21 1998-08-24 19:52:13 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  VIO_Status   initialize_user_interface(
+  VIO_Status   initialize_user_interface(
     UI_struct  *ui,
     VIO_STR     executable_name )
 {
@@ -74,13 +74,13 @@ public  VIO_Status   initialize_user_interface(
 
     IF_set_interpolation_flag( Initial_interpolation_state );
 
-    G_set_zbuffer_state( ui->graphics_window.window, OFF );
-    G_set_lighting_state( ui->graphics_window.window, OFF );
-    G_set_transparency_state( ui->graphics_window.window, OFF );
+    G_set_zbuffer_state( ui->graphics_window.window, FALSE );
+    G_set_lighting_state( ui->graphics_window.window, FALSE );
+    G_set_transparency_state( ui->graphics_window.window, FALSE );
 
     set_start_colour_table( ui );
 
-    G_set_automatic_clear_state( ui->graphics_window.window, OFF );
+    G_set_automatic_clear_state( ui->graphics_window.window, FALSE );
 
     initialize_graphics_struct( &ui->graphics_window.graphics );
     initialize_event_viewports( &ui->graphics_window.event_viewports );
@@ -112,7 +112,7 @@ public  VIO_Status   initialize_user_interface(
     return( status );
 }
 
-public  void   terminate_user_interface(
+  void   terminate_user_interface(
     UI_struct  *ui )
 {
     int   volume;

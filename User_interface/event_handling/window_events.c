@@ -13,19 +13,19 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/window_events.c,v 1.4 2001-05-23 04:13:11 stever Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/window_events.c,v 1.4 2001-05-23 04:13:11 stever Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  void  update_callback(
+static  void  update_callback(
     Gwindow   window,
     void      *data )
 {
     handle_event( WINDOW_REDRAW_EVENT, window, 0 );
 }
 
-private  void  resize_callback(
+static  void  resize_callback(
     Gwindow   window,
     int       x,
     int       y,
@@ -36,7 +36,7 @@ private  void  resize_callback(
     handle_event( WINDOW_RESIZE_EVENT, window, 0 );
 }
 
-private  void  key_down_callback(
+static  void  key_down_callback(
     Gwindow   window,
     int       key,
     void      *data )
@@ -44,7 +44,7 @@ private  void  key_down_callback(
     handle_event( KEY_DOWN_EVENT, window, key );
 }
 
-private  void  mouse_movement_callback(
+static  void  mouse_movement_callback(
     Gwindow   window,
     int       x,
     int       y,
@@ -53,7 +53,7 @@ private  void  mouse_movement_callback(
     handle_event( MOUSE_MOVEMENT_EVENT, window, 0 );
 }
 
-private  void  left_down_callback(
+static  void  left_down_callback(
     Gwindow   window,
     int       x,
     int       y,
@@ -62,7 +62,7 @@ private  void  left_down_callback(
     handle_event( LEFT_MOUSE_DOWN_EVENT, window, 0 );
 }
 
-private  void  left_up_callback(
+static  void  left_up_callback(
     Gwindow   window,
     int       x,
     int       y,
@@ -71,7 +71,7 @@ private  void  left_up_callback(
     handle_event( LEFT_MOUSE_UP_EVENT, window, 0 );
 }
 
-private  void  middle_down_callback(
+static  void  middle_down_callback(
     Gwindow   window,
     int       x,
     int       y,
@@ -80,7 +80,7 @@ private  void  middle_down_callback(
     handle_event( MIDDLE_MOUSE_DOWN_EVENT, window, 0 );
 }
 
-private  void  middle_up_callback(
+static  void  middle_up_callback(
     Gwindow   window,
     int       x,
     int       y,
@@ -89,7 +89,7 @@ private  void  middle_up_callback(
     handle_event( MIDDLE_MOUSE_UP_EVENT, window, 0 );
 }
 
-private  void  right_down_callback( Gwindow   window,
+static  void  right_down_callback( Gwindow   window,
     int       x,
     int       y,
     void      *data )
@@ -97,7 +97,7 @@ private  void  right_down_callback( Gwindow   window,
     handle_event( RIGHT_MOUSE_DOWN_EVENT, window, 0 );
 }
 
-private  void  right_up_callback(
+static  void  right_up_callback(
     Gwindow   window,
     int       x,
     int       y,
@@ -106,42 +106,42 @@ private  void  right_up_callback(
     handle_event( RIGHT_MOUSE_UP_EVENT, window, 0 );
 }
 
-private  void  iconify_callback(
+static  void  iconify_callback(
     Gwindow   window,
     void      *data )
 {
     handle_event( WINDOW_ICONIZED_EVENT, window, 0 );
 }
 
-private  void  deiconify_callback(
+static  void  deiconify_callback(
     Gwindow   window,
     void      *data )
 {
     handle_event( WINDOW_DEICONIZED_EVENT, window, 0 );
 }
 
-private  void  enter_callback(
+static  void  enter_callback(
     Gwindow   window,
     void      *data )
 {
     handle_event( WINDOW_ENTER_EVENT, window, 0 );
 }
 
-private  void  leave_callback(
+static  void  leave_callback(
     Gwindow   window,
     void      *data )
 {
     handle_event( WINDOW_LEAVE_EVENT, window, 0 );
 }
 
-private  void  quit_callback(
+static  void  quit_callback(
     Gwindow   window,
     void      *data )
 {
     handle_event( WINDOW_QUIT_EVENT, window, 0 );
 }
 
-public  void  set_window_event_callbacks(
+  void  set_window_event_callbacks(
     graphics_window_struct    *window )
 {
     Gwindow  gwindow;

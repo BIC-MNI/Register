@@ -13,16 +13,16 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_callbacks.c,v 1.9 1998-06-29 15:01:55 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/event_callbacks.c,v 1.9 1998-06-29 15:01:55 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 #define  EVENT_CHUNK_ALLOC_SIZE   10
 
-private  void  delete_event_callbacks( event_callback_list_struct * );
+static  void  delete_event_callbacks( event_callback_list_struct * );
 
-public  void  initialize_event_table( event_callback_list_struct  table[] )
+  void  initialize_event_table( event_callback_list_struct  table[] )
 {
     Event_types   event_type;
 
@@ -30,7 +30,7 @@ public  void  initialize_event_table( event_callback_list_struct  table[] )
         table[event_type].n_callbacks = 0;
 }
 
-public  void  delete_event_table( event_callback_list_struct  table[] )
+  void  delete_event_table( event_callback_list_struct  table[] )
 {
     Event_types   event_type;
 
@@ -38,7 +38,7 @@ public  void  delete_event_table( event_callback_list_struct  table[] )
         delete_event_callbacks( &table[event_type] );
 }
 
-private  int  get_callback_function_index(
+static  int  get_callback_function_index(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data )
@@ -61,7 +61,7 @@ private  int  get_callback_function_index(
     return( i );
 }
 
-public  void  set_event_callback_enabled(
+  void  set_event_callback_enabled(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data,
@@ -76,7 +76,7 @@ public  void  set_event_callback_enabled(
         callback_list->callbacks[i].enabled = enabled;
 }
 
-public  void  add_event_callback_function(
+  void  add_event_callback_function(
     event_callback_list_struct   *callback_list,
     int                          x_min,
     int                          x_max,
@@ -101,7 +101,7 @@ public  void  add_event_callback_function(
                           callback, EVENT_CHUNK_ALLOC_SIZE );
 }
 
-public  void  set_event_callback_viewport(
+  void  set_event_callback_viewport(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data,
@@ -124,7 +124,7 @@ public  void  set_event_callback_viewport(
     }
 }
 
-public  void  remove_event_callback_function(
+  void  remove_event_callback_function(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data )
@@ -142,7 +142,7 @@ public  void  remove_event_callback_function(
     }
 }
 
-private  VIO_BOOL  is_correct_shift_modifier(
+static  VIO_BOOL  is_correct_shift_modifier(
     VIO_BOOL           shift_state,
     Event_modifiers   modifier )
 {
@@ -157,7 +157,7 @@ private  VIO_BOOL  is_correct_shift_modifier(
 
 #define  STATIC_SIZE  20
 
-public  VIO_BOOL  execute_event_callback_functions(
+  VIO_BOOL  execute_event_callback_functions(
     VIO_BOOL                      shift_state,
     event_callback_list_struct   *callback_list,
     int                          mouse_x,
@@ -216,7 +216,7 @@ public  VIO_BOOL  execute_event_callback_functions(
     return( n_valid > 0 );
 }
 
-private  void  delete_event_callbacks(
+static  void  delete_event_callbacks(
     event_callback_list_struct   *callback_list )
 {
     if( callback_list->n_callbacks > 0 )

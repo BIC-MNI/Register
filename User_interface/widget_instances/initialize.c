@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/initialize.c,v 1.10 1998-06-29 15:02:03 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/initialize.c,v 1.10 1998-06-29 15:02:03 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  initialize_UI_widgets( UI_struct  *ui_info )
+  void  initialize_UI_widgets( UI_struct  *ui_info )
 {
     Viewport_types   viewport_index;
 
@@ -45,7 +45,7 @@ public  void  initialize_UI_widgets( UI_struct  *ui_info )
 #endif
 }
 
-public  void  delete_UI_widgets( UI_struct  *ui_info )
+  void  delete_UI_widgets( UI_struct  *ui_info )
 {
     Viewport_types   viewport_index;
 
@@ -57,7 +57,7 @@ public  void  delete_UI_widgets( UI_struct  *ui_info )
 #endif
 }
 
-public  void  update_all_widget_colours( UI_struct *ui_info )
+  void  update_all_widget_colours( UI_struct *ui_info )
 {
     Viewport_types   viewport_index;
 

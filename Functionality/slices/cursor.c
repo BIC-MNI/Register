@@ -13,18 +13,18 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/cursor.c,v 1.12 1998-06-29 15:01:44 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/cursor.c,v 1.12 1998-06-29 15:01:44 david Exp $";
 #endif
 
 #include  <register.h>
 
-private  const  int  N_LINES = 12;
+static  const  int  N_LINES = 12;
 
-private  void  set_cursor_colours(
+static  void  set_cursor_colours(
     main_struct    *main,
     lines_struct   *lines );
 
-private  Bitplane_types  get_cursor_bitplane( void )
+static  Bitplane_types  get_cursor_bitplane( void )
 {
     if( G_has_overlay_planes() && Use_overlay_planes )
         return( OVERLAY_PLANES );
@@ -32,7 +32,7 @@ private  Bitplane_types  get_cursor_bitplane( void )
         return( NORMAL_PLANES );
 }
 
-private  void  create_cursor_graphics(
+static  void  create_cursor_graphics(
     lines_struct   *lines )
 {
     int   i;
@@ -77,7 +77,7 @@ private  void  create_cursor_graphics(
     position_cursor( lines, 0, 0, 0, 0 );
 }
 
-public  object_struct  *create_cursor(
+  object_struct  *create_cursor(
     main_struct  *main,
     int          volume_index,
     int          view_index )
@@ -100,7 +100,7 @@ public  object_struct  *create_cursor(
     return( object );
 }
 
-public  void  position_cursor(
+  void  position_cursor(
     lines_struct   *lines,
     int            x,
     int            y,
@@ -160,7 +160,7 @@ public  void  position_cursor(
                                 (VIO_Real) Point_y(lines->points[7]) + 1.0, 0.0 );
 }
 
-private  object_struct  *get_cursor_lines(
+static  object_struct  *get_cursor_lines(
     main_struct    *main,
     int            volume,
     int            view )
@@ -175,7 +175,7 @@ private  object_struct  *get_cursor_lines(
     return( lines );
 }
 
-private  void  set_cursor_colours(
+static  void  set_cursor_colours(
     main_struct    *main,
     lines_struct   *lines )
 {
@@ -212,7 +212,7 @@ private  void  set_cursor_colours(
     lines->colours[11] = outside;
 }
 
-public  void  update_cursor_colours(
+  void  update_cursor_colours(
     main_struct    *main,
     int            volume,
     int            view )
@@ -224,7 +224,7 @@ public  void  update_cursor_colours(
     set_cursor_colours( main, lines );
 }
 
-public  void  update_volume_cursor(
+  void  update_volume_cursor(
     main_struct   *main,
     int           volume_index,
     int           view_index )
@@ -247,7 +247,7 @@ public  void  update_volume_cursor(
         convert_voxel_to_pixel( main, volume_index, view_index, position,
                                 &x_pixel, &y_pixel );
 
-        position_cursor( get_lines_ptr(cursor), ROUND(x_pixel), ROUND(y_pixel),
+        position_cursor( get_lines_ptr(cursor), VIO_ROUND(x_pixel), VIO_ROUND(y_pixel),
                          Slice_cursor_offset, Slice_cursor_size );
     }
 
@@ -255,7 +255,7 @@ public  void  update_volume_cursor(
                                     get_cursor_bitplane() );
 }
 
-public  void  update_volume_cursors(
+  void  update_volume_cursors(
     main_struct   *main,
     int           volume_index )
 {
@@ -265,13 +265,13 @@ public  void  update_volume_cursors(
         update_volume_cursor( main, volume_index, view_index );
 }
 
-public  VIO_BOOL  get_cursor_visibility(
+  VIO_BOOL  get_cursor_visibility(
     main_struct  *main )
 {
     return( main->cursor_visibility );
 }
 
-public  void  set_cursor_visibility(
+  void  set_cursor_visibility(
     main_struct  *main,
     VIO_BOOL      state )
 {

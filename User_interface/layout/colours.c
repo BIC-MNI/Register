@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/layout/colours.c,v 1.12 1998-06-29 15:01:58 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/layout/colours.c,v 1.12 1998-06-29 15:01:58 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 static  VIO_Colour  colours[N_UI_COLOURS];
 
-public  void  initialize_ui_colours( void )
+  void  initialize_ui_colours( void )
 {
     colours[BACKGROUND_COLOUR]          = Default_UI_background_colour;
     colours[DIVIDER_COLOUR]             = Default_divider_colour;
@@ -49,9 +49,9 @@ public  void  initialize_ui_colours( void )
     colours[VOLUME2_OVER_COLOUR]        = Default_volume2_over_colour;
 }
 
-private  int  start_colour_table = 0;
+static  int  start_colour_table = 0;
 
-public  void  set_start_colour_table(
+  void  set_start_colour_table(
     UI_struct  *ui )
 {
     if( G_get_n_colour_map_entries(ui->graphics_window.window) <= 256 )
@@ -60,19 +60,19 @@ public  void  set_start_colour_table(
         start_colour_table = Colour_table_start;
 }
 
-public  int  get_ui_colour_index(
+  int  get_ui_colour_index(
     UI_colours  colour_name )
 {
     return( colour_name + start_colour_table );
 }
 
-public  VIO_Colour  get_ui_rgb_colour(
+  VIO_Colour  get_ui_rgb_colour(
     UI_colours  colour_name )
 {
     return( colours[colour_name] );
 }
 
-public  VIO_Colour  get_ui_colour(
+  VIO_Colour  get_ui_colour(
     VIO_BOOL        colour_map_state,
     UI_colours     colour_name )
 {
@@ -82,7 +82,7 @@ public  VIO_Colour  get_ui_colour(
         return( get_ui_rgb_colour(colour_name) );
 }
 
-public  void  set_ui_colour(
+  void  set_ui_colour(
     UI_struct    *ui,
     UI_colours   colour_name,
     VIO_Colour       colour )
@@ -97,7 +97,7 @@ public  void  set_ui_colour(
     }
 }
 
-public  void  set_window_colours( window_struct *window )
+  void  set_window_colours( window_struct *window )
 {
     UI_colours  colour_name;
 
@@ -124,7 +124,7 @@ public  void  set_window_colours( window_struct *window )
     }
 }
 
-public  void  colour_map_state_has_changed( UI_struct  *ui )
+  void  colour_map_state_has_changed( UI_struct  *ui )
 {
     set_start_colour_table( ui );
 

@@ -13,18 +13,18 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_viewports.c,v 1.9 1998-06-29 15:01:56 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/event_viewports.c,v 1.9 1998-06-29 15:01:56 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  initialize_event_viewports(
+  void  initialize_event_viewports(
     event_viewports_struct  *event_viewports )
 {
     event_viewports->n_event_viewports = 0;
 }
 
-public  void  delete_event_viewports(
+  void  delete_event_viewports(
     event_viewports_struct  *event_viewports )
 {
     int          i;
@@ -41,7 +41,7 @@ public  void  delete_event_viewports(
     }
 }
 
-private  void  check_event_viewport_exists(
+static  void  check_event_viewport_exists(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index )
 {
@@ -61,7 +61,7 @@ private  void  check_event_viewport_exists(
     }
 }
 
-public  void  set_event_viewport(
+  void  set_event_viewport(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     int                     x_min,
@@ -77,7 +77,7 @@ public  void  set_event_viewport(
     event_viewports->event_viewports[event_viewport_index].y_max = y_max;
 }
 
-public  void  get_event_viewport(
+  void  get_event_viewport(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     int                     *x_min,
@@ -93,7 +93,7 @@ public  void  get_event_viewport(
     *y_max = event_viewports->event_viewports[event_viewport_index].y_max;
 }
 
-public  void  set_event_viewport_callback_enabled(
+  void  set_event_viewport_callback_enabled(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
@@ -108,7 +108,7 @@ public  void  set_event_viewport_callback_enabled(
       callback_function, callback_data, enabled );
 }
 
-public  void  set_event_viewport_callback_viewport(
+  void  set_event_viewport_callback_viewport(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
@@ -127,7 +127,7 @@ public  void  set_event_viewport_callback_viewport(
       x_min, x_max, y_min, y_max );
 }
 
-public  void  add_event_viewport_callback(
+  void  add_event_viewport_callback(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
@@ -146,7 +146,7 @@ public  void  add_event_viewport_callback(
       x_min, x_max, y_min, y_max, callback_function, modifier, callback_data );
 }
 
-public  void  remove_event_viewport_callback(
+  void  remove_event_viewport_callback(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
@@ -160,7 +160,7 @@ public  void  remove_event_viewport_callback(
       callback_function, callback_data );
 }
 
-public  void  execute_event_viewport_events(
+  void  execute_event_viewport_events(
     VIO_BOOL                 shift_state,
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
@@ -196,7 +196,7 @@ public  void  execute_event_viewport_events(
     }
 }
 
-public  VIO_BOOL  find_viewport_containing_mouse(
+  VIO_BOOL  find_viewport_containing_mouse(
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,

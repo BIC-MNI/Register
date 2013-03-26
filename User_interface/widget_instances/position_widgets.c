@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/position_widgets.c,v 1.12 2004-10-25 19:11:08 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/position_widgets.c,v 1.12 2004-10-25 19:11:08 bert Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  void    set_voxel_position_callback( UI_struct *, widget_struct *,
+static  void    set_voxel_position_callback( UI_struct *, widget_struct *,
                                               int );
-private  void    set_world_position_callback( UI_struct *, widget_struct *,
+static  void    set_world_position_callback( UI_struct *, widget_struct *,
                                               int );
 
 typedef  enum
@@ -43,47 +43,47 @@ static  int  widget_indices[N_POSITION_WIDGETS];
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( pos_x_voxel_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_x_voxel_callback )
 {
     set_voxel_position_callback( get_ui_struct(), widget, X );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( pos_y_voxel_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_y_voxel_callback )
 {
     set_voxel_position_callback( get_ui_struct(), widget, Y );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( pos_z_voxel_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_z_voxel_callback )
 {
     set_voxel_position_callback( get_ui_struct(), widget, Z );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( pos_x_world_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_x_world_callback )
 {
     set_world_position_callback( get_ui_struct(), widget, X );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( pos_y_world_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_y_world_callback )
 {
     set_world_position_callback( get_ui_struct(), widget, Y );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( pos_z_world_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_z_world_callback )
 {
     set_world_position_callback( get_ui_struct(), widget, Z );
 }
 
-private  DEFINE_WIDGET_CALLBACK( pos_time_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
 {
     int    volume_index;
     int    start_widget_index;
@@ -108,7 +108,7 @@ private  DEFINE_WIDGET_CALLBACK( pos_time_callback )
     ui_set_volume_time_position( ui_info, volume_index, tpos );
 }
 
-public  int  add_cursor_position_widgets(
+  int  add_cursor_position_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               *height )
@@ -127,7 +127,7 @@ public  int  add_cursor_position_widgets(
                    &ui_info->widget_list[viewport_index],
                   create_label( &ui_info->graphics_window, viewport_index, 
                   x, y, Position_label_width, Text_entry_height,
-                  "V:", OFF, LABEL_ACTIVE_COLOUR,
+                  "V:", FALSE, LABEL_ACTIVE_COLOUR,
                   LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   (Font_types) Label_text_font, Label_text_font_size ) );
@@ -143,7 +143,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -158,7 +158,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + dx, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -173,7 +173,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + 2 * dx, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -188,7 +188,7 @@ public  int  add_cursor_position_widgets(
                   create_label( &ui_info->graphics_window, viewport_index, 
                   x_start + 3 * dx + Position_values_separation, y,
                   Position_label_width, Text_entry_height,
-                  "W:", OFF, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
+                  "W:", FALSE, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   (Font_types) Label_text_font, Label_text_font_size ) ) -
@@ -202,7 +202,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -217,7 +217,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + dx, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -232,7 +232,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x_start + 2 * dx, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -249,7 +249,7 @@ public  int  add_cursor_position_widgets(
                   &ui_info->widget_list[viewport_index],
                   create_label( &ui_info->graphics_window, viewport_index, 
                   x, y, Position_label_width, Text_entry_height,
-                  "T:", OFF, LABEL_ACTIVE_COLOUR,
+                  "T:", FALSE, LABEL_ACTIVE_COLOUR,
                   LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   (Font_types) Label_text_font, 
@@ -262,7 +262,7 @@ public  int  add_cursor_position_widgets(
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", OFF,
+                       TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -277,7 +277,7 @@ public  int  add_cursor_position_widgets(
     return( start_index );
 }
 
-public  void  set_voxel_position_widgets_activity(
+  void  set_voxel_position_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
@@ -293,7 +293,7 @@ public  void  set_voxel_position_widgets_activity(
     }
 }
 
-public  void  set_volume_voxel_text(
+  void  set_volume_voxel_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
@@ -310,7 +310,7 @@ public  void  set_volume_voxel_text(
                             value );
 }
 
-public  void  set_volume_world_text(
+  void  set_volume_world_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
@@ -327,7 +327,7 @@ public  void  set_volume_world_text(
                             value );
 }
 
-public  void  set_volume_time_text(
+  void  set_volume_time_text(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_Real              value )
@@ -343,7 +343,7 @@ public  void  set_volume_time_text(
                             value );
 }
 
-private  void   set_voxel_position_callback(
+static  void   set_voxel_position_callback(
     UI_struct      *ui_info,
     widget_struct  *widget,
     int            axis )
@@ -370,7 +370,7 @@ private  void   set_voxel_position_callback(
     ui_set_volume_voxel_position( ui_info, volume_index, position );
 }
 
-private  void   set_world_position_callback(
+static  void   set_world_position_callback(
     UI_struct      *ui_info,
     widget_struct  *widget,
     int            axis )

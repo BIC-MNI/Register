@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample.c,v 1.10 1998-06-29 15:02:01 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/resampling/resample.c,v 1.10 1998-06-29 15:02:01 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  do_resampling(
+  void  do_resampling(
     UI_struct           *ui,
     VIO_General_transform   *resampling_transform,
     VIO_STR              resampled_filename )

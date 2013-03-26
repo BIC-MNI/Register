@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.30 2005-02-28 21:06:02 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.30 2005-02-28 21:06:02 bert Exp $";
 #endif
 
 #include  <register.h>
 
-public  void  create_slice_pixels(
+  void  create_slice_pixels(
     main_struct   *main,
     int           volume_index,
     int           view )
@@ -74,7 +74,7 @@ public  void  create_slice_pixels(
                     main->trislice[volume_index].slices[view].pixels );
 }
 
-private  void  convert_volume1_voxel_to_volume2(
+static  void  convert_volume1_voxel_to_volume2(
     main_struct   *main,
     Real          voxel1[],
     Real          voxel2[] )
@@ -97,7 +97,7 @@ private  void  convert_volume1_voxel_to_volume2(
                                      &voxel2[X], &voxel2[Y], &voxel2[Z] );
 }
 
-public  void  create_merged_pixels(
+  void  create_merged_pixels(
     main_struct   *main,
     int           view )
 {
@@ -296,7 +296,7 @@ public  void  create_merged_pixels(
     delete_pixels( &pixels2 );
 }
 
-public  VIO_BOOL   convert_pixel_to_voxel(
+  VIO_BOOL   convert_pixel_to_voxel(
     main_struct     *main,
     int             volume_index,
     int             view_index,
@@ -324,7 +324,7 @@ public  VIO_BOOL   convert_pixel_to_voxel(
     return( in_volume );
 }
 
-public  void   convert_voxel_to_pixel(
+  void   convert_voxel_to_pixel(
     main_struct     *main,
     int             volume_index,
     int             view_index,
@@ -348,7 +348,7 @@ public  void   convert_voxel_to_pixel(
                                   x_scale, y_scale, x_pixel, y_pixel );
 }
 
-private  void  record_slice_viewport(
+static  void  record_slice_viewport(
     main_struct  *main,
     int          volume,
     int          view,
@@ -367,7 +367,7 @@ private  void  record_slice_viewport(
     slice->used_viewport_y_size = used_y_viewport_size;
 }
 
-public  void  translate_slice(
+  void  translate_slice(
     main_struct  *main,
     int          volume,
     int          view,
@@ -389,7 +389,7 @@ public  void  translate_slice(
     update_slice_tag_objects( main, volume, view );
 }
 
-public  void  scale_slice(
+  void  scale_slice(
     main_struct  *main,
     int          volume,
     int          view,
@@ -414,7 +414,7 @@ public  void  scale_slice(
     update_slice_tag_objects( main, volume, view );
 }
 
-public  void  resize_slice(
+  void  resize_slice(
     main_struct  *main,
     int          volume_index,
     int          view )
@@ -450,7 +450,7 @@ public  void  resize_slice(
     update_slice_tag_objects( main, volume_index, view );
 }
 
-public  void  initialize_slice_view(
+  void  initialize_slice_view(
     main_struct  *main,
     int          volume_index,
     int          view )
@@ -486,7 +486,7 @@ public  void  initialize_slice_view(
     update_slice_tag_objects( main, volume_index, view );
 }
 
-public  void  set_slice_interpolation(
+  void  set_slice_interpolation(
     main_struct  *main,
     int          degrees_continuity )
 {

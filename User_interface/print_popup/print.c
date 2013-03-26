@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.12 1998-08-24 19:52:34 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.12 1998-08-24 19:52:34 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -27,17 +27,17 @@ typedef  struct
 static  VIO_STR   output = NULL;
 static  VIO_BOOL  create_new_window = TRUE;
 
-private  void  output_chars( VIO_STR );
-private  void  create_message_popup( VIO_STR );
-private  DEFINE_EVENT_FUNCTION( check_to_expire_popup );
+static  void  output_chars( VIO_STR );
+static  void  create_message_popup( VIO_STR );
+static  DEFINE_EVENT_FUNCTION( check_to_expire_popup );
 
-public  void  initialize_print_popup( void )
+  void  initialize_print_popup( void )
 {
     set_print_function( output_chars );
     set_print_error_function( output_chars );
 }
 
-public  void  disable_print_popup( void )
+  void  disable_print_popup( void )
 {
     set_print_function( 0 );
     set_print_error_function( 0 );
@@ -45,7 +45,7 @@ public  void  disable_print_popup( void )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( create_the_window )
+static  DEFINE_EVENT_FUNCTION( create_the_window )
 {
     disable_print_popup();
 
@@ -61,7 +61,7 @@ private  DEFINE_EVENT_FUNCTION( create_the_window )
     initialize_print_popup();
 }
 
-private  void  output_chars(
+static  void  output_chars(
     VIO_STR   str )
 {
     disable_print_popup();
@@ -78,7 +78,7 @@ private  void  output_chars(
     initialize_print_popup();
 }
 
-private  void  delete_message_popup(
+static  void  delete_message_popup(
     message_struct          *popup )
 {
     remove_global_event_callback( NO_EVENT, check_to_expire_popup,
@@ -91,21 +91,21 @@ private  void  delete_message_popup(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( acknowledge_callback )
+static  DEFINE_WIDGET_CALLBACK( acknowledge_callback )
 {
     delete_message_popup( (message_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )
+static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_message_popup( (message_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( check_to_expire_popup )
+static  DEFINE_EVENT_FUNCTION( check_to_expire_popup )
 {
     message_struct   *popup;
 
@@ -117,7 +117,7 @@ private  DEFINE_EVENT_FUNCTION( check_to_expire_popup )
     }
 }
 
-private  void  create_message_popup(
+static  void  create_message_popup(
     VIO_STR   string )
 {
     int                     i, n_lines, x, y, x_size, y_size;
@@ -165,8 +165,8 @@ private  void  create_message_popup(
 
     G_get_mouse_screen_position( &x, &y );
 
-    x_size = ROUND( max_length + 2.0 * Message_x_offset );
-    y_size = ROUND( 2.0 * Message_y_offset +
+    x_size = VIO_ROUND( max_length + 2.0 * Message_x_offset );
+    y_size = VIO_ROUND( 2.0 * Message_y_offset +
                     (VIO_Real) n_lines * Message_text_y_offset +
                     Message_ok_button_height );
 
@@ -180,7 +180,7 @@ private  void  create_message_popup(
     for_less( i, 0, n_lines )
     {
         text = get_text_ptr( text_objects[i] );
-        Point_y( text->origin ) = (Point_coord_type)
+        Point_y( text->origin ) = (VIO_Point_coord_type)
                                   ((VIO_Real) y_size - 1.0 - Message_y_offset -
                                    (VIO_Real) i * Message_text_y_offset);
         
@@ -197,7 +197,7 @@ private  void  create_message_popup(
                             Interface_x_spacing, Interface_y_spacing,
                             Button_width, Button_height,
                             "Acknowledge",
-                            ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                            TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                             BUTTON_SELECTED_COLOUR,
                             BUTTON_INACTIVE_COLOUR,
                             BUTTON_TEXT_COLOUR,

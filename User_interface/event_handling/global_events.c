@@ -13,24 +13,24 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/global_events.c,v 1.9 1998-06-29 15:01:56 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/global_events.c,v 1.9 1998-06-29 15:01:56 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  event_callback_list_struct    global_event_table[N_EVENT_TYPES];
+static  event_callback_list_struct    global_event_table[N_EVENT_TYPES];
 
-private  VIO_BOOL   interaction_in_progress = FALSE;
+static  VIO_BOOL   interaction_in_progress = FALSE;
 
-private  Event_types  interaction_starting_events[] = {
+static  Event_types  interaction_starting_events[] = {
                             LEFT_MOUSE_DOWN_EVENT,
                             MIDDLE_MOUSE_DOWN_EVENT,
                             RIGHT_MOUSE_DOWN_EVENT
                          };
 
-private  VIO_BOOL      event_can_start_interaction[N_EVENT_TYPES];
+static  VIO_BOOL      event_can_start_interaction[N_EVENT_TYPES];
 
-public  VIO_BOOL  event_is_allowable(
+  VIO_BOOL  event_is_allowable(
     Event_types     event_type )
 {
     static  VIO_BOOL  first = TRUE;
@@ -50,7 +50,7 @@ public  VIO_BOOL  event_is_allowable(
             !event_can_start_interaction[event_type] );
 }
 
-public  void  set_interaction_in_progress(
+  void  set_interaction_in_progress(
     VIO_BOOL  state )
 {
     interaction_in_progress = state;
@@ -58,16 +58,16 @@ public  void  set_interaction_in_progress(
 
 /* ------------------------------------------------------------------------ */
 
-private  Event_types  in_window_events[] = {
+static  Event_types  in_window_events[] = {
                             KEY_DOWN_EVENT,
                             LEFT_MOUSE_DOWN_EVENT,
                             MIDDLE_MOUSE_DOWN_EVENT,
                             RIGHT_MOUSE_DOWN_EVENT
                          };
 
-private  VIO_BOOL      event_must_be_in_window[N_EVENT_TYPES];
+static  VIO_BOOL      event_must_be_in_window[N_EVENT_TYPES];
 
-public  VIO_BOOL  mouse_must_be_in_window(
+  VIO_BOOL  mouse_must_be_in_window(
     Event_types     event_type )
 {
     static  VIO_BOOL  first = TRUE;
@@ -86,7 +86,7 @@ public  VIO_BOOL  mouse_must_be_in_window(
     return( event_must_be_in_window[event_type] );
 }
 
-public  void  add_global_event_callback(
+  void  add_global_event_callback(
     Event_types               event_type,
     event_function_type       callback,
     Event_modifiers           modifier,
@@ -97,7 +97,7 @@ public  void  add_global_event_callback(
                                  callback_data );
 }
 
-public  void  remove_global_event_callback(
+  void  remove_global_event_callback(
     Event_types               event_type,
     event_function_type       callback,
     void                      *callback_data )
@@ -106,7 +106,7 @@ public  void  remove_global_event_callback(
                                     callback_data );
 }
 
-public  VIO_BOOL  execute_global_event_callbacks(
+  VIO_BOOL  execute_global_event_callbacks(
     VIO_BOOL                 shift_state,
     Event_types             event_type,
     int                     key_pressed )
@@ -117,12 +117,12 @@ public  VIO_BOOL  execute_global_event_callbacks(
                                               key_pressed ) );
 }
 
-public  void  initialize_global_events( void )
+  void  initialize_global_events( void )
 {
     initialize_event_table( global_event_table );
 }
 
-public  void  delete_global_events( void )
+  void  delete_global_events( void )
 {
     delete_event_table( global_event_table );
 }

@@ -13,23 +13,23 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.10 2005-02-28 21:07:36 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.10 2005-02-28 21:07:36 bert Exp $";
 #endif
 
 #include  <register.h>
 
 #define  PREFIX   "register_image_"
 
-private  int  frame_number = 1;
+static  int  frame_number = 1;
 
-private  void  save_rgb_image(
+static  void  save_rgb_image(
     VIO_STR   filename,
     int      x_min,
     int      x_max,
     int      y_min,
     int      y_max )
 {
-    char   command[EXTREMELY_LARGE_STRING_SIZE];
+    char   command[VIO_EXTREMELY_LARGE_STRING_SIZE];
 
     (void) sprintf( command, "import -window root -crop %dx%d+%d+%d %s ", 
                     x_max-x_min, y_max-y_min, x_min, y_min, filename );
@@ -39,7 +39,7 @@ private  void  save_rgb_image(
     (void) printf( "  ------ done\n" );
 }
 
-public  void  save_image(
+  void  save_image(
     main_struct   *main_info,
     int           volume_index,
     int           view_index )
@@ -52,7 +52,7 @@ public  void  save_image(
     int     x_size, y_size;
     int     viewport_x_min, viewport_y_min, viewport_x_max, viewport_y_max;
     int     x_origin, y_origin;
-    char    filename[EXTREMELY_LARGE_STRING_SIZE];
+    char    filename[VIO_EXTREMELY_LARGE_STRING_SIZE];
 
     if( !is_volume_active( main_info, volume_index ) )
         return;

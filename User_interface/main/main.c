@@ -13,13 +13,13 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/main/main.c,v 1.22 2003-05-29 16:56:57 stever Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/main/main.c,v 1.22 2003-05-29 16:56:57 stever Exp $";
 #endif
 
 #include "config.h"
 #include  <user_interface.h>
 
-private  VIO_STR  version = VERSION;
+static  VIO_STR  version = VERSION;
 
 /* Search for "register_UI.globals in  the following
  * three directories, then in the directory containing argv[0],
@@ -37,18 +37,18 @@ private  VIO_STR  version = VERSION;
 
 #define   UI_GLOBALS_FILENAME   "register_UI.globals"
 
-private  void     initialize_global_colours( void );
-private  void  read_global_files(
+static  void     initialize_global_colours( void );
+static  void  read_global_files(
     VIO_STR  executable_name );
 
-private  UI_struct  ui_struct;
+static  UI_struct  ui_struct;
 
-public  UI_struct  *get_ui_struct( void )
+  UI_struct  *get_ui_struct( void )
 {
     return( &ui_struct );
 }
 
-private  void  print_usage(
+static  void  print_usage(
     char   executable[] )
 {
     static  VIO_STR  usage =
@@ -171,7 +171,7 @@ int  main(
     return( status != OK );
 }
 
-private  void     initialize_global_colours( void )
+static  void     initialize_global_colours( void )
 {
     Default_UI_background_colour = DARK_SLATE_BLUE;
     Default_divider_colour = WHITE;
@@ -205,7 +205,7 @@ private  void     initialize_global_colours( void )
     Message_text_colour = WHITE;
 }
 
-private  void  read_global_files(
+static  void  read_global_files(
     VIO_STR  executable_name )
 {
     int      dir, n_directories;
@@ -247,7 +247,7 @@ private  void  read_global_files(
     FREE( directories );
 }
 
-public  VIO_Status  set_functional_global_variable(
+  VIO_Status  set_functional_global_variable(
     VIO_STR  variable_name,
     VIO_STR  value_to_set )
 {

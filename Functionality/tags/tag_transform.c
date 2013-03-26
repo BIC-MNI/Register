@@ -13,18 +13,18 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/tag_transform.c,v 1.13 1998-06-29 15:01:48 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/tag_transform.c,v 1.13 1998-06-29 15:01:48 david Exp $";
 #endif
 
 #include  <register.h>
 
-public  Trans_type  get_tag_transform_type(
+  Trans_type  get_tag_transform_type(
     main_struct  *main )
 {
     return( main->tags.transform_type );
 }
 
-public  void  set_tag_transform_type(
+  void  set_tag_transform_type(
     main_struct  *main,
     Trans_type   type )
 {
@@ -33,7 +33,7 @@ public  void  set_tag_transform_type(
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
-private  void  recompute_tag_rms_errors(
+static  void  recompute_tag_rms_errors(
     tag_list_struct   *tags )
 {
     int    i, n_active;
@@ -71,7 +71,7 @@ private  void  recompute_tag_rms_errors(
         tags->avg_rms_error = sqrt( rms_error / (VIO_Real) n_active );
 }
 
-public  void  recompute_tag_transform(
+  void  recompute_tag_transform(
     tag_list_struct   *tags )
 {
     int        i, c, n_valid;

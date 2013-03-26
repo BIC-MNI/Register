@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/utilities.c,v 1.9 1998-06-29 15:01:54 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_callbacks/utilities.c,v 1.9 1998-06-29 15:01:54 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  start_interaction(
+  void  start_interaction(
     UI_struct              *ui_info,
     Viewport_types         event_viewport_index,
     Event_types            terminate_event,
@@ -40,7 +40,7 @@ public  void  start_interaction(
     set_interaction_in_progress( TRUE );
 }
 
-public  void  terminate_interaction(
+  void  terminate_interaction(
     Event_types            terminate_event,
     event_function_type    terminate_callback,
     event_function_type    no_event_callback )
@@ -52,7 +52,7 @@ public  void  terminate_interaction(
     set_interaction_in_progress( FALSE );
 }
 
-public  void  restore_mouse_position(
+  void  restore_mouse_position(
     UI_struct   *ui )
 {
     int   x_min, x_max, y_min, y_max;
@@ -69,7 +69,7 @@ public  void  restore_mouse_position(
                           y_window + y_min + ui->y_mouse_start );
 }
 
-public  void  get_viewport_mouse_position(
+  void  get_viewport_mouse_position(
     graphics_window_struct    *graphics_window,
     Viewport_types            event_viewport_index,
     int                       *x_mouse,

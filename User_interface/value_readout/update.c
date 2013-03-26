@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/value_readout/update.c,v 1.8 1998-06-29 15:02:10 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/value_readout/update.c,v 1.8 1998-06-29 15:02:10 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  update_volume_readout(
+  void  update_volume_readout(
     UI_struct  *ui,
     int        volume_index )
 {
@@ -47,9 +47,9 @@ public  void  update_volume_readout(
 }
 
 #ifdef NOT_NEEDED
-private  const  NO_VOLUME = -1;
+static  const  NO_VOLUME = -1;
 
-private  void  set_readout_activity(
+static  void  set_readout_activity(
     UI_struct  *ui,
     int        which_volume,
     VIO_BOOL    activity )
@@ -66,7 +66,7 @@ private  void  set_readout_activity(
     }
 }
 
-private  void  modify_readout(
+static  void  modify_readout(
     UI_struct  *ui,
     int        x_mouse,
     int        y_mouse,
@@ -87,7 +87,7 @@ private  void  modify_readout(
         *volume_index = NO_VOLUME;
 }
 
-private  void  update_readout(
+static  void  update_readout(
     UI_struct  *ui,
     int        x_mouse,
     int        y_mouse )
@@ -99,14 +99,14 @@ private  void  update_readout(
     modify_readout( ui, x_mouse, y_mouse, &ui->which_volume_readout );
 
     if( prev_volume != NO_VOLUME && prev_volume != ui->which_volume_readout )
-        set_readout_activity( ui, prev_volume, OFF );
+        set_readout_activity( ui, prev_volume, FALSE );
 
     if( ui->which_volume_readout != NO_VOLUME &&
         ui->which_volume_readout != prev_volume )
-        set_readout_activity( ui, ui->which_volume_readout, ON );
+        set_readout_activity( ui, ui->which_volume_readout, TRUE );
 }
 
-private  void  check_readout(
+static  void  check_readout(
     UI_struct  *ui )
 {
     int   x_mouse, y_mouse;
@@ -128,12 +128,12 @@ private  void  check_readout(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( check_update_readout )
+static  DEFINE_EVENT_FUNCTION( check_update_readout )
 {
     check_readout( get_ui_struct() );
 }
 
-public  void  install_readout_update_event(
+  void  install_readout_update_event(
     UI_struct   *ui )
 {
     add_global_event_callback( NO_EVENT, check_update_readout,

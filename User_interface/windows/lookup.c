@@ -13,22 +13,22 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/lookup.c,v 1.8 1998-06-29 15:02:08 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/windows/lookup.c,v 1.8 1998-06-29 15:02:08 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  int                        n_windows = 0;
-private  graphics_window_struct     **windows;
+static  int                        n_windows = 0;
+static  graphics_window_struct     **windows;
 
-public  void  record_graphics_window(
+  void  record_graphics_window(
     graphics_window_struct   *graphics_window )
 {
     ADD_ELEMENT_TO_ARRAY( windows, n_windows,
                           graphics_window, DEFAULT_CHUNK_SIZE );
 }
 
-private  int  get_window_index( window_struct  *window )
+static  int  get_window_index( window_struct  *window )
 {
     static   int  current_index = -1;
     int      i;
@@ -54,7 +54,7 @@ private  int  get_window_index( window_struct  *window )
     return( i );
 }
 
-public  void  unrecord_graphics_window(
+  void  unrecord_graphics_window(
     graphics_window_struct   *graphics_window )
 {
     int      i;
@@ -67,7 +67,7 @@ public  void  unrecord_graphics_window(
     }
 }
 
-public  VIO_BOOL   lookup_event_viewports(
+  VIO_BOOL   lookup_event_viewports(
     window_struct           *window,
     event_viewports_struct  **event_viewports )
 {
@@ -83,7 +83,7 @@ public  VIO_BOOL   lookup_event_viewports(
     return( i >= 0 );
 }
 
-public  void  update_window(
+  void  update_window(
     graphics_window_struct   *window )
 {
     if( make_window_up_to_date( window->window, &window->graphics,
@@ -94,7 +94,7 @@ public  void  update_window(
     }
 }
 
-public  void  make_windows_up_to_date( void )
+  void  make_windows_up_to_date( void )
 {
     int   i;
 
@@ -102,7 +102,7 @@ public  void  make_windows_up_to_date( void )
         update_window( windows[i] );
 }
 
-public  void  delete_all_graphics_windows( void )
+  void  delete_all_graphics_windows( void )
 {
     int   i;
 

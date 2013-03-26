@@ -57,7 +57,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.7 2001-05-23 04:13:04 stever Exp $";
+static char rcsid[]="$Header: /static-cvsroot/visualization/Register/Tagtoxfm/tagtoxfm.c,v 1.7 2001-05-23 04:13:04 stever Exp $";
 #endif
 
 #include <stdlib.h>
@@ -73,9 +73,9 @@ static char rcsid[]="$Header: /private-cvsroot/visualization/Register/Tagtoxfm/t
 #  define TRUE 1
 #  define FALSE 0
 #endif
-#ifndef public
-#  define public
-#  define private static
+#ifndef 
+#  define 
+#  define static static
 #endif
 
 /* Main program */

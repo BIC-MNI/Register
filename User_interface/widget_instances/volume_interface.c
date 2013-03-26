@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.17 1998-06-29 15:02:05 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/volume_interface.c,v 1.17 1998-06-29 15:02:05 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -36,7 +36,7 @@ static  int  colour_bar_start_index;
 
 /* ARGSUSED */
 
-public  DEFINE_WIDGET_CALLBACK( reset_view_callback )
+  DEFINE_WIDGET_CALLBACK( reset_view_callback )
 {
     int   volume_index, view_index;
 
@@ -48,19 +48,19 @@ public  DEFINE_WIDGET_CALLBACK( reset_view_callback )
 
 /* ARGSUSED */
 
-public  DEFINE_WIDGET_CALLBACK( popup_filter_callback )
+  DEFINE_WIDGET_CALLBACK( popup_filter_callback )
 {
     int   volume_index;
 
     volume_index = get_viewport_volume_index(widget->viewport_index);
 
-    set_widget_activity( widget, OFF );
+    set_widget_activity( widget, FALSE );
     popup_filter_selection( get_ui_struct(), volume_index );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( load_volume_callback )
+static  DEFINE_WIDGET_CALLBACK( load_volume_callback )
 {
     VIO_STR                filename;
     Viewport_types        viewport_index;
@@ -82,11 +82,11 @@ private  DEFINE_WIDGET_CALLBACK( load_volume_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
+static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
 {
 }
 
-public  void  add_volume_widgets(
+  void  add_volume_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index )
 {
@@ -107,7 +107,7 @@ public  void  add_volume_widgets(
                    &ui_info->widget_list[viewport_index],
                    create_label( &ui_info->graphics_window, viewport_index,
                    x, y, Load_filename_width, Volume_button_height,
-                   "VIO_Volume Resampled", OFF, LABEL_ACTIVE_COLOUR,
+                   "VIO_Volume Resampled", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
@@ -120,7 +120,7 @@ public  void  add_volume_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Volume_button_width, Volume_button_height,
                    "Load",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR, BUTTON_SELECTED_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR, BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
@@ -132,7 +132,7 @@ public  void  add_volume_widgets(
                        viewport_index, 
                        x + Volume_button_width + Interface_x_spacing, y,
                        Load_filename_width, Text_entry_height,
-                       FALSE, "", ON,
+                       FALSE, "", TRUE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -149,7 +149,7 @@ public  void  add_volume_widgets(
                    create_button( &ui_info->graphics_window, viewport_index, 
                    x, y, Volume_button_width, Volume_button_height,
                    "Reset View",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -162,7 +162,7 @@ public  void  add_volume_widgets(
                    x + Volume_button_width + Interface_x_spacing, y,
                    Filter_button_width, Filter_button_height,
                    "Filter",
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -176,7 +176,7 @@ public  void  add_volume_widgets(
                    x + Volume_button_width + Interface_x_spacing +
                    Filter_button_width + Interface_x_spacing, y,
                    Value_readout_width, Volume_button_height,
-                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   "", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
@@ -188,7 +188,7 @@ public  void  add_volume_widgets(
                                    viewport_index, &height );
 }
 
-public  void  set_load_activity(
+  void  set_load_activity(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           state )
@@ -207,7 +207,7 @@ public  void  set_load_activity(
                          state );
 }
 
-public  void  set_load_filename(
+  void  set_load_filename(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_STR            filename )
@@ -221,7 +221,7 @@ public  void  set_load_filename(
                            filename );
 }
 
-public  void  set_volume_widgets_activity(
+  void  set_volume_widgets_activity(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           activity,
@@ -251,7 +251,7 @@ public  void  set_volume_widgets_activity(
     {
         set_widget_activity( ui_info->widget_list[viewport_index].widgets
                                          [widget_indices[RESAMPLED_LABEL]],
-                             OFF );
+                             FALSE );
     }
 
     set_colour_bar_widgets_activity( ui_info, viewport_index,
@@ -262,12 +262,12 @@ public  void  set_volume_widgets_activity(
                            activity );
 }
 
-public  int  get_colour_bar_start_index( void )
+  int  get_colour_bar_start_index( void )
 {
     return( colour_bar_start_index );
 }
 
-public  void  set_resampled_label_activity(
+  void  set_resampled_label_activity(
     UI_struct         *ui_info,
     VIO_BOOL           state )
 {
@@ -281,7 +281,7 @@ public  void  set_resampled_label_activity(
                          state );
 }
 
-public  widget_struct  *get_volume_readout_widget(
+  widget_struct  *get_volume_readout_widget(
     UI_struct     *ui_info,
     int           volume )
 {
@@ -293,7 +293,7 @@ public  widget_struct  *get_volume_readout_widget(
                                  [widget_indices[VALUE_READOUT_TEXT]] );
 }
 
-public  void  set_filter_popup_activity(
+  void  set_filter_popup_activity(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           activity )

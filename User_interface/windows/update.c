@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/update.c,v 1.11 1998-06-29 15:02:09 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/windows/update.c,v 1.11 1998-06-29 15:02:09 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  VIO_BOOL  make_window_up_to_date(
+  VIO_BOOL  make_window_up_to_date(
     window_struct    *window,
     graphics_struct  *graphics,
     int              current_buffer )
@@ -48,7 +48,7 @@ public  VIO_BOOL  make_window_up_to_date(
     return( something_was_drawn );
 }
 
-public  void  set_clear_and_update_flags( UI_struct  *ui_struct )
+  void  set_clear_and_update_flags( UI_struct  *ui_struct )
 {
     int             volume, view;
     Bitplane_types  bitplane;
@@ -78,7 +78,7 @@ public  void  set_clear_and_update_flags( UI_struct  *ui_struct )
     ui_struct->graphics_window.current_buffer = 0;
 }
 
-public  void  set_recreate_all_slice_flags( void )
+  void  set_recreate_all_slice_flags( void )
 {
     int             volume, view;
 

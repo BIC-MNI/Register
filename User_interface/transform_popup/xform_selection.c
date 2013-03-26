@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.10 1998-06-29 15:02:11 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/transform_popup/xform_selection.c,v 1.10 1998-06-29 15:02:11 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  void  delete_transform_selection(
+static  void  delete_transform_selection(
     UI_struct             *ui,
     popup_struct          *popup )
 {
@@ -26,12 +26,12 @@ private  void  delete_transform_selection(
 
     FREE( popup );
 
-    set_transform_type_button_activity( ui, ON );
+    set_transform_type_button_activity( ui, TRUE );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( transform_callback )
+static  DEFINE_WIDGET_CALLBACK( transform_callback )
 {
     IF_set_transform_type( *((Trans_type *) callback_data) );
     update_all_tag_widgets( get_ui_struct() );
@@ -39,7 +39,7 @@ private  DEFINE_WIDGET_CALLBACK( transform_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( close_callback )
+static  DEFINE_WIDGET_CALLBACK( close_callback )
 {
     delete_transform_selection( get_ui_struct(),
                                 (popup_struct *) callback_data );
@@ -47,7 +47,7 @@ private  DEFINE_WIDGET_CALLBACK( close_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )
+static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_transform_selection( get_ui_struct(),
                                 (popup_struct *) callback_data );
@@ -55,7 +55,7 @@ private  DEFINE_EVENT_FUNCTION( quit_window_callback )
 
 /* ARGSUSED */
 
-public  void  popup_transform_dialog(
+  void  popup_transform_dialog(
     UI_struct   *ui )
 {
     int                          i, x, y;
@@ -78,7 +78,7 @@ public  void  popup_transform_dialog(
     widget_struct    *widget;
     widget_struct    *radio_widgets[SIZEOF_STATIC_ARRAY( choices )];
 
-    set_transform_type_button_activity( ui, OFF );
+    set_transform_type_button_activity( ui, FALSE );
 
     ALLOC( popup, 1 );
 
@@ -102,7 +102,7 @@ public  void  popup_transform_dialog(
         }
         else
         {
-            activity = ON;
+            activity = TRUE;
         }
 
         radio_widgets[i] = create_button( &popup->graphics, Main_menu_viewport,
@@ -129,14 +129,14 @@ public  void  popup_transform_dialog(
     for_less( i, 0, SIZEOF_STATIC_ARRAY( choices ) )
     {
         if( choices[i].transform_type == transform_type )
-            set_widget_selected( radio_widgets[i], ON );
+            set_widget_selected( radio_widgets[i], TRUE );
     }
 
     y -= Interface_y_spacing;
 
     widget = create_button( &popup->graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
-                            "Close", ON, FALSE,
+                            "Close", TRUE, FALSE,
                             get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),
                             get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                             get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),

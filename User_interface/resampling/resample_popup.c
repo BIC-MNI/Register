@@ -56,7 +56,7 @@ public  void  initialize_resample_popup(
                    0, Interface_x_spacing, Interface_y_spacing,
                    Button_width, Button_height,
                    "Cancel",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,

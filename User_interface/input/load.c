@@ -13,18 +13,18 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/input/load.c,v 1.23 1998-06-29 15:01:57 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/input/load.c,v 1.23 1998-06-29 15:01:57 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  void  volume_has_been_loaded( UI_struct  *, load_struct * );
+static  void  volume_has_been_loaded( UI_struct  *, load_struct * );
 
 #define  TIME_SLICE   0.1    /* input volume for at least tenth of second */
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( more_input )
+static  DEFINE_EVENT_FUNCTION( more_input )
 {
     VIO_BOOL       done_loading;
     load_struct   *data;
@@ -50,10 +50,10 @@ private  DEFINE_EVENT_FUNCTION( more_input )
         set_load_popup_meter( data, fraction_done );
 }
 
-private  void  delete_popup_interaction(
+static  void  delete_popup_interaction(
     load_struct    *data )
 {
-    set_load_activity( get_ui_struct(), data->volume_index, ON );
+    set_load_activity( get_ui_struct(), data->volume_index, TRUE );
 
     remove_global_event_callback( NO_EVENT, more_input, (void *) data );
 
@@ -64,7 +64,7 @@ private  void  delete_popup_interaction(
     FREE( data );
 }
 
-public  VIO_Status  initialize_loading_volume(
+  VIO_Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
     VIO_STR     filename,
@@ -85,7 +85,7 @@ public  VIO_Status  initialize_loading_volume(
 
     if( status == OK )
     {
-        set_load_activity( ui_info, volume, OFF );
+        set_load_activity( ui_info, volume, FALSE );
 
         add_global_event_callback( NO_EVENT, more_input, ANY_MODIFIER,
                                    (void *) data );
@@ -106,7 +106,7 @@ public  VIO_Status  initialize_loading_volume(
     return( status );
 }
 
-private  void  volume_has_been_loaded(
+static  void  volume_has_been_loaded(
     UI_struct      *ui_info,
     load_struct    *data )
 {
@@ -129,7 +129,7 @@ private  void  volume_has_been_loaded(
         IF_set_volume( data->volume_index, data->filename );
     }
 
-    set_volume_widgets_activity( ui_info, data->volume_index, ON,
+    set_volume_widgets_activity( ui_info, data->volume_index, TRUE,
                                  IF_is_an_rgb_volume(data->volume_index) );
 
     update_colour_map_toggle_activity( ui_info );
@@ -141,7 +141,7 @@ private  void  volume_has_been_loaded(
     if( IF_volume_is_loaded( 0 ) &&
         IF_volume_is_loaded( 1 ) )
     {
-        set_merged_activity( ui_info, ON );
+        set_merged_activity( ui_info, TRUE );
     }
 
     if( IF_volume_is_loaded( 1 - data->volume_index ) )
@@ -165,7 +165,7 @@ private  void  volume_has_been_loaded(
     delete_popup_interaction( data );
 }
 
-public  void  cancel_loading(
+  void  cancel_loading(
     load_struct    *data )
 {
     IF_cancel_loading_volume( data->volume_index );

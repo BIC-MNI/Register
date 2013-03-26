@@ -13,18 +13,18 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/widgets.c,v 1.12 1998-06-29 15:02:08 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widgets/widgets.c,v 1.12 1998-06-29 15:02:08 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  initialize_widget_list(
+  void  initialize_widget_list(
     widgets_struct   *widget_list )
 {
     widget_list->n_widgets = 0;
 }
 
-public  void  delete_widget_list(
+  void  delete_widget_list(
     widgets_struct   *widget_list )
 {
     int   i;
@@ -38,7 +38,7 @@ public  void  delete_widget_list(
     }
 }
 
-public  int  add_widget_to_list(
+  int  add_widget_to_list(
     widgets_struct   *widget_list,
     widget_struct    *widget )
 {
@@ -52,7 +52,7 @@ public  int  add_widget_to_list(
     return( widget_index );
 }
 
-public  void  delete_nth_widget_from_list(
+  void  delete_nth_widget_from_list(
     widgets_struct   *widget_list,
     int              index )
 {
@@ -60,7 +60,7 @@ public  void  delete_nth_widget_from_list(
                                index, DEFAULT_CHUNK_SIZE );
 }
 
-public  widget_struct  *create_widget(
+  widget_struct  *create_widget(
     Widget_types            type,
     int                     x,
     int                     y,
@@ -88,7 +88,7 @@ public  widget_struct  *create_widget(
     return( widget );
 }
 
-public  int  get_widget_height(
+  int  get_widget_height(
     widget_struct   *widget )
 {
     return( widget->y_size );
@@ -98,7 +98,7 @@ public  int  get_widget_height(
 
 /* -------------------- position function ----------------------------- */
 
-private  void  position_button_widget(
+static  void  position_button_widget(
     widget_struct            *widget,
     int                      x,
     int                      y )
@@ -106,7 +106,7 @@ private  void  position_button_widget(
     position_button( widget, x, y );
 }
 
-private  void  position_text_entry_widget(
+static  void  position_text_entry_widget(
     widget_struct            *widget,
     int                      x,
     int                      y )
@@ -114,7 +114,7 @@ private  void  position_text_entry_widget(
     position_text_entry( widget, x, y );
 }
 
-private  void  position_slider_widget(
+static  void  position_slider_widget(
     widget_struct            *widget,
     int                      x,
     int                      y )
@@ -124,19 +124,19 @@ private  void  position_slider_widget(
 
 /* -------------------- update colours function ----------------------------- */
 
-private  void  update_colours_button_widget(
+static  void  update_colours_button_widget(
     widget_struct            *widget )
 {
     update_button_colours( widget );
 }
 
-private  void  update_colours_text_entry_widget(
+static  void  update_colours_text_entry_widget(
     widget_struct            *widget )
 {
     update_text_entry_colours( widget );
 }
 
-private  void  update_colours_slider_widget(
+static  void  update_colours_slider_widget(
     widget_struct            *widget )
 {
     update_slider_colours( widget );
@@ -144,19 +144,19 @@ private  void  update_colours_slider_widget(
 
 /* -------------------- delete function ----------------------------- */
 
-private  void  delete_button_widget(
+static  void  delete_button_widget(
     widget_struct            *widget )
 {
     delete_button( widget );
 }
 
-private  void  delete_text_entry_widget(
+static  void  delete_text_entry_widget(
     widget_struct            *widget )
 {
     delete_text_entry( widget );
 }
 
-private  void  delete_slider_widget(
+static  void  delete_slider_widget(
     widget_struct            *widget )
 {
     delete_slider( widget );
@@ -199,7 +199,7 @@ static  widget_functions_list   widget_functions[N_WIDGET_TYPES] =
 
 /* ------------------------------------------------------------------- */
 
-public  void  position_widget(
+  void  position_widget(
     widget_struct           *widget,
     int                     x,
     int                     y )
@@ -209,25 +209,25 @@ public  void  position_widget(
     widget_functions[widget->widget_type].position_function( widget, x, y );
 }
 
-public  button_struct  *get_widget_button(
+  button_struct  *get_widget_button(
     widget_struct  *widget )
 {
     return( &widget->specific.button );
 }
 
-public  text_entry_struct  *get_widget_text_entry(
+  text_entry_struct  *get_widget_text_entry(
     widget_struct  *widget )
 {
     return( &widget->specific.text_entry );
 }
 
-public  slider_struct  *get_widget_slider(
+  slider_struct  *get_widget_slider(
     widget_struct  *widget )
 {
     return( &widget->specific.slider );
 }
 
-public  void  set_widget_activity(
+  void  set_widget_activity(
     widget_struct  *widget,
     VIO_BOOL        activity )
 {
@@ -239,7 +239,7 @@ public  void  set_widget_activity(
                               (int) widget->viewport_index, NORMAL_PLANES );
 }
 
-public  void  set_widget_selected(
+  void  set_widget_selected(
     widget_struct  *widget,
     VIO_BOOL        selected )
 {
@@ -248,13 +248,13 @@ public  void  set_widget_selected(
     update_widget_colours( widget );
 }
 
-public  void  update_widget_colours(
+  void  update_widget_colours(
     widget_struct  *widget )
 {
     widget_functions[widget->widget_type].update_colours( widget );
 }
 
-public  void  update_widget_list_colours(
+  void  update_widget_list_colours(
     widgets_struct      *widget_list )
 {
     int    i;
@@ -263,7 +263,7 @@ public  void  update_widget_list_colours(
         update_widget_colours( widget_list->widgets[i] );
 }
 
-public  void  delete_widget(
+  void  delete_widget(
     widget_struct  *widget )
 {
     widget_functions[widget->widget_type].delete_function( widget );

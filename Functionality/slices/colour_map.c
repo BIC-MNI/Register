@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.31 2005-02-28 22:54:00 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.31 2005-02-28 22:54:00 bert Exp $";
 #endif
 
 #include  <register.h>
 
 typedef  enum  { UNDER_RANGE, WITHIN_RANGE, OVER_RANGE } Range_flags;
 
-private  VIO_Colour  merge_colours(
+static  VIO_Colour  merge_colours(
     VIO_Real      alpha1,
     VIO_Colour    col1,
     VIO_Real      alpha2,
@@ -45,7 +45,7 @@ private  VIO_Colour  merge_colours(
 
 /* ARGSUSED */
 
-private  VIO_Colour  get_merged_colour(
+static  VIO_Colour  get_merged_colour(
     Merge_methods  method,
     VIO_BOOL        use_under_over_colour_with_weights,
     VIO_Colour         under_colour,
@@ -95,7 +95,7 @@ private  VIO_Colour  get_merged_colour(
     return( BLACK );
 }
 
-private  Range_flags  lookup_colour_code(
+static  Range_flags  lookup_colour_code(
     VIO_Volume                volume,
     colour_coding_struct  *colour_coding,
     int                   voxel,
@@ -117,7 +117,7 @@ private  Range_flags  lookup_colour_code(
     return( flag );
 }
 
-private  void  update_rgb_colour_maps(
+static  void  update_rgb_colour_maps(
     main_struct  *main,
     int          volume_index )
 {
@@ -158,7 +158,7 @@ private  void  update_rgb_colour_maps(
     }
 }
 
-private  void  update_cmode_indices(
+static  void  update_cmode_indices(
     main_struct  *main,
     int          volume )
 {
@@ -194,7 +194,7 @@ private  void  update_cmode_indices(
     }
 }
 
-private  void  update_cmode_colour_maps(
+static  void  update_cmode_colour_maps(
     main_struct  *main,
     int          volume_index )
 {
@@ -220,7 +220,7 @@ private  void  update_cmode_colour_maps(
     }
 }
 
-public  void   update_colour_maps(
+  void   update_colour_maps(
     main_struct  *main,
     int          volume )
 {
@@ -233,7 +233,7 @@ public  void   update_colour_maps(
     }
 }
 
-public  void  repartition_colour_maps(
+  void  repartition_colour_maps(
     main_struct  *main )
 {
     int        volume, start_index;
@@ -255,7 +255,7 @@ public  void  repartition_colour_maps(
 
     max_colours_merged = max_colours_1 * max_colours_2;
 
-    n_merged = ROUND( Merged_colour_table_fraction * (VIO_Real) total_colours );
+    n_merged = VIO_ROUND( Merged_colour_table_fraction * (VIO_Real) total_colours );
 
     if( n_merged > max_colours_merged )
         n_merged = max_colours_merged;
@@ -271,7 +271,7 @@ public  void  repartition_colour_maps(
     else
     {
         ratio = (VIO_Real) max_colours_1 / (VIO_Real) (max_colours_1 + max_colours_2);
-        n_volume_1 = ROUND( (VIO_Real) total_volume * ratio );
+        n_volume_1 = VIO_ROUND( (VIO_Real) total_volume * ratio );
         if( n_volume_1 < 1 && max_colours_1 > 0 )
             n_volume_1 = 1;
         n_volume_2 = total_volume - n_volume_1;
@@ -347,7 +347,7 @@ public  void  repartition_colour_maps(
         set_recreate_3_slices_flags( main, volume );
 }
 
-public  void  colour_mode_has_toggled(
+  void  colour_mode_has_toggled(
     main_struct  *main,
     int          start_index )
 {
@@ -408,7 +408,7 @@ public  void  colour_mode_has_toggled(
             update_cursor_colours( main, volume, view );
 }
 
-private  void   colour_coding_has_changed (
+static  void   colour_coding_has_changed (
     main_struct          *main,
     int                  volume_index )
 {
@@ -421,7 +421,7 @@ private  void   colour_coding_has_changed (
         set_recreate_3_slices_flags( main, volume_index );
 }
 
-private  colour_coding_struct  *get_volume_colour_coding(
+static  colour_coding_struct  *get_volume_colour_coding(
     main_struct          *main,
     int                  volume_index )
 {
@@ -431,7 +431,7 @@ private  colour_coding_struct  *get_volume_colour_coding(
         return( &main->merged.colour_coding[volume_index-MERGED_VOLUME_INDEX] );
 }
 
-public  void   set_volume_colour_coding_type( 
+  void   set_volume_colour_coding_type( 
     main_struct          *main,
     int                  volume_index,
     Colour_coding_types  type )
@@ -441,14 +441,14 @@ public  void   set_volume_colour_coding_type(
     colour_coding_has_changed( main, volume_index );
 }
 
-public  Colour_coding_types   get_volume_colour_coding_type( 
+  Colour_coding_types   get_volume_colour_coding_type( 
     main_struct          *main,
     int                  volume_index )
 {
     return( get_volume_colour_coding(main,volume_index)->type );
 }
 
-public  void  set_volume_colour_coding_limits(
+  void  set_volume_colour_coding_limits(
     main_struct          *main,
     int                  volume_index,
     VIO_Real                 min_value,
@@ -460,7 +460,7 @@ public  void  set_volume_colour_coding_limits(
     colour_coding_has_changed( main, volume_index );
 }
 
-public  void  get_volume_colour_coding_limits(
+  void  get_volume_colour_coding_limits(
     main_struct          *main,
     int                  volume_index,
     VIO_Real                 *min_value,
@@ -470,7 +470,7 @@ public  void  get_volume_colour_coding_limits(
                                min_value, max_value );
 }
 
-public  void  set_merged_volume_opacity(
+  void  set_merged_volume_opacity(
     main_struct          *main,
     int                  which_volume,
     VIO_Real                 opacity )
@@ -480,14 +480,14 @@ public  void  set_merged_volume_opacity(
     colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
 }
 
-public  VIO_Real  get_merged_volume_opacity(
+  VIO_Real  get_merged_volume_opacity(
     main_struct          *main,
     int                  which_volume )
 {
     return( main->merged.opacity[which_volume] );
 }
 
-public  void  set_merged_method(
+  void  set_merged_method(
     main_struct       *main,
     Merge_methods     method )
 {
@@ -496,13 +496,13 @@ public  void  set_merged_method(
     colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
 }
 
-public  Merge_methods  get_merged_method(
+  Merge_methods  get_merged_method(
     main_struct       *main )
 {
     return( main->merged.merge_method );
 }
 
-public  void   set_volume_under_colour( 
+  void   set_volume_under_colour( 
     main_struct          *main,
     int                  volume_index,
     VIO_Colour               colour )
@@ -512,7 +512,7 @@ public  void   set_volume_under_colour(
     colour_coding_has_changed( main, volume_index );
 }
 
-public  void   set_volume_over_colour( 
+  void   set_volume_over_colour( 
     main_struct          *main,
     int                  volume_index,
     VIO_Colour               colour )
@@ -522,7 +522,7 @@ public  void   set_volume_over_colour(
     colour_coding_has_changed( main, volume_index );
 }
 
-public  void  composite_merged_pixels(
+  void  composite_merged_pixels(
     main_struct          *main,
     pixels_struct        *pixels1,
     pixels_struct        *pixels2,
@@ -605,7 +605,7 @@ public  void  composite_merged_pixels(
     }
 }
 
-public  VIO_BOOL  can_switch_colour_modes(
+  VIO_BOOL  can_switch_colour_modes(
     main_struct          *main )
 {
     int    v;

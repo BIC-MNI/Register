@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/text_entry.c,v 1.18 1998-06-29 15:02:07 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widgets/text_entry.c,v 1.18 1998-06-29 15:02:07 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -22,7 +22,7 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_int
 #define  CONTROL_E    5
 #define  CONTROL_U    21
 
-private  VIO_BOOL  fit_text_within_widget(
+static  VIO_BOOL  fit_text_within_widget(
     VIO_STR       string,
     VIO_Real         x_size,
     int          left_index,
@@ -64,7 +64,7 @@ private  VIO_BOOL  fit_text_within_widget(
 }
     
 
-private  void      recreate_text_entry_text(
+static  void      recreate_text_entry_text(
     widget_struct   *widget )
 {
     text_entry_struct   *text_entry;
@@ -115,7 +115,7 @@ private  void      recreate_text_entry_text(
     }
 }
 
-private  void  insert_character_in_text_entry(
+static  void  insert_character_in_text_entry(
     text_entry_struct  *text_entry,
     int                key )
 {
@@ -138,7 +138,7 @@ private  void  insert_character_in_text_entry(
     ++text_entry->string_index;
 }
 
-private  void  delete_character_in_text_entry(
+static  void  delete_character_in_text_entry(
     text_entry_struct  *text_entry )
 {
     int  i, len;
@@ -157,7 +157,7 @@ private  void  delete_character_in_text_entry(
     }
 }
 
-private  void  add_character_to_text_entry(
+static  void  add_character_to_text_entry(
     text_entry_struct  *text_entry,
     int                key )
 {
@@ -199,11 +199,11 @@ private  void  add_character_to_text_entry(
     }
 }
 
-private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback );
+static  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback );
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( key_hit_event )
+static  DEFINE_EVENT_FUNCTION( key_hit_event )
 {
     widget_struct       *widget;
     text_entry_struct   *text_entry;
@@ -245,7 +245,7 @@ private  DEFINE_EVENT_FUNCTION( key_hit_event )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
+static  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
 {
     widget_struct   *widget;
     text_entry_struct   *text_entry;
@@ -284,7 +284,7 @@ private  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
                                (void *) widget );
 }
 
-public  void  position_text_entry(
+  void  position_text_entry(
     widget_struct                 *widget,
     int                           x,
     int                           y )
@@ -313,7 +313,7 @@ public  void  position_text_entry(
     }
 }
 
-public  VIO_STR  get_text_entry_string(
+  VIO_STR  get_text_entry_string(
     widget_struct  *widget )
 {
     text_entry_struct   *text_entry;
@@ -322,7 +322,7 @@ public  VIO_STR  get_text_entry_string(
     return( text_entry->string );
 }
 
-public  void  set_text_entry_string(
+  void  set_text_entry_string(
     widget_struct  *widget,
     VIO_STR         string )
 {
@@ -341,7 +341,7 @@ public  void  set_text_entry_string(
                               (int) widget->viewport_index, NORMAL_PLANES );
 }
 
-public  void  restore_text_entry_string(
+  void  restore_text_entry_string(
     widget_struct  *widget )
 {
     text_entry_struct   *text_entry;
@@ -350,7 +350,7 @@ public  void  restore_text_entry_string(
     set_text_entry_string( widget, text_entry->saved_string );
 }
 
-public  void  update_text_entry_colours(
+  void  update_text_entry_colours(
     widget_struct  *widget )
 {
     VIO_BOOL            colour_map_state;
@@ -402,7 +402,7 @@ public  void  update_text_entry_colours(
     }
 }
 
-public  void  update_text_entry_activity(
+  void  update_text_entry_activity(
     widget_struct           *widget )
 {
     update_text_entry_colours( widget );
@@ -416,7 +416,7 @@ public  void  update_text_entry_activity(
     }
 }
 
-private  void  create_text_entry_graphics(
+static  void  create_text_entry_graphics(
     widget_struct        *widget,
     Font_types           text_font,
     VIO_Real                 font_size )
@@ -438,7 +438,7 @@ private  void  create_text_entry_graphics(
     /*  create cursor rectangle */
 
     object = create_rectangle( BLACK );
-    set_object_visibility( object, OFF );
+    set_object_visibility( object, FALSE );
     text_entry->cursor = object;
 
     add_object_to_viewport( &widget->graphics->graphics,
@@ -462,7 +462,7 @@ private  void  create_text_entry_graphics(
 
 /* ARGSUSED */
 
-public  void  delete_text_entry(
+  void  delete_text_entry(
     widget_struct  *widget )
 {
     text_entry_struct     *text_entry;
@@ -473,7 +473,7 @@ public  void  delete_text_entry(
     delete_string( text_entry->saved_string );
 }
 
-private  widget_struct  *create_a_text_entry(
+static  widget_struct  *create_a_text_entry(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
@@ -546,7 +546,7 @@ private  widget_struct  *create_a_text_entry(
     return( widget );
 }
 
-public  widget_struct  *create_text_entry(
+  widget_struct  *create_text_entry(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
@@ -578,7 +578,7 @@ public  widget_struct  *create_text_entry(
                          hit_return_callback, callback_data ) );
 }
 
-public  widget_struct  *create_label(
+  widget_struct  *create_label(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,

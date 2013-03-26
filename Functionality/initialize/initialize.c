@@ -16,7 +16,7 @@
 #endif //HAVE_CONFIG_H
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.21 2001-05-23 04:12:45 stever Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.21 2001-05-23 04:12:45 stever Exp $";
 #endif
 
 #include  <register.h>
@@ -30,19 +30,19 @@ static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Function
 // #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
 
 
-// private  void  read_global_files(
+// static  void  read_global_files(
 //     VIO_STR  executable_name );
 
-private   main_struct      main_info;
+static   main_struct      main_info;
 
-private  void    initialize_global_colours( void );
+static  void    initialize_global_colours( void );
 
-public  main_struct  *get_main_struct( void )
+  main_struct  *get_main_struct( void )
 {
     return( &main_info );
 }
 
-public  VIO_Status   initialize_register(
+  VIO_Status   initialize_register(
     Gwindow   window,
     VIO_STR    executable_name )
 {
@@ -54,7 +54,7 @@ public  VIO_Status   initialize_register(
     //read_global_files( executable_name );
 
     if( Disable_alloc_checking )
-        set_alloc_checking( OFF );
+        set_alloc_checking( FALSE );
 
     if( G_has_overlay_planes() && Use_overlay_planes )
     {
@@ -89,7 +89,7 @@ public  VIO_Status   initialize_register(
     }
 
     main_info.resampled_file_loaded = FALSE;
-    main_info.cursor_visibility = ON;
+    main_info.cursor_visibility = TRUE;
     main_info.degrees_continuity = -1;
     create_linear_transform( &main_info.resampling_transform,
                              (VIO_Transform *) NULL );
@@ -99,7 +99,7 @@ public  VIO_Status   initialize_register(
     return( OK );
 }
 
-public  void   terminate_register( void )
+  void   terminate_register( void )
 {
     int   volume;
 
@@ -121,7 +121,7 @@ public  void   terminate_register( void )
     delete_general_transform( &main_info.resampling_transform );
 }
 
-private  void    initialize_global_colours( void )
+static  void    initialize_global_colours( void )
 {
     Overlay_colour_1 = RED;
     Overlay_colour_2 = GREEN;
@@ -137,7 +137,7 @@ private  void    initialize_global_colours( void )
     Initial_over_colour = WHITE;
 }
 
-// private  void  read_global_files(
+// static  void  read_global_files(
 //     VIO_STR  executable_name )
 // {
 //     int      dir, n_directories;
@@ -177,7 +177,7 @@ private  void    initialize_global_colours( void )
 //     FREE( directories );
 // }
 
-// public  VIO_Status  set_functional_global_variable(
+//   VIO_Status  set_functional_global_variable(
 //     VIO_STR  variable_name,
 //     VIO_STR  value_to_set )
 // {

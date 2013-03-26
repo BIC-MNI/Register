@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/meter.c,v 1.8 1998-06-29 15:02:04 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/meter.c,v 1.8 1998-06-29 15:02:04 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-public  void  initialize_meter(
+  void  initialize_meter(
     popup_struct     *popup,
     int              x_size,
     int              y_size,
@@ -59,7 +59,7 @@ public  void  initialize_meter(
                             NORMAL_PLANES, object );
 }
 
-public  void  set_meter_position(
+  void  set_meter_position(
     popup_struct      *popup,
     polygons_struct   *meter_background,
     polygons_struct   *meter,
@@ -72,7 +72,7 @@ public  void  set_meter_position(
     x_size = (int) Point_x(meter_background->points[1]) - x + 1;
     y_size = (int) Point_y(meter_background->points[2]) - y + 1;
 
-    new_pos = ROUND( fraction_done * (VIO_Real) x_size );
+    new_pos = VIO_ROUND( fraction_done * (VIO_Real) x_size );
 
     if( new_pos != (int) Point_x(meter->points[0]) )
     {

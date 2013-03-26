@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/initialize_slice.c,v 1.15 2005-02-28 22:54:31 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/initialize_slice.c,v 1.15 2005-02-28 22:54:31 bert Exp $";
 #endif
 
 #include  <register.h>
 
-private  void  initialize_slice( main_struct *, int, int );
+static  void  initialize_slice( main_struct *, int, int );
 
-public  void  initialize_slices( main_struct  *main )
+  void  initialize_slices( main_struct  *main )
 {
     int            view, volume;
 
@@ -56,7 +56,7 @@ public  void  initialize_slices( main_struct  *main )
     main->merged.merge_method = (Merge_methods) Initial_merge_method;
 }
 
-private  void  initialize_slice(
+static  void  initialize_slice(
     main_struct   *main,
     int           volume,
     int           view )
@@ -97,11 +97,11 @@ private  void  initialize_slice(
 
     set_viewport_objects_visibility( &main->graphics,
                                      get_slice_viewport_index(volume,view),
-                                     OFF );
+                                     FALSE );
 }
 
 /* ARGSUSED */
 
-public  void  terminate_slices( main_struct  *main )
+  void  terminate_slices( main_struct  *main )
 {
 }

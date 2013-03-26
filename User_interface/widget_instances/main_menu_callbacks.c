@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.37 1998-06-29 15:02:03 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/main_menu_callbacks.c,v 1.37 1998-06-29 15:02:03 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -43,11 +43,11 @@ typedef  enum
     N_MAIN_WIDGETS
 } Main_widgets;
 
-private  int  widget_indices[N_MAIN_WIDGETS];
+static  int  widget_indices[N_MAIN_WIDGETS];
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( quit_button_callback )
+static  DEFINE_WIDGET_CALLBACK( quit_button_callback )
 {
 #ifdef DEBUG
     set_quit_program_flag();
@@ -58,14 +58,14 @@ private  DEFINE_WIDGET_CALLBACK( quit_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( transform_type_callback )
+static  DEFINE_WIDGET_CALLBACK( transform_type_callback )
 {
     popup_transform_dialog( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback )
+static  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback )
 {
     VIO_General_transform  *transform;
     VIO_STR             filename;
@@ -89,13 +89,13 @@ private  DEFINE_WIDGET_CALLBACK( resample_and_load_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( resample_filename_callback )
+static  DEFINE_WIDGET_CALLBACK( resample_filename_callback )
 {
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback )
+static  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback )
 {
     get_ui_struct()->volumes_synced = !get_ui_struct()->volumes_synced;
 
@@ -107,7 +107,7 @@ private  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback )
+static  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback )
 {
     int            state;
 
@@ -125,8 +125,8 @@ private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback )
         G_get_n_colour_map_entries( get_ui_struct()->graphics_window.window )
                         < Min_colours_needed )
     {
-        set_toggle_button_state( widget, OFF );
-        G_set_colour_map_state( get_ui_struct()->graphics_window.window, OFF );
+        set_toggle_button_state( widget, FALSE );
+        G_set_colour_map_state( get_ui_struct()->graphics_window.window, FALSE );
     }
 
     colour_map_state_has_changed( get_ui_struct() );
@@ -136,7 +136,7 @@ private  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback )
+static  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback )
 {
     int            state, true_state;
 
@@ -153,7 +153,7 @@ private  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback )
     set_clear_and_update_flags( get_ui_struct() );
 }
 
-public  void  load_tags_file(
+  void  load_tags_file(
     UI_struct  *ui,
     VIO_STR     filename )
 {
@@ -165,7 +165,7 @@ public  void  load_tags_file(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback )
+static  DEFINE_WIDGET_CALLBACK( load_tags_button_callback )
 {
     VIO_STR   filename;
 
@@ -183,13 +183,13 @@ private  DEFINE_WIDGET_CALLBACK( load_tags_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback )
+static  DEFINE_WIDGET_CALLBACK( tags_filename_hit_return_callback )
 {
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback )
+static  DEFINE_WIDGET_CALLBACK( save_tags_button_callback )
 {
     VIO_STR   filename;
 
@@ -205,13 +205,13 @@ private  DEFINE_WIDGET_CALLBACK( save_tags_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback )
+static  DEFINE_WIDGET_CALLBACK( transform_filename_hit_return_callback )
 {
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback )
+static  DEFINE_WIDGET_CALLBACK( save_transform_button_callback )
 {
     VIO_STR   filename;
 
@@ -225,7 +225,7 @@ private  DEFINE_WIDGET_CALLBACK( save_transform_button_callback )
         IF_save_transform( filename );
 }
 
-public  void  record_tag(
+  void  record_tag(
     UI_struct  *ui,
     int        tag_index )
 {
@@ -252,21 +252,21 @@ public  void  record_tag(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( record_tag_button_callback )
+static  DEFINE_WIDGET_CALLBACK( record_tag_button_callback )
 {
     record_tag( get_ui_struct(), get_current_tag_index(get_ui_struct()) );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback )
+static  DEFINE_WIDGET_CALLBACK( delete_tag_button_callback )
 {
     delete_current_tag_point( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )
+static  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )
 {
     if( IF_get_n_tag_points() > 0 )
     {
@@ -276,7 +276,7 @@ private  DEFINE_WIDGET_CALLBACK( delete_all_tags_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback )
+static  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback )
 {
     VIO_BOOL   visibility;
 
@@ -287,7 +287,7 @@ private  DEFINE_WIDGET_CALLBACK( tag_visibility_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( cursor_visibility_button_callback )
+static  DEFINE_WIDGET_CALLBACK( cursor_visibility_button_callback )
 {
     VIO_BOOL   visibility;
 
@@ -298,7 +298,7 @@ private  DEFINE_WIDGET_CALLBACK( cursor_visibility_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
+static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
 {
     VIO_BOOL   smooth_flag;
 
@@ -307,7 +307,7 @@ private  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     IF_set_interpolation_flag( smooth_flag );
 }
 
-public  void  add_main_widgets(
+  void  add_main_widgets(
     UI_struct         *ui_info )
 {
     widget_indices[QUIT_BUTTON] = add_widget_to_list(
@@ -315,7 +315,7 @@ public  void  add_main_widgets(
                    create_button( &ui_info->graphics_window, Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Quit",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -328,7 +328,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Resample", 
-                   OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -340,7 +340,7 @@ public  void  add_main_widgets(
                    create_text_entry( &ui_info->graphics_window,
                        Main_menu_viewport, 
                        0, 0, Tags_filename_width, Text_entry_height,
-                       FALSE, "", ON,
+                       FALSE, "", TRUE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -357,7 +357,7 @@ public  void  add_main_widgets(
                    0, 0, Button_width, Button_height,
                    "Not Synced",
                    "Synced",
-                   ui_info->volumes_synced, ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   ui_info->volumes_synced, TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
@@ -396,7 +396,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Load Tags",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -408,7 +408,7 @@ public  void  add_main_widgets(
                    create_text_entry( &ui_info->graphics_window,
                        Main_menu_viewport, 
                        0, 0, Tags_filename_width, Text_entry_height,
-                       FALSE, "", ON,
+                       FALSE, "", TRUE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -424,7 +424,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Save Tags",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -437,7 +437,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Save Transform",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -449,7 +449,7 @@ public  void  add_main_widgets(
                    create_text_entry( &ui_info->graphics_window,
                        Main_menu_viewport, 
                        0, 0, Tags_filename_width, Text_entry_height,
-                       FALSE, "", ON,
+                       FALSE, "", TRUE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -465,7 +465,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Record Tag",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -478,7 +478,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Delete Tag",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -491,7 +491,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Delete All Tags",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -504,7 +504,7 @@ public  void  add_main_widgets(
                    Main_menu_viewport, 
                    0, 0, Button_width, Button_height,
                    "Transform Type",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -519,7 +519,7 @@ public  void  add_main_widgets(
                    "Tags: Invisible",
                    "Tags: Visible",
                    IF_get_tags_visibility(),
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
@@ -533,7 +533,7 @@ public  void  add_main_widgets(
                    "Cursor: Invisible",
                    "Cursor: Visible",
                    IF_get_cursor_visibility(),
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
@@ -547,7 +547,7 @@ public  void  add_main_widgets(
                    "Interp: Flat",
                    "Interp: Smooth",
                    IF_get_interpolation_flag(),
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
@@ -557,7 +557,7 @@ public  void  add_main_widgets(
                   &ui_info->widget_list[Main_menu_viewport],
                   create_label( &ui_info->graphics_window, Main_menu_viewport,
                   0, 0, Avg_rms_label_width, Text_entry_height,
-                  "RMS:", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
+                  "RMS:", TRUE, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   (Font_types) Label_text_font, Label_text_font_size ) );
@@ -567,7 +567,7 @@ public  void  add_main_widgets(
                   create_label( &ui_info->graphics_window, Main_menu_viewport,
                   0, 0,
                   Avg_rms_number_width, Text_entry_height,
-                  "", ON, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
+                  "", TRUE, LABEL_ACTIVE_COLOUR, LABEL_SELECTED_COLOUR,
                   LABEL_INACTIVE_COLOUR,
                   LABEL_TEXT_COLOUR,
                   (Font_types) Label_text_font, Label_text_font_size ) );
@@ -577,7 +577,7 @@ public  void  add_main_widgets(
     update_colour_map_toggle_activity( ui_info );
 }
 
-public  void  position_main_widgets(
+  void  position_main_widgets(
     UI_struct         *ui_info )
 {
     int           x, y_pos, x_pos, x_min, x_max, y_min, y_max;
@@ -631,7 +631,7 @@ public  void  position_main_widgets(
                      y_pos );
 }
 
-public  void  set_transform_buttons_activity(
+  void  set_transform_buttons_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
@@ -641,7 +641,7 @@ public  void  set_transform_buttons_activity(
                          [widget_indices[RESAMPLE_BUTTON]], activity );
 }
 
-public  void  set_quit_button_activity(
+  void  set_quit_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
@@ -649,7 +649,7 @@ public  void  set_quit_button_activity(
                          [widget_indices[QUIT_BUTTON]], activity );
 }
 
-public  void  set_resample_button_activity(
+  void  set_resample_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
@@ -657,7 +657,7 @@ public  void  set_resample_button_activity(
                          [widget_indices[RESAMPLE_BUTTON]], activity );
 }
 
-public  void  set_delete_tags_button_activity(
+  void  set_delete_tags_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
@@ -665,7 +665,7 @@ public  void  set_delete_tags_button_activity(
                          [widget_indices[DELETE_ALL_TAGS_BUTTON]], activity );
 }
 
-public  void  set_transform_type_button_activity(
+  void  set_transform_type_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
@@ -673,7 +673,7 @@ public  void  set_transform_type_button_activity(
                          [widget_indices[TRANSFORM_TYPE_BUTTON]], activity );
 }
 
-public  void  update_avg_rms_error(
+  void  update_avg_rms_error(
     UI_struct         *ui_info )
 {
     VIO_Real           avg_rms;
@@ -691,7 +691,7 @@ public  void  update_avg_rms_error(
     }
 }
 
-public  void  update_colour_map_toggle_activity(
+  void  update_colour_map_toggle_activity(
     UI_struct         *ui_info )
 {
     VIO_BOOL   activity;

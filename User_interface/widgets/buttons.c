@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.19 1998-06-29 15:02:06 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.19 1998-06-29 15:02:06 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  void  deselect_other_radio_buttons(
+static  void  deselect_other_radio_buttons(
     widget_struct           *widget )
 {
     widget_struct   *current_widget;
@@ -31,19 +31,19 @@ private  void  deselect_other_radio_buttons(
     while( button->next_radio_button != widget )
     {
         current_widget = button->next_radio_button;
-        set_widget_selected( current_widget, OFF );
+        set_widget_selected( current_widget, FALSE );
 
         button = get_widget_button( current_widget );
     }
 }
 
-private  VIO_BOOL  is_radio_button(
+static  VIO_BOOL  is_radio_button(
     button_struct  *button )
 {
     return( button->next_radio_button != (widget_struct *) NULL );
 }
 
-public  void  define_radio_buttons(
+  void  define_radio_buttons(
     int            n_widgets,
     widget_struct  *widgets[] )
 {
@@ -59,7 +59,7 @@ public  void  define_radio_buttons(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( check_unpush_button )
+static  DEFINE_EVENT_FUNCTION( check_unpush_button )
 {
     widget_struct   *widget;
     button_struct   *button;
@@ -83,13 +83,13 @@ private  DEFINE_EVENT_FUNCTION( check_unpush_button )
         /*--- calling this will cause update_button_activity() to be called
               and remove the check_unpush_button_event */
 
-        set_widget_activity( widget, ON );
+        set_widget_activity( widget, TRUE );
     }
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
+static  DEFINE_EVENT_FUNCTION( push_button_event_callback )
 {
     widget_struct   *widget;
     button_struct   *button;
@@ -97,7 +97,7 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
     widget = (widget_struct *) callback_data;
     button = get_widget_button( widget );
 
-    set_widget_activity( widget, OFF );
+    set_widget_activity( widget, FALSE );
 
     if( button->toggle_flag )
     {
@@ -105,7 +105,7 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
     }
     else if( is_radio_button( button ) )
     {
-        set_widget_selected( widget, ON );
+        set_widget_selected( widget, TRUE );
         deselect_other_radio_buttons( widget );
     }
 
@@ -117,7 +117,7 @@ private  DEFINE_EVENT_FUNCTION( push_button_event_callback )
                                ANY_MODIFIER, (void *) widget );
 }
 
-public  void  update_button_activity(
+  void  update_button_activity(
     widget_struct           *widget )
 {
     button_struct   *button;
@@ -139,7 +139,7 @@ public  void  update_button_activity(
     }
 }
 
-public  void  update_button_colours(
+  void  update_button_colours(
     widget_struct   *widget )
 {
     VIO_BOOL        colour_map_state;
@@ -183,7 +183,7 @@ public  void  update_button_colours(
     }
 }
 
-public  void  set_button_active_colour(
+  void  set_button_active_colour(
     widget_struct   *widget,
     VIO_Colour          col )
 {
@@ -196,7 +196,7 @@ public  void  set_button_active_colour(
     update_widget_colours( widget );
 }
 
-public  VIO_Colour  get_button_colour(
+  VIO_Colour  get_button_colour(
     widget_struct   *widget )
 {
     button_struct  *button;
@@ -206,7 +206,7 @@ public  VIO_Colour  get_button_colour(
     return( button->active_colour );
 }
 
-public  void  position_button(
+  void  position_button(
     widget_struct                 *widget,
     int                           x,
     int                           y )
@@ -228,7 +228,7 @@ public  void  position_button(
                y, y + widget->y_size - 1 );
 }
 
-public  void  set_toggle_button_state(
+  void  set_toggle_button_state(
     widget_struct    *widget,
     VIO_BOOL          state )
 {
@@ -241,7 +241,7 @@ public  void  set_toggle_button_state(
     update_button_colours( widget );
 }
 
-public  void  set_button_text(
+  void  set_button_text(
     widget_struct    *widget,
     VIO_STR           text_string )
 {
@@ -257,7 +257,7 @@ public  void  set_button_text(
                               (int) widget->viewport_index, NORMAL_PLANES );
 }
 
-private  void  create_button_graphics(
+static  void  create_button_graphics(
     widget_struct    *widget,
     VIO_STR           label,
     Font_types       text_font,
@@ -291,7 +291,7 @@ private  void  create_button_graphics(
 
 /* ARGSUSED */
 
-public  void  delete_button(
+  void  delete_button(
     widget_struct  *widget )
 {
     button_struct     *button;
@@ -309,7 +309,7 @@ public  void  delete_button(
     }
 }
 
-private  widget_struct  *create_a_button(
+static  widget_struct  *create_a_button(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
@@ -382,7 +382,7 @@ private  widget_struct  *create_a_button(
     return( widget );
 }
 
-public  widget_struct *create_button(
+  widget_struct *create_button(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
@@ -410,7 +410,7 @@ public  widget_struct *create_button(
                      text_font, font_size, push_callback, callback_data ) );
 }
 
-public  widget_struct  *create_toggle_button(
+  widget_struct  *create_toggle_button(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,

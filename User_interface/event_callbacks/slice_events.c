@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/slice_events.c,v 1.17 2005-01-18 22:05:07 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_callbacks/slice_events.c,v 1.17 2005-01-18 22:05:07 bert Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private void time_step(UI_struct *ui_info, 
+static void time_step(UI_struct *ui_info, 
                        Viewport_types viewport, 
                        int dir)
 {
@@ -40,7 +40,7 @@ private void time_step(UI_struct *ui_info,
     }
 }
 
-private  void  update_move_voxel_cursor(
+static  void  update_move_voxel_cursor(
      UI_struct *ui_info )
 {
     int    volume_index;
@@ -56,14 +56,14 @@ private  void  update_move_voxel_cursor(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( update_voxel_cursor_callback )
+static  DEFINE_EVENT_FUNCTION( update_voxel_cursor_callback )
 {
     update_move_voxel_cursor( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( left_mouse_up_callback )
+static  DEFINE_EVENT_FUNCTION( left_mouse_up_callback )
 {
     update_move_voxel_cursor( get_ui_struct() );
 
@@ -73,7 +73,7 @@ private  DEFINE_EVENT_FUNCTION( left_mouse_up_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( left_mouse_down_callback )
+static  DEFINE_EVENT_FUNCTION( left_mouse_down_callback )
 {
     start_interaction( get_ui_struct(), event_viewport_index,
                        LEFT_MOUSE_UP_EVENT, left_mouse_up_callback,
@@ -83,7 +83,7 @@ private  DEFINE_EVENT_FUNCTION( left_mouse_down_callback )
 
 /* ------------------------- middle mouse --------------------------- */
 
-private  void  update_move_slice(
+static  void  update_move_slice(
      UI_struct *ui_info )
 {
     int   volume, view, x_mouse, y_mouse;
@@ -109,14 +109,14 @@ private  void  update_move_slice(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( update_move_slice_callback )
+static  DEFINE_EVENT_FUNCTION( update_move_slice_callback )
 {
     update_move_slice( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )
+static  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )
 {
     update_move_slice( get_ui_struct() );
 
@@ -128,7 +128,7 @@ private  DEFINE_EVENT_FUNCTION( middle_mouse_up_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )
+static  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )
 {
     int   volume, view;
     Real  position[VIO_MAX_DIMENSIONS];
@@ -146,7 +146,7 @@ private  DEFINE_EVENT_FUNCTION( middle_mouse_down_callback )
 
 /* ------------------------- pan slice mouse --------------------------- */
 
-private  void  update_pan_slice(
+static  void  update_pan_slice(
      UI_struct *ui_info )
 {
     int   volume, view, x_mouse, y_mouse;
@@ -171,14 +171,14 @@ private  void  update_pan_slice(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( pan_slice_callback )
+static  DEFINE_EVENT_FUNCTION( pan_slice_callback )
 {
     update_pan_slice( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( terminate_pan_slice_callback )
+static  DEFINE_EVENT_FUNCTION( terminate_pan_slice_callback )
 {
     update_pan_slice( get_ui_struct() );
 
@@ -188,7 +188,7 @@ private  DEFINE_EVENT_FUNCTION( terminate_pan_slice_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( start_pan_slice_callback )
+static  DEFINE_EVENT_FUNCTION( start_pan_slice_callback )
 {
     start_interaction( get_ui_struct(), event_viewport_index,
                        LEFT_MOUSE_UP_EVENT, terminate_pan_slice_callback,
@@ -197,7 +197,7 @@ private  DEFINE_EVENT_FUNCTION( start_pan_slice_callback )
 
 /* ------------------------- scale slice --------------------------- */
 
-private  void  update_scale_slice(
+static  void  update_scale_slice(
      UI_struct *ui_info )
 {
     int   volume, view, x_mouse, y_mouse;
@@ -222,14 +222,14 @@ private  void  update_scale_slice(
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( scale_slice_callback )
+static  DEFINE_EVENT_FUNCTION( scale_slice_callback )
 {
     update_scale_slice( get_ui_struct() );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( terminate_scale_slice_callback )
+static  DEFINE_EVENT_FUNCTION( terminate_scale_slice_callback )
 {
     update_scale_slice( get_ui_struct() );
 
@@ -242,7 +242,7 @@ private  DEFINE_EVENT_FUNCTION( terminate_scale_slice_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( start_scale_slice_callback )
+static  DEFINE_EVENT_FUNCTION( start_scale_slice_callback )
 {
     start_interaction( get_ui_struct(), event_viewport_index,
                        MIDDLE_MOUSE_UP_EVENT, terminate_scale_slice_callback,
@@ -250,7 +250,7 @@ private  DEFINE_EVENT_FUNCTION( start_scale_slice_callback )
     get_ui_struct()->prev_y_mouse = get_ui_struct()->y_mouse_start;
 }
 
-private  void  increment_slice(
+static  void  increment_slice(
      UI_struct        *ui_info,
      Viewport_types   viewport,
      int              increment )
@@ -268,7 +268,7 @@ private  void  increment_slice(
             axis = IF_get_slice_axis( view );
 
             position[axis] += (Real) increment;
-            position[axis] = (Real) ROUND( position[axis] );
+            position[axis] = (Real) VIO_ROUND( position[axis] );
 
             ui_set_volume_voxel_position( ui_info, volume, position );
         }
@@ -277,7 +277,7 @@ private  void  increment_slice(
 
 /* ARGSUSED */
 
-public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )
+  DEFINE_EVENT_FUNCTION( slice_key_down_callback )
 {
     switch( keyboard_character )
     {
@@ -315,7 +315,7 @@ public  DEFINE_EVENT_FUNCTION( slice_key_down_callback )
     }
 }
 
-public  void  install_slice_events(
+  void  install_slice_events(
     event_viewports_struct   *event_table,
     int                     volume )
 {
@@ -350,7 +350,7 @@ public  void  install_slice_events(
     }
 }
 
-public  void  remove_slice_events(
+  void  remove_slice_events(
     event_viewports_struct   *event_table,
     int                     volume )
 {

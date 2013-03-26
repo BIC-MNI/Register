@@ -14,12 +14,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.20 2005-02-28 21:05:18 bert Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.20 2005-02-28 21:05:18 bert Exp $";
 #endif
 
 #include  <register.h>
 
-public  VIO_BOOL  is_volume_active(
+  VIO_BOOL  is_volume_active(
     main_struct    *main,
     int            volume_index )
 {
@@ -29,13 +29,13 @@ public  VIO_BOOL  is_volume_active(
         return( main->trislice[volume_index].input_flag );
 }
 
-public  VIO_BOOL  is_resampled_volume_loaded(
+  VIO_BOOL  is_resampled_volume_loaded(
     main_struct    *main )
 {
     return( main->resampled_file_loaded );
 }
 
-public  VIO_STR  get_volume_filename(
+  VIO_STR  get_volume_filename(
     main_struct    *main,
     int            volume_index )
 {
@@ -48,7 +48,7 @@ public  VIO_STR  get_volume_filename(
         return( main->trislice[volume_index].filename );
 }
 
-private  void   record_register_volume(
+static  void   record_register_volume(
     main_struct    *main,
     int            volume_index,
     VIO_Volume         volume,
@@ -78,7 +78,7 @@ private  void   record_register_volume(
     for_less( view, 0, N_VIEWS )
     {
         set_viewport_objects_visibility( &main->graphics,
-                              get_slice_viewport_index(volume_index,view), ON );
+                              get_slice_viewport_index(volume_index,view), TRUE );
 
         initialize_slice_view( main, volume_index, view );
         update_slice_tag_objects( main, volume_index, view );
@@ -100,7 +100,7 @@ private  void   record_register_volume(
     update_colour_maps( main, volume_index );
 }
 
-public  void   set_register_volume(
+  void   set_register_volume(
     main_struct    *main,
     int            volume_index,
     VIO_STR         filename )
@@ -113,7 +113,7 @@ public  void   set_register_volume(
         main->resampled_file_loaded = FALSE;
 }
 
-public  void   set_register_resampled_volume(
+  void   set_register_resampled_volume(
     main_struct            *main,
     int                    volume_index,
     VIO_STR                 filename,
@@ -132,7 +132,7 @@ public  void   set_register_resampled_volume(
                     create_string(original_filename) );
 }
 
-public  void  delete_register_volume(
+  void  delete_register_volume(
     main_struct    *main,
     int            volume_index )
 {
@@ -149,7 +149,7 @@ public  void  delete_register_volume(
     }
 }
 
-private  void  set_merged_volume_visibility(
+static  void  set_merged_volume_visibility(
     main_struct    *main,
     VIO_BOOL        visible )
 {
@@ -163,7 +163,7 @@ private  void  set_merged_volume_visibility(
     }
 }
 
-public  void  set_merged_volume_activity(
+  void  set_merged_volume_activity(
     main_struct    *main,
     VIO_BOOL        activity )
 {
@@ -195,7 +195,7 @@ public  void  set_merged_volume_activity(
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
-public  VIO_BOOL  get_merged_volume_activity(
+  VIO_BOOL  get_merged_volume_activity(
     main_struct    *main )
 {
     return( main->merged.active_flag );
@@ -203,7 +203,7 @@ public  VIO_BOOL  get_merged_volume_activity(
 
 char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime };
 
-public  VIO_Status  start_loading_volume(
+  VIO_Status  start_loading_volume(
     main_struct    *main,
     int            volume_index,
     VIO_STR         filename )
@@ -242,7 +242,7 @@ public  VIO_Status  start_loading_volume(
     return( status );
 }
 
-public  VIO_BOOL  load_more_of_volume(
+  VIO_BOOL  load_more_of_volume(
     main_struct    *main,
     int            volume_index,
     VIO_Real           max_time,
@@ -270,7 +270,7 @@ public  VIO_BOOL  load_more_of_volume(
     return( done_loading );
 }
 
-public  void  cancel_loading_volume(
+  void  cancel_loading_volume(
     main_struct    *main,
     int            volume_index )
 {
@@ -278,7 +278,7 @@ public  void  cancel_loading_volume(
     delete_volume( main->trislice[volume_index].volume_being_input );
 }
 
-public  VIO_BOOL  is_volume_rgb(
+  VIO_BOOL  is_volume_rgb(
     main_struct    *main,
     int            volume_index )
 {

@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.11 1998-06-29 15:01:53 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/colour_popup/colour_selection.c,v 1.11 1998-06-29 15:01:53 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -25,20 +25,20 @@ typedef  struct
     popup_struct            popup_window;
 } colour_selection_struct;
 
-private  void  delete_colour_selection(
+static  void  delete_colour_selection(
     colour_selection_struct          *popup )
 {
     delete_popup_window( &popup->popup_window );
 
     set_over_under_colour_activity( get_ui_struct(), popup->volume,
-                                    popup->over_or_under, ON );
+                                    popup->over_or_under, TRUE );
 
     FREE( popup );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( colour_button_callback )
+static  DEFINE_WIDGET_CALLBACK( colour_button_callback )
 {
     colour_selection_struct   *popup;
 
@@ -52,19 +52,19 @@ private  DEFINE_WIDGET_CALLBACK( colour_button_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( cancel_callback )
+static  DEFINE_WIDGET_CALLBACK( cancel_callback )
 {
     delete_colour_selection( (colour_selection_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )
+static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_colour_selection( (colour_selection_struct *) callback_data );
 }
 
-public  void  popup_colour_selection(
+  void  popup_colour_selection(
     UI_struct   *ui,
     int         volume,
     int         over_or_under )
@@ -73,14 +73,14 @@ public  void  popup_colour_selection(
     widget_struct             *widget;
     colour_selection_struct   *popup;
     static  VIO_STR            over_under_names[] = { "Under", "Over" };
-    char                      window_name[EXTREMELY_LARGE_STRING_SIZE];
+    char                      window_name[VIO_EXTREMELY_LARGE_STRING_SIZE];
     VIO_Colour                    colour;
     static  VIO_STR            colours[] = { "BLACK", "WHITE",
                                             "RED", "GREEN", "BLUE",
                                             "CYAN", "MAGENTA", "YELLOW",
                                             "ORANGE" };
 
-    set_over_under_colour_activity( ui, volume, over_or_under, OFF );
+    set_over_under_colour_activity( ui, volume, over_or_under, FALSE );
 
     ALLOC( popup, 1 );
 
@@ -108,7 +108,7 @@ public  void  popup_colour_selection(
         widget = create_button( &popup->popup_window.graphics,
                                 Main_menu_viewport,
                                 x, y, Button_width, Button_height,
-                                colours[i], ON, FALSE, colour,
+                                colours[i], TRUE, FALSE, colour,
                                 get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                                 get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),
                                 get_ui_rgb_colour(BUTTON_TEXT_COLOUR),
@@ -130,7 +130,7 @@ public  void  popup_colour_selection(
 
     widget = create_button( &popup->popup_window.graphics, Main_menu_viewport,
                             x, y, Button_width, Button_height,
-                            "Cancel", ON, FALSE,
+                            "Cancel", TRUE, FALSE,
                             get_ui_rgb_colour(BUTTON_ACTIVE_COLOUR),
                             get_ui_rgb_colour(BUTTON_SELECTED_COLOUR),
                             get_ui_rgb_colour(BUTTON_INACTIVE_COLOUR),

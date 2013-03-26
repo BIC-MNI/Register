@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.8 1998-06-29 15:02:10 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/filter_popup/filter_selection.c,v 1.8 1998-06-29 15:02:10 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -48,7 +48,7 @@ Filter_widgets;
 
 static   int  widget_indices[N_FILTER_WIDGETS];
 
-private  int  get_filter_widget_index(
+static  int  get_filter_widget_index(
     Filter_types  type )
 {
     switch( type )
@@ -62,7 +62,7 @@ private  int  get_filter_widget_index(
     }
 }
 
-private  void  set_filter(
+static  void  set_filter(
     void            *callback_data,
     Filter_types    type )
 {
@@ -75,42 +75,42 @@ private  void  set_filter(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( nearest_callback )
+static  DEFINE_WIDGET_CALLBACK( nearest_callback )
 {
     set_filter( callback_data, NEAREST_NEIGHBOUR );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( linear_callback )
+static  DEFINE_WIDGET_CALLBACK( linear_callback )
 {
     set_filter( callback_data, LINEAR_INTERPOLATION );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( box_callback )
+static  DEFINE_WIDGET_CALLBACK( box_callback )
 {
     set_filter( callback_data, BOX_FILTER );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( triangle_callback )
+static  DEFINE_WIDGET_CALLBACK( triangle_callback )
 {
     set_filter( callback_data, TRIANGLE_FILTER );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( gaussian_callback )
+static  DEFINE_WIDGET_CALLBACK( gaussian_callback )
 {
     set_filter( callback_data, GAUSSIAN_FILTER );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( filter_width_callback )
+static  DEFINE_WIDGET_CALLBACK( filter_width_callback )
 {
     VIO_Real             value;
     callback_struct  *callback;
@@ -125,7 +125,7 @@ private  DEFINE_WIDGET_CALLBACK( filter_width_callback )
         restore_text_entry_string( widget );
 }
 
-private  int  add_filter_widgets(
+static  int  add_filter_widgets(
     popup_struct      *popup,
     int               x,
     int               y,
@@ -143,7 +143,7 @@ private  int  add_filter_widgets(
                    create_button( &popup->graphics, Main_menu_viewport, 
                    x, y, Filter_button_width, Filter_button_height,
                    "Nearest",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -157,7 +157,7 @@ private  int  add_filter_widgets(
                    create_button( &popup->graphics, Main_menu_viewport, 
                    x + dx, y, Filter_button_width, Filter_button_height,
                    "Linear",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -169,7 +169,7 @@ private  int  add_filter_widgets(
                    create_button( &popup->graphics, Main_menu_viewport, 
                    x + 2 * dx, y, Filter_button_width, Filter_button_height,
                    "Box",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -181,7 +181,7 @@ private  int  add_filter_widgets(
                    create_button( &popup->graphics, Main_menu_viewport, 
                    x + 3 * dx, y, Filter_button_width, Filter_button_height,
                    "Triangle",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -193,7 +193,7 @@ private  int  add_filter_widgets(
                    create_button( &popup->graphics, Main_menu_viewport, 
                    x + 4 * dx, y, Filter_button_width, Filter_button_height,
                    "Gaussian",
-                   ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                   TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -206,7 +206,7 @@ private  int  add_filter_widgets(
                    &popup->widgets,
                    create_label( &popup->graphics, Main_menu_viewport,
                    x, y, Full_width_label_width, Filter_button_height,
-                   "Full Width Half Max", ON, LABEL_ACTIVE_COLOUR,
+                   "Full Width Half Max", TRUE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR, (Font_types) Label_text_font,
                    Label_text_font_size ) )
@@ -217,7 +217,7 @@ private  int  add_filter_widgets(
                    create_text_entry( &popup->graphics, Main_menu_viewport,
                    x + Full_width_label_width + Interface_x_spacing, y,
                    Full_width_text_width, Filter_button_height,
-                   FALSE, "", ON,
+                   FALSE, "", TRUE,
                    TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                    TEXT_ENTRY_INACTIVE_COLOUR, TEXT_ENTRY_TEXT_COLOUR,
                    TEXT_ENTRY_EDIT_COLOUR, TEXT_ENTRY_EDIT_TEXT_COLOUR,
@@ -245,31 +245,31 @@ private  int  add_filter_widgets(
 
 /* ------------------------------------------------------------------------ */
 
-private  void  delete_filter_selection(
+static  void  delete_filter_selection(
     filter_selection_struct          *popup )
 {
     delete_popup_window( &popup->popup_window );
 
-    set_filter_popup_activity( get_ui_struct(), popup->volume, ON );
+    set_filter_popup_activity( get_ui_struct(), popup->volume, TRUE );
 
     FREE( popup );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( close_callback )
+static  DEFINE_WIDGET_CALLBACK( close_callback )
 {
     delete_filter_selection( (filter_selection_struct *) callback_data );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( quit_window_callback )
+static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 {
     delete_filter_selection( (filter_selection_struct *) callback_data );
 }
 
-public  void  popup_filter_selection(
+  void  popup_filter_selection(
     UI_struct   *ui,
     int         volume )
 {
@@ -279,14 +279,14 @@ public  void  popup_filter_selection(
     int                       view_start_index, height;
     Filter_types              filter_type;
     VIO_Real                      filter_width;
-    char                      window_name[EXTREMELY_LARGE_STRING_SIZE];
+    char                      window_name[VIO_EXTREMELY_LARGE_STRING_SIZE];
     static VIO_STR             view_names[3];
 
     view_names[0] = Filter_name1;
     view_names[1] = Filter_name2;
     view_names[2] = Filter_name3;
 
-    set_filter_popup_activity( ui, volume, OFF );
+    set_filter_popup_activity( ui, volume, FALSE );
 
     ALLOC( popup, 1 );
 
@@ -312,7 +312,7 @@ public  void  popup_filter_selection(
                    create_label( &popup->popup_window.graphics,
                                  Main_menu_viewport,
                    x, y, Filter_view_label_width, Filter_button_height,
-                   view_names[view_index], ON, LABEL_ACTIVE_COLOUR,
+                   view_names[view_index], TRUE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR, LABEL_INACTIVE_COLOUR,
                    LABEL_TEXT_COLOUR,
                    (Font_types) Label_text_font, Label_text_font_size ) );
@@ -330,7 +330,7 @@ public  void  popup_filter_selection(
         set_widget_selected(
                      popup->popup_window.widgets.widgets
                      [view_start_index + widget_indices[
-                           get_filter_widget_index(filter_type)]], ON );
+                           get_filter_widget_index(filter_type)]], TRUE );
 
         filter_width = IF_get_slice_filter_width( volume, (int) view_index );
         set_text_entry_real_value( popup->popup_window.widgets.widgets
@@ -342,7 +342,7 @@ public  void  popup_filter_selection(
                                create_button( &popup->popup_window.graphics,
                                               Main_menu_viewport,
                                 x, y, Button_width, Button_height,
-                                "Close", ON, TRUE, BUTTON_ACTIVE_COLOUR,
+                                "Close", TRUE, TRUE, BUTTON_ACTIVE_COLOUR,
                                 BUTTON_SELECTED_COLOUR,
                                 BUTTON_INACTIVE_COLOUR,
                                 BUTTON_TEXT_COLOUR,

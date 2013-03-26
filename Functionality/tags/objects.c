@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/objects.c,v 1.10 1998-06-29 15:01:47 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/objects.c,v 1.10 1998-06-29 15:01:47 david Exp $";
 #endif
 
 #include  <register.h>
 
-public  void  create_tag_objects(
+  void  create_tag_objects(
     main_struct        *main,
     tag_point_struct   *tag )
 {
@@ -67,7 +67,7 @@ public  void  create_tag_objects(
     update_tag_objects( main, tag );
 }
 
-public  void  update_slice_tag_colours(
+  void  update_slice_tag_colours(
     main_struct        *main,
     int                volume,
     int                view,
@@ -113,7 +113,7 @@ public  void  update_slice_tag_colours(
     lines->colours[1] = outside_colour;
 }
 
-public   void  update_tag_colours(
+   void  update_tag_colours(
     main_struct        *main,
     tag_point_struct   *tag )
 {
@@ -128,7 +128,7 @@ public   void  update_tag_colours(
     }
 }
 
-public   void  update_all_tag_colours(
+   void  update_all_tag_colours(
     main_struct        *main )
 {
     int  i;
@@ -137,7 +137,7 @@ public   void  update_all_tag_colours(
         update_tag_colours( main, &main->tags.tag_points[i] );
 }
 
-private  VIO_BOOL  convert_tag_to_pixel(
+static  VIO_BOOL  convert_tag_to_pixel(
     main_struct       *main,
     int               volume,
     int               view,
@@ -177,8 +177,8 @@ private  VIO_BOOL  convert_tag_to_pixel(
 
         cursor_ptr = get_volume_cursor( main, volume );
 
-        diff = FABS( voxel_position[axis] - cursor_ptr[axis] ) *
-               x_scale * FABS( separations[axis] );
+        diff = VIO_FABS( voxel_position[axis] - cursor_ptr[axis] ) *
+               x_scale * VIO_FABS( separations[axis] );
 
         if( diff < (Real) Tag_radius_pixels )
         {
@@ -192,7 +192,7 @@ private  VIO_BOOL  convert_tag_to_pixel(
     return( visible );
 }
 
-private  void  fill_in_circle_points(
+static  void  fill_in_circle_points(
     Real    x,
     Real    y,
     Real    radius,
@@ -212,7 +212,7 @@ private  void  fill_in_circle_points(
     }
 }
 
-private  void  position_tag_circle(
+static  void  position_tag_circle(
     lines_struct   *lines,
     Real           x,
     Real           y,
@@ -225,7 +225,7 @@ private  void  position_tag_circle(
                            &lines->points[lines->n_points / 2] );
 }
 
-public  void  update_tag_object(
+  void  update_tag_object(
     main_struct       *main,
     int               volume,
     int               view,
@@ -243,18 +243,18 @@ public  void  update_tag_object(
         lines = get_lines_ptr( tag->objects[volume][view] );
         position_tag_circle( lines, x, y, radius );
         update_slice_tag_colours( main, volume, view, tag );
-        visibility = ON;
+        visibility = TRUE;
     }
     else
     {
-        visibility = OFF;
+        visibility = FALSE;
     }
 
     set_object_visibility( tag->objects[volume][view], visibility );
     set_update_slice_viewport_flag( main, volume, view, NORMAL_PLANES );
 }
 
-public  void  update_tag_objects(
+  void  update_tag_objects(
     main_struct       *main,
     tag_point_struct  *tag )
 {
@@ -269,7 +269,7 @@ public  void  update_tag_objects(
     }
 }
 
-public  void  update_slice_tag_objects(
+  void  update_slice_tag_objects(
     main_struct       *main,
     int               volume,
     int               view )
@@ -280,7 +280,7 @@ public  void  update_slice_tag_objects(
         update_tag_object( main, volume, view, &main->tags.tag_points[i] );
 }
 
-public   void  update_volume_tag_objects(
+   void  update_volume_tag_objects(
     main_struct        *main,
     int                volume )
 {
@@ -292,7 +292,7 @@ public   void  update_volume_tag_objects(
     }
 }
 
-public   void  update_all_tag_objects(
+   void  update_all_tag_objects(
     main_struct        *main )
 {
     int             volume;
@@ -303,7 +303,7 @@ public   void  update_all_tag_objects(
     }
 }
 
-public  void  delete_tag_objects(
+  void  delete_tag_objects(
     main_struct        *main,
     tag_point_struct   *tag )
 {

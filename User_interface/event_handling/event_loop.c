@@ -13,19 +13,19 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.11 1998-06-29 15:01:56 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.11 1998-06-29 15:01:56 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
-private  VIO_BOOL   quit_flag = FALSE;
+static  VIO_BOOL   quit_flag = FALSE;
 
-public  void  set_quit_program_flag( void )
+  void  set_quit_program_flag( void )
 {
     exit( 0 );
 }
 
-private  void  timer_function(
+static  void  timer_function(
     void  *data )
 {
     handle_event( NO_EVENT, NULL, 0 );
@@ -33,14 +33,14 @@ private  void  timer_function(
     G_add_timer_function( Timer_interval, timer_function, NULL );
 }
 
-public  void  event_loop( void )
+  void  event_loop( void )
 {
     G_add_timer_function( Timer_interval, timer_function, NULL );
 
     G_main_loop();
 }
 
-public  void   handle_event(
+  void   handle_event(
     Event_types       event_type,
     Gwindow           event_window,
     int               key_pressed )

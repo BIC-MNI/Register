@@ -13,7 +13,7 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/widget_instances/merged_interface.c,v 1.15 1998-06-29 15:02:04 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/merged_interface.c,v 1.15 1998-06-29 15:02:04 david Exp $";
 #endif
 
 #include  <user_interface.h>
@@ -35,7 +35,7 @@ Merged_widgets;
 
 static  int  widget_indices[N_MERGED_WIDGETS];
 
-private  void  opacity_callback(
+static  void  opacity_callback(
     widget_struct  *widget,
     int            which_volume )
 {
@@ -48,19 +48,19 @@ private  void  opacity_callback(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( opacity_2_callback )
+static  DEFINE_WIDGET_CALLBACK( opacity_2_callback )
 {
     opacity_callback( widget, 1 );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( opacity_1_callback )
+static  DEFINE_WIDGET_CALLBACK( opacity_1_callback )
 {
     opacity_callback( widget, 0 );
 }
 
-private  void  set_merge_sliders_activity(
+static  void  set_merge_sliders_activity(
     UI_struct      *ui,
     Merge_methods  method )
 {
@@ -94,7 +94,7 @@ private  void  set_merge_sliders_activity(
                          slider2_on );
 }
 
-private  void  set_merging_method(
+static  void  set_merging_method(
     Merge_methods  method )
 {
     set_merge_sliders_activity( get_ui_struct(), method );
@@ -103,33 +103,33 @@ private  void  set_merging_method(
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( one_on_two_callback )
+static  DEFINE_WIDGET_CALLBACK( one_on_two_callback )
 {
     set_merging_method( ONE_ON_TWO );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( two_on_one_callback )
+static  DEFINE_WIDGET_CALLBACK( two_on_one_callback )
 {
     set_merging_method( TWO_ON_ONE );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( blend_callback )
+static  DEFINE_WIDGET_CALLBACK( blend_callback )
 {
     set_merging_method( BLEND_VOLUMES );
 }
 
 /* ARGSUSED */
 
-private  DEFINE_WIDGET_CALLBACK( weight_callback )
+static  DEFINE_WIDGET_CALLBACK( weight_callback )
 {
     set_merging_method( WEIGHTED_VOLUMES );
 }
 
-private  Merged_widgets  get_merge_method_widget(
+static  Merged_widgets  get_merge_method_widget(
     Merge_methods merge_method )
 {
     switch( merge_method )
@@ -142,7 +142,7 @@ private  Merged_widgets  get_merge_method_widget(
     }
 }
 
-public  void  add_merged_widgets(
+  void  add_merged_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index )
 {
@@ -159,7 +159,7 @@ public  void  add_merged_widgets(
                    Opacity_slider_height,
                    IF_get_merged_volume_opacity(1),
                    0.0, 1.0, Opacity_text_format,
-                   OFF,
+                   FALSE,
                    SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
                    SLIDER_PEG_COLOUR,
                    opacity_2_callback, (void *) NULL ) );
@@ -172,7 +172,7 @@ public  void  add_merged_widgets(
                        viewport_index, x, y,
                        Colour_bar_button_width, Volume_button_height,
                        "1 on 2",
-                       OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                       FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
                        BUTTON_TEXT_COLOUR,
@@ -187,7 +187,7 @@ public  void  add_merged_widgets(
                        viewport_index, x, y,
                        Colour_bar_button_width, Volume_button_height,
                        "2 on 1",
-                       OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                       FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
                        BUTTON_TEXT_COLOUR,
@@ -206,7 +206,7 @@ public  void  add_merged_widgets(
                    Opacity_slider_height,
                    IF_get_merged_volume_opacity(0),
                    0.0, 1.0, Opacity_text_format,
-                   OFF,
+                   FALSE,
                    SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
                    SLIDER_PEG_COLOUR,
                    opacity_1_callback, (void *) NULL ) );
@@ -219,7 +219,7 @@ public  void  add_merged_widgets(
                        viewport_index, x, y,
                        Colour_bar_button_width, Volume_button_height,
                        "Blend",
-                       OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                       FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
                        BUTTON_TEXT_COLOUR,
@@ -234,7 +234,7 @@ public  void  add_merged_widgets(
                        viewport_index, x, y,
                        Colour_bar_button_width, Volume_button_height,
                        "Weights",
-                       OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+                       FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                        BUTTON_SELECTED_COLOUR,
                        BUTTON_INACTIVE_COLOUR,
                        BUTTON_TEXT_COLOUR,
@@ -252,7 +252,7 @@ public  void  add_merged_widgets(
                viewport_index, x, y,
                Volume_button_width, Volume_button_height,
                "Reset View",
-               OFF, TRUE, BUTTON_ACTIVE_COLOUR,
+               FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
                BUTTON_SELECTED_COLOUR,
                BUTTON_INACTIVE_COLOUR,
                BUTTON_TEXT_COLOUR,
@@ -265,7 +265,7 @@ public  void  add_merged_widgets(
                    create_label( &ui_info->graphics_window, viewport_index,
                    x + Volume_button_width + Interface_x_spacing, y,
                    Value_readout_width, Volume_button_height,
-                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   "", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
@@ -278,7 +278,7 @@ public  void  add_merged_widgets(
                    x + Volume_button_width + Value_readout_width +
                    2 * Interface_x_spacing, y,
                    Value_readout_width, Volume_button_height,
-                   "", OFF, LABEL_ACTIVE_COLOUR,
+                   "", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
@@ -303,10 +303,10 @@ public  void  add_merged_widgets(
     define_radio_buttons( 4, radio_widgets );
 
     set_widget_selected( ui_info->widget_list[viewport_index].widgets
-        [widget_indices[get_merge_method_widget(IF_get_merge_method())]], ON );
+        [widget_indices[get_merge_method_widget(IF_get_merge_method())]], TRUE );
 }
 
-public  void  set_merged_widgets_activity(
+  void  set_merged_widgets_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
@@ -329,12 +329,12 @@ public  void  set_merged_widgets_activity(
         merge_method = IF_get_merge_method();
         set_widget_selected(
              ui_info->widget_list[Merged_menu_viewport].widgets
-             [widget_indices[get_merge_method_widget(merge_method)]], ON );
+             [widget_indices[get_merge_method_widget(merge_method)]], TRUE );
         set_merge_sliders_activity( ui_info, merge_method );
     }
 }
 
-public  widget_struct  *get_merged_readout_widget(
+  widget_struct  *get_merged_readout_widget(
     UI_struct     *ui_info,
     int           volume )
 {

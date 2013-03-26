@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/event_callbacks/save_image.c,v 1.5 1998-06-29 15:01:55 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_callbacks/save_image.c,v 1.5 1998-06-29 15:01:55 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 /* ARGSUSED */
 
-public  void  save_current_viewport(
+  void  save_current_viewport(
     UI_struct        *ui,
     Viewport_types   viewport )
 {

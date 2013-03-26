@@ -13,14 +13,14 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.13 1998-08-24 19:52:01 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.13 1998-08-24 19:52:01 david Exp $";
 #endif
 
 #include  <user_interface.h>
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
+static  DEFINE_EVENT_FUNCTION( redraw_window_callback )
 {
     popup_struct    *popup;
     Bitplane_types  bitplane;
@@ -38,7 +38,7 @@ private  DEFINE_EVENT_FUNCTION( redraw_window_callback )
 
 /* ARGSUSED */
 
-private  DEFINE_EVENT_FUNCTION( resize_window_callback )
+static  DEFINE_EVENT_FUNCTION( resize_window_callback )
 {
     popup_struct     *popup;
     Bitplane_types   bitplane;
@@ -52,7 +52,7 @@ private  DEFINE_EVENT_FUNCTION( resize_window_callback )
     }
 }
 
-public  void   create_popup_window(
+  void   create_popup_window(
     popup_struct          *popup,
     VIO_STR                title,
     int                   x_position,
@@ -82,7 +82,7 @@ public  void   create_popup_window(
 
     G_set_background_colour( popup->graphics.window, Popup_background_colour );
 
-    G_set_automatic_clear_state( popup->graphics.window, OFF );
+    G_set_automatic_clear_state( popup->graphics.window, FALSE );
 
     record_graphics_window( &popup->graphics );
 
@@ -122,7 +122,7 @@ public  void   create_popup_window(
     }
 }
 
-public  void  delete_popup_window(
+  void  delete_popup_window(
     popup_struct   *popup )
 {
     (void) G_delete_window( popup->graphics.window );

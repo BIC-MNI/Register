@@ -13,12 +13,12 @@
 ---------------------------------------------------------------------------- */
 
 #ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.17 1998-06-29 15:01:47 david Exp $";
+static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.17 1998-06-29 15:01:47 david Exp $";
 #endif
 
 #include  <register.h>
 
-private  void   create_tags_array(
+static  void   create_tags_array(
     VIO_BOOL            valid_tags[],
     int                n_tag_points,
     tag_point_struct   tag_points[],
@@ -55,11 +55,11 @@ private  void   create_tags_array(
     }
 }
 
-private  VIO_STR  create_comments(
+static  VIO_STR  create_comments(
     main_struct   *main )
 {
-    char    buffer1[EXTREMELY_LARGE_STRING_SIZE];
-    char    buffer2[EXTREMELY_LARGE_STRING_SIZE];
+    char    buffer1[VIO_EXTREMELY_LARGE_STRING_SIZE];
+    char    buffer2[VIO_EXTREMELY_LARGE_STRING_SIZE];
 
     if( main->trislice[0].input_flag )
     {
@@ -80,7 +80,7 @@ private  VIO_STR  create_comments(
     return( concat_strings( buffer1, buffer2 ) );
 }
 
-public  VIO_Status   save_tag_points(
+  VIO_Status   save_tag_points(
     main_struct   *main,
     VIO_STR        filename )
 {
@@ -199,7 +199,7 @@ public  VIO_Status   save_tag_points(
     return( status );
 }
 
-public  VIO_Status   load_tag_points(
+  VIO_Status   load_tag_points(
     main_struct   *main,
     VIO_STR        filename )
 {
@@ -264,7 +264,7 @@ public  VIO_Status   load_tag_points(
     return( status );
 }
 
-public  VIO_Status   save_transform(
+  VIO_Status   save_transform(
     main_struct   *main,
     VIO_STR        filename )
 {
