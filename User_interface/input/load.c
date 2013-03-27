@@ -83,7 +83,7 @@ static  void  delete_popup_interaction(
 
     status = IF_start_loading_volume( volume, filename );
 
-    if( status == OK )
+    if( status == VIO_OK )
     {
         set_load_activity( ui_info, volume, FALSE );
 

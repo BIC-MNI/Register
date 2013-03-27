@@ -43,8 +43,8 @@ typedef  struct
     tag_points_struct        tag_points;
 
     int                      main_menu_width;
-    Real                     x_slice_divider[N_VOLUMES_DISPLAYED-1];
-    Real                     y_slice_divider[N_VIEWS-1];
+    VIO_Real                     x_slice_divider[N_VOLUMES_DISPLAYED-1];
+    VIO_Real                     y_slice_divider[N_VIEWS-1];
     int                      tag_panel_height;
     int                      volume_panel_height;
     int                      divider_width;
@@ -53,11 +53,11 @@ typedef  struct
     int                      x_mouse_start;
     int                      y_mouse_start;
     int                      prev_y_mouse;
-    Real                     slice_position_start;
+    VIO_Real                     slice_position_start;
 
     VIO_General_transform        resampling_transform;
-    STRING                   original_filename_volume_2;
-    STRING                   resampled_filename;
+    VIO_STR                   original_filename_volume_2;
+    VIO_STR                   resampled_filename;
 
     int                      which_volume_readout;
     int                      x_mouse_readout;
@@ -74,7 +74,7 @@ popup_struct;
 typedef  struct
 {
     VIO_BOOL                   this_is_resampled_volume;
-    STRING                    filename;
+    VIO_STR                    filename;
     int                       volume_index;
     popup_struct              popup;
     polygons_struct           *meter_background;
@@ -85,7 +85,7 @@ load_struct;
 typedef  struct
 {
     resample_struct           resample;
-    Volume                    resampled_volume;
+    VIO_Volume                    resampled_volume;
     popup_struct              popup;
     polygons_struct           *meter_background;
     polygons_struct           *meter;

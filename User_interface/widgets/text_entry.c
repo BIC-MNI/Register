@@ -57,7 +57,7 @@ static  VIO_BOOL  fit_text_within_widget(
     if( width > x_size && i > 0 )
     {
         --i;
-        text->string[i] = END_OF_STRING;
+        text->string[i] = VIO_END_OF_STRING;
     }
 
     return( left_index + i >= cursor_index );

@@ -221,7 +221,7 @@ char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime };
                               &options,
                               &main->trislice[volume_index].volume_input );
 
-    if( status == OK &&
+    if( status == VIO_OK &&
         is_an_rgb_volume(main->trislice[volume_index].volume_being_input) &&
         G_get_colour_map_state( main->window ) )
     {

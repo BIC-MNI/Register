@@ -125,9 +125,9 @@ int  main(
             }
 
             if( set_global_variable( SIZEOF_STATIC_ARRAY(UI_globals_list),
-                        UI_globals_list, variable_name, variable_value ) != OK )
+                        UI_globals_list, variable_name, variable_value ) != VIO_OK )
             {
-                if( UI_set_global_variable( variable_name, variable_value )!=OK)
+                if( UI_set_global_variable( variable_name, variable_value )!=VIO_OK)
                     print("Error setting global variable from command line.\n");
             }
         }
@@ -168,7 +168,7 @@ int  main(
 
     output_alloc_to_file( ".register.alloc_debug" );
 
-    return( status != OK );
+    return( status != VIO_OK );
 }
 
 static  void     initialize_global_colours( void )

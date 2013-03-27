@@ -42,18 +42,18 @@ typedef  struct
 {
     VIO_BOOL                  toggle_flag;
     VIO_BOOL                  state;
-    STRING                   toggle_text[2];
-    Real                     time_to_unpush;
+    VIO_STR                   toggle_text[2];
+    VIO_Real                     time_to_unpush;
     widget_callback_type     push_callback;
     void                     *callback_data;
     polygons_struct          *polygons;
     text_struct              *text;
     int                      update_counter;
 
-    Colour                   active_colour;
-    Colour                   selected_colour;
-    Colour                   inactive_colour;
-    Colour                   text_colour;
+    VIO_Colour                   active_colour;
+    VIO_Colour                   selected_colour;
+    VIO_Colour                   inactive_colour;
+    VIO_Colour                   text_colour;
 
     struct  widget_struct    *next_radio_button;
 } button_struct;
@@ -63,8 +63,8 @@ typedef  struct
     VIO_BOOL                  label_only_flag;
     VIO_BOOL                  in_edit_mode;
     VIO_BOOL                  clear_text_when_selected;
-    STRING                   string;
-    STRING                   saved_string;
+    VIO_STR                   string;
+    VIO_STR                   saved_string;
     int                      left_index;
     int                      string_index;
     widget_callback_type     hit_return_callback;
@@ -73,30 +73,30 @@ typedef  struct
     object_struct            *cursor;
     text_struct              *text;
 
-    Colour                   active_colour;
-    Colour                   selected_colour;
-    Colour                   inactive_colour;
-    Colour                   text_colour;
-    Colour                   edit_colour;
-    Colour                   text_edit_colour;
-    Colour                   cursor_colour;
+    VIO_Colour                   active_colour;
+    VIO_Colour                   selected_colour;
+    VIO_Colour                   inactive_colour;
+    VIO_Colour                   text_colour;
+    VIO_Colour                   edit_colour;
+    VIO_Colour                   text_edit_colour;
+    VIO_Colour                   cursor_colour;
 } text_entry_struct;
 
 typedef  struct
 {
     VIO_BOOL                  colour_bar_flag;
-    Real                     min_value, max_value;
+    VIO_Real                     min_value, max_value;
     VIO_BOOL                  values_allowed_outside_range;
-    Real                     values[2];
-    STRING                   format_string;
+    VIO_Real                     values[2];
+    VIO_STR                   format_string;
 
     int                      peg_being_moved;
     int                      middle_mouse_offset;
 
-    Colour                   active_colour;
-    Colour                   inactive_colour;
-    Colour                   peg_colour;
-    Real                     peg_width;
+    VIO_Colour                   active_colour;
+    VIO_Colour                   inactive_colour;
+    VIO_Colour                   peg_colour;
+    VIO_Real                     peg_width;
 
     widget_callback_type     value_changed_callback[2];
     void                     *callback_data[2];

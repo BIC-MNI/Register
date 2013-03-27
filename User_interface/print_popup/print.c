@@ -139,7 +139,7 @@ static  void  create_message_popup(
     ptr = string;
     max_length = 0.0;
 
-    while( *ptr != END_OF_STRING )
+    while( *ptr != VIO_END_OF_STRING )
     {
         object = create_object( TEXT );
         text = get_text_ptr( object );
@@ -148,7 +148,7 @@ static  void  create_message_popup(
         ADD_ELEMENT_TO_ARRAY( text_objects, n_lines, object,
                               DEFAULT_CHUNK_SIZE );
 
-        while( *ptr != END_OF_STRING && *ptr != '\n' )
+        while( *ptr != VIO_END_OF_STRING && *ptr != '\n' )
         {
             concat_char_to_string( &text->string, *ptr );
             ++ptr;

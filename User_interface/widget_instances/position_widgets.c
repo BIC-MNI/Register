@@ -45,42 +45,42 @@ static  int  widget_indices[N_POSITION_WIDGETS];
 
 static  DEFINE_WIDGET_CALLBACK( pos_x_voxel_callback )
 {
-    set_voxel_position_callback( get_ui_struct(), widget, X );
+    set_voxel_position_callback( get_ui_struct(), widget, VIO_X );
 }
 
 /* ARGSUSED */
 
 static  DEFINE_WIDGET_CALLBACK( pos_y_voxel_callback )
 {
-    set_voxel_position_callback( get_ui_struct(), widget, Y );
+    set_voxel_position_callback( get_ui_struct(), widget, VIO_Y );
 }
 
 /* ARGSUSED */
 
 static  DEFINE_WIDGET_CALLBACK( pos_z_voxel_callback )
 {
-    set_voxel_position_callback( get_ui_struct(), widget, Z );
+    set_voxel_position_callback( get_ui_struct(), widget, VIO_Z );
 }
 
 /* ARGSUSED */
 
 static  DEFINE_WIDGET_CALLBACK( pos_x_world_callback )
 {
-    set_world_position_callback( get_ui_struct(), widget, X );
+    set_world_position_callback( get_ui_struct(), widget, VIO_X );
 }
 
 /* ARGSUSED */
 
 static  DEFINE_WIDGET_CALLBACK( pos_y_world_callback )
 {
-    set_world_position_callback( get_ui_struct(), widget, Y );
+    set_world_position_callback( get_ui_struct(), widget, VIO_Y );
 }
 
 /* ARGSUSED */
 
 static  DEFINE_WIDGET_CALLBACK( pos_z_world_callback )
 {
-    set_world_position_callback( get_ui_struct(), widget, Z );
+    set_world_position_callback( get_ui_struct(), widget, VIO_Z );
 }
 
 static  DEFINE_WIDGET_CALLBACK( pos_time_callback )

@@ -1,265 +1,265 @@
 #ifndef  DEF_Functionality_prototypes
 #define  DEF_Functionality_prototypes
 
-public  main_struct  *get_main_struct( void );
+  main_struct  *get_main_struct( void );
 
-public  Status   initialize_register(
+  VIO_Status   initialize_register(
     Gwindow   window,
-    STRING    executable_name );
+    VIO_STR    executable_name );
 
-public  void   terminate_register( void );
+  void   terminate_register( void );
 
-public  Status  set_functional_global_variable(
-    STRING  variable_name,
-    STRING  value_to_set );
+  VIO_Status  set_functional_global_variable(
+    VIO_STR  variable_name,
+    VIO_STR  value_to_set );
 
-public  void   update_colour_maps(
+  void   update_colour_maps(
     main_struct  *main,
     int          volume );
 
-public  void  repartition_colour_maps(
+  void  repartition_colour_maps(
     main_struct  *main );
 
-public  void  colour_mode_has_toggled(
+  void  colour_mode_has_toggled(
     main_struct  *main,
     int          start_index );
 
-public  void   set_volume_colour_coding_type( 
+  void   set_volume_colour_coding_type( 
     main_struct          *main,
     int                  volume_index,
     Colour_coding_types  type );
 
-public  Colour_coding_types   get_volume_colour_coding_type( 
+  Colour_coding_types   get_volume_colour_coding_type( 
     main_struct          *main,
     int                  volume_index );
 
-public  void  set_volume_colour_coding_limits(
+  void  set_volume_colour_coding_limits(
     main_struct          *main,
     int                  volume_index,
-    Real                 min_value,
-    Real                 max_value );
+    VIO_Real                 min_value,
+    VIO_Real                 max_value );
 
-public  void  get_volume_colour_coding_limits(
+  void  get_volume_colour_coding_limits(
     main_struct          *main,
     int                  volume_index,
-    Real                 *min_value,
-    Real                 *max_value );
+    VIO_Real                 *min_value,
+    VIO_Real                 *max_value );
 
-public  void  set_merged_volume_opacity(
+  void  set_merged_volume_opacity(
     main_struct          *main,
     int                  which_volume,
-    Real                 opacity );
+    VIO_Real                 opacity );
 
-public  Real  get_merged_volume_opacity(
+  VIO_Real  get_merged_volume_opacity(
     main_struct          *main,
     int                  which_volume );
 
-public  void  set_merged_method(
+  void  set_merged_method(
     main_struct       *main,
     Merge_methods     method );
 
-public  Merge_methods  get_merged_method(
+  Merge_methods  get_merged_method(
     main_struct       *main );
 
-public  void   set_volume_under_colour( 
+  void   set_volume_under_colour( 
     main_struct          *main,
     int                  volume_index,
-    Colour               colour );
+    VIO_Colour               colour );
 
-public  void   set_volume_over_colour( 
+  void   set_volume_over_colour( 
     main_struct          *main,
     int                  volume_index,
-    Colour               colour );
+    VIO_Colour               colour );
 
-public  void  composite_merged_pixels(
+  void  composite_merged_pixels(
     main_struct          *main,
     pixels_struct        *pixels1,
     pixels_struct        *pixels2,
     pixels_struct        *result );
 
-public  VIO_BOOL  can_switch_colour_modes(
+  VIO_BOOL  can_switch_colour_modes(
     main_struct          *main );
 
-public  object_struct  *create_cursor(
+  object_struct  *create_cursor(
     main_struct  *main,
     int          volume_index,
     int          view_index );
 
-public  void  position_cursor(
+  void  position_cursor(
     lines_struct   *lines,
     int            x,
     int            y,
     int            offset,
     int            length );
 
-public  void  update_cursor_colours(
+  void  update_cursor_colours(
     main_struct    *main,
     int            volume,
     int            view );
 
-public  void  update_volume_cursor(
+  void  update_volume_cursor(
     main_struct   *main,
     int           volume_index,
     int           view_index );
 
-public  void  update_volume_cursors(
+  void  update_volume_cursors(
     main_struct   *main,
     int           volume_index );
 
-public  VIO_BOOL  get_cursor_visibility(
+  VIO_BOOL  get_cursor_visibility(
     main_struct  *main );
 
-public  void  set_cursor_visibility(
+  void  set_cursor_visibility(
     main_struct  *main,
     VIO_BOOL      state );
 
-public  void  create_slice_pixels(
+  void  create_slice_pixels(
     main_struct   *main,
     int           volume_index,
     int           view );
 
-public  void  create_merged_pixels(
+  void  create_merged_pixels(
     main_struct   *main,
     int           view );
 
-public  VIO_BOOL   convert_pixel_to_voxel(
+  VIO_BOOL   convert_pixel_to_voxel(
     main_struct     *main,
     int             volume_index,
     int             view_index,
     int             x_pixel,
     int             y_pixel,
-    Real            voxel_position[N_DIMENSIONS] );
+    VIO_Real            voxel_position[VIO_N_DIMENSIONS] );
 
-public  void   convert_voxel_to_pixel(
+  void   convert_voxel_to_pixel(
     main_struct     *main,
     int             volume_index,
     int             view_index,
-    Real            voxel_position[N_DIMENSIONS],
-    Real            *x_pixel,
-    Real            *y_pixel );
+    VIO_Real            voxel_position[VIO_N_DIMENSIONS],
+    VIO_Real            *x_pixel,
+    VIO_Real            *y_pixel );
 
-public  void  translate_slice(
+  void  translate_slice(
     main_struct  *main,
     int          volume,
     int          view,
     int          x_translation_offset,
     int          y_translation_offset );
 
-public  void  scale_slice(
+  void  scale_slice(
     main_struct  *main,
     int          volume,
     int          view,
-    Real         scale_factor );
+    VIO_Real         scale_factor );
 
-public  void  resize_slice(
+  void  resize_slice(
     main_struct  *main,
     int          volume_index,
     int          view );
 
-public  void  initialize_slice_view(
+  void  initialize_slice_view(
     main_struct  *main,
     int          volume_index,
     int          view );
 
-public  void  set_slice_interpolation(
+  void  set_slice_interpolation(
     main_struct  *main,
     int          degrees_continuity );
 
-public  void  initialize_slices( main_struct  *main );
+  void  initialize_slices( main_struct  *main );
 
-public  void  terminate_slices( main_struct  *main );
+  void  terminate_slices( main_struct  *main );
 
-public  Status  resample_the_volume(
+  VIO_Status  resample_the_volume(
     main_struct  *main,
-    STRING       resampled_filename );
+    VIO_STR       resampled_filename );
 
-public  void  save_image(
+  void  save_image(
     main_struct   *main_info,
     int           volume_index,
     int           view_index );
 
-public  VIO_BOOL  is_volume_active(
+  VIO_BOOL  is_volume_active(
     main_struct    *main,
     int            volume_index );
 
-public  VIO_BOOL  is_resampled_volume_loaded(
+  VIO_BOOL  is_resampled_volume_loaded(
     main_struct    *main );
 
-public  STRING  get_volume_filename(
+  VIO_STR  get_volume_filename(
     main_struct    *main,
     int            volume_index );
 
-public  void   set_register_volume(
+  void   set_register_volume(
     main_struct    *main,
     int            volume_index,
-    STRING         filename );
+    VIO_STR         filename );
 
-public  void   set_register_resampled_volume(
+  void   set_register_resampled_volume(
     main_struct            *main,
     int                    volume_index,
-    STRING                 filename,
-    STRING                 original_filename,
+    VIO_STR                 filename,
+    VIO_STR                 original_filename,
     VIO_General_transform      *resampling_transform );
 
-public  void  delete_register_volume(
+  void  delete_register_volume(
     main_struct    *main,
     int            volume_index );
 
-public  void  set_merged_volume_activity(
+  void  set_merged_volume_activity(
     main_struct    *main,
     VIO_BOOL        activity );
 
-public  VIO_BOOL  get_merged_volume_activity(
+  VIO_BOOL  get_merged_volume_activity(
     main_struct    *main );
 
-public  Status  start_loading_volume(
+  VIO_Status  start_loading_volume(
     main_struct    *main,
     int            volume_index,
-    STRING         filename );
+    VIO_STR         filename );
 
-public  VIO_BOOL  load_more_of_volume(
+  VIO_BOOL  load_more_of_volume(
     main_struct    *main,
     int            volume_index,
-    Real           max_time,
-    Real           *fraction_done );
+    VIO_Real           max_time,
+    VIO_Real           *fraction_done );
 
-public  void  cancel_loading_volume(
+  void  cancel_loading_volume(
     main_struct    *main,
     int            volume_index );
 
-public  VIO_BOOL  is_volume_rgb(
+  VIO_BOOL  is_volume_rgb(
     main_struct    *main,
     int            volume_index );
 
-public  void  get_slice_axes(
+  void  get_slice_axes(
     int   view_index,
     int   *x_axis_index,
     int   *y_axis_index );
 
-public  void  get_slice_axes_flip(
+  void  get_slice_axes_flip(
     int       view_index,
     VIO_BOOL   *x_axis_flip,
     VIO_BOOL   *y_axis_flip );
 
-public  int  get_slice_axis(
+  int  get_slice_axis(
     int   view_index );
 
-public  void  get_slice_plane(
+  void  get_slice_plane(
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          origin[],
-    Real          x_axis[],
-    Real          y_axis[] );
+    VIO_Real          origin[],
+    VIO_Real          x_axis[],
+    VIO_Real          y_axis[] );
 
-public  int  get_slice_viewport_index( int volume, int view );
+  int  get_slice_viewport_index( int volume, int view );
 
-public  void  get_volume_view_index(
+  void  get_volume_view_index(
     int   viewport_index,
     int   *volume,
     int   *view );
 
-public  void  get_slice_viewport(
+  void  get_slice_viewport(
     main_struct  *main,
     int          volume,
     int          view,
@@ -268,14 +268,14 @@ public  void  get_slice_viewport(
     int          *y_min,
     int          *y_max );
 
-public  void  get_slice_viewport_size(
+  void  get_slice_viewport_size(
     main_struct  *main,
     int          volume,
     int          view,
     int          *x_size,
     int          *y_size );
 
-public  void  set_slice_viewport(
+  void  set_slice_viewport(
     main_struct  *main,
     int          volume,
     int          view,
@@ -284,327 +284,327 @@ public  void  set_slice_viewport(
     int          y_min,
     int          y_max );
 
-public  void  set_volume_voxel_position(
+  void  set_volume_voxel_position(
     main_struct    *main,
     int            volume_index,
-    Real           position[N_DIMENSIONS] );
+    VIO_Real           position[VIO_N_DIMENSIONS] );
 
-public  void  get_volume_voxel_position(
+  void  get_volume_voxel_position(
     main_struct   *main,
     int           volume,
-    Real          position[N_DIMENSIONS] );
+    VIO_Real          position[VIO_N_DIMENSIONS] );
 
-public  void  convert_original_world_to_world(
+  void  convert_original_world_to_world(
     main_struct    *main,
     int            volume_index,
-    Real           x_original,
-    Real           y_original,
-    Real           z_original,
-    Real           *x_world,
-    Real           *y_world,
-    Real           *z_world );
+    VIO_Real           x_original,
+    VIO_Real           y_original,
+    VIO_Real           z_original,
+    VIO_Real           *x_world,
+    VIO_Real           *y_world,
+    VIO_Real           *z_world );
 
-public  void  convert_world_to_original_world(
+  void  convert_world_to_original_world(
     main_struct    *main,
     int            volume_index,
-    Real           x_world,
-    Real           y_world,
-    Real           z_world,
-    Real           *x_original,
-    Real           *y_original,
-    Real           *z_original );
+    VIO_Real           x_world,
+    VIO_Real           y_world,
+    VIO_Real           z_world,
+    VIO_Real           *x_original,
+    VIO_Real           *y_original,
+    VIO_Real           *z_original );
 
-public  void  set_volume_world_position(
+  void  set_volume_world_position(
     main_struct    *main,
     int            volume_index,
-    Real           world_position[N_DIMENSIONS] );
+    VIO_Real           world_position[VIO_N_DIMENSIONS] );
 
-public  void  get_volume_world_position(
+  void  get_volume_world_position(
     main_struct   *main,
     int           volume_index,
-    Real          world_position[N_DIMENSIONS] );
+    VIO_Real          world_position[VIO_N_DIMENSIONS] );
 
-public  void  convert_original_world_to_voxel(
+  void  convert_original_world_to_voxel(
     main_struct    *main,
     int            volume_index,
-    Real           x_original,
-    Real           y_original,
-    Real           z_original,
-    Real           *x_voxel,
-    Real           *y_voxel,
-    Real           *z_voxel );
+    VIO_Real           x_original,
+    VIO_Real           y_original,
+    VIO_Real           z_original,
+    VIO_Real           *x_voxel,
+    VIO_Real           *y_voxel,
+    VIO_Real           *z_voxel );
 
-public  void  convert_voxel_to_original_world(
+  void  convert_voxel_to_original_world(
     main_struct    *main,
     int            volume_index,
-    Real           x_voxel,
-    Real           y_voxel,
-    Real           z_voxel,
-    Real           *x_original,
-    Real           *y_original,
-    Real           *z_original );
+    VIO_Real           x_voxel,
+    VIO_Real           y_voxel,
+    VIO_Real           z_voxel,
+    VIO_Real           *x_original,
+    VIO_Real           *y_original,
+    VIO_Real           *z_original );
 
-public  void  set_volume_original_world_position(
+  void  set_volume_original_world_position(
     main_struct    *main,
     int            volume_index,
-    Real           original_world_position[N_DIMENSIONS] );
+    VIO_Real           original_world_position[VIO_N_DIMENSIONS] );
 
-public  void  get_volume_original_world_position(
+  void  get_volume_original_world_position(
     main_struct   *main,
     int           volume_index,
-    Real          original_world_position[N_DIMENSIONS] );
+    VIO_Real          original_world_position[VIO_N_DIMENSIONS] );
 
-public  Volume  get_slice_volume(
+  VIO_Volume  get_slice_volume(
     main_struct   *main,
     int           volume_index );
 
-public  void  get_volume_range_of_voxels(
+  void  get_volume_range_of_voxels(
     main_struct   *main,
     int           volume_index,
     int           *min_value,
     int           *max_value );
 
-public  void  get_volume_value_range(
+  void  get_volume_value_range(
     main_struct   *main,
     int           volume_index,
-    Real          *min_value,
-    Real          *max_value );
+    VIO_Real          *min_value,
+    VIO_Real          *max_value );
 
-public  Real  *get_volume_cursor(
+  VIO_Real  *get_volume_cursor(
     main_struct   *main,
     int           volume_index );
 
-public  slice_struct  *get_slice_struct(
+  slice_struct  *get_slice_struct(
     main_struct   *main,
     int           volume_index,
     int           view );
 
-public  void  get_slice_transform(
+  void  get_slice_transform(
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          *x_trans,
-    Real          *y_trans,
-    Real          *x_scale,
-    Real          *y_scale );
+    VIO_Real          *x_trans,
+    VIO_Real          *y_trans,
+    VIO_Real          *x_scale,
+    VIO_Real          *y_scale );
 
-public  void  set_slice_translation(
+  void  set_slice_translation(
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          x_trans,
-    Real          y_trans );
+    VIO_Real          x_trans,
+    VIO_Real          y_trans );
 
-public  void  set_slice_scale(
+  void  set_slice_scale(
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          x_scale,
-    Real          y_scale );
+    VIO_Real          x_scale,
+    VIO_Real          y_scale );
 
-public  Real  get_voxel_value(
+  VIO_Real  get_voxel_value(
     main_struct   *main,
     int           volume_index,
-    Real          x_voxel,
-    Real          y_voxel,
-    Real          z_voxel );
+    VIO_Real          x_voxel,
+    VIO_Real          y_voxel,
+    VIO_Real          z_voxel );
 
-public  void  set_slice_filter_type(
+  void  set_slice_filter_type(
     main_struct   *main,
     int           volume_index,
     int           view,
     Filter_types  filter_type );
 
-public  Filter_types  get_slice_filter_type(
+  Filter_types  get_slice_filter_type(
     main_struct   *main,
     int           volume_index,
     int           view );
 
-public  void  set_slice_filter_width(
+  void  set_slice_filter_width(
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          filter_width );
+    VIO_Real          filter_width );
 
-public  Real  get_slice_filter_width(
+  VIO_Real  get_slice_filter_width(
     main_struct   *main,
     int           volume_index,
     int           view );
 
-public  void  set_interpolation_mode(
+  void  set_interpolation_mode(
     main_struct   *main,
     VIO_BOOL       smooth_flag );
 
-public  VIO_BOOL  get_interpolation_mode(
+  VIO_BOOL  get_interpolation_mode(
     main_struct   *main );
 
-public  void  set_recreate_3_slices_flags(
+  void  set_recreate_3_slices_flags(
     main_struct  *main,
     int          volume_index );
 
-public  void  set_recreate_slice_flag(
+  void  set_recreate_slice_flag(
     main_struct  *main,
     int          volume,
     int          view );
 
-public  void  set_update_slice_viewport_flag(
+  void  set_update_slice_viewport_flag(
     main_struct     *main,
     int             volume,
     int             view,
     Bitplane_types  bitplane );
 
-public  void  create_tag_objects(
+  void  create_tag_objects(
     main_struct        *main,
     tag_point_struct   *tag );
 
-public  void  update_slice_tag_colours(
+  void  update_slice_tag_colours(
     main_struct        *main,
     int                volume,
     int                view,
     tag_point_struct   *tag );
 
-public   void  update_tag_colours(
+   void  update_tag_colours(
     main_struct        *main,
     tag_point_struct   *tag );
 
-public   void  update_all_tag_colours(
+   void  update_all_tag_colours(
     main_struct        *main );
 
-public  void  update_tag_object(
+  void  update_tag_object(
     main_struct       *main,
     int               volume,
     int               view,
     tag_point_struct  *tag );
 
-public  void  update_tag_objects(
+  void  update_tag_objects(
     main_struct       *main,
     tag_point_struct  *tag );
 
-public  void  update_slice_tag_objects(
+  void  update_slice_tag_objects(
     main_struct       *main,
     int               volume,
     int               view );
 
-public   void  update_volume_tag_objects(
+   void  update_volume_tag_objects(
     main_struct        *main,
     int                volume );
 
-public   void  update_all_tag_objects(
+   void  update_all_tag_objects(
     main_struct        *main );
 
-public  void  delete_tag_objects(
+  void  delete_tag_objects(
     main_struct        *main,
     tag_point_struct   *tag );
 
-public  Status   save_tag_points(
+  VIO_Status   save_tag_points(
     main_struct   *main,
-    STRING        filename );
+    VIO_STR        filename );
 
-public  Status   load_tag_points(
+  VIO_Status   load_tag_points(
     main_struct   *main,
-    STRING        filename );
+    VIO_STR        filename );
 
-public  Status   save_transform(
+  VIO_Status   save_transform(
     main_struct   *main,
-    STRING        filename );
+    VIO_STR        filename );
 
-public  void  initialize_tag_points(
+  void  initialize_tag_points(
     main_struct      *main );
 
-public  VIO_BOOL  get_tags_visibility(
+  VIO_BOOL  get_tags_visibility(
     main_struct      *main );
 
-public  void  set_tags_visibility(
+  void  set_tags_visibility(
     main_struct      *main,
     VIO_BOOL          visibility );
 
-public  void  delete_tag_points(
+  void  delete_tag_points(
     main_struct      *main );
 
-public  void  create_new_tag_point(
+  void  create_new_tag_point(
     main_struct      *main );
 
-public  void  delete_tag_point(
+  void  delete_tag_point(
     main_struct      *main,
     int              ind );
 
-public  int  get_n_tag_points(
+  int  get_n_tag_points(
     main_struct      *main );
 
-public  VIO_BOOL  get_tag_point_position(
+  VIO_BOOL  get_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
-    Real             position[] );
+    VIO_Real             position[] );
 
-public  void  set_tag_point_position(
+  void  set_tag_point_position(
     main_struct      *main,
     int              ind,
     int              volume_index,
-    Real             position[] );
+    VIO_Real             position[] );
 
-public  STRING  get_tag_point_name(
+  VIO_STR  get_tag_point_name(
     main_struct      *main,
     int              ind );
 
-public  void  set_tag_point_name(
+  void  set_tag_point_name(
     main_struct      *main,
     int              ind,
-    STRING           name );
+    VIO_STR           name );
 
-public  VIO_BOOL  get_tag_point_avg_rms_error(
+  VIO_BOOL  get_tag_point_avg_rms_error(
     main_struct      *main,
-    Real             *error );
+    VIO_Real             *error );
 
-public  VIO_BOOL  get_tag_point_rms_error(
-    main_struct      *main,
-    int              ind,
-    Real             *error );
-
-public  void  set_tag_point_rms_error(
+  VIO_BOOL  get_tag_point_rms_error(
     main_struct      *main,
     int              ind,
-    Real             rms_error );
+    VIO_Real             *error );
 
-public  void  set_tag_point_activity(
+  void  set_tag_point_rms_error(
+    main_struct      *main,
+    int              ind,
+    VIO_Real             rms_error );
+
+  void  set_tag_point_activity(
     main_struct      *main,
     int              ind,
     VIO_BOOL          activity );
 
-public  VIO_BOOL  get_tag_point_activity(
+  VIO_BOOL  get_tag_point_activity(
     main_struct      *main,
     int              ind );
 
-public  VIO_BOOL  get_tag_point_transform(
+  VIO_BOOL  get_tag_point_transform(
     main_struct           *main,
     VIO_General_transform     **transform );
 
-public  VIO_BOOL  get_tag_points_saved(
+  VIO_BOOL  get_tag_points_saved(
     main_struct   *main );
 
-public  Trans_type  get_tag_transform_type(
+  Trans_type  get_tag_transform_type(
     main_struct  *main );
 
-public  void  set_tag_transform_type(
+  void  set_tag_transform_type(
     main_struct  *main,
     Trans_type   type );
 
-public  void  recompute_tag_transform(
+  void  recompute_tag_transform(
     tag_list_struct   *tags );
 
-public  VIO_BOOL  update_slice_display(
+  VIO_BOOL  update_slice_display(
     main_struct     *main,
     int             current_buffer );
 
-public  VIO_BOOL  slices_to_be_updated(
+  VIO_BOOL  slices_to_be_updated(
     main_struct     *main,
     int             current_buffer );
 
-public void get_volume_time_position(main_struct *main,
+ void get_volume_time_position(main_struct *main,
                                      int volume_index,
-                                     Real *tpos_ptr);
+                                     VIO_Real *tpos_ptr);
 
-public void set_volume_time_position(main_struct *main,
+ void set_volume_time_position(main_struct *main,
                                      int volume_index,
-                                     Real tpos);
+                                     VIO_Real tpos);
 #endif

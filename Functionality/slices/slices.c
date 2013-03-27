@@ -18,8 +18,8 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functiona
 
 #include  <register.h>
 
-static   int         x_axes[] = { Y, X, X };
-static   int         y_axes[] = { Z, Z, Y };
+static   int         x_axes[] = { VIO_Y, VIO_X, VIO_X };
+static   int         y_axes[] = { VIO_Z, VIO_Z, VIO_Y };
 static   VIO_BOOL     x_axes_flip[] = { FALSE, FALSE, FALSE };
 static   VIO_BOOL     y_axes_flip[] = { FALSE, FALSE, FALSE };
 
@@ -90,13 +90,13 @@ static  void  check_axes_assigned( void )
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          origin[],
-    Real          x_axis[],
-    Real          y_axis[] )
+    VIO_Real          origin[],
+    VIO_Real          x_axis[],
+    VIO_Real          y_axis[] )
 {
     VIO_Volume   volume;
     int      c, axis, x_index, y_index;
-    Real     *slice_position, separations[VIO_MAX_DIMENSIONS];
+    VIO_Real     *slice_position, separations[VIO_MAX_DIMENSIONS];
     VIO_BOOL  x_flip, y_flip;
 
     get_slice_axes( view, &x_index, &y_index );
@@ -195,13 +195,13 @@ static  void  check_axes_assigned( void )
   void  set_volume_voxel_position(
     main_struct    *main,
     int            volume_index,
-    Real           position[VIO_N_DIMENSIONS] )
+    VIO_Real           position[VIO_N_DIMENSIONS] )
 {
     VIO_BOOL        changed;
     VIO_Volume         volume;
     int            view, axis, sizes[VIO_MAX_DIMENSIONS];
-    Real           pos;
-    Real           *cursor_ptr;
+    VIO_Real           pos;
+    VIO_Real           *cursor_ptr;
 
     volume = get_slice_volume( main, volume_index );
     get_volume_sizes( volume, sizes );
@@ -213,8 +213,8 @@ static  void  check_axes_assigned( void )
     {
         if( position[axis] < -0.5 )
             pos = -0.5;
-        else if( position[axis] >= (Real) sizes[axis] - 0.5 )
-            pos = (Real) sizes[axis] - 0.500001;
+        else if( position[axis] >= (VIO_Real) sizes[axis] - 0.5 )
+            pos = (VIO_Real) sizes[axis] - 0.500001;
         else
             pos = position[axis];
 
@@ -242,65 +242,65 @@ static  void  check_axes_assigned( void )
   void  get_volume_voxel_position(
     main_struct   *main,
     int           volume,
-    Real          position[VIO_N_DIMENSIONS] )
+    VIO_Real          position[VIO_N_DIMENSIONS] )
 {
-    Real           *cursor_ptr;
-    Real           original_world_position1[VIO_N_DIMENSIONS];
-    Real           original_world_position2[VIO_N_DIMENSIONS];
-    Real           world_position[VIO_N_DIMENSIONS];
+    VIO_Real           *cursor_ptr;
+    VIO_Real           original_world_position1[VIO_N_DIMENSIONS];
+    VIO_Real           original_world_position2[VIO_N_DIMENSIONS];
+    VIO_Real           world_position[VIO_N_DIMENSIONS];
 
     if( volume <= MERGED_VOLUME_INDEX )
     {
         cursor_ptr = get_volume_cursor( main, volume );
 
-        position[X] = cursor_ptr[X];
-        position[Y] = cursor_ptr[Y];
-        position[Z] = cursor_ptr[Z];
+        position[VIO_X] = cursor_ptr[VIO_X];
+        position[VIO_Y] = cursor_ptr[VIO_Y];
+        position[VIO_Z] = cursor_ptr[VIO_Z];
     }
     else
     {
         cursor_ptr = get_volume_cursor( main, MERGED_VOLUME_INDEX );
 
         convert_voxel_to_original_world( main, 1 - RESAMPLED_VOLUME_INDEX,
-                                         cursor_ptr[X],
-                                         cursor_ptr[Y],
-                                         cursor_ptr[Z],
-                                         &original_world_position1[X],
-                                         &original_world_position1[Y],
-                                         &original_world_position1[Z] );
+                                         cursor_ptr[VIO_X],
+                                         cursor_ptr[VIO_Y],
+                                         cursor_ptr[VIO_Z],
+                                         &original_world_position1[VIO_X],
+                                         &original_world_position1[VIO_Y],
+                                         &original_world_position1[VIO_Z] );
         convert_original_world_to_world( main, 1 - RESAMPLED_VOLUME_INDEX,
-                                         original_world_position1[X],
-                                         original_world_position1[Y],
-                                         original_world_position1[Z],
-                                         &world_position[X],
-                                         &world_position[Y],
-                                         &world_position[Z] );
+                                         original_world_position1[VIO_X],
+                                         original_world_position1[VIO_Y],
+                                         original_world_position1[VIO_Z],
+                                         &world_position[VIO_X],
+                                         &world_position[VIO_Y],
+                                         &world_position[VIO_Z] );
         convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
-                                         world_position[X],
-                                         world_position[Y],
-                                         world_position[Z],
-                                         &original_world_position2[X],
-                                         &original_world_position2[Y],
-                                         &original_world_position2[Z] );
+                                         world_position[VIO_X],
+                                         world_position[VIO_Y],
+                                         world_position[VIO_Z],
+                                         &original_world_position2[VIO_X],
+                                         &original_world_position2[VIO_Y],
+                                         &original_world_position2[VIO_Z] );
         convert_original_world_to_voxel( main, RESAMPLED_VOLUME_INDEX,
-                                         original_world_position2[X],
-                                         original_world_position2[Y],
-                                         original_world_position2[Z],
-                                         &position[X],
-                                         &position[Y],
-                                         &position[Z] );
+                                         original_world_position2[VIO_X],
+                                         original_world_position2[VIO_Y],
+                                         original_world_position2[VIO_Z],
+                                         &position[VIO_X],
+                                         &position[VIO_Y],
+                                         &position[VIO_Z] );
     }
 }
 
   void  convert_original_world_to_world(
     main_struct    *main,
     int            volume_index,
-    Real           x_original,
-    Real           y_original,
-    Real           z_original,
-    Real           *x_world,
-    Real           *y_world,
-    Real           *z_world )
+    VIO_Real           x_original,
+    VIO_Real           y_original,
+    VIO_Real           z_original,
+    VIO_Real           *x_world,
+    VIO_Real           *y_world,
+    VIO_Real           *z_world )
 {
     VIO_General_transform  *transform;
 
@@ -321,12 +321,12 @@ static  void  check_axes_assigned( void )
   void  convert_world_to_original_world(
     main_struct    *main,
     int            volume_index,
-    Real           x_world,
-    Real           y_world,
-    Real           z_world,
-    Real           *x_original,
-    Real           *y_original,
-    Real           *z_original )
+    VIO_Real           x_world,
+    VIO_Real           y_world,
+    VIO_Real           z_world,
+    VIO_Real           *x_original,
+    VIO_Real           *y_original,
+    VIO_Real           *z_original )
 {
     VIO_General_transform  *transform;
 
@@ -347,25 +347,25 @@ static  void  check_axes_assigned( void )
   void  set_volume_world_position(
     main_struct    *main,
     int            volume_index,
-    Real           world_position[VIO_N_DIMENSIONS] )
+    VIO_Real           world_position[VIO_N_DIMENSIONS] )
 {
-    Real           original_world[VIO_N_DIMENSIONS];
-    Real           voxel_position[VIO_N_DIMENSIONS];
+    VIO_Real           original_world[VIO_N_DIMENSIONS];
+    VIO_Real           voxel_position[VIO_N_DIMENSIONS];
 
     convert_world_to_original_world( main, volume_index,
-                                     world_position[X],
-                                     world_position[Y],
-                                     world_position[Z],
-                                     &original_world[X],
-                                     &original_world[Y],
-                                     &original_world[Z] );
+                                     world_position[VIO_X],
+                                     world_position[VIO_Y],
+                                     world_position[VIO_Z],
+                                     &original_world[VIO_X],
+                                     &original_world[VIO_Y],
+                                     &original_world[VIO_Z] );
     convert_original_world_to_voxel( main, volume_index,
-                                     original_world[X],
-                                     original_world[Y],
-                                     original_world[Z],
-                                     &voxel_position[X],
-                                     &voxel_position[Y],
-                                     &voxel_position[Z] );
+                                     original_world[VIO_X],
+                                     original_world[VIO_Y],
+                                     original_world[VIO_Z],
+                                     &voxel_position[VIO_X],
+                                     &voxel_position[VIO_Y],
+                                     &voxel_position[VIO_Z] );
 
     set_volume_voxel_position( main, volume_index, voxel_position );
 }
@@ -373,40 +373,40 @@ static  void  check_axes_assigned( void )
   void  get_volume_world_position(
     main_struct   *main,
     int           volume_index,
-    Real          world_position[VIO_N_DIMENSIONS] )
+    VIO_Real          world_position[VIO_N_DIMENSIONS] )
 {
-    Real           voxel_position[VIO_N_DIMENSIONS];
-    Real           original_world[VIO_N_DIMENSIONS];
+    VIO_Real           voxel_position[VIO_N_DIMENSIONS];
+    VIO_Real           original_world[VIO_N_DIMENSIONS];
 
     get_volume_voxel_position( main, volume_index, voxel_position );
 
     convert_voxel_to_original_world( main, volume_index,
-                                     voxel_position[X],
-                                     voxel_position[Y],
-                                     voxel_position[Z],
-                                     &original_world[X],
-                                     &original_world[Y],
-                                     &original_world[Z] );
+                                     voxel_position[VIO_X],
+                                     voxel_position[VIO_Y],
+                                     voxel_position[VIO_Z],
+                                     &original_world[VIO_X],
+                                     &original_world[VIO_Y],
+                                     &original_world[VIO_Z] );
     convert_original_world_to_world( main, volume_index,
-                                     original_world[X],
-                                     original_world[Y],
-                                     original_world[Z],
-                                     &world_position[X],
-                                     &world_position[Y],
-                                     &world_position[Z] );
+                                     original_world[VIO_X],
+                                     original_world[VIO_Y],
+                                     original_world[VIO_Z],
+                                     &world_position[VIO_X],
+                                     &world_position[VIO_Y],
+                                     &world_position[VIO_Z] );
 }
 
   void  convert_original_world_to_voxel(
     main_struct    *main,
     int            volume_index,
-    Real           x_original,
-    Real           y_original,
-    Real           z_original,
-    Real           *x_voxel,
-    Real           *y_voxel,
-    Real           *z_voxel )
+    VIO_Real           x_original,
+    VIO_Real           y_original,
+    VIO_Real           z_original,
+    VIO_Real           *x_voxel,
+    VIO_Real           *y_voxel,
+    VIO_Real           *z_voxel )
 {
-    Real   x_world, y_world, z_world, voxel[VIO_MAX_DIMENSIONS];
+    VIO_Real   x_world, y_world, z_world, voxel[VIO_MAX_DIMENSIONS];
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
@@ -424,61 +424,61 @@ static  void  check_axes_assigned( void )
     convert_world_to_voxel( get_slice_volume(main,volume_index),
                             x_world, y_world, z_world, voxel );
 
-    *x_voxel = voxel[X];
-    *y_voxel = voxel[Y];
-    *z_voxel = voxel[Z];
+    *x_voxel = voxel[VIO_X];
+    *y_voxel = voxel[VIO_Y];
+    *z_voxel = voxel[VIO_Z];
 }
 
   void  convert_voxel_to_original_world(
     main_struct    *main,
     int            volume_index,
-    Real           x_voxel,
-    Real           y_voxel,
-    Real           z_voxel,
-    Real           *x_original,
-    Real           *y_original,
-    Real           *z_original )
+    VIO_Real           x_voxel,
+    VIO_Real           y_voxel,
+    VIO_Real           z_voxel,
+    VIO_Real           *x_original,
+    VIO_Real           *y_original,
+    VIO_Real           *z_original )
 {
-    Real   voxel[VIO_MAX_DIMENSIONS], world_position[VIO_N_DIMENSIONS];
+    VIO_Real   voxel[VIO_MAX_DIMENSIONS], world_position[VIO_N_DIMENSIONS];
 
-    voxel[X] = x_voxel;
-    voxel[Y] = y_voxel;
-    voxel[Z] = z_voxel;
+    voxel[VIO_X] = x_voxel;
+    voxel[VIO_Y] = y_voxel;
+    voxel[VIO_Z] = z_voxel;
 
     convert_voxel_to_world( get_slice_volume(main,volume_index),
                             voxel,
-                            &world_position[X],
-                            &world_position[Y],
-                            &world_position[Z] );
+                            &world_position[VIO_X],
+                            &world_position[VIO_Y],
+                            &world_position[VIO_Z] );
 
     if( volume_index == RESAMPLED_VOLUME_INDEX && main->resampled_file_loaded )
     {
         general_inverse_transform_point( &main->resampling_transform,
-                        world_position[X], world_position[Y], world_position[Z],
+                        world_position[VIO_X], world_position[VIO_Y], world_position[VIO_Z],
                         x_original, y_original, z_original );
     }
     else
     {
-        *x_original = world_position[X];
-        *y_original = world_position[Y];
-        *z_original = world_position[Z];
+        *x_original = world_position[VIO_X];
+        *y_original = world_position[VIO_Y];
+        *z_original = world_position[VIO_Z];
     }
 }
 
   void  set_volume_original_world_position(
     main_struct    *main,
     int            volume_index,
-    Real           original_world_position[VIO_N_DIMENSIONS] )
+    VIO_Real           original_world_position[VIO_N_DIMENSIONS] )
 {
-    Real           voxel_position[VIO_N_DIMENSIONS];
+    VIO_Real           voxel_position[VIO_N_DIMENSIONS];
 
     convert_original_world_to_voxel( main, volume_index,
-                                     original_world_position[X],
-                                     original_world_position[Y],
-                                     original_world_position[Z],
-                                     &voxel_position[X],
-                                     &voxel_position[Y],
-                                     &voxel_position[Z] );
+                                     original_world_position[VIO_X],
+                                     original_world_position[VIO_Y],
+                                     original_world_position[VIO_Z],
+                                     &voxel_position[VIO_X],
+                                     &voxel_position[VIO_Y],
+                                     &voxel_position[VIO_Z] );
 
     set_volume_voxel_position( main, volume_index, voxel_position );
 }
@@ -486,14 +486,14 @@ static  void  check_axes_assigned( void )
 
   void  get_volume_time_position(main_struct *main_ptr,
                                        int volume_index,
-                                       Real *tpos_ptr)
+                                       VIO_Real *tpos_ptr)
 {
     *tpos_ptr = main_ptr->trislice[volume_index].time_pos;
 }
 
   void  set_volume_time_position(main_struct *main_ptr,
                                        int volume_index,
-                                       Real tpos)
+                                       VIO_Real tpos)
 {
     int sizes[VIO_MAX_DIMENSIONS];
     VIO_Volume volume;
@@ -512,8 +512,8 @@ static  void  check_axes_assigned( void )
             tpos = 0;
         }
 
-        if (tpos >= (Real) sizes[3]) {
-            tpos = (Real) sizes[3] - 1.0;
+        if (tpos >= (VIO_Real) sizes[3]) {
+            tpos = (VIO_Real) sizes[3] - 1.0;
         }
 
         main_ptr->trislice[volume_index].time_pos = tpos;
@@ -526,19 +526,19 @@ static  void  check_axes_assigned( void )
   void  get_volume_original_world_position(
     main_struct   *main,
     int           volume_index,
-    Real          original_world_position[VIO_N_DIMENSIONS] )
+    VIO_Real          original_world_position[VIO_N_DIMENSIONS] )
 {
-    Real           voxel_position[VIO_N_DIMENSIONS];
+    VIO_Real           voxel_position[VIO_N_DIMENSIONS];
 
     get_volume_voxel_position( main, volume_index, voxel_position );
 
     convert_voxel_to_original_world( main, volume_index,
-                                     voxel_position[X],
-                                     voxel_position[Y],
-                                     voxel_position[Z],
-                                     &original_world_position[X],
-                                     &original_world_position[Y],
-                                     &original_world_position[Z] );
+                                     voxel_position[VIO_X],
+                                     voxel_position[VIO_Y],
+                                     voxel_position[VIO_Z],
+                                     &original_world_position[VIO_X],
+                                     &original_world_position[VIO_Y],
+                                     &original_world_position[VIO_Z] );
 }
 
   VIO_Volume  get_slice_volume(
@@ -557,7 +557,7 @@ static  void  check_axes_assigned( void )
     int           *min_value,
     int           *max_value )
 {
-    Real    real_min, real_max;
+    VIO_Real    real_min, real_max;
     VIO_Volume  volume;
 
     *min_value = 0;
@@ -579,14 +579,14 @@ static  void  check_axes_assigned( void )
   void  get_volume_value_range(
     main_struct   *main,
     int           volume_index,
-    Real          *min_value,
-    Real          *max_value )
+    VIO_Real          *min_value,
+    VIO_Real          *max_value )
 {
     get_volume_real_range( get_slice_volume(main,volume_index),
                            min_value, max_value );
 }
 
-  Real  *get_volume_cursor(
+  VIO_Real  *get_volume_cursor(
     main_struct   *main,
     int           volume_index )
 {
@@ -611,10 +611,10 @@ static  void  check_axes_assigned( void )
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          *x_trans,
-    Real          *y_trans,
-    Real          *x_scale,
-    Real          *y_scale )
+    VIO_Real          *x_trans,
+    VIO_Real          *y_trans,
+    VIO_Real          *x_scale,
+    VIO_Real          *y_scale )
 {
     slice_struct   *slice;
 
@@ -630,8 +630,8 @@ static  void  check_axes_assigned( void )
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          x_trans,
-    Real          y_trans )
+    VIO_Real          x_trans,
+    VIO_Real          y_trans )
 {
     slice_struct   *slice;
 
@@ -645,8 +645,8 @@ static  void  check_axes_assigned( void )
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          x_scale,
-    Real          y_scale )
+    VIO_Real          x_scale,
+    VIO_Real          y_scale )
 {
     slice_struct   *slice;
 
@@ -656,24 +656,24 @@ static  void  check_axes_assigned( void )
     slice->y_scale = y_scale;
 }
 
-  Real  get_voxel_value(
+  VIO_Real  get_voxel_value(
     main_struct   *main,
     int           volume_index,
-    Real          x_voxel,
-    Real          y_voxel,
-    Real          z_voxel )
+    VIO_Real          x_voxel,
+    VIO_Real          y_voxel,
+    VIO_Real          z_voxel )
 {
-    Real           value, position[VIO_MAX_DIMENSIONS];
+    VIO_Real           value, position[VIO_MAX_DIMENSIONS];
     VIO_Volume         volume;
-    Real           tpos;
+    VIO_Real           tpos;
 
     volume = get_slice_volume( main, volume_index );
 
     tpos = main->trislice[volume_index].time_pos;
 
-    position[X] = x_voxel;
-    position[Y] = y_voxel;
-    position[Z] = z_voxel;
+    position[VIO_X] = x_voxel;
+    position[VIO_Y] = y_voxel;
+    position[VIO_Z] = z_voxel;
     position[3] = tpos;
 
     if( voxel_is_within_volume( volume, position ) )
@@ -719,7 +719,7 @@ static  void  check_axes_assigned( void )
     main_struct   *main,
     int           volume_index,
     int           view,
-    Real          filter_width )
+    VIO_Real          filter_width )
 {
     slice_struct   *slice;
 
@@ -730,7 +730,7 @@ static  void  check_axes_assigned( void )
     set_recreate_slice_flag( main, volume_index, view );
 }
 
-  Real  get_slice_filter_width(
+  VIO_Real  get_slice_filter_width(
     main_struct   *main,
     int           volume_index,
     int           view )

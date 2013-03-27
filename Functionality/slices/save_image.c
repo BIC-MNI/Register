@@ -45,9 +45,9 @@ static  void  save_rgb_image(
     int           view_index )
 {
     int     axis, sizes[VIO_MAX_DIMENSIONS];
-    Real    *position, voxel[VIO_MAX_DIMENSIONS];
+    VIO_Real    *position, voxel[VIO_MAX_DIMENSIONS];
     VIO_Volume  volume;
-    Real    x_min_real, y_min_real, x_max_real, y_max_real;
+    VIO_Real    x_min_real, y_min_real, x_max_real, y_max_real;
     int     x_min, y_min, x_max, y_max;
     int     x_size, y_size;
     int     viewport_x_min, viewport_y_min, viewport_x_max, viewport_y_max;
@@ -60,9 +60,9 @@ static  void  save_rgb_image(
     position = get_volume_cursor( main_info, volume_index );
     axis = get_slice_axis( view_index );
 
-    voxel[X] = -0.5;
-    voxel[Y] = -0.5;
-    voxel[Z] = -0.5;
+    voxel[VIO_X] = -0.5;
+    voxel[VIO_Y] = -0.5;
+    voxel[VIO_Z] = -0.5;
     voxel[axis] = position[axis];
 
     convert_voxel_to_pixel( main_info, volume_index, view_index,
@@ -71,9 +71,9 @@ static  void  save_rgb_image(
     volume = get_slice_volume( main_info, volume_index );
     get_volume_sizes( volume, sizes );
 
-    voxel[X] = (Real) sizes[X]-0.5;
-    voxel[Y] = (Real) sizes[Y]-0.5;
-    voxel[Z] = (Real) sizes[Z]-0.5;
+    voxel[VIO_X] = (VIO_Real) sizes[VIO_X]-0.5;
+    voxel[VIO_Y] = (VIO_Real) sizes[VIO_Y]-0.5;
+    voxel[VIO_Z] = (VIO_Real) sizes[VIO_Z]-0.5;
     voxel[axis] = position[axis];
 
     convert_voxel_to_pixel( main_info, volume_index, view_index,

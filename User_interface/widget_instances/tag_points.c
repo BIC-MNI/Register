@@ -62,7 +62,7 @@ static  void   type_in_world_position_callback(
 static  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 0, X );
+                                     (int) callback_data, 0, VIO_X );
 }
 
 /* ARGSUSED */
@@ -70,7 +70,7 @@ static  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
 static  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 0, Y );
+                                     (int) callback_data, 0, VIO_Y );
 }
 
 /* ARGSUSED */
@@ -78,7 +78,7 @@ static  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
 static  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 0, Z );
+                                     (int) callback_data, 0, VIO_Z );
 }
 
 /* ARGSUSED */
@@ -86,7 +86,7 @@ static  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
 static  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 1, X );
+                                     (int) callback_data, 1, VIO_X );
 }
 
 /* ARGSUSED */
@@ -94,7 +94,7 @@ static  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
 static  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 1, Y );
+                                     (int) callback_data, 1, VIO_Y );
 }
 
 /* ARGSUSED */
@@ -102,7 +102,7 @@ static  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
 static  DEFINE_WIDGET_CALLBACK( world_z_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 1, Z );
+                                     (int) callback_data, 1, VIO_Z );
 }
 
 static  void  set_and_jump_to_tag(

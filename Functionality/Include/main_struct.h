@@ -36,14 +36,14 @@ typedef enum { BACKGROUND_COLOUR,
 
 typedef  struct
 {
-    Real            x_translation, y_translation;
-    Real            x_scale, y_scale;
+    VIO_Real            x_translation, y_translation;
+    VIO_Real            x_scale, y_scale;
     int             prev_viewport_x_size;
     int             prev_viewport_y_size;
     int             used_viewport_x_size;
     int             used_viewport_y_size;
     Filter_types    filter_type;
-    Real            filter_width;
+    VIO_Real            filter_width;
     VIO_BOOL         pixels_are_up_to_date;
     int             n_pixels_alloced;
     pixels_struct   *pixels;
@@ -53,21 +53,21 @@ typedef  struct
 typedef struct
 {
     VIO_BOOL                    input_flag;
-    Volume                     volume;
-    STRING                     filename;
+    VIO_Volume                     volume;
+    VIO_STR                     filename;
     slice_struct               slices[N_VIEWS];
-    Real                       position[N_DIMENSIONS];
+    VIO_Real                       position[VIO_N_DIMENSIONS];
     unsigned short             *cmode_colour_map;
     int                        cmode_colour_offset;
-    Colour                     *rgb_colour_map;
+    VIO_Colour                     *rgb_colour_map;
     int                        rgb_colour_offset;
     int                        start_colour_map;
     int                        n_colour_entries;
     colour_coding_struct       colour_coding;
 
     volume_input_struct        volume_input;
-    Volume                     volume_being_input;
-    Real                       time_pos; /* Time position for 4D volumes */
+    VIO_Volume                     volume_being_input;
+    VIO_Real                       time_pos; /* Time position for 4D volumes */
 }
 trislice_struct;
 
@@ -75,22 +75,22 @@ typedef  struct
 {
     VIO_BOOL                active_flag;
     slice_struct           slices[N_VIEWS];
-    Real                   position[N_DIMENSIONS];
+    VIO_Real                   position[VIO_N_DIMENSIONS];
     int                    start_colour_map;
     int                    n_colour_entries1;
     int                    n_colour_entries2;
     Merge_methods          merge_method;
-    Real                   opacity[N_MERGED];
+    VIO_Real                   opacity[N_MERGED];
     colour_coding_struct   colour_coding[N_MERGED];
 }
 merged_struct;
 
 typedef  struct
 {
-    Real                   rms_error;
+    VIO_Real                   rms_error;
     VIO_BOOL                position_exists[N_VOLUMES];
-    Point                  position[N_VOLUMES];
-    STRING                 name;
+    VIO_Point                  position[N_VOLUMES];
+    VIO_STR                 name;
     VIO_BOOL                activity;
     object_struct          *objects[N_VOLUMES_DISPLAYED][N_VIEWS];
 } tag_point_struct;
@@ -102,7 +102,7 @@ typedef  struct
     tag_point_struct       *tag_points;
     VIO_BOOL                transform_out_of_date;
     VIO_General_transform      v2_to_v1_transform;
-    Real                   avg_rms_error;
+    VIO_Real                   avg_rms_error;
     VIO_BOOL                transform_exists;
     VIO_BOOL                saved_flag;
     VIO_BOOL                tags_visible;
@@ -119,7 +119,7 @@ typedef  struct
     VIO_BOOL                  cursor_visibility;
 
     VIO_BOOL                  resampled_file_loaded;
-    STRING                   original_volume_filename;
+    VIO_STR                   original_volume_filename;
     VIO_General_transform        resampling_transform;
 
     int                      start_colour_index;

@@ -36,7 +36,7 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_inte
     
     make_windows_up_to_date();
 
-    if( IF_do_resampling( resampled_filename ) == OK )
+    if( IF_do_resampling( resampled_filename ) == VIO_OK )
     {
         (void) initialize_loading_volume( ui, RESAMPLED_VOLUME_INDEX,
                                           ui->resampled_filename, TRUE );

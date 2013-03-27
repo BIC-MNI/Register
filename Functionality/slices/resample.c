@@ -28,12 +28,12 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functiona
     VIO_STR             tmp_transform_filename;
     VIO_General_transform  *transform;
 
-    status = OK;
+    status = VIO_OK;
 
     if( !get_tag_point_transform( main, &transform ) )
     {
         print( "No transform present.\n" );
-        status = ERROR;
+        status = VIO_ERROR;
     }
 
     (void) tmpnam( tmp_name );
@@ -42,11 +42,11 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functiona
     concat_to_string( &tmp_transform_filename,
                       get_default_transform_file_suffix() );
 
-    if( status == OK )
+    if( status == VIO_OK )
         status = output_transform_file( tmp_transform_filename, NULL,
                                         transform );
 
-    if( status == OK )
+    if( status == VIO_OK )
     {
         (void) sprintf( command_str, "%s %s %s %s %s",
                         Resample_command_name,

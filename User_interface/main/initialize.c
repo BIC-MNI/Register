@@ -41,11 +41,11 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_inte
                               Initial_double_buffer_state,
                               FALSE, 2, &ui->graphics_window.window );
 
-    if( status != OK ||
+    if( status != VIO_OK ||
         !Initial_rgb_state &&
         G_get_n_colour_map_entries(ui->graphics_window.window) < 64 )
     {
-        if( status == OK )
+        if( status == VIO_OK )
              G_delete_window( ui->graphics_window.window );
         else
         {

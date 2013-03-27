@@ -96,7 +96,7 @@ static  void    initialize_global_colours( void );
 
     main_info.render_storage = initialize_render_storage();
 
-    return( OK );
+    return( VIO_OK );
 }
 
   void   terminate_register( void )

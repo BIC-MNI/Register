@@ -66,7 +66,7 @@ static  DEFINE_EVENT_FUNCTION( resize_window_callback )
 
     if( G_create_window( title, x_position, y_position,
                          x_size, y_size, FALSE, TRUE,
-                         FALSE, 0, &popup->graphics.window ) != OK )
+                         FALSE, 0, &popup->graphics.window ) != VIO_OK )
     {
         (void) fprintf( stderr, "Cannot create popup window\n" );
         return;

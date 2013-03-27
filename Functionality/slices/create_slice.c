@@ -26,10 +26,10 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functiona
     int              x_size, y_size;
     Pixel_types      pixel_type;
     Filter_types     filter_type;
-    Real             filter_width;
-    Real             x_translation, y_translation, x_scale, y_scale;
-    Real             origin[VIO_MAX_DIMENSIONS];
-    Real             x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
+    VIO_Real             filter_width;
+    VIO_Real             x_translation, y_translation, x_scale, y_scale;
+    VIO_Real             origin[VIO_MAX_DIMENSIONS];
+    VIO_Real             x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
     VIO_Volume           volume;
     unsigned short   *cmode_colour_map;
     VIO_Colour           *rgb_colour_map, **rgb_colour_map_ptr;
@@ -63,7 +63,7 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functiona
                          origin, x_axis, y_axis,
                          x_translation, y_translation, x_scale, y_scale,
                          (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
-                         (Real *) NULL, (Real *) NULL, (Real *) NULL,
+                         (VIO_Real *) NULL, (VIO_Real *) NULL, (VIO_Real *) NULL,
                          0.0, 0.0, 0.0, 0.0,
                          x_size, y_size, 0, -1, 0, -1, pixel_type,
                          main->degrees_continuity,
@@ -76,25 +76,25 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functiona
 
 static  void  convert_volume1_voxel_to_volume2(
     main_struct   *main,
-    Real          voxel1[],
-    Real          voxel2[] )
+    VIO_Real          voxel1[],
+    VIO_Real          voxel2[] )
 {
     VIO_Volume  volume1;
-    Real    world[VIO_N_DIMENSIONS], original_world2[VIO_N_DIMENSIONS];
+    VIO_Real    world[VIO_N_DIMENSIONS], original_world2[VIO_N_DIMENSIONS];
 
     volume1 = get_slice_volume( main, 0 );
 
-    convert_voxel_to_world( volume1, voxel1, &world[X], &world[Y], &world[Z] );
+    convert_voxel_to_world( volume1, voxel1, &world[VIO_X], &world[VIO_Y], &world[VIO_Z] );
 
     convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
-                                     world[X], world[Y], world[Z],
-                                     &original_world2[X], &original_world2[Y],
-                                     &original_world2[Z] );
+                                     world[VIO_X], world[VIO_Y], world[VIO_Z],
+                                     &original_world2[VIO_X], &original_world2[VIO_Y],
+                                     &original_world2[VIO_Z] );
 
     convert_original_world_to_voxel( main, RESAMPLED_VOLUME_INDEX,
-                                     original_world2[X], original_world2[Y],
-                                     original_world2[Z],
-                                     &voxel2[X], &voxel2[Y], &voxel2[Z] );
+                                     original_world2[VIO_X], original_world2[VIO_Y],
+                                     original_world2[VIO_Z],
+                                     &voxel2[VIO_X], &voxel2[VIO_Y], &voxel2[VIO_Z] );
 }
 
   void  create_merged_pixels(
@@ -104,26 +104,26 @@ static  void  convert_volume1_voxel_to_volume2(
     int              x_axis_index, y_axis_index;
     int              x_size, y_size, axis;
     int              c, sizes1[VIO_N_DIMENSIONS];
-    Real             separations2[VIO_N_DIMENSIONS], x_len, y_len;
+    VIO_Real             separations2[VIO_N_DIMENSIONS], x_len, y_len;
     Pixel_types      pixel_type;
     Filter_types     filter_type;
-    Real             filter_width;
-    Real             x_scale1, y_scale1, x_scale2, y_scale2;
-    Real             x_translation1, y_translation1;
-    Real             x_translation2, y_translation2;
+    VIO_Real             filter_width;
+    VIO_Real             x_scale1, y_scale1, x_scale2, y_scale2;
+    VIO_Real             x_translation1, y_translation1;
+    VIO_Real             x_translation2, y_translation2;
     VIO_Volume           volume1, volume2;
-    Real             *position1, voxel1[VIO_MAX_DIMENSIONS];
-    Real             x_lower_left_pixel, y_lower_left_pixel;
-    Real             x_upper_left_pixel, y_upper_left_pixel;
-    Real             x_lower_right_pixel, y_lower_right_pixel;
-    Real             dx_pixel, dy_pixel;
-    Real             lower_left_voxel2[VIO_MAX_DIMENSIONS];
-    Real             upper_left_voxel2[VIO_MAX_DIMENSIONS];
-    Real             lower_right_voxel2[VIO_MAX_DIMENSIONS];
-    Real             origin1[VIO_MAX_DIMENSIONS];
-    Real             x_axis1[VIO_MAX_DIMENSIONS], y_axis1[VIO_MAX_DIMENSIONS];
-    Real             origin2[VIO_MAX_DIMENSIONS];
-    Real             x_axis2[VIO_MAX_DIMENSIONS], y_axis2[VIO_MAX_DIMENSIONS];
+    VIO_Real             *position1, voxel1[VIO_MAX_DIMENSIONS];
+    VIO_Real             x_lower_left_pixel, y_lower_left_pixel;
+    VIO_Real             x_upper_left_pixel, y_upper_left_pixel;
+    VIO_Real             x_lower_right_pixel, y_lower_right_pixel;
+    VIO_Real             dx_pixel, dy_pixel;
+    VIO_Real             lower_left_voxel2[VIO_MAX_DIMENSIONS];
+    VIO_Real             upper_left_voxel2[VIO_MAX_DIMENSIONS];
+    VIO_Real             lower_right_voxel2[VIO_MAX_DIMENSIONS];
+    VIO_Real             origin1[VIO_MAX_DIMENSIONS];
+    VIO_Real             x_axis1[VIO_MAX_DIMENSIONS], y_axis1[VIO_MAX_DIMENSIONS];
+    VIO_Real             origin2[VIO_MAX_DIMENSIONS];
+    VIO_Real             x_axis2[VIO_MAX_DIMENSIONS], y_axis2[VIO_MAX_DIMENSIONS];
     VIO_Colour           *rgb_colour_map, **rgb_colour_map_ptr;
     pixels_struct    *merged_pixels, pixels1, pixels2;
 
@@ -137,21 +137,21 @@ static  void  convert_volume1_voxel_to_volume2(
     get_slice_axes( view, &x_axis_index, &y_axis_index );
     axis = get_slice_axis( view );
 
-    voxel1[X] = 0.0;
-    voxel1[Y] = 0.0;
-    voxel1[Z] = 0.0;
+    voxel1[VIO_X] = 0.0;
+    voxel1[VIO_Y] = 0.0;
+    voxel1[VIO_Z] = 0.0;
     voxel1[axis] = position1[axis];
     convert_volume1_voxel_to_volume2( main, voxel1, lower_left_voxel2 );
     convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                             &x_lower_left_pixel, &y_lower_left_pixel );
 
-    voxel1[x_axis_index] = (Real) sizes1[x_axis_index];
+    voxel1[x_axis_index] = (VIO_Real) sizes1[x_axis_index];
     convert_volume1_voxel_to_volume2( main, voxel1, lower_right_voxel2 );
     convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                             &x_lower_right_pixel, &y_lower_right_pixel );
     voxel1[x_axis_index] = 0.0;
 
-    voxel1[y_axis_index] = (Real) sizes1[y_axis_index];
+    voxel1[y_axis_index] = (VIO_Real) sizes1[y_axis_index];
     convert_volume1_voxel_to_volume2( main, voxel1, upper_left_voxel2 );
     convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                             &x_upper_left_pixel, &y_upper_left_pixel );
@@ -177,7 +177,7 @@ static  void  convert_volume1_voxel_to_volume2(
     y_len = 0.0;
     for_less( c, 0, get_volume_n_dimensions(volume2) )
     {
-        Real  comp;
+        VIO_Real  comp;
 
         comp = x_axis2[c] * separations2[c];
         x_len += comp * comp;
@@ -249,7 +249,7 @@ static  void  convert_volume1_voxel_to_volume2(
                          origin1, x_axis1, y_axis1,
                          x_translation1, y_translation1, x_scale1, y_scale1,
                          (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
-                         (Real *) NULL, (Real *) NULL, (Real *) NULL,
+                         (VIO_Real *) NULL, (VIO_Real *) NULL, (VIO_Real *) NULL,
                          0.0, 0.0, 0.0, 0.0,
                          x_size, y_size, 0, -1, 0, -1, pixel_type,
                          main->degrees_continuity,
@@ -279,7 +279,7 @@ static  void  convert_volume1_voxel_to_volume2(
                          origin2, x_axis2, y_axis2,
                          x_translation2, y_translation2, x_scale2, y_scale2,
                          (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
-                         (Real *) NULL, (Real *) NULL, (Real *) NULL,
+                         (VIO_Real *) NULL, (VIO_Real *) NULL, (VIO_Real *) NULL,
                          0.0, 0.0, 0.0, 0.0,
                          x_size, y_size, 0, -1, 0, -1, pixel_type,
                          main->degrees_continuity,
@@ -302,13 +302,13 @@ static  void  convert_volume1_voxel_to_volume2(
     int             view_index,
     int             x_pixel,
     int             y_pixel,
-    Real            voxel_position[VIO_N_DIMENSIONS] )
+    VIO_Real            voxel_position[VIO_N_DIMENSIONS] )
 {
     VIO_BOOL        in_volume;
-    Real           x_translation, y_translation, x_scale, y_scale;
+    VIO_Real           x_translation, y_translation, x_scale, y_scale;
     VIO_Volume         volume;
-    Real           origin[VIO_MAX_DIMENSIONS];
-    Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
+    VIO_Real           origin[VIO_MAX_DIMENSIONS];
+    VIO_Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
 
     volume = get_slice_volume( main, volume_index );
     get_slice_plane( main, volume_index, view_index, origin, x_axis, y_axis );
@@ -316,7 +316,7 @@ static  void  convert_volume1_voxel_to_volume2(
                          &x_translation, &y_translation, &x_scale, &y_scale );
 
     in_volume = convert_slice_pixel_to_voxel(
-                    volume, (Real) x_pixel, (Real) y_pixel,
+                    volume, (VIO_Real) x_pixel, (VIO_Real) y_pixel,
                     origin, x_axis, y_axis,
                     x_translation, y_translation, x_scale, y_scale,
                     voxel_position );
@@ -328,13 +328,13 @@ static  void  convert_volume1_voxel_to_volume2(
     main_struct     *main,
     int             volume_index,
     int             view_index,
-    Real            voxel_position[VIO_N_DIMENSIONS],
-    Real            *x_pixel,
-    Real            *y_pixel )
+    VIO_Real            voxel_position[VIO_N_DIMENSIONS],
+    VIO_Real            *x_pixel,
+    VIO_Real            *y_pixel )
 {
-    Real           origin[VIO_MAX_DIMENSIONS];
-    Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
-    Real           x_translation, y_translation, x_scale, y_scale;
+    VIO_Real           origin[VIO_MAX_DIMENSIONS];
+    VIO_Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
+    VIO_Real           x_translation, y_translation, x_scale, y_scale;
     VIO_Volume         volume;
 
     volume = get_slice_volume( main, volume_index );
@@ -374,13 +374,13 @@ static  void  record_slice_viewport(
     int          x_translation_offset,
     int          y_translation_offset )
 {
-    Real           x_translation, y_translation, x_scale, y_scale;
+    VIO_Real           x_translation, y_translation, x_scale, y_scale;
 
     get_slice_transform( main, volume, view, &x_translation, &y_translation,
                          &x_scale, &y_scale );
 
-    x_translation += (Real) x_translation_offset;
-    y_translation += (Real) y_translation_offset;
+    x_translation += (VIO_Real) x_translation_offset;
+    y_translation += (VIO_Real) y_translation_offset;
 
     set_slice_translation( main, volume, view, x_translation, y_translation );
 
@@ -393,9 +393,9 @@ static  void  record_slice_viewport(
     main_struct  *main,
     int          volume,
     int          view,
-    Real         scale_factor )
+    VIO_Real         scale_factor )
 {
-    Real  x_translation, y_translation, x_scale, y_scale;
+    VIO_Real  x_translation, y_translation, x_scale, y_scale;
     int   x_size, y_size;
 
     get_slice_viewport_size( main, volume, view, &x_size, &y_size );
@@ -421,7 +421,7 @@ static  void  record_slice_viewport(
 {
     int            used_x_viewport_size, used_y_viewport_size;
     int            x_viewport_size, y_viewport_size;
-    Real           x_scale, y_scale, x_trans, y_trans;
+    VIO_Real           x_scale, y_scale, x_trans, y_trans;
     slice_struct   *slice;
 
     slice = get_slice_struct( main, volume_index, view );
@@ -458,9 +458,9 @@ static  void  record_slice_viewport(
     int            x_viewport_size, y_viewport_size;
     int            used_x_viewport_size, used_y_viewport_size;
     VIO_Volume         volume;
-    Real           x_trans, y_trans, x_scale, y_scale;
-    Real           origin[VIO_MAX_DIMENSIONS];
-    Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
+    VIO_Real           x_trans, y_trans, x_scale, y_scale;
+    VIO_Real           origin[VIO_MAX_DIMENSIONS];
+    VIO_Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
 
     volume = get_slice_volume( main, volume_index );
     get_slice_plane( main, volume_index, view, origin, x_axis, y_axis );

@@ -101,7 +101,7 @@ static  VIO_STR  create_comments(
         ALLOC( tag_is_valid, tags->n_tag_points );
 
     if( !main->trislice[0].input_flag && !main->trislice[1].input_flag )
-        return( ERROR );
+        return( VIO_ERROR );
 
     n_valid_tags = 0;
 
@@ -162,7 +162,7 @@ static  VIO_STR  create_comments(
     status = open_file_with_default_suffix( filename, TAG_FILE_SUFFIX,
                                             WRITE_FILE, ASCII_FORMAT, &file );
 
-    if( status == OK )
+    if( status == VIO_OK )
     {
         comments = create_comments( main );
 
@@ -188,7 +188,7 @@ static  VIO_STR  create_comments(
            VIO_FREE2D( tags_volume2 );
     }
 
-    if( status == OK )
+    if( status == VIO_OK )
         status = close_file( file );
 
     if( tags->n_tag_points > 0 )
@@ -217,15 +217,15 @@ static  VIO_STR  create_comments(
 
     status = file_status;
 
-    if( status == OK &&
+    if( status == VIO_OK &&
         input_tag_points( file, &n_volumes, &n_tag_points, &tags_volume1,
                           &tags_volume2, (VIO_Real **) NULL, (int **) NULL,
-                          (int **) NULL, &labels ) != OK )
+                          (int **) NULL, &labels ) != VIO_OK )
     {
-        status = ERROR;
+        status = VIO_ERROR;
     }
 
-    if( status == OK )
+    if( status == VIO_OK )
     {
         delete_tag_points( main );
         initialize_tag_points( main );
@@ -254,7 +254,7 @@ static  VIO_STR  create_comments(
                          (VIO_Real *) NULL, (int *) 0, (int *) 0, labels );
     }
 
-    if( file_status == OK )
+    if( file_status == VIO_OK )
         (void) close_file( file );
 
     update_all_tag_objects( main );
@@ -272,7 +272,7 @@ static  VIO_STR  create_comments(
     VIO_General_transform        *transform;
     VIO_STR                   comments;
 
-    status = OK;
+    status = VIO_OK;
 
     if( get_tag_point_transform( main, &transform ) )
     {

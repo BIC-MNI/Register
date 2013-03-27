@@ -142,15 +142,15 @@ static  VIO_BOOL  convert_tag_to_pixel(
     int               volume,
     int               view,
     tag_point_struct  *tag,
-    Real              *x,
-    Real              *y,
-    Real              *radius )
+    VIO_Real              *x,
+    VIO_Real              *y,
+    VIO_Real              *radius )
 {
     VIO_BOOL  visible;
     int      which_volume, axis;
-    Real     x_trans, y_trans, x_scale, y_scale;
-    Real     *cursor_ptr, separations[VIO_MAX_DIMENSIONS];
-    Real     diff, voxel_position[VIO_N_DIMENSIONS];
+    VIO_Real     x_trans, y_trans, x_scale, y_scale;
+    VIO_Real     *cursor_ptr, separations[VIO_MAX_DIMENSIONS];
+    VIO_Real     diff, voxel_position[VIO_N_DIMENSIONS];
 
     visible = FALSE;
 
@@ -162,12 +162,12 @@ static  VIO_BOOL  convert_tag_to_pixel(
     if( tag->position_exists[which_volume] )
     {
         convert_original_world_to_voxel( main, which_volume,
-                                 (Real) Point_x(tag->position[which_volume]),
-                                 (Real) Point_y(tag->position[which_volume]),
-                                 (Real) Point_z(tag->position[which_volume]),
-                                 &voxel_position[X],
-                                 &voxel_position[Y],
-                                 &voxel_position[Z] );
+                                 (VIO_Real) Point_x(tag->position[which_volume]),
+                                 (VIO_Real) Point_y(tag->position[which_volume]),
+                                 (VIO_Real) Point_z(tag->position[which_volume]),
+                                 &voxel_position[VIO_X],
+                                 &voxel_position[VIO_Y],
+                                 &voxel_position[VIO_Z] );
 
         get_volume_separations( get_slice_volume(main,which_volume),
                                 separations );
@@ -180,10 +180,10 @@ static  VIO_BOOL  convert_tag_to_pixel(
         diff = VIO_FABS( voxel_position[axis] - cursor_ptr[axis] ) *
                x_scale * VIO_FABS( separations[axis] );
 
-        if( diff < (Real) Tag_radius_pixels )
+        if( diff < (VIO_Real) Tag_radius_pixels )
         {
             convert_voxel_to_pixel( main, volume, view, voxel_position, x, y );
-            *radius = sqrt( (Real) Tag_radius_pixels * (Real) Tag_radius_pixels-
+            *radius = sqrt( (VIO_Real) Tag_radius_pixels * (VIO_Real) Tag_radius_pixels-
                             diff * diff );
             visible = TRUE;
         }
@@ -193,18 +193,18 @@ static  VIO_BOOL  convert_tag_to_pixel(
 }
 
 static  void  fill_in_circle_points(
-    Real    x,
-    Real    y,
-    Real    radius,
+    VIO_Real    x,
+    VIO_Real    y,
+    VIO_Real    radius,
     int     n_points,
     VIO_Point   points[] )
 {
     int    i;
-    Real   angle;
+    VIO_Real   angle;
 
     for_less( i, 0, n_points )
     {
-        angle = 2.0 * PI * (Real) i / (Real) n_points + PI / 4.0;
+        angle = 2.0 * M_PI * (VIO_Real) i / (VIO_Real) n_points + M_PI / 4.0;
 
         fill_Point( points[i], x + radius * cos( (double) angle ),
                                y + radius * sin( (double) angle ),
@@ -214,9 +214,9 @@ static  void  fill_in_circle_points(
 
 static  void  position_tag_circle(
     lines_struct   *lines,
-    Real           x,
-    Real           y,
-    Real           radius )
+    VIO_Real           x,
+    VIO_Real           y,
+    VIO_Real           radius )
 {
     fill_in_circle_points( x + 0.5, y + 0.5, radius,
                            lines->n_points / 2, lines->points );
@@ -231,8 +231,8 @@ static  void  position_tag_circle(
     int               view,
     tag_point_struct  *tag )
 {
-    Real            x, y;
-    Real            radius;
+    VIO_Real            x, y;
+    VIO_Real            radius;
     VIO_BOOL         visibility;
     lines_struct    *lines;
 

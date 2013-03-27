@@ -1,75 +1,75 @@
 #ifndef  DEF_User_interface_prototypes
 #define  DEF_User_interface_prototypes
 
-public  UI_struct  *get_ui_struct( void );
+  UI_struct  *get_ui_struct( void );
 
-public  Status   initialize_user_interface(
+  VIO_Status   initialize_user_interface(
     UI_struct  *ui,
-    STRING     executable_name );
+    VIO_STR     executable_name );
 
-public  void   terminate_user_interface(
+  void   terminate_user_interface(
     UI_struct  *ui );
 
-public  void  popup_colour_selection(
+  void  popup_colour_selection(
     UI_struct   *ui,
     int         volume,
     int         over_or_under );
 
-public  void  popup_delete_tags(
+  void  popup_delete_tags(
     UI_struct   *ui );
 
-public  void  save_current_viewport(
+  void  save_current_viewport(
     UI_struct        *ui,
     Viewport_types   viewport );
 
-public  DEFINE_EVENT_FUNCTION( slice_key_down_callback );
+  DEFINE_EVENT_FUNCTION( slice_key_down_callback );
 
-public  void  install_slice_events(
+  void  install_slice_events(
     event_viewports_struct   *event_table,
     int                     volume );
 
-public  void  remove_slice_events(
+  void  remove_slice_events(
     event_viewports_struct   *event_table,
     int                     volume );
 
-public  void  install_tag_events(
+  void  install_tag_events(
     UI_struct                *ui );
 
-public  void  start_interaction(
+  void  start_interaction(
     UI_struct              *ui_info,
     Viewport_types         event_viewport_index,
     Event_types            terminate_event,
     event_function_type    terminate_callback,
     event_function_type    no_event_callback );
 
-public  void  terminate_interaction(
+  void  terminate_interaction(
     Event_types            terminate_event,
     event_function_type    terminate_callback,
     event_function_type    no_event_callback );
 
-public  void  restore_mouse_position(
+  void  restore_mouse_position(
     UI_struct   *ui );
 
-public  void  get_viewport_mouse_position(
+  void  get_viewport_mouse_position(
     graphics_window_struct    *graphics_window,
     Viewport_types            event_viewport_index,
     int                       *x_mouse,
     int                       *y_mouse );
 
-public  void  install_window_events(
+  void  install_window_events(
     UI_struct  *ui );
 
-public  void  initialize_event_table( event_callback_list_struct  table[] );
+  void  initialize_event_table( event_callback_list_struct  table[] );
 
-public  void  delete_event_table( event_callback_list_struct  table[] );
+  void  delete_event_table( event_callback_list_struct  table[] );
 
-public  void  set_event_callback_enabled(
+  void  set_event_callback_enabled(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data,
     VIO_BOOL                      enabled );
 
-public  void  add_event_callback_function(
+  void  add_event_callback_function(
     event_callback_list_struct   *callback_list,
     int                          x_min,
     int                          x_max,
@@ -79,7 +79,7 @@ public  void  add_event_callback_function(
     Event_modifiers              modifier,
     void                         *callback_data );
 
-public  void  set_event_callback_viewport(
+  void  set_event_callback_viewport(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data,
@@ -88,12 +88,12 @@ public  void  set_event_callback_viewport(
     int                          y_min,
     int                          y_max );
 
-public  void  remove_event_callback_function(
+  void  remove_event_callback_function(
     event_callback_list_struct   *callback_list,
     event_function_type          callback_function,
     void                         *callback_data );
 
-public  VIO_BOOL  execute_event_callback_functions(
+  VIO_BOOL  execute_event_callback_functions(
     VIO_BOOL                      shift_state,
     event_callback_list_struct   *callback_list,
     int                          mouse_x,
@@ -101,22 +101,22 @@ public  VIO_BOOL  execute_event_callback_functions(
     Viewport_types               event_viewport_index,
     int                          key_pressed );
 
-public  void  set_quit_program_flag( void );
+  void  set_quit_program_flag( void );
 
-public  void  event_loop( void );
+  void  event_loop( void );
 
-public  void   handle_event(
+  void   handle_event(
     Event_types       event_type,
     Gwindow           event_window,
     int               key_pressed );
 
-public  void  initialize_event_viewports(
+  void  initialize_event_viewports(
     event_viewports_struct  *event_viewports );
 
-public  void  delete_event_viewports(
+  void  delete_event_viewports(
     event_viewports_struct  *event_viewports );
 
-public  void  set_event_viewport(
+  void  set_event_viewport(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     int                     x_min,
@@ -124,7 +124,7 @@ public  void  set_event_viewport(
     int                     y_min,
     int                     y_max );
 
-public  void  get_event_viewport(
+  void  get_event_viewport(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     int                     *x_min,
@@ -132,7 +132,7 @@ public  void  get_event_viewport(
     int                     *y_min,
     int                     *y_max );
 
-public  void  set_event_viewport_callback_enabled(
+  void  set_event_viewport_callback_enabled(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
@@ -140,7 +140,7 @@ public  void  set_event_viewport_callback_enabled(
     void                    *callback_data,
     VIO_BOOL                 enabled );
 
-public  void  set_event_viewport_callback_viewport(
+  void  set_event_viewport_callback_viewport(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
@@ -151,7 +151,7 @@ public  void  set_event_viewport_callback_viewport(
     int                     y_min,
     int                     y_max );
 
-public  void  add_event_viewport_callback(
+  void  add_event_viewport_callback(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
@@ -163,14 +163,14 @@ public  void  add_event_viewport_callback(
     Event_modifiers         modifier,
     void                    *callback_data );
 
-public  void  remove_event_viewport_callback(
+  void  remove_event_viewport_callback(
     event_viewports_struct  *event_viewports,
     Viewport_types          event_viewport_index,
     Event_types             event_type,
     event_function_type     callback_function,
     void                    *callback_data );
 
-public  void  execute_event_viewport_events(
+  void  execute_event_viewport_events(
     VIO_BOOL                 shift_state,
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
@@ -178,321 +178,321 @@ public  void  execute_event_viewport_events(
     Event_types             event_type,
     int                     key_pressed );
 
-public  VIO_BOOL  find_viewport_containing_mouse(
+  VIO_BOOL  find_viewport_containing_mouse(
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
     int                     y_mouse,
     Viewport_types          *viewport_index );
 
-public  VIO_BOOL  event_is_allowable(
+  VIO_BOOL  event_is_allowable(
     Event_types     event_type );
 
-public  void  set_interaction_in_progress(
+  void  set_interaction_in_progress(
     VIO_BOOL  state );
 
-public  VIO_BOOL  mouse_must_be_in_window(
+  VIO_BOOL  mouse_must_be_in_window(
     Event_types     event_type );
 
-public  void  add_global_event_callback(
+  void  add_global_event_callback(
     Event_types               event_type,
     event_function_type       callback,
     Event_modifiers           modifier,
     void                      *callback_data );
 
-public  void  remove_global_event_callback(
+  void  remove_global_event_callback(
     Event_types               event_type,
     event_function_type       callback,
     void                      *callback_data );
 
-public  VIO_BOOL  execute_global_event_callbacks(
+  VIO_BOOL  execute_global_event_callbacks(
     VIO_BOOL                 shift_state,
     Event_types             event_type,
     int                     key_pressed );
 
-public  void  initialize_global_events( void );
+  void  initialize_global_events( void );
 
-public  void  delete_global_events( void );
+  void  delete_global_events( void );
 
-public  void  set_window_event_callbacks(
+  void  set_window_event_callbacks(
     graphics_window_struct    *window );
 
-public  void  popup_filter_selection(
+  void  popup_filter_selection(
     UI_struct   *ui,
     int         volume );
 
-public  Status  initialize_loading_volume(
+  VIO_Status  initialize_loading_volume(
     UI_struct  *ui_info,
     int        volume,
-    STRING     filename,
+    VIO_STR     filename,
     VIO_BOOL    this_is_resampled_volume );
 
-public  void  cancel_loading(
+  void  cancel_loading(
     load_struct    *data );
 
-public  void  initialize_load_popup(
+  void  initialize_load_popup(
     load_struct   *load_data,
     int           x_position,
     int           y_position,
-    STRING        filename );
+    VIO_STR        filename );
 
-public  void  delete_load_popup(
+  void  delete_load_popup(
     load_struct   *load_data );
 
-public  void  set_load_popup_meter(
+  void  set_load_popup_meter(
     load_struct   *load_data,
-    Real          fraction_done );
+    VIO_Real          fraction_done );
 
-public  void  initialize_ui_colours( void );
+  void  initialize_ui_colours( void );
 
-public  void  set_start_colour_table(
+  void  set_start_colour_table(
     UI_struct  *ui );
 
-public  int  get_ui_colour_index(
+  int  get_ui_colour_index(
     UI_colours  colour_name );
 
-public  Colour  get_ui_rgb_colour(
+  VIO_Colour  get_ui_rgb_colour(
     UI_colours  colour_name );
 
-public  Colour  get_ui_colour(
+  VIO_Colour  get_ui_colour(
     VIO_BOOL        colour_map_state,
     UI_colours     colour_name );
 
-public  void  set_ui_colour(
+  void  set_ui_colour(
     UI_struct    *ui,
     UI_colours   colour_name,
-    Colour       colour );
+    VIO_Colour       colour );
 
-public  void  set_window_colours( window_struct *window );
+  void  set_window_colours( window_struct *window );
 
-public  void  colour_map_state_has_changed( UI_struct  *ui );
+  void  colour_map_state_has_changed( UI_struct  *ui );
 
-public  void  initialize_layout( UI_struct  *ui_info );
+  void  initialize_layout( UI_struct  *ui_info );
 
-public  void  resize_layout( UI_struct  *ui_info );
+  void  resize_layout( UI_struct  *ui_info );
 
-public  VIO_BOOL  is_slice_viewport(
+  VIO_BOOL  is_slice_viewport(
     Viewport_types   viewport );
 
-public  void  ui_get_volume_view_index(
+  void  ui_get_volume_view_index(
     Viewport_types   view_index,
     int              *volume,
     int              *view );
 
-public  Viewport_types  ui_get_slice_viewport_index(
+  Viewport_types  ui_get_slice_viewport_index(
     int   volume,
     int   view );
 
-public  void  initialize_print_popup( void );
+  void  initialize_print_popup( void );
 
-public  void  disable_print_popup( void );
+  void  disable_print_popup( void );
 
-public  void  popup_quit_confirm(
+  void  popup_quit_confirm(
     UI_struct   *ui );
 
-public  void  do_resampling(
+  void  do_resampling(
     UI_struct           *ui,
     VIO_General_transform   *resampling_transform,
-    STRING              resampled_filename );
+    VIO_STR              resampled_filename );
 
-public  void  update_position_counters(
+  void  update_position_counters(
     UI_struct  *ui_info,
     int        volume_index );
 
-public  void  update_other_volume_positions(
+  void  update_other_volume_positions(
     UI_struct   *ui_info,
     int         volume_index );
 
-public  void  ui_set_volume_time_position(
+  void  ui_set_volume_time_position(
     UI_struct  *ui_info,
     int        volume_index,
-    Real       tpos);
+    VIO_Real       tpos);
 
-public  void  ui_set_volume_voxel_position(
+  void  ui_set_volume_voxel_position(
     UI_struct  *ui_info,
     int        volume_index,
-    Real       position[N_DIMENSIONS] );
+    VIO_Real       position[VIO_N_DIMENSIONS] );
 
-public  void  ui_set_volume_original_world_position(
+  void  ui_set_volume_original_world_position(
     UI_struct  *ui_info,
     int        volume_index,
-    Real       position[N_DIMENSIONS] );
+    VIO_Real       position[VIO_N_DIMENSIONS] );
 
-public  Viewport_types  get_volume_menu_viewport_index(
+  Viewport_types  get_volume_menu_viewport_index(
     int   volume_index );
 
-public  int  get_viewport_volume_index(
+  int  get_viewport_volume_index(
     Viewport_types   viewport_index );
 
-public  void  set_merged_activity(
+  void  set_merged_activity(
     UI_struct  *ui_info,
     VIO_BOOL    activity );
 
-public  VIO_BOOL   get_voxel_under_mouse(
+  VIO_BOOL   get_voxel_under_mouse(
     UI_struct        *ui_info,
     Viewport_types   event_viewport_index,
     int              *volume,
-    Real             voxel_position[N_DIMENSIONS] );
+    VIO_Real             voxel_position[VIO_N_DIMENSIONS] );
 
-public  void  popup_transform_dialog(
+  void  popup_transform_dialog(
     UI_struct   *ui );
 
-public  void  update_volume_readout(
+  void  update_volume_readout(
     UI_struct  *ui,
     int        volume_index );
 
-public  void  install_readout_update_event(
+  void  install_readout_update_event(
     UI_struct   *ui );
 
-public  int  add_colour_bar_widgets(
+  int  add_colour_bar_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               x,
     int               y,
     int               *height );
 
-public  void  set_colour_bar_widgets_activity(
+  void  set_colour_bar_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
     VIO_BOOL           activity );
 
-public  void  set_over_under_colour_activity(
+  void  set_over_under_colour_activity(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
     VIO_BOOL           activity );
 
-public  void  set_over_under_colour(
+  void  set_over_under_colour(
     UI_struct         *ui_info,
     int               volume_index,
     int               over_or_under,
-    Colour            colour );
+    VIO_Colour            colour );
 
-public  void  set_colour_bar_limits(
+  void  set_colour_bar_limits(
     UI_struct         *ui_info,
     int               volume_index,
-    Real              min_value,
-    Real              max_value );
+    VIO_Real              min_value,
+    VIO_Real              max_value );
 
-public  void  set_colour_bar_values(
+  void  set_colour_bar_values(
     UI_struct         *ui_info,
     int               volume_index,
-    Real              min_value,
-    Real              max_value );
+    VIO_Real              min_value,
+    VIO_Real              max_value );
 
-public  void  initialize_UI_widgets( UI_struct  *ui_info );
+  void  initialize_UI_widgets( UI_struct  *ui_info );
 
-public  void  delete_UI_widgets( UI_struct  *ui_info );
+  void  delete_UI_widgets( UI_struct  *ui_info );
 
-public  void  update_all_widget_colours( UI_struct *ui_info );
+  void  update_all_widget_colours( UI_struct *ui_info );
 
-public  void  load_tags_file(
+  void  load_tags_file(
     UI_struct  *ui,
-    STRING     filename );
+    VIO_STR     filename );
 
-public  void  record_tag(
+  void  record_tag(
     UI_struct  *ui,
     int        tag_index );
 
-public  void  add_main_widgets(
+  void  add_main_widgets(
     UI_struct         *ui_info );
 
-public  void  position_main_widgets(
+  void  position_main_widgets(
     UI_struct         *ui_info );
 
-public  void  set_transform_buttons_activity(
+  void  set_transform_buttons_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity );
 
-public  void  set_quit_button_activity(
+  void  set_quit_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity );
 
-public  void  set_resample_button_activity(
+  void  set_resample_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity );
 
-public  void  set_delete_tags_button_activity(
+  void  set_delete_tags_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity );
 
-public  void  set_transform_type_button_activity(
+  void  set_transform_type_button_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity );
 
-public  void  update_avg_rms_error(
+  void  update_avg_rms_error(
     UI_struct         *ui_info );
 
-public  void  update_colour_map_toggle_activity(
+  void  update_colour_map_toggle_activity(
     UI_struct         *ui_info );
 
-public  void  add_merged_widgets(
+  void  add_merged_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index );
 
-public  void  set_merged_widgets_activity(
+  void  set_merged_widgets_activity(
     UI_struct         *ui_info,
     VIO_BOOL           activity );
 
-public  widget_struct  *get_merged_readout_widget(
+  widget_struct  *get_merged_readout_widget(
     UI_struct     *ui_info,
     int           volume );
 
-public  void  initialize_meter(
+  void  initialize_meter(
     popup_struct     *popup,
     int              x_size,
     int              y_size,
-    Colour           background_colour,
-    Colour           colour,
+    VIO_Colour           background_colour,
+    VIO_Colour           colour,
     polygons_struct  **meter_background,
     polygons_struct  **meter );
 
-public  void  set_meter_position(
+  void  set_meter_position(
     popup_struct      *popup,
     polygons_struct   *meter_background,
     polygons_struct   *meter,
-    Real              fraction_done );
+    VIO_Real              fraction_done );
 
-public  int  add_cursor_position_widgets(
+  int  add_cursor_position_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               *height );
 
-public  void  set_voxel_position_widgets_activity(
+  void  set_voxel_position_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
     VIO_BOOL           activity );
 
-public  void  set_volume_voxel_text(
+  void  set_volume_voxel_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
-    Real              value );
+    VIO_Real              value );
 
-public  void  set_volume_world_text(
+  void  set_volume_world_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               view_index,
-    Real              value );
+    VIO_Real              value );
 
-public  void  set_volume_time_text(
+  void  set_volume_time_text(
     UI_struct         *ui_info,
     int               volume_index,
-    Real              value );
+    VIO_Real              value );
 
-public  void  previous_current_tag_point( UI_struct *ui );
+  void  previous_current_tag_point( UI_struct *ui );
 
-public  void  advance_current_tag_point( UI_struct  *ui );
+  void  advance_current_tag_point( UI_struct  *ui );
 
-public  void  set_tag_world_text(
+  void  set_tag_world_text(
     UI_struct         *ui_info,
     int               volume_index,
     int               tag_index,
     int               axis_index,
-    Real              value );
+    VIO_Real              value );
 
-public  void  add_tag_point_widgets(
+  void  add_tag_point_widgets(
     UI_struct         *ui_info,
     int               n_tag_points,
     Viewport_types    rms_viewport_index,
@@ -500,235 +500,235 @@ public  void  add_tag_point_widgets(
     Viewport_types    volume2_viewport_index,
     Viewport_types    names_viewport_index );
 
-public  void  delete_tag_point_widgets_indices( void );
+  void  delete_tag_point_widgets_indices( void );
 
-public  void  update_tag_widgets(
+  void  update_tag_widgets(
     UI_struct         *ui_info,
     int               tag );
 
-public  void  update_all_tag_widgets(
+  void  update_all_tag_widgets(
     UI_struct         *ui_info );
 
-public  void  set_current_tag_index(
+  void  set_current_tag_index(
     UI_struct      *ui_info,
     int            tag_index );
 
-public  int  get_current_tag(
+  int  get_current_tag(
     UI_struct      *ui_info );
 
-public  int  get_current_tag_index(
+  int  get_current_tag_index(
     UI_struct      *ui_info );
 
-public  void  delete_current_tag_point(
+  void  delete_current_tag_point(
     UI_struct  *ui );
 
-public  void  delete_all_tag_points(
+  void  delete_all_tag_points(
     UI_struct  *ui );
 
-public  DEFINE_WIDGET_CALLBACK( reset_view_callback );
+  DEFINE_WIDGET_CALLBACK( reset_view_callback );
 
-public  DEFINE_WIDGET_CALLBACK( popup_filter_callback );
+  DEFINE_WIDGET_CALLBACK( popup_filter_callback );
 
-public  void  add_volume_widgets(
+  void  add_volume_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index );
 
-public  void  set_load_activity(
+  void  set_load_activity(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           state );
 
-public  void  set_load_filename(
+  void  set_load_filename(
     UI_struct         *ui_info,
     int               volume_index,
-    STRING            filename );
+    VIO_STR            filename );
 
-public  void  set_volume_widgets_activity(
+  void  set_volume_widgets_activity(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           activity,
     VIO_BOOL           is_rgb_volume );
 
-public  int  get_colour_bar_start_index( void );
+  int  get_colour_bar_start_index( void );
 
-public  void  set_resampled_label_activity(
+  void  set_resampled_label_activity(
     UI_struct         *ui_info,
     VIO_BOOL           state );
 
-public  widget_struct  *get_volume_readout_widget(
+  widget_struct  *get_volume_readout_widget(
     UI_struct     *ui_info,
     int           volume );
 
-public  void  set_filter_popup_activity(
+  void  set_filter_popup_activity(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           activity );
 
-public  void  define_radio_buttons(
+  void  define_radio_buttons(
     int            n_widgets,
     widget_struct  *widgets[] );
 
-public  void  update_button_activity(
+  void  update_button_activity(
     widget_struct           *widget );
 
-public  void  update_button_colours(
+  void  update_button_colours(
     widget_struct   *widget );
 
-public  void  set_button_active_colour(
+  void  set_button_active_colour(
     widget_struct   *widget,
-    Colour          col );
+    VIO_Colour          col );
 
-public  Colour  get_button_colour(
+  VIO_Colour  get_button_colour(
     widget_struct   *widget );
 
-public  void  position_button(
+  void  position_button(
     widget_struct                 *widget,
     int                           x,
     int                           y );
 
-public  void  set_toggle_button_state(
+  void  set_toggle_button_state(
     widget_struct    *widget,
     VIO_BOOL          state );
 
-public  void  set_button_text(
+  void  set_button_text(
     widget_struct    *widget,
-    STRING           text_string );
+    VIO_STR           text_string );
 
-public  void  delete_button(
+  void  delete_button(
     widget_struct  *widget );
 
-public  widget_struct *create_button(
+  widget_struct *create_button(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
     int                        y_size,
-    STRING                     label,
+    VIO_STR                     label,
     VIO_BOOL                    initial_activity,
     VIO_BOOL                    use_ui_colours,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       push_callback,
     void                       *callback_data );
 
-public  widget_struct  *create_toggle_button(
+  widget_struct  *create_toggle_button(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
     int                        y_size,
-    STRING                     off_text,
-    STRING                     on_text,
+    VIO_STR                     off_text,
+    VIO_STR                     on_text,
     VIO_BOOL                    initial_state,
     VIO_BOOL                    initial_activity,
     VIO_BOOL                    use_ui_colours,
-    Colour                     active_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       push_callback,
     void                       *callback_data );
 
-public  void  update_slider_colours(
+  void  update_slider_colours(
     widget_struct   *widget );
 
-public  void  get_slider_values(
+  void  get_slider_values(
     widget_struct           *widget,
-    Real                    *low_value,
-    Real                    *high_value );
+    VIO_Real                    *low_value,
+    VIO_Real                    *high_value );
 
-public  void  set_slider_values(
+  void  set_slider_values(
     widget_struct           *widget,
-    Real                    low_value,
-    Real                    high_value );
+    VIO_Real                    low_value,
+    VIO_Real                    high_value );
 
-public  void  set_slider_limits(
+  void  set_slider_limits(
     widget_struct  *widget,
-    Real           min_value,
-    Real           max_value );
+    VIO_Real           min_value,
+    VIO_Real           max_value );
 
-public  void  update_slider_activity(
+  void  update_slider_activity(
     widget_struct           *widget );
 
-public  void  position_slider(
+  void  position_slider(
     widget_struct                 *widget,
     int                           x,
     int                           y );
 
-public  void  delete_slider(
+  void  delete_slider(
     widget_struct  *widget );
 
-public  widget_struct  *create_slider(
+  widget_struct  *create_slider(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
     int                        y_size,
-    Real                       initial_value,
-    Real                       min_value,
-    Real                       max_value,
-    STRING                     format_string,
+    VIO_Real                       initial_value,
+    VIO_Real                       min_value,
+    VIO_Real                       max_value,
+    VIO_STR                     format_string,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     inactive_colour,
-    Colour                     peg_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     peg_colour,
     widget_callback_type       value_changed_callback,
     void                       *value_changed_data );
 
-public  widget_struct  *create_colour_bar_slider(
+  widget_struct  *create_colour_bar_slider(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
     int                        y_size,
-    Real                       initial_low_value,
-    Real                       initial_high_value,
-    Real                       min_value,
-    Real                       max_value,
-    STRING                     format_string,
+    VIO_Real                       initial_low_value,
+    VIO_Real                       initial_high_value,
+    VIO_Real                       min_value,
+    VIO_Real                       max_value,
+    VIO_STR                     format_string,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     inactive_colour,
-    Colour                     peg_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     peg_colour,
     widget_callback_type       lower_value_changed_callback,
     void                       *lower_value_callback_data,
     widget_callback_type       upper_value_changed_callback,
     void                       *upper_value_callback_data );
 
-public  void  position_text_entry(
+  void  position_text_entry(
     widget_struct                 *widget,
     int                           x,
     int                           y );
 
-public  STRING  get_text_entry_string(
+  VIO_STR  get_text_entry_string(
     widget_struct  *widget );
 
-public  void  set_text_entry_string(
+  void  set_text_entry_string(
     widget_struct  *widget,
-    STRING         string );
+    VIO_STR         string );
 
-public  void  restore_text_entry_string(
+  void  restore_text_entry_string(
     widget_struct  *widget );
 
-public  void  update_text_entry_colours(
+  void  update_text_entry_colours(
     widget_struct  *widget );
 
-public  void  update_text_entry_activity(
+  void  update_text_entry_activity(
     widget_struct           *widget );
 
-public  void  delete_text_entry(
+  void  delete_text_entry(
     widget_struct  *widget );
 
-public  widget_struct  *create_text_entry(
+  widget_struct  *create_text_entry(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
@@ -736,96 +736,96 @@ public  widget_struct  *create_text_entry(
     int                        x_size,
     int                        y_size,
     VIO_BOOL                    clear_text_when_selected,
-    STRING                     initial_text,
+    VIO_STR                     initial_text,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
-    Colour                     edit_colour,
-    Colour                     text_edit_colour,
-    Colour                     cursor_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
+    VIO_Colour                     edit_colour,
+    VIO_Colour                     text_edit_colour,
+    VIO_Colour                     cursor_colour,
     Font_types                 text_font,
-    Real                       font_size,
+    VIO_Real                       font_size,
     widget_callback_type       hit_return_callback,
     void                       *callback_data );
 
-public  widget_struct  *create_label(
+  widget_struct  *create_label(
     graphics_window_struct     *graphics,
     Viewport_types             viewport_index,
     int                        x,
     int                        y,
     int                        x_size,
     int                        y_size,
-    STRING                     initial_text,
+    VIO_STR                     initial_text,
     VIO_BOOL                    initial_activity,
-    Colour                     active_colour,
-    Colour                     selected_colour,
-    Colour                     inactive_colour,
-    Colour                     text_colour,
+    VIO_Colour                     active_colour,
+    VIO_Colour                     selected_colour,
+    VIO_Colour                     inactive_colour,
+    VIO_Colour                     text_colour,
     Font_types                 text_font,
-    Real                       font_size );
+    VIO_Real                       font_size );
 
-public  object_struct  *create_rectangle(
-    Colour       colour );
+  object_struct  *create_rectangle(
+    VIO_Colour       colour );
 
-public  void  position_rectangle(
+  void  position_rectangle(
     polygons_struct    *polygons,
     int                x,
     int                y,
     int                x_size,
     int                y_size );
 
-public  object_struct  *create_text(
-    Colour           colour,
+  object_struct  *create_text(
+    VIO_Colour           colour,
     Font_types       text_font,
-    Real             font_size );
+    VIO_Real             font_size );
 
-public  void  position_text(
+  void  position_text(
     text_struct   *text,
     int           x,
     int           y,
     int           y_size );
 
-public  void  position_text_centred(
+  void  position_text_centred(
     text_struct    *text,
     int            x,
     int            y,
     int            x_size,
     int            y_size );
 
-public  VIO_BOOL  get_toggle_button_state(
+  VIO_BOOL  get_toggle_button_state(
     widget_struct  *widget );
 
-public  VIO_BOOL  get_text_entry_real_value(
+  VIO_BOOL  get_text_entry_real_value(
     widget_struct  *widget,
-    Real           *value );
+    VIO_Real           *value );
 
-public  void  set_text_entry_real_value(
+  void  set_text_entry_real_value(
     widget_struct     *widget,
-    STRING            format,
-    Real              value );
+    VIO_STR            format,
+    VIO_Real              value );
 
-public  void  set_button_int_value(
+  void  set_button_int_value(
     widget_struct     *widget,
-    STRING            format,
+    VIO_STR            format,
     int               value );
 
-public  void  initialize_widget_list(
+  void  initialize_widget_list(
     widgets_struct   *widget_list );
 
-public  void  delete_widget_list(
+  void  delete_widget_list(
     widgets_struct   *widget_list );
 
-public  int  add_widget_to_list(
+  int  add_widget_to_list(
     widgets_struct   *widget_list,
     widget_struct    *widget );
 
-public  void  delete_nth_widget_from_list(
+  void  delete_nth_widget_from_list(
     widgets_struct   *widget_list,
     int              index );
 
-public  widget_struct  *create_widget(
+  widget_struct  *create_widget(
     Widget_types            type,
     int                     x,
     int                     y,
@@ -836,60 +836,60 @@ public  widget_struct  *create_widget(
     graphics_window_struct  *graphics,
     Viewport_types          viewport_index );
 
-public  int  get_widget_height(
+  int  get_widget_height(
     widget_struct   *widget );
 
-public  void  position_widget(
+  void  position_widget(
     widget_struct           *widget,
     int                     x,
     int                     y );
 
-public  button_struct  *get_widget_button(
+  button_struct  *get_widget_button(
     widget_struct  *widget );
 
-public  text_entry_struct  *get_widget_text_entry(
+  text_entry_struct  *get_widget_text_entry(
     widget_struct  *widget );
 
-public  slider_struct  *get_widget_slider(
+  slider_struct  *get_widget_slider(
     widget_struct  *widget );
 
-public  void  set_widget_activity(
+  void  set_widget_activity(
     widget_struct  *widget,
     VIO_BOOL        activity );
 
-public  void  set_widget_selected(
+  void  set_widget_selected(
     widget_struct  *widget,
     VIO_BOOL        selected );
 
-public  void  update_widget_colours(
+  void  update_widget_colours(
     widget_struct  *widget );
 
-public  void  update_widget_list_colours(
+  void  update_widget_list_colours(
     widgets_struct      *widget_list );
 
-public  void  delete_widget(
+  void  delete_widget(
     widget_struct  *widget );
 
-public  void  record_graphics_window(
+  void  record_graphics_window(
     graphics_window_struct   *graphics_window );
 
-public  void  unrecord_graphics_window(
+  void  unrecord_graphics_window(
     graphics_window_struct   *graphics_window );
 
-public  VIO_BOOL   lookup_event_viewports(
+  VIO_BOOL   lookup_event_viewports(
     window_struct           *window,
     event_viewports_struct  **event_viewports );
 
-public  void  update_window(
+  void  update_window(
     graphics_window_struct   *window );
 
-public  void  make_windows_up_to_date( void );
+  void  make_windows_up_to_date( void );
 
-public  void  delete_all_graphics_windows( void );
+  void  delete_all_graphics_windows( void );
 
-public  void   create_popup_window(
+  void   create_popup_window(
     popup_struct          *popup,
-    STRING                title,
+    VIO_STR                title,
     int                   x_position,
     int                   y_position,
     int                   x_size,
@@ -897,18 +897,18 @@ public  void   create_popup_window(
     event_function_type   quit_popup_callback,
     void                  *quit_callback_data );
 
-public  void  delete_popup_window(
+  void  delete_popup_window(
     popup_struct   *popup );
 
-public  VIO_BOOL  make_window_up_to_date(
+  VIO_BOOL  make_window_up_to_date(
     window_struct    *window,
     graphics_struct  *graphics,
     int              current_buffer );
 
-public  void  set_clear_and_update_flags( UI_struct  *ui_struct );
+  void  set_clear_and_update_flags( UI_struct  *ui_struct );
 
-public  void  set_recreate_all_slice_flags( void );
+  void  set_recreate_all_slice_flags( void );
 
-public  void  xs_display(UI_struct *ui_info,
+  void  xs_display(UI_struct *ui_info,
                          Viewport_types viewport, int force);
 #endif

@@ -14,8 +14,8 @@ struct xs_window {
     int do_scale_yrange;
     object_struct *objects[XS_MAX_OBJECTS];
     int n_objects;
-    Real x_min_ui, x_max_ui;
-    Real x_min_abs, x_max_abs;
+    VIO_Real x_min_ui, x_max_ui;
+    VIO_Real x_min_abs, x_max_abs;
     int file_widget_id;
     int viewport_index; 
 };
@@ -65,19 +65,19 @@ static DEFINE_WIDGET_CALLBACK(xs_save_callback)
     widgets_struct *widgets_ptr;
     FILE *fp;
     int i;
-    Real x_min, x_max;
+    VIO_Real x_min, x_max;
     int x_start, x_end;
     void *main_ptr;
     VIO_Volume volume;
-    Real voxelpos[VIO_MAX_DIMENSIONS];
-    Real worldpos[VIO_MAX_DIMENSIONS];
+    VIO_Real voxelpos[VIO_MAX_DIMENSIONS];
+    VIO_Real worldpos[VIO_MAX_DIMENSIONS];
     int sizes[VIO_MAX_DIMENSIONS];
-    Real separations[VIO_MAX_DIMENSIONS];
-    Real starts[VIO_MAX_DIMENSIONS];
+    VIO_Real separations[VIO_MAX_DIMENSIONS];
+    VIO_Real starts[VIO_MAX_DIMENSIONS];
     int volume_index;
     int view_index;
-    Real vx, vy, vz;
-    Real t;
+    VIO_Real vx, vy, vz;
+    VIO_Real t;
 
     if (xswin == NULL) {
         return;
@@ -149,11 +149,11 @@ static DEFINE_WIDGET_CALLBACK(xs_save_callback)
 
     fprintf(fp, "# File %s\n", get_volume_filename(main_ptr, volume_index));
     fprintf(fp, "# Timecourse of voxel at X=%.2f,Y=%.2f,Z=%.2f\n", 
-            worldpos[X], worldpos[Y], worldpos[Z]);
+            worldpos[VIO_X], worldpos[VIO_Y], worldpos[VIO_Z]);
 
     t = x_min;
     for_less( i, x_start, x_end ) {
-        Real value = get_volume_real_value(volume, vx, vy, vz, (Real) i, 0);
+        VIO_Real value = get_volume_real_value(volume, vx, vy, vz, (VIO_Real) i, 0);
 
         fprintf(fp, "%f %f\n", t, value);
 
@@ -170,7 +170,7 @@ static DEFINE_WIDGET_CALLBACK(xs_name_callback)
 static DEFINE_WIDGET_CALLBACK(xs_min_callback)
 {
     struct xs_window *xswin = (struct xs_window *) callback_data;
-    Real value;
+    VIO_Real value;
     int fix;
 
     fix = 0;
@@ -198,7 +198,7 @@ static DEFINE_WIDGET_CALLBACK(xs_min_callback)
 static DEFINE_WIDGET_CALLBACK(x_max_callback)
 {
     struct xs_window *xswin = (struct xs_window *) callback_data;
-    Real value;
+    VIO_Real value;
     int fix;
 
     fix = 0;
@@ -413,11 +413,11 @@ void xs_display(UI_struct *ui_info,
     int i, j;
     int volume_index;
     int view_index;
-    Real voxelpos[VIO_MAX_DIMENSIONS];
-    Real worldpos[VIO_MAX_DIMENSIONS];
+    VIO_Real voxelpos[VIO_MAX_DIMENSIONS];
+    VIO_Real worldpos[VIO_MAX_DIMENSIONS];
     int sizes[VIO_MAX_DIMENSIONS];
-    Real separations[VIO_MAX_DIMENSIONS];
-    Real starts[VIO_MAX_DIMENSIONS];
+    VIO_Real separations[VIO_MAX_DIMENSIONS];
+    VIO_Real starts[VIO_MAX_DIMENSIONS];
     VIO_Volume volume;
     void *main_ptr;
     widget_struct *widget;
@@ -428,11 +428,11 @@ void xs_display(UI_struct *ui_info,
     lines_struct *lines_obj_ptr;
     VIO_Point point;
     int ticks;
-    Real x_min, x_max;
-    Real y_min, y_max;
-    Real vx, vy, vz;
+    VIO_Real x_min, x_max;
+    VIO_Real y_min, y_max;
+    VIO_Real vx, vy, vz;
     int x_start, x_end;
-    Real x_delta;
+    VIO_Real x_delta;
     struct xs_window *xswin;
 
     if (!force && _xswin == NULL) {
@@ -558,7 +558,7 @@ void xs_display(UI_struct *ui_info,
         y_min = DBL_MAX;
 
         for_less( i, 0, x_axis_pixels ) {
-            Real value = get_volume_real_value(volume, vx, vy, vz, (Real) i, 0);
+            VIO_Real value = get_volume_real_value(volume, vx, vy, vz, (VIO_Real) i, 0);
             if (value > y_max) {
                 y_max = value;
             }
@@ -669,7 +669,7 @@ void xs_display(UI_struct *ui_info,
     add_object_to_xs_window(xswin, obj_ptr);
 
     sprintf(string, "Timecourse of voxel at X=%.2f,Y=%.2f,Z=%.2f",
-            worldpos[X], worldpos[Y], worldpos[Z]);
+            worldpos[VIO_X], worldpos[VIO_Y], worldpos[VIO_Z]);
 
     display_text(xswin, LMARGIN+10, 
                  y_axis_pixels + BMARGIN + TMARGIN - Message_font_size,
@@ -680,12 +680,12 @@ void xs_display(UI_struct *ui_info,
     obj_ptr = create_object( LINES );
     lines_obj_ptr = get_lines_ptr( obj_ptr );
 
-    x_delta = ((Real) x_axis_pixels / (x_end - x_start));
+    x_delta = ((VIO_Real) x_axis_pixels / (x_end - x_start));
 
     initialize_lines_with_size( lines_obj_ptr, WHITE, x_end - x_start, 0 );
 
     for_less( i, x_start, x_end ) {
-        Real value = get_volume_real_value(volume, vx, vy, vz, (Real) i, 0);
+        VIO_Real value = get_volume_real_value(volume, vx, vy, vz, (VIO_Real) i, 0);
         if (value > y_max) {
             value = y_max;
         }
@@ -696,7 +696,7 @@ void xs_display(UI_struct *ui_info,
         value = VIO_ROUND(value);
 
         x = VIO_ROUND((i - x_start) * x_delta);
-        fill_Point( lines_obj_ptr->points[i-x_start], (Real) x+LMARGIN+1, 
+        fill_Point( lines_obj_ptr->points[i-x_start], (VIO_Real) x+LMARGIN+1, 
                     value+BMARGIN, 0.0 );
     }
 

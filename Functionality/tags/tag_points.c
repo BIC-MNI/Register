@@ -157,7 +157,7 @@ static  VIO_BOOL  check_update_transform_and_rms_error(
         main->tags.tag_points[ind].position_exists[volume_index] = TRUE;
         
         fill_Point( main->tags.tag_points[ind].position[volume_index],
-                    position[X], position[Y], position[Z] );
+                    position[VIO_X], position[VIO_Y], position[VIO_Z] );
 
         update_tag_objects( main, &main->tags.tag_points[ind] );
 

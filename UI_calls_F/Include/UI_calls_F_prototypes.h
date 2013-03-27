@@ -1,137 +1,137 @@
 #ifndef  DEF_UI_calls_F_prototypes
 #define  DEF_UI_calls_F_prototypes
 
-public  void  IF_initialize_register(
+  void  IF_initialize_register(
     Gwindow  window,
-    STRING   executable_name );
+    VIO_STR   executable_name );
 
-public  Status   UI_set_global_variable(
-    STRING  variable_name,
-    STRING  value_to_set );
+  VIO_Status   UI_set_global_variable(
+    VIO_STR  variable_name,
+    VIO_STR  value_to_set );
 
-public  void  IF_terminate_register( void );
+  void  IF_terminate_register( void );
 
-public  Status  IF_start_loading_volume(
+  VIO_Status  IF_start_loading_volume(
     int     volume_index,
-    STRING  filename );
+    VIO_STR  filename );
 
-public  VIO_BOOL  IF_load_more_of_volume(
+  VIO_BOOL  IF_load_more_of_volume(
     int     volume_index,
-    Real    max_time,
-    Real    *fraction_done );
+    VIO_Real    max_time,
+    VIO_Real    *fraction_done );
 
-public  void  IF_cancel_loading_volume(
+  void  IF_cancel_loading_volume(
     int     volume_index );
 
-public  VIO_BOOL  IF_volume_is_loaded(
+  VIO_BOOL  IF_volume_is_loaded(
     int            volume_index );
 
-public  VIO_BOOL  IF_is_an_rgb_volume(
+  VIO_BOOL  IF_is_an_rgb_volume(
     int            volume_index );
 
-public  VIO_BOOL  IF_is_resampled_volume_loaded( void );
+  VIO_BOOL  IF_is_resampled_volume_loaded( void );
 
-public  Status  IF_do_resampling(
-    STRING   resampled_filename );
+  VIO_Status  IF_do_resampling(
+    VIO_STR   resampled_filename );
 
-public  STRING  IF_get_volume_filename(
+  VIO_STR  IF_get_volume_filename(
     int  volume_index );
 
-public  void  IF_save_image(
+  void  IF_save_image(
     int   volume,
     int   view );
 
-public  VIO_BOOL  IF_get_merged_slice_visibility( void );
+  VIO_BOOL  IF_get_merged_slice_visibility( void );
 
-public  void  IF_set_merged_slice_visibility(
+  void  IF_set_merged_slice_visibility(
     VIO_BOOL  visible );
 
-public  void  IF_set_volume(
+  void  IF_set_volume(
     int     volume_index,
-    STRING  filename );
+    VIO_STR  filename );
 
-public  void  IF_set_resampled_volume(
+  void  IF_set_resampled_volume(
     int                    volume_index,
-    STRING                 filename,
-    STRING                 original_filename,
+    VIO_STR                 filename,
+    VIO_STR                 original_filename,
     VIO_General_transform      *resampling_transform );
 
-public  Real  IF_get_voxel_value(
+  VIO_Real  IF_get_voxel_value(
     int     volume_index,
-    Real    x_voxel,
-    Real    y_voxel,
-    Real    z_voxel );
+    VIO_Real    x_voxel,
+    VIO_Real    y_voxel,
+    VIO_Real    z_voxel );
 
-public  void  IF_get_volume_value_range(
+  void  IF_get_volume_value_range(
     int     volume_index,
-    Real    *min_value,
-    Real    *max_value );
+    VIO_Real    *min_value,
+    VIO_Real    *max_value );
 
-public  void  IF_delete_volume(
+  void  IF_delete_volume(
     int            volume_index );
 
-public  VIO_BOOL  IF_get_interpolation_flag( void );
+  VIO_BOOL  IF_get_interpolation_flag( void );
 
-public  void  IF_set_interpolation_flag( VIO_BOOL  flag );
+  void  IF_set_interpolation_flag( VIO_BOOL  flag );
 
-public  void  IF_set_recreate_slice_flag(
+  void  IF_set_recreate_slice_flag(
     int    volume,
     int    view );
 
-public  void  IF_reset_slice_view(
+  void  IF_reset_slice_view(
     int             volume,
     int             view );
 
-public  void  IF_set_update_slice_viewport_flag(
+  void  IF_set_update_slice_viewport_flag(
     int             volume,
     int             view,
     Bitplane_types  bitplane );
 
-public  VIO_BOOL  IF_slices_to_be_updated(
+  VIO_BOOL  IF_slices_to_be_updated(
     int   current_buffer );
 
-public  VIO_BOOL  IF_redraw_slices(
+  VIO_BOOL  IF_redraw_slices(
     int             current_buffer );
 
-public  void  IF_set_volume_voxel_position(
+  void  IF_set_volume_voxel_position(
     int       volume,
-    Real      position[] );
+    VIO_Real      position[] );
 
-public  void  IF_get_volume_voxel_position(
+  void  IF_get_volume_voxel_position(
     int       volume,
-    Real      position[] );
+    VIO_Real      position[] );
 
-public  void  IF_set_volume_world_position(
+  void  IF_set_volume_world_position(
     int       volume,
-    Real      position[] );
+    VIO_Real      position[] );
 
-public  void  IF_get_volume_world_position(
+  void  IF_get_volume_world_position(
     int       volume,
-    Real      position[] );
+    VIO_Real      position[] );
 
-public  void  IF_set_volume_original_world_position(
+  void  IF_set_volume_original_world_position(
     int       volume,
-    Real      position[] );
+    VIO_Real      position[] );
 
-public  void  IF_get_volume_original_world_position(
+  void  IF_get_volume_original_world_position(
     int       volume,
-    Real      position[] );
+    VIO_Real      position[] );
 
-public  int   IF_get_slice_axis(
+  int   IF_get_slice_axis(
     int   view );
 
-public  void  IF_translate_slice(
+  void  IF_translate_slice(
     int       volume,
     int       view,
     int       x_translation,
     int       y_translation );
 
-public  void  IF_scale_slice(
+  void  IF_scale_slice(
     int       volume,
     int       view,
-    Real      scale_factor );
+    VIO_Real      scale_factor );
 
-public  void  IF_set_slice_viewport(
+  void  IF_set_slice_viewport(
     int       volume,
     int       view,
     int       x_min,
@@ -139,142 +139,142 @@ public  void  IF_set_slice_viewport(
     int       y_min,
     int       y_max );
 
-public  VIO_BOOL  IF_convert_pixel_to_voxel(
+  VIO_BOOL  IF_convert_pixel_to_voxel(
     int    volume,
     int    view,
     int    x_pixel,
     int    y_pixel,
-    Real   voxel_position[] );
+    VIO_Real   voxel_position[] );
 
-public  VIO_BOOL  IF_can_switch_colour_modes( void );
+  VIO_BOOL  IF_can_switch_colour_modes( void );
 
-public  void  IF_colour_mode_has_toggled(
+  void  IF_colour_mode_has_toggled(
     int  start_index );
 
-public  void  IF_set_under_colour(
+  void  IF_set_under_colour(
     int        volume_index,
-    Colour     colour );
+    VIO_Colour     colour );
 
-public  void  IF_set_merge_method(
+  void  IF_set_merge_method(
     Merge_methods     method );
 
-public  Merge_methods  IF_get_merge_method( void );
+  Merge_methods  IF_get_merge_method( void );
 
-public  void  IF_set_over_colour(
+  void  IF_set_over_colour(
     int        volume_index,
-    Colour     colour );
+    VIO_Colour     colour );
 
-public  void  IF_set_volume_colour_coding_type(
+  void  IF_set_volume_colour_coding_type(
     int                   volume_index,
     Colour_coding_types   type );
 
-public  Colour_coding_types  IF_get_colour_coding_type(
+  Colour_coding_types  IF_get_colour_coding_type(
     int    volume_index );
 
-public  void  IF_set_colour_coding_limits(
+  void  IF_set_colour_coding_limits(
     int    volume_index,
-    Real   min_value,
-    Real   max_value );
+    VIO_Real   min_value,
+    VIO_Real   max_value );
 
-public  void  IF_get_colour_coding_limits(
+  void  IF_get_colour_coding_limits(
     int    volume_index,
-    Real   *min_value,
-    Real   *max_value );
+    VIO_Real   *min_value,
+    VIO_Real   *max_value );
 
-public  void  IF_set_merged_volume_opacity(
+  void  IF_set_merged_volume_opacity(
     int    which_volume,
-    Real   opacity );
+    VIO_Real   opacity );
 
-public  Real  IF_get_merged_volume_opacity(
+  VIO_Real  IF_get_merged_volume_opacity(
     int    which_volume );
 
-public  void  IF_set_slice_filter_type(
+  void  IF_set_slice_filter_type(
     int           volume_index,
     int           view_index,
     Filter_types  filter_type );
 
-public  Filter_types  IF_get_slice_filter_type(
+  Filter_types  IF_get_slice_filter_type(
     int           volume_index,
     int           view_index );
 
-public  void  IF_set_slice_filter_width(
+  void  IF_set_slice_filter_width(
     int      volume_index,
     int      view_index,
-    Real     filter_width );
+    VIO_Real     filter_width );
 
-public  Real  IF_get_slice_filter_width(
+  VIO_Real  IF_get_slice_filter_width(
     int           volume_index,
     int           view_index );
 
-public  VIO_BOOL  IF_get_tags_visibility( void );
+  VIO_BOOL  IF_get_tags_visibility( void );
 
-public  void  IF_set_tags_visibility( VIO_BOOL  visibility );
+  void  IF_set_tags_visibility( VIO_BOOL  visibility );
 
-public  void  IF_create_new_tag_point( void );
+  void  IF_create_new_tag_point( void );
 
-public  void  IF_delete_tag_point(
+  void  IF_delete_tag_point(
     int      ind );
 
-public  int  IF_get_n_tag_points( void );
+  int  IF_get_n_tag_points( void );
 
-public  VIO_BOOL  IF_get_tag_point_position(
+  VIO_BOOL  IF_get_tag_point_position(
     int              ind,
     int              volume_index,
-    Real             position[] );
+    VIO_Real             position[] );
 
-public  void  IF_set_tag_point_position(
+  void  IF_set_tag_point_position(
     int              ind,
     int              volume_index,
-    Real             position[] );
+    VIO_Real             position[] );
 
-public  STRING  IF_get_tag_point_name(
+  VIO_STR  IF_get_tag_point_name(
     int              ind );
 
-public  void  IF_set_tag_point_name(
+  void  IF_set_tag_point_name(
     int              ind,
-    STRING           name );
+    VIO_STR           name );
 
-public  VIO_BOOL  IF_get_tag_point_rms_error(
+  VIO_BOOL  IF_get_tag_point_rms_error(
     int              ind,
-    Real             *rms_error );
+    VIO_Real             *rms_error );
 
-public  VIO_BOOL  IF_get_tag_point_avg_rms_error(
-    Real             *avg_rms_error );
+  VIO_BOOL  IF_get_tag_point_avg_rms_error(
+    VIO_Real             *avg_rms_error );
 
-public  VIO_BOOL  IF_get_tag_point_activity(
+  VIO_BOOL  IF_get_tag_point_activity(
     int              ind );
 
-public  void  IF_set_tag_point_activity(
+  void  IF_set_tag_point_activity(
     int              ind,
     VIO_BOOL          activity );
 
-public  void  IF_save_tags_file(
-    STRING   filename );
+  void  IF_save_tags_file(
+    VIO_STR   filename );
 
-public  void  IF_load_tags_file(
-    STRING   filename );
+  void  IF_load_tags_file(
+    VIO_STR   filename );
 
-public  void  IF_save_transform(
-    STRING   filename );
+  void  IF_save_transform(
+    VIO_STR   filename );
 
-public  VIO_BOOL  IF_does_transform_exist( void );
+  VIO_BOOL  IF_does_transform_exist( void );
 
-public  VIO_BOOL  IF_get_resampling_transform(
+  VIO_BOOL  IF_get_resampling_transform(
     VIO_General_transform  **transform );
 
-public  VIO_BOOL  IF_tag_points_have_been_saved( void );
+  VIO_BOOL  IF_tag_points_have_been_saved( void );
 
-public  Trans_type  IF_get_transform_type( void );
+  Trans_type  IF_get_transform_type( void );
 
-public  void  IF_set_transform_type(
+  void  IF_set_transform_type(
     Trans_type  type );
 
-public  VIO_BOOL  IF_get_cursor_visibility( void );
+  VIO_BOOL  IF_get_cursor_visibility( void );
 
-public  void  IF_set_cursor_visibility( VIO_BOOL  visibility );
+  void  IF_set_cursor_visibility( VIO_BOOL  visibility );
 
-public void IF_get_volume_time_position(int volume_index, Real *tpos_ptr);
+ void IF_get_volume_time_position(int volume_index, VIO_Real *tpos_ptr);
 
-public void IF_set_volume_time_position(int volume_index, Real tpos);
+ void IF_set_volume_time_position(int volume_index, VIO_Real tpos);
 
 #endif

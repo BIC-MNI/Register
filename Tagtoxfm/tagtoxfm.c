@@ -99,10 +99,10 @@ int main(int argc, char *argv[])
    /* Read in tag file */
    if ((open_file_with_default_suffix(tagfile,
                   get_default_tag_file_suffix(),
-                  READ_FILE, ASCII_FORMAT, &fp) != OK) ||
+                  READ_FILE, ASCII_FORMAT, &fp) != VIO_OK) ||
        (input_tag_points(fp, &n_volumes, &n_tag_points, 
                          &tags_volume1, &tags_volume2, 
-                         NULL, NULL, NULL, NULL) != OK)) {
+                         NULL, NULL, NULL, NULL) != VIO_OK)) {
       (void) fprintf(stderr, "%s: Error reading tag file %s\n", 
                      pname, tagfile);
       exit(EXIT_FAILURE);
@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
                      pname, xfmfile);
       exit(EXIT_FAILURE);
    }
-   if (output_transform_file(xfmfile, comment, &transform) != OK) {
+   if (output_transform_file(xfmfile, comment, &transform) != VIO_OK) {
       (void) fprintf(stderr, "%s: Error writing xfm file %s\n", 
                      pname, xfmfile);
       exit(EXIT_FAILURE);
