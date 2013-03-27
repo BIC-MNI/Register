@@ -73,10 +73,6 @@ static char rcsid[]="$Header: /static-cvsroot/visualization/Register/Tagtoxfm/ta
 #  define TRUE 1
 #  define FALSE 0
 #endif
-#ifndef 
-#  define 
-#  define static static
-#endif
 
 /* Main program */
 
