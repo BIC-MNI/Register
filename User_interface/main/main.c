@@ -33,7 +33,7 @@ static  VIO_STR  version = VERSION;
 // #define  HARD_CODED_REGISTER_DIRECTORY3    "/usr/local/lib"
 
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
-#include  <bicpl/globals.h>
+#include <bicpl/globals.h>
 
 #define   UI_GLOBALS_FILENAME   "register_UI.globals"
 
