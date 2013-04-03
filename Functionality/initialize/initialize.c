@@ -165,7 +165,7 @@ static  void    initialize_global_colours( void )
 // 
 //         if( file_exists( globals_filename ) )
 //         {
-//             (void) input_globals_file( SIZEOF_STATIC_ARRAY(functional_globals),
+//             (void) input_globals_file( VIO_SIZEOF_STATIC_ARRAY(functional_globals),
 //                                        functional_globals, globals_filename );
 //         }
 // 
@@ -181,7 +181,7 @@ static  void    initialize_global_colours( void )
 //     VIO_STR  variable_name,
 //     VIO_STR  value_to_set )
 // {
-//     return( set_global_variable( SIZEOF_STATIC_ARRAY(functional_globals),
+//     return( set_global_variable( VIO_SIZEOF_STATIC_ARRAY(functional_globals),
 //                                  functional_globals, variable_name,
 //                                  value_to_set ) );
 // }

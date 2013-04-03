@@ -121,14 +121,14 @@ static  void  check_axes_assigned( void )
     get_volume_time_position(main, volume_index, &origin[3]);
 
     if( x_flip )
-        x_axis[x_index] = -FSIGN(separations[x_index]);
+        x_axis[x_index] = -VIO_FSIGN(separations[x_index]);
     else
-        x_axis[x_index] = FSIGN(separations[x_index]);
+        x_axis[x_index] = VIO_FSIGN(separations[x_index]);
 
     if( y_flip )
-        y_axis[y_index] = -FSIGN(separations[y_index]);
+        y_axis[y_index] = -VIO_FSIGN(separations[y_index]);
     else
-        y_axis[y_index] = FSIGN(separations[y_index]);
+        y_axis[y_index] = VIO_FSIGN(separations[y_index]);
 }
 
   int  get_slice_viewport_index( int volume, int view )

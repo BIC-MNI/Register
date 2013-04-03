@@ -124,7 +124,7 @@ int  main(
                 return( 1 );
             }
 
-            if( set_global_variable( SIZEOF_STATIC_ARRAY(UI_globals_list),
+            if( set_global_variable( VIO_SIZEOF_STATIC_ARRAY(UI_globals_list),
                         UI_globals_list, variable_name, variable_value ) != VIO_OK )
             {
                 if( UI_set_global_variable( variable_name, variable_value )!=VIO_OK)
@@ -163,7 +163,7 @@ int  main(
 
     terminate_user_interface( &ui_struct );
 
-    delete_global_variables( SIZEOF_STATIC_ARRAY(UI_globals_list),
+    delete_global_variables( VIO_SIZEOF_STATIC_ARRAY(UI_globals_list),
                              UI_globals_list );
 
     output_alloc_to_file( ".register.alloc_debug" );
@@ -235,7 +235,7 @@ static  void  read_global_files(
 
         if( file_exists( globals_filename ) )
         {
-            (void) input_globals_file( SIZEOF_STATIC_ARRAY(UI_globals_list),
+            (void) input_globals_file( VIO_SIZEOF_STATIC_ARRAY(UI_globals_list),
                                        UI_globals_list, globals_filename );
         }
 
@@ -251,7 +251,7 @@ static  void  read_global_files(
     VIO_STR  variable_name,
     VIO_STR  value_to_set )
 {
-    return( set_global_variable( SIZEOF_STATIC_ARRAY(UI_globals_list),
+    return( set_global_variable( VIO_SIZEOF_STATIC_ARRAY(UI_globals_list),
                                  UI_globals_list, variable_name,
                                  value_to_set ) );
 }

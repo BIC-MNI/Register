@@ -101,7 +101,7 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
     x = Interface_x_spacing;
     y = Colour_selection_y_size - 1 - Interface_y_spacing - Button_height;
 
-    for_less( i, 0, SIZEOF_STATIC_ARRAY( colours ) )
+    for_less( i, 0, VIO_SIZEOF_STATIC_ARRAY( colours ) )
     {
         colour = convert_string_to_colour( colours[i] );
 
@@ -121,7 +121,7 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
         x += Button_width + Interface_x_spacing;
 
         if( ((i + 1) % Colour_selection_n_across == 0) ||
-            i == SIZEOF_STATIC_ARRAY(colours)-1 )
+            i == VIO_SIZEOF_STATIC_ARRAY(colours)-1 )
         {
             x = Interface_x_spacing;
             y -= Button_height + Interface_y_spacing;

@@ -76,7 +76,7 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
          { TRANS_TPS,   "Thin Plate Splines (Non-linear)" }          };
 
     widget_struct    *widget;
-    widget_struct    *radio_widgets[SIZEOF_STATIC_ARRAY( choices )];
+    widget_struct    *radio_widgets[VIO_SIZEOF_STATIC_ARRAY( choices )];
 
     set_transform_type_button_activity( ui, FALSE );
 
@@ -93,7 +93,7 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
     x = Interface_x_spacing;
     y = Transform_selection_y_size - 1 - Interface_y_spacing - Button_height;
 
-    for_less( i, 0, SIZEOF_STATIC_ARRAY( choices ) )
+    for_less( i, 0, VIO_SIZEOF_STATIC_ARRAY( choices ) )
     {
         if( choices[i].transform_type == TRANS_LSQ9 ||
             choices[i].transform_type == TRANS_LSQ10 )
@@ -124,9 +124,9 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
     }
 
     transform_type = IF_get_transform_type();
-    define_radio_buttons( SIZEOF_STATIC_ARRAY( choices ), radio_widgets );
+    define_radio_buttons( VIO_SIZEOF_STATIC_ARRAY( choices ), radio_widgets );
 
-    for_less( i, 0, SIZEOF_STATIC_ARRAY( choices ) )
+    for_less( i, 0, VIO_SIZEOF_STATIC_ARRAY( choices ) )
     {
         if( choices[i].transform_type == transform_type )
             set_widget_selected( radio_widgets[i], TRUE );

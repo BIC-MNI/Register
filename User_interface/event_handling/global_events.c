@@ -42,7 +42,7 @@ static  VIO_BOOL      event_can_start_interaction[N_EVENT_TYPES];
         first = FALSE;
         for_enum( type, N_EVENT_TYPES, Event_types )
             event_can_start_interaction[type] = FALSE;
-        for_less( i, 0, SIZEOF_STATIC_ARRAY(interaction_starting_events) )
+        for_less( i, 0, VIO_SIZEOF_STATIC_ARRAY(interaction_starting_events) )
             event_can_start_interaction[interaction_starting_events[i]] = TRUE;
     }
 
@@ -79,7 +79,7 @@ static  VIO_BOOL      event_must_be_in_window[N_EVENT_TYPES];
         first = FALSE;
         for_enum( type, N_EVENT_TYPES, Event_types )
             event_must_be_in_window[type] = FALSE;
-        for_less( i, 0, SIZEOF_STATIC_ARRAY(in_window_events) )
+        for_less( i, 0, VIO_SIZEOF_STATIC_ARRAY(in_window_events) )
             event_must_be_in_window[in_window_events[i]] = TRUE;
     }
 

@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
 
    /* Calculate info for new volume, if needed */
    if (do_pet_resample) {
-      if (input_transform_file(transform, &the_transform) != OK) {
+      if (input_transform_file(transform, &the_transform) != VIO_OK) {
          (void) fprintf(stderr, 
                         "%s: Error reading transform file \"%s\".\n",
                         pname, transform);
@@ -346,12 +346,12 @@ void calc_pet_resample(FileInfo *vol1, FileInfo *vol2, FileInfo *out,
                        VIO_General_transform *the_transform)
 {
    int idim, icol, irow, islc;
-   Real bottom[WORLD_NDIMS], top[WORLD_NDIMS], coord[WORLD_NDIMS];
+   VIO_Real bottom[WORLD_NDIMS], top[WORLD_NDIMS], coord[WORLD_NDIMS];
    double diff, height;
 
 
    /* Figure out order of world axes */
-   icol = X; irow = Y; islc = Z;
+   icol = VIO_X; irow = VIO_Y; islc = VIO_Z;
    if (vol1->dim_index[islc] > vol1->dim_index[irow]) {
       idim = islc; islc = irow; irow = idim;
    }
@@ -410,7 +410,7 @@ void calc_pet_resample(FileInfo *vol1, FileInfo *vol2, FileInfo *out,
       out->step[islc] = vol1->step[islc];
    }
 
-   /* Make sure that output step size in Z has the same sign as vol1 */
+   /* Make sure that output step size in VIO_Z has the same sign as vol1 */
    if ((out->step[islc]*vol1->step[islc]) < 0.0) {
       out->step[islc] *= -1.0;
    }
@@ -421,11 +421,11 @@ void calc_pet_resample(FileInfo *vol1, FileInfo *vol2, FileInfo *out,
       if (idim != islc) 
          coord[idim] += vol2->step[idim] * (vol2->size[idim] - 1) / 2.0;
    }
-   general_transform_point(the_transform, coord[X], coord[Y], coord[Z],
-                           &bottom[X], &bottom[Y], &bottom[Z]);
+   general_transform_point(the_transform, coord[VIO_X], coord[VIO_Y], coord[VIO_Z],
+                           &bottom[VIO_X], &bottom[VIO_Y], &bottom[VIO_Z]);
    coord[islc] = vol2->start[islc] + vol2->step[islc] * (vol2->size[islc] - 1);
-   general_transform_point(the_transform, coord[X], coord[Y], coord[Z],
-                           &top[X], &top[Y], &top[Z]);
+   general_transform_point(the_transform, coord[VIO_X], coord[VIO_Y], coord[VIO_Z],
+                           &top[VIO_X], &top[VIO_Y], &top[VIO_Z]);
    height = 0.0;
    for (idim=0; idim < WORLD_NDIMS; idim++) {
       diff = top[idim] - bottom[idim];

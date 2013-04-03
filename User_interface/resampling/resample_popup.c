@@ -74,7 +74,7 @@ public  void  delete_resample_popup(
 
 public  void  set_resample_popup_meter(
     resample_volume_struct   *data,
-    Real                     fraction_done )
+    VIO_Real                     fraction_done )
 {
     set_meter_position( &data->popup, data->meter_background,
                         data->meter, fraction_done );
