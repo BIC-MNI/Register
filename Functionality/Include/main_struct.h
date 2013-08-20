@@ -42,7 +42,7 @@ typedef  struct
     int             prev_viewport_y_size;
     int             used_viewport_x_size;
     int             used_viewport_y_size;
-    Filter_types    filter_type;
+    VIO_Filter_types    filter_type;
     VIO_Real            filter_width;
     VIO_BOOL         pixels_are_up_to_date;
     int             n_pixels_alloced;

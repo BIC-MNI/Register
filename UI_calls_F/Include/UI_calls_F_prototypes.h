@@ -191,9 +191,9 @@
   void  IF_set_slice_filter_type(
     int           volume_index,
     int           view_index,
-    Filter_types  filter_type );
+    VIO_Filter_types  filter_type );
 
-  Filter_types  IF_get_slice_filter_type(
+  VIO_Filter_types  IF_get_slice_filter_type(
     int           volume_index,
     int           view_index );
 

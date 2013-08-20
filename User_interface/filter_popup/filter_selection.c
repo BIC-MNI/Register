@@ -49,7 +49,7 @@ Filter_widgets;
 static   int  widget_indices[N_FILTER_WIDGETS];
 
 static  int  get_filter_widget_index(
-    Filter_types  type )
+    VIO_Filter_types  type )
 {
     switch( type )
     {
@@ -64,7 +64,7 @@ static  int  get_filter_widget_index(
 
 static  void  set_filter(
     void            *callback_data,
-    Filter_types    type )
+    VIO_Filter_types    type )
 {
     callback_struct  *callback;
 
@@ -277,7 +277,7 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
     Viewport_types            view_index;
     filter_selection_struct   *popup;
     int                       view_start_index, height;
-    Filter_types              filter_type;
+    VIO_Filter_types              filter_type;
     VIO_Real                      filter_width;
     char                      window_name[VIO_EXTREMELY_LARGE_STRING_SIZE];
     static VIO_STR             view_names[3];

@@ -692,7 +692,7 @@ static  void  check_axes_assigned( void )
     main_struct   *main,
     int           volume_index,
     int           view,
-    Filter_types  filter_type )
+    VIO_Filter_types  filter_type )
 {
     slice_struct   *slice;
 
@@ -703,7 +703,7 @@ static  void  check_axes_assigned( void )
     set_recreate_slice_flag( main, volume_index, view );
 }
 
-  Filter_types  get_slice_filter_type(
+  VIO_Filter_types  get_slice_filter_type(
     main_struct   *main,
     int           volume_index,
     int           view )

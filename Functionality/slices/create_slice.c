@@ -25,7 +25,7 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functiona
 {
     int              x_size, y_size;
     Pixel_types      pixel_type;
-    Filter_types     filter_type;
+    VIO_Filter_types     filter_type;
     VIO_Real             filter_width;
     VIO_Real             x_translation, y_translation, x_scale, y_scale;
     VIO_Real             origin[VIO_MAX_DIMENSIONS];
@@ -106,7 +106,7 @@ static  void  convert_volume1_voxel_to_volume2(
     int              c, sizes1[VIO_N_DIMENSIONS];
     VIO_Real             separations2[VIO_N_DIMENSIONS], x_len, y_len;
     Pixel_types      pixel_type;
-    Filter_types     filter_type;
+    VIO_Filter_types     filter_type;
     VIO_Real             filter_width;
     VIO_Real             x_scale1, y_scale1, x_scale2, y_scale2;
     VIO_Real             x_translation1, y_translation1;

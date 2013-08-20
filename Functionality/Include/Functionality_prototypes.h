@@ -413,9 +413,9 @@
     main_struct   *main,
     int           volume_index,
     int           view,
-    Filter_types  filter_type );
+    VIO_Filter_types  filter_type );
 
-  Filter_types  get_slice_filter_type(
+  VIO_Filter_types  get_slice_filter_type(
     main_struct   *main,
     int           volume_index,
     int           view );

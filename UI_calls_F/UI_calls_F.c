@@ -380,13 +380,13 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/UI_calls_
   void  IF_set_slice_filter_type(
     int           volume_index,
     int           view_index,
-    Filter_types  filter_type )
+    VIO_Filter_types  filter_type )
 {
     set_slice_filter_type( get_main_struct(), volume_index, view_index,
                            filter_type );
 }
 
-  Filter_types  IF_get_slice_filter_type(
+  VIO_Filter_types  IF_get_slice_filter_type(
     int           volume_index,
     int           view_index )
 {
