@@ -86,7 +86,7 @@ START_GLOBALS
     DEF_GLOBAL( Position_label_width, int, 15 )
     DEF_GLOBAL( Position_values_width, int, 35 )
     DEF_GLOBAL( Position_values_separation, int, 5 )
-    DEF_GLOBAL( Position_values_format, VIO_STR, "%.1lf" )
+    DEF_GLOBAL( Position_values_format, VIO_STR, "%.2lf" )
 
     DEF_GLOBAL( Filter_selection_x_size, int, 360 )
     DEF_GLOBAL( Filter_selection_y_size, int, 340 )
