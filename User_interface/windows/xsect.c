@@ -6,8 +6,14 @@
 #define XS_MAX_OBJECTS 100
 #define X_PIXELS_PER_TICK 64
 
+/*
+ * These function signatures are NOT strictly correct, they use "void *"
+ * to replace what should be "main_struct *", but main_struct is not 
+ * exposed in this module.
+ */
 extern void *get_main_struct();
 extern VIO_Volume get_slice_volume(void *, int);
+extern VIO_STR get_volume_filename(void *, int);
 
 struct xs_window {
     struct popup_struct popup;
