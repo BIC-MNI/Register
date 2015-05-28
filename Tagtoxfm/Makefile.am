@@ -1,5 +1,5 @@
 bin_PROGRAMS = tagtoxfm
-tagtoxfm_SOURCES = tagtoxfm.c tagtoxfm.h ParseArgv.c ParseArgv.h
+tagtoxfm_SOURCES = tagtoxfm.c tagtoxfm.h
 
 INCLUDES = $(MNI_INCLUDES)
 LDADD = $(MNI_LIBS) -lm

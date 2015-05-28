@@ -191,8 +191,6 @@ ADD_EXECUTABLE(register
 )
 
 ADD_EXECUTABLE(tagtoxfm 
- Tagtoxfm/ParseArgv.c  
- Tagtoxfm/ParseArgv.h  
  Tagtoxfm/tagtoxfm.c  
  Tagtoxfm/tagtoxfm.h 
 )
