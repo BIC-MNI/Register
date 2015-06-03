@@ -201,7 +201,7 @@ static  void  set_merged_volume_visibility(
     return( main->merged.active_flag );
 }
 
-char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime };
+char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime, MIvector_dimension };
 
   VIO_Status  start_loading_volume(
     main_struct    *main,
@@ -216,7 +216,8 @@ char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime };
     set_minc_input_vector_to_colour_flag( &options, Convert_vectors_to_rgb );
 
     status = start_volume_input( filename, 0, XYZT_dimension_names,
-                                 VOXEL_TYPE, FALSE, 0.0, 0.0, TRUE,
+                              Volume_voxel_type, Volume_voxel_signed,
+                              0.0, 0.0, TRUE,
                               &main->trislice[volume_index].volume_being_input,
                               &options,
                               &main->trislice[volume_index].volume_input );
@@ -233,7 +234,8 @@ char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime };
         set_minc_input_vector_to_colour_flag( &options, FALSE );
 
         status = start_volume_input( filename, 0, XYZT_dimension_names,
-                                     VOXEL_TYPE, FALSE, 0.0, 0.0, TRUE,
+                              Volume_voxel_type, Volume_voxel_signed, 
+                              0.0, 0.0, TRUE,
                               &main->trislice[volume_index].volume_being_input,
                               &options,
                               &main->trislice[volume_index].volume_input );

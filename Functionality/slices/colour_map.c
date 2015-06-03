@@ -136,9 +136,17 @@ static  void  update_rgb_colour_maps(
     }
 
     get_volume_range_of_voxels( main, volume_index, &min_value, &max_value );
+    if (((double) max_value - (double) min_value) > 100000000) {
+        fprintf(stderr, "ERROR: Colour map would be too large (%g, %g).\n", 
+                (double) min_value, (double) max_value);
+        exit(EXIT_FAILURE);
+    }
 
     tmp_ptr = malloc((max_value - min_value + 1) * sizeof (*tmp_ptr));
-    /* TODO: check!!! */
+    if (tmp_ptr == NULL) {
+        fprintf(stderr, "ERROR: Unable to allocate space for colour map.\n");
+        exit(EXIT_FAILURE);
+    }
 
     /* The colour map is set to the allocated pointer MINUS the minimum
      * value.  For volumes with a signed range, this means that we can 

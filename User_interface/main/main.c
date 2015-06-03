@@ -96,7 +96,9 @@ int  main(
         }
         else if( equal_strings( argument, "-version" ) )
         {
-            print( "%s:  Version: %s\n", argv[0], version );
+            print("%s %s (built %s) git:%s/%s\n", 
+                  PACKAGE_NAME, PACKAGE_VERSION, __DATE__,
+                  GIT_BRANCH, GIT_COMMIT );
             return( 0 );
         }
         else if( equal_strings( argument, "-rgb" ) )

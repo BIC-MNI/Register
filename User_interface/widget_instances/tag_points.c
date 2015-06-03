@@ -18,6 +18,14 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_inte
 
 #include  <user_interface.h>
 
+/* Because we pass a lot of integers as void * callback data, and
+ * convert that callback data back to integers, these macros are
+ * useful to avoid compiler warnings. These macros should work on 
+ * most 32 and 64 bit systems, I think.
+ */
+#define INT_TO_PTR(i) (void *)(long)(i)
+#define PTR_TO_INT(p) (int)(long)(p)
+
 typedef enum
 {
     RMS_ERROR_BUTTON,
@@ -62,7 +70,7 @@ static  void   type_in_world_position_callback(
 static  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 0, VIO_X );
+                                     PTR_TO_INT(callback_data), 0, VIO_X );
 }
 
 /* ARGSUSED */
@@ -70,7 +78,7 @@ static  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
 static  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 0, VIO_Y );
+                                     PTR_TO_INT(callback_data), 0, VIO_Y );
 }
 
 /* ARGSUSED */
@@ -78,7 +86,7 @@ static  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
 static  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 0, VIO_Z );
+                                     PTR_TO_INT(callback_data), 0, VIO_Z );
 }
 
 /* ARGSUSED */
@@ -86,7 +94,7 @@ static  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
 static  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 1, VIO_X );
+                                     PTR_TO_INT(callback_data), 1, VIO_X );
 }
 
 /* ARGSUSED */
@@ -94,7 +102,7 @@ static  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
 static  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 1, VIO_Y );
+                                     PTR_TO_INT(callback_data), 1, VIO_Y );
 }
 
 /* ARGSUSED */
@@ -102,7 +110,7 @@ static  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
 static  DEFINE_WIDGET_CALLBACK( world_z_position2_callback )
 {
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     (int) callback_data, 1, VIO_Z );
+                                     PTR_TO_INT(callback_data), 1, VIO_Z );
 }
 
 static  void  set_and_jump_to_tag(
@@ -135,7 +143,7 @@ static  void  set_and_jump_to_tag(
 static  void  set_current_tag_from_button(
     void           *callback_data )
 {
-    set_and_jump_to_tag( get_tag_index(get_ui_struct(), (int) callback_data) );
+    set_and_jump_to_tag( get_tag_index(get_ui_struct(), PTR_TO_INT(callback_data)) );
 }
 
 /* ARGSUSED */
@@ -146,7 +154,7 @@ static  DEFINE_WIDGET_CALLBACK( tag_name_callback )
     VIO_STR  name;
 
     name = get_text_entry_string( widget );
-    tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
+    tag_index = get_tag_index( get_ui_struct(), PTR_TO_INT(callback_data) );
 
     IF_set_tag_point_name( tag_index, name );
 
@@ -166,7 +174,7 @@ static  DEFINE_WIDGET_CALLBACK( tag_activity_callback )
 {
     int   tag_index;
 
-    tag_index = get_tag_index( get_ui_struct(), (int) callback_data );
+    tag_index = get_tag_index( get_ui_struct(), PTR_TO_INT(callback_data) );
 
     IF_set_tag_point_activity( tag_index, get_toggle_button_state( widget ) );
 
@@ -330,7 +338,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   rms_error_callback, (void *) tag ) );
+                   rms_error_callback, INT_TO_PTR(tag) ) );
 
         rms_widget_indices[tag][RMS_ERROR_NUMBER] =
                    add_widget_to_list(
@@ -357,7 +365,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   world1_button_callback, (void *) tag ) );
+                   world1_button_callback, INT_TO_PTR(tag) ) );
 
 
         x += Tag_world_button_width + Position_values_separation;
@@ -376,7 +384,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_x_position1_callback, (void *) tag ) );
+                       world_x_position1_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_position_width + Position_values_separation;
 
@@ -394,7 +402,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_y_position1_callback, (void *) tag ) );
+                       world_y_position1_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_position_width + Position_values_separation;
 
@@ -412,7 +420,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_z_position1_callback, (void *) tag ) );
+                       world_z_position1_callback, INT_TO_PTR(tag) ) );
 
         x = x_left;
         position_widgets_indices[1][tag][WORLD_POSITION_BUTTON] =
@@ -427,7 +435,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   world2_button_callback, (void *) tag ) );
+                   world2_button_callback, INT_TO_PTR(tag) ) );
 
 
 
@@ -447,7 +455,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_x_position2_callback, (void *) tag ) );
+                       world_x_position2_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_position_width + Position_values_separation;
 
@@ -465,7 +473,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_y_position2_callback, (void *) tag ) );
+                       world_y_position2_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_position_width + Position_values_separation;
 
@@ -483,7 +491,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_z_position2_callback, (void *) tag ) );
+                       world_z_position2_callback, INT_TO_PTR(tag) ) );
 
         x = x_left;
 
@@ -499,7 +507,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   tag_number_button_callback, (void *) tag ) );
+                   tag_number_button_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_number_button_width + Interface_x_spacing;
 
@@ -515,7 +523,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   tag_activity_callback, (void *) tag ) );
+                   tag_activity_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_activity_width + Interface_x_spacing;
 
@@ -533,7 +541,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       tag_name_callback, (void *) tag ) );
+                       tag_name_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_name_width + Interface_x_spacing;
 

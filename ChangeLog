@@ -1,3 +1,17 @@
+2015-06-03  Robert D Vincent <robert.d.vincent@mcgill.ca>
+   * CMakeLists.txt, config.h.cmake, User_interface/main/main.c: Added
+	git branch and hash to the version information. Updated version
+	to 1.5.0.
+   * User_interface/widget_instances/tag_points.c: Eliminated some
+	harmless warnings about conversions between int and void *.
+   * Functionality/slices/colour_map.c: Just abort if the colour map
+	would be unreasonably huge.
+   * Functionality/slices/set_volume.c, global_variables.h: Create global
+	variables Volume_voxel_type and Volume_voxel_signed to give control
+	over the loaded voxel type. By default we load with the file's voxel
+	type.
+   * In addition, this version should now load NIfTI-1 and FreeSurfer volumes.
+
 2010-08-23  Andrew L Janke <a.janke@gmail.com>
    * Graphics/GLUT_windows/glut_windows.c: munted the create_GLUT_window
       function to always return a RGB double buffered window in an attempt

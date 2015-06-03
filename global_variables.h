@@ -249,4 +249,15 @@ START_GLOBALS
     DEF_GLOBAL( Initial_slice_filter_width, VIO_Real, 1.0 )
 
     DEF_GLOBAL( Convert_vectors_to_rgb, VIO_BOOL, TRUE )
+
+    /* Set Volume_voxel_type to 0 to retain voxel type of loaded volume.
+       1 for NC_BYTE
+       2 for NC_CHAR
+       3 for NC_SHORT
+       4 for NC_INT
+       5 for NC_FLOAT
+       6 for NC_DOUBLE
+    */
+    DEF_GLOBAL( Volume_voxel_type, int, MI_ORIGINAL_TYPE)
+    DEF_GLOBAL( Volume_voxel_signed, VIO_BOOL, FALSE)
 END_GLOBALS
