@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/slices.c,v 1.23 2005-02-28 22:52:01 bert Exp $";
-#endif
-
 #include  <register.h>
 
 static   int         x_axes[] = { VIO_Y, VIO_X, VIO_X };

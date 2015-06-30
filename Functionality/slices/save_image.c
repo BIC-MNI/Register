@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/save_image.c,v 1.10 2005-02-28 21:07:36 bert Exp $";
-#endif
-
 #include  <register.h>
 
 #define  PREFIX   "register_image_"

@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/objects.c,v 1.10 1998-06-29 15:01:47 david Exp $";
-#endif
-
 #include  <register.h>
 
   void  create_tag_objects(

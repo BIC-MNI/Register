@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/resampling/resample_popup.c,v 1.8 1998-06-29 15:02:01 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 /* ARGSUSED */

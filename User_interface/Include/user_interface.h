@@ -15,10 +15,6 @@
 #ifndef  DEF_USER_INTERFACE
 #define  DEF_USER_INTERFACE
 
-#ifndef lint
-static char user_interface_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/user_interface.h,v 1.7 2001-05-23 04:13:07 stever Exp $";
-#endif
-
 #include  <graphics.h>
 
 #include  <events.h>

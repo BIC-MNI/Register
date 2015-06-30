@@ -15,10 +15,6 @@
 #ifndef  DEF_WIDGETS
 #define  DEF_WIDGETS
 
-#ifndef lint
-static char widgets_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/widgets.h,v 1.7 1996-12-09 20:21:44 david Exp $";
-#endif
-
 #include  <events.h>
 #include  <graphics_window.h>
 #include  <ui_colours.h>

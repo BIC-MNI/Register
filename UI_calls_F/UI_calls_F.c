@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/UI_calls_F/UI_calls_F.c,v 1.21 2004-10-25 19:11:08 bert Exp $";
-#endif
-
 #include  <UI_calls_F.h>
 
   void  IF_initialize_register(

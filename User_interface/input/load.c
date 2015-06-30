@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/input/load.c,v 1.23 1998-06-29 15:01:57 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  void  volume_has_been_loaded( UI_struct  *, load_struct * );

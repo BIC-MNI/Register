@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_callbacks/window_events.c,v 1.13 1998-06-29 15:01:55 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 /* ARGSUSED */

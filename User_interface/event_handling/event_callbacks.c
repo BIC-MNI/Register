@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/event_callbacks.c,v 1.9 1998-06-29 15:01:55 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 #define  EVENT_CHUNK_ALLOC_SIZE   10
@@ -190,10 +186,10 @@ static  VIO_BOOL  is_correct_shift_modifier(
         callback = &callback_list->callbacks[i];
         if( callback->enabled &&
             (callback->x_min < 0 ||   /* signals entire region */
-             mouse_x >= callback->x_min &&
-             mouse_x <= callback->x_max &&
-             mouse_y >= callback->y_min &&
-             mouse_y <= callback->y_max) &&
+             (mouse_x >= callback->x_min &&
+              mouse_x <= callback->x_max &&
+              mouse_y >= callback->y_min &&
+              mouse_y <= callback->y_max)) &&
              is_correct_shift_modifier( shift_state, callback->modifier) )
         {
             valid_callbacks[n_valid] = *callback;

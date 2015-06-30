@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/colour_bar.c,v 1.13 1998-06-29 15:02:02 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 typedef  enum

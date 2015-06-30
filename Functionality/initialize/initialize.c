@@ -15,10 +15,6 @@
 #include <config.h>
 #endif //HAVE_CONFIG_H
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/initialize/initialize.c,v 1.21 2001-05-23 04:12:45 stever Exp $";
-#endif
-
 #include  <register.h>
 
 // #define  GLOBALS_LOOKUP_NAME  functional_globals

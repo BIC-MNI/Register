@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/layout/layout.c,v 1.10 1998-06-29 15:01:59 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
   void  initialize_layout( UI_struct  *ui_info )

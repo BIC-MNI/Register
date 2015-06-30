@@ -12,14 +12,8 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/main/main.c,v 1.22 2003-05-29 16:56:57 stever Exp $";
-#endif
-
 #include "config.h"
 #include  <user_interface.h>
-
-static  VIO_STR  version = VERSION;
 
 /* Search for "register_UI.globals in  the following
  * three directories, then in the directory containing argv[0],

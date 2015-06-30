@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/layout/colours.c,v 1.12 1998-06-29 15:01:58 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  VIO_Colour  colours[N_UI_COLOURS];

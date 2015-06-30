@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/main/initialize.c,v 1.21 1998-08-24 19:52:13 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
   VIO_Status   initialize_user_interface(
@@ -42,8 +38,8 @@ static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_inte
                               FALSE, 2, &ui->graphics_window.window );
 
     if( status != VIO_OK ||
-        !Initial_rgb_state &&
-        G_get_n_colour_map_entries(ui->graphics_window.window) < 64 )
+        (!Initial_rgb_state &&
+         G_get_n_colour_map_entries(ui->graphics_window.window) < 64) )
     {
         if( status == VIO_OK )
              G_delete_window( ui->graphics_window.window );

@@ -13,10 +13,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/set_volume.c,v 1.20 2005-02-28 21:05:18 bert Exp $";
-#endif
-
 #include  <register.h>
 
   VIO_BOOL  is_volume_active(

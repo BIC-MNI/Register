@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/windows/popup.c,v 1.13 1998-08-24 19:52:01 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 /* ARGSUSED */

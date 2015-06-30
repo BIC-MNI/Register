@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/slices/slices.c,v 1.7 2004-10-25 19:11:08 bert Exp $";
-#endif
-
 #include  <user_interface.h>
 
   void  update_position_counters(

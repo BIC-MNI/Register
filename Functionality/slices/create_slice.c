@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/create_slice.c,v 1.30 2005-02-28 21:06:02 bert Exp $";
-#endif
-
 #include  <register.h>
 
   void  create_slice_pixels(

@@ -12,14 +12,11 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/colour_map.c,v 1.31 2005-02-28 22:54:00 bert Exp $";
-#endif
-
 #include  <register.h>
 
 typedef  enum  { UNDER_RANGE, WITHIN_RANGE, OVER_RANGE } Range_flags;
 
+#if 0
 static  VIO_Colour  merge_colours(
     VIO_Real      alpha1,
     VIO_Colour    col1,
@@ -116,6 +113,7 @@ static  Range_flags  lookup_colour_code(
 
     return( flag );
 }
+#endif /* 0 */
 
 static  void  update_rgb_colour_maps(
     main_struct  *main,
@@ -579,6 +577,11 @@ static  colour_coding_struct  *get_volume_colour_coding(
         case WEIGHTED_VOLUMES:
             a1 = alpha1 * a1;
             a2 = alpha2 * a2;
+            break;
+
+        default:
+            fprintf(stderr, "ERROR: unknown blending method '%d'.\n", method);
+            exit(EXIT_FAILURE);
             break;
         }
 

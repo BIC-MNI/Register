@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/resample.c,v 1.10 1998-06-29 15:01:46 david Exp $";
-#endif
-
 #include  <register.h>
 
   VIO_Status  resample_the_volume(

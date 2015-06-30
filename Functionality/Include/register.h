@@ -15,10 +15,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char register_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/register.h,v 1.5 2001-05-23 04:12:44 stever Exp $";
-#endif
-
 #include  <graphics.h>
 
 #include  <main_struct.h>

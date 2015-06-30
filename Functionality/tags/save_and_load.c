@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/save_and_load.c,v 1.17 1998-06-29 15:01:47 david Exp $";
-#endif
-
 #include  <register.h>
 
 static  void   create_tags_array(
@@ -111,10 +107,10 @@ static  VIO_STR  create_comments(
             tag_is_valid[i] = FALSE;
         else
         {
-            tag_is_valid[i] = (main->trislice[0].input_flag &&
-                               tags->tag_points[i].position_exists[0] ||
-                               main->trislice[1].input_flag &&
-                               tags->tag_points[i].position_exists[1]);
+            tag_is_valid[i] = ((main->trislice[0].input_flag &&
+                                tags->tag_points[i].position_exists[0]) ||
+                               (main->trislice[1].input_flag &&
+                                tags->tag_points[i].position_exists[1]));
         }
 
         if( tag_is_valid[i] )

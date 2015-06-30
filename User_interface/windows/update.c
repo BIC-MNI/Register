@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/windows/update.c,v 1.11 1998-06-29 15:02:09 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
   VIO_BOOL  make_window_up_to_date(

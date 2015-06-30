@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/merged_interface.c,v 1.15 1998-06-29 15:02:04 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 typedef  enum

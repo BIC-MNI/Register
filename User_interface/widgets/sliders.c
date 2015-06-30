@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widgets/sliders.c,v 1.16 1998-06-29 15:02:06 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  VIO_Real  convert_position_to_slider_value( slider_struct *, int, int );

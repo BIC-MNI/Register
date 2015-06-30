@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/quit_popup/quit.c,v 1.10 1998-06-29 15:02:01 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  void  delete_quit_confirm(

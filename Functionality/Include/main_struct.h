@@ -17,10 +17,6 @@
 
 #include  <common_include.h>
 
-#ifndef lint
-static char main_struct_rcsid[] = "$Header: /private-cvsroot/visualization/Register/Functionality/Include/main_struct.h,v 1.24 2005-02-28 20:53:27 bert Exp $";
-#endif
-
 #define  TWO_BUFFERS    2
 #define  VOXEL_TYPE     MI_ORIGINAL_TYPE
 #define  N_MERGED       2

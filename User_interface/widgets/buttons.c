@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widgets/buttons.c,v 1.19 1998-06-29 15:02:06 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  void  deselect_other_radio_buttons(

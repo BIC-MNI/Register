@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/cursor.c,v 1.12 1998-06-29 15:01:44 david Exp $";
-#endif
-
 #include  <register.h>
 
 static  const  int  N_LINES = 12;

@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/slices/updates.c,v 1.8 1998-06-29 15:01:46 david Exp $";
-#endif
-
 #include <register.h>
 
   void  set_recreate_3_slices_flags(

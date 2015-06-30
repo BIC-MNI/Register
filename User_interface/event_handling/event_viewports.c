@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/event_viewports.c,v 1.9 1998-06-29 15:01:56 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
   void  initialize_event_viewports(
@@ -176,10 +172,10 @@ static  void  check_event_viewport_exists(
     for_less( i, 0, event_viewports->n_event_viewports )
     {
         if( event_viewports->event_viewports[i].x_min < 0 ||
-            x_mouse >= event_viewports->event_viewports[i].x_min &&
-            x_mouse <= event_viewports->event_viewports[i].x_max &&
-            y_mouse >= event_viewports->event_viewports[i].y_min &&
-            y_mouse <= event_viewports->event_viewports[i].y_max )
+            ( x_mouse >= event_viewports->event_viewports[i].x_min &&
+              x_mouse <= event_viewports->event_viewports[i].x_max &&
+              y_mouse >= event_viewports->event_viewports[i].y_min &&
+              y_mouse <= event_viewports->event_viewports[i].y_max ) )
         {
             x_mouse_viewport = x_mouse -
                                event_viewports->event_viewports[i].x_min;

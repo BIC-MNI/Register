@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/delete_tags_popup/delete_tags.c,v 1.8 1998-06-29 15:01:53 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  void  delete_tags_confirm(

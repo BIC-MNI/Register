@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/position_widgets.c,v 1.12 2004-10-25 19:11:08 bert Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  void    set_voxel_position_callback( UI_struct *, widget_struct *,

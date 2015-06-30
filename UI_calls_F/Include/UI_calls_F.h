@@ -15,10 +15,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char UI_calls_F_rcsid[] = "$Header: /private-cvsroot/visualization/Register/UI_calls_F/Include/UI_calls_F.h,v 1.3 1995-07-31 19:54:16 david Exp $";
-#endif
-
 #include  <register.h>
 #include  <UI_calls_F_prototypes.h>
 

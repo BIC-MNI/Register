@@ -16,10 +16,6 @@
 #ifndef  DEF_GRAPHICS_WINDOW
 #define  DEF_GRAPHICS_WINDOW
 
-#ifndef lint
-static char graphics_window_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/graphics_window.h,v 1.6 1998-06-29 15:01:52 david Exp $";
-#endif
-
 #include  <graphics.h>
 #include  <events.h>
 

@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/tag_points.c,v 1.12 1998-06-29 15:01:48 david Exp $";
-#endif
-
 #include  <register.h>
 
 static  VIO_BOOL  check_update_transform_and_rms_error(

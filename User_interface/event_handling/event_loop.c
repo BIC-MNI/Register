@@ -12,13 +12,7 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/event_loop.c,v 1.11 1998-06-29 15:01:56 david Exp $";
-#endif
-
 #include  <user_interface.h>
-
-static  VIO_BOOL   quit_flag = FALSE;
 
   void  set_quit_program_flag( void )
 {

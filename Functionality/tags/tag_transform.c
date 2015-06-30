@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/Functionality/tags/tag_transform.c,v 1.13 1998-06-29 15:01:48 david Exp $";
-#endif
-
 #include  <register.h>
 
   Trans_type  get_tag_transform_type(

@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/widget_instances/tag_points.c,v 1.21 1998-06-29 15:02:05 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 /* Because we pass a lot of integers as void * callback data, and

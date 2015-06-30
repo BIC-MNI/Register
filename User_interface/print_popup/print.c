@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/print_popup/print.c,v 1.12 1998-08-24 19:52:34 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 typedef  struct

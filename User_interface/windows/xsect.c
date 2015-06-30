@@ -170,7 +170,6 @@ static DEFINE_WIDGET_CALLBACK(xs_save_callback)
 
 static DEFINE_WIDGET_CALLBACK(xs_name_callback)
 {
-    struct xs_window *xswin = (struct xs_window *) callback_data;
 }
 
 static DEFINE_WIDGET_CALLBACK(xs_min_callback)
@@ -416,7 +415,7 @@ void xs_display(UI_struct *ui_info,
 {
     int x_axis_pixels;
     int y_axis_pixels;
-    int i, j;
+    int i;
     int volume_index;
     int view_index;
     VIO_Real voxelpos[VIO_MAX_DIMENSIONS];
@@ -426,13 +425,10 @@ void xs_display(UI_struct *ui_info,
     VIO_Real starts[VIO_MAX_DIMENSIONS];
     VIO_Volume volume;
     void *main_ptr;
-    widget_struct *widget;
     int x, y;
     char string[128];
     object_struct *obj_ptr;
-    text_struct *txt_obj_ptr;
     lines_struct *lines_obj_ptr;
-    VIO_Point point;
     int ticks;
     VIO_Real x_min, x_max;
     VIO_Real y_min, y_max;
