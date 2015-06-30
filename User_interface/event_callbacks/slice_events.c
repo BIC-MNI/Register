@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file slice_events.c
+ * \brief Handle mouse and keyboard events in the slice viewports.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,11 +13,8 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_callbacks/slice_events.c,v 1.17 2005-01-18 22:05:07 bert Exp $";
-#endif
+*/
 
 #include  <user_interface.h>
 
@@ -315,6 +315,26 @@ static  void  increment_slice(
     }
 }
 
+static DEFINE_EVENT_FUNCTION(scroll_up_callback)
+{
+    int volume, view;
+
+    ui_get_volume_view_index( event_viewport_index, &volume, &view );
+    if (volume < 0 || view < 0)
+      return;
+    IF_scale_slice( volume, view, 1.1 );
+}
+
+static DEFINE_EVENT_FUNCTION(scroll_down_callback)
+{
+    int volume, view;
+
+    ui_get_volume_view_index( event_viewport_index, &volume, &view );
+    if (volume < 0 || view < 0)
+      return;
+    IF_scale_slice( volume, view, 1.0/1.1);
+}
+
   void  install_slice_events(
     event_viewports_struct   *event_table,
     int                     volume )
@@ -347,6 +367,19 @@ static  void  increment_slice(
                                      -1, -1, -1, -1,
                                      start_scale_slice_callback, SHIFT_ONLY,
                                      (void *) 0 );
+
+        add_event_viewport_callback( event_table,
+                                     ui_get_slice_viewport_index(volume,view),
+                                     SCROLL_UP_EVENT,
+                                     -1, -1, -1, -1,
+                                     scroll_up_callback, NO_SHIFT_ONLY,
+                                     (void *) 0 );
+        add_event_viewport_callback( event_table,
+                                     ui_get_slice_viewport_index(volume,view),
+                                     SCROLL_DOWN_EVENT,
+                                     -1, -1, -1, -1,
+                                     scroll_down_callback, NO_SHIFT_ONLY,
+                                     (void *) 0 );
     }
 }
 
@@ -374,5 +407,13 @@ static  void  increment_slice(
                                      ui_get_slice_viewport_index(volume,view),
                                      MIDDLE_MOUSE_DOWN_EVENT,
                                      start_scale_slice_callback, (void *) 0 );
+        remove_event_viewport_callback( event_table,
+                                     ui_get_slice_viewport_index(volume,view),
+                                     SCROLL_UP_EVENT,
+                                     scroll_up_callback, (void *) 0 );
+        remove_event_viewport_callback( event_table,
+                                     ui_get_slice_viewport_index(volume,view),
+                                     SCROLL_DOWN_EVENT,
+                                     scroll_down_callback, (void *) 0 );
     }
 }

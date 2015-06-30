@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/global_events.c,v 1.9 1998-06-29 15:01:56 david Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  event_callback_list_struct    global_event_table[N_EVENT_TYPES];
@@ -62,7 +58,9 @@ static  Event_types  in_window_events[] = {
                             KEY_DOWN_EVENT,
                             LEFT_MOUSE_DOWN_EVENT,
                             MIDDLE_MOUSE_DOWN_EVENT,
-                            RIGHT_MOUSE_DOWN_EVENT
+                            RIGHT_MOUSE_DOWN_EVENT,
+                            SCROLL_UP_EVENT,
+                            SCROLL_DOWN_EVENT
                          };
 
 static  VIO_BOOL      event_must_be_in_window[N_EVENT_TYPES];

@@ -12,10 +12,6 @@
               express or implied warranty.
 ---------------------------------------------------------------------------- */
 
-#ifndef lint
-static char rcsid[] = "$Header: /static-cvsroot/visualization/Register/User_interface/event_handling/window_events.c,v 1.4 2001-05-23 04:13:11 stever Exp $";
-#endif
-
 #include  <user_interface.h>
 
 static  void  update_callback(
@@ -141,6 +137,24 @@ static  void  quit_callback(
     handle_event( WINDOW_QUIT_EVENT, window, 0 );
 }
 
+static  void  scroll_up_callback(
+    Gwindow   window,
+    int       x,
+    int       y,
+    void      *data )
+{
+    handle_event( SCROLL_UP_EVENT, window, 0 );
+}
+
+static  void  scroll_down_callback(
+    Gwindow   window,
+    int       x,
+    int       y,
+    void      *data )
+{
+    handle_event( SCROLL_DOWN_EVENT, window, 0 );
+}
+
   void  set_window_event_callbacks(
     graphics_window_struct    *window )
 {
@@ -163,4 +177,6 @@ static  void  quit_callback(
     G_set_window_enter_function( gwindow, enter_callback, NULL);
     G_set_window_leave_function( gwindow, leave_callback, NULL);
     G_set_window_quit_function( gwindow, quit_callback, NULL);
+    G_set_scroll_up_function( gwindow, scroll_up_callback, NULL);
+    G_set_scroll_down_function( gwindow, scroll_down_callback, NULL);
 }

@@ -15,10 +15,6 @@
 #ifndef  DEF_EVENTS
 #define  DEF_EVENTS
 
-#ifndef lint
-static char ui_events_rcsid[] = "$Header: /private-cvsroot/visualization/Register/User_interface/Include/events.h,v 1.7 1998-02-16 16:02:15 david Exp $";
-#endif
-
 #include  <graphics.h>
 #include  <viewports.h>
 
@@ -42,6 +38,8 @@ typedef  enum  {
                    WINDOW_QUIT_EVENT,
                    WINDOW_LEAVE_EVENT,
                    WINDOW_ENTER_EVENT,
+                   SCROLL_UP_EVENT,
+                   SCROLL_DOWN_EVENT,
                    N_EVENT_TYPES
                } Event_types;
 
