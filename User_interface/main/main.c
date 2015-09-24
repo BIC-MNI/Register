@@ -56,6 +56,9 @@ static  void  print_usage(
     -double:    Starts program in double buffer mode.\n\
     -global variable value:\n\
                 Sets a global variable that changes configuration of program.\n\
+    -sync:      Start program with volumes synced.\n\
+    -range volume min max:\n\
+                Sets the minimum and maximum colour range for volume 0 or 1.\n\
     -version:   Displays the version number of the program.\n\n";
 
     print_error( usage, executable );
@@ -66,10 +69,10 @@ int  main(
     char  *argv[] )
 {
     int              volume, n_volumes;
-    VIO_STR           argument;
-    VIO_STR           volume_filenames[2], tag_filename;
-    VIO_STR           variable_name, variable_value;
-    VIO_Status           status;
+    VIO_STR          argument;
+    VIO_STR          volume_filenames[2], tag_filename;
+    VIO_STR          variable_name, variable_value;
+    VIO_Status       status;
 
     initialize_global_colours();
 
@@ -110,6 +113,35 @@ int  main(
         else if( equal_strings( argument, "-double" ) )
         {
             Initial_double_buffer_state = TRUE;
+        }
+        else if ( equal_strings( argument, "-sync" ) )
+        {
+            Initial_volumes_synced = TRUE;
+        }
+        else if( equal_strings( argument, "-range" ) )
+        {
+            int      volume_index;
+            VIO_Real min_value;
+            VIO_Real max_value;
+
+            if (!get_int_argument( 0, &volume_index ) ||
+                volume_index >= N_VOLUMES ||
+                !get_real_argument( -1.0, &min_value ) ||
+                !get_real_argument( -1.0, &max_value ) )
+            {
+                print_error( "Error in arguments after -range.\n");
+                return( 1 );
+            }
+            if (volume_index == 0)
+            {
+                Volume_1_colour_coding_min = min_value;
+                Volume_1_colour_coding_max = max_value;
+            }
+            else 
+            {
+                Volume_2_colour_coding_min = min_value;
+                Volume_2_colour_coding_max = max_value;
+            }
         }
         else if( equal_strings( argument, "-global" ) )
         {

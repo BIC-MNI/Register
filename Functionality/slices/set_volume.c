@@ -84,7 +84,21 @@ static  void   record_register_volume(
 
     if( volume_index < N_VOLUMES )
     {
-        get_volume_value_range( main, volume_index, &min_value, &max_value );
+        if (volume_index == 0)
+        {
+            min_value = Volume_1_colour_coding_min;
+            max_value = Volume_1_colour_coding_max;
+        }
+        else
+        {
+            min_value = Volume_2_colour_coding_min;
+            max_value = Volume_2_colour_coding_max;
+        }
+        if (min_value >= max_value)
+        {
+            get_volume_value_range( main, volume_index,
+                                    &min_value, &max_value );
+        }
 
         set_volume_colour_coding_limits( main, volume_index,
                                          min_value, max_value );
@@ -230,7 +244,7 @@ char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime, MIvector_
         set_minc_input_vector_to_colour_flag( &options, FALSE );
 
         status = start_volume_input( filename, 0, XYZT_dimension_names,
-                              Volume_voxel_type, Volume_voxel_signed, 
+                              Volume_voxel_type, Volume_voxel_signed,
                               0.0, 0.0, TRUE,
                               &main->trislice[volume_index].volume_being_input,
                               &options,

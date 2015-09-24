@@ -260,4 +260,8 @@ START_GLOBALS
     */
     DEF_GLOBAL( Volume_voxel_type, int, MI_ORIGINAL_TYPE)
     DEF_GLOBAL( Volume_voxel_signed, VIO_BOOL, FALSE)
+    DEF_GLOBAL( Volume_1_colour_coding_min, VIO_Real, 1.0)
+    DEF_GLOBAL( Volume_1_colour_coding_max, VIO_Real, -1.0)
+    DEF_GLOBAL( Volume_2_colour_coding_min, VIO_Real, 1.0)
+    DEF_GLOBAL( Volume_2_colour_coding_max, VIO_Real, -1.0)
 END_GLOBALS
