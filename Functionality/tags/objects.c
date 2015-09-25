@@ -138,15 +138,15 @@ static  VIO_BOOL  convert_tag_to_pixel(
     int               volume,
     int               view,
     tag_point_struct  *tag,
-    VIO_Real              *x,
-    VIO_Real              *y,
-    VIO_Real              *radius )
+    VIO_Real          *x,
+    VIO_Real          *y,
+    VIO_Real          *radius )
 {
-    VIO_BOOL  visible;
+    VIO_BOOL visible;
     int      which_volume, axis;
-    VIO_Real     x_trans, y_trans, x_scale, y_scale;
-    VIO_Real     *cursor_ptr, separations[VIO_MAX_DIMENSIONS];
-    VIO_Real     diff, voxel_position[VIO_N_DIMENSIONS];
+    VIO_Real x_trans, y_trans, x_scale, y_scale;
+    VIO_Real *cursor_ptr, separations[VIO_MAX_DIMENSIONS];
+    VIO_Real diff, voxel_position[VIO_MAX_DIMENSIONS];
 
     visible = FALSE;
 

@@ -72,8 +72,8 @@
 
 static  void  convert_volume1_voxel_to_volume2(
     main_struct   *main,
-    VIO_Real          voxel1[],
-    VIO_Real          voxel2[] )
+    VIO_Real      voxel1[],
+    VIO_Real      voxel2[] )
 {
     VIO_Volume  volume1;
     VIO_Real    world[VIO_N_DIMENSIONS], original_world2[VIO_N_DIMENSIONS];
@@ -99,28 +99,28 @@ static  void  convert_volume1_voxel_to_volume2(
 {
     int              x_axis_index, y_axis_index;
     int              x_size, y_size, axis;
-    int              c, sizes1[VIO_N_DIMENSIONS];
-    VIO_Real             separations2[VIO_N_DIMENSIONS], x_len, y_len;
+    int              c, sizes1[VIO_MAX_DIMENSIONS];
+    VIO_Real         separations2[VIO_MAX_DIMENSIONS], x_len, y_len;
     Pixel_types      pixel_type;
-    VIO_Filter_types     filter_type;
-    VIO_Real             filter_width;
-    VIO_Real             x_scale1, y_scale1, x_scale2, y_scale2;
-    VIO_Real             x_translation1, y_translation1;
-    VIO_Real             x_translation2, y_translation2;
-    VIO_Volume           volume1, volume2;
-    VIO_Real             *position1, voxel1[VIO_MAX_DIMENSIONS];
-    VIO_Real             x_lower_left_pixel, y_lower_left_pixel;
-    VIO_Real             x_upper_left_pixel, y_upper_left_pixel;
-    VIO_Real             x_lower_right_pixel, y_lower_right_pixel;
-    VIO_Real             dx_pixel, dy_pixel;
-    VIO_Real             lower_left_voxel2[VIO_MAX_DIMENSIONS];
-    VIO_Real             upper_left_voxel2[VIO_MAX_DIMENSIONS];
-    VIO_Real             lower_right_voxel2[VIO_MAX_DIMENSIONS];
-    VIO_Real             origin1[VIO_MAX_DIMENSIONS];
-    VIO_Real             x_axis1[VIO_MAX_DIMENSIONS], y_axis1[VIO_MAX_DIMENSIONS];
-    VIO_Real             origin2[VIO_MAX_DIMENSIONS];
-    VIO_Real             x_axis2[VIO_MAX_DIMENSIONS], y_axis2[VIO_MAX_DIMENSIONS];
-    VIO_Colour           *rgb_colour_map, **rgb_colour_map_ptr;
+    VIO_Filter_types filter_type;
+    VIO_Real         filter_width;
+    VIO_Real         x_scale1, y_scale1, x_scale2, y_scale2;
+    VIO_Real         x_translation1, y_translation1;
+    VIO_Real         x_translation2, y_translation2;
+    VIO_Volume       volume1, volume2;
+    VIO_Real         *position1, voxel1[VIO_MAX_DIMENSIONS];
+    VIO_Real         x_lower_left_pixel, y_lower_left_pixel;
+    VIO_Real         x_upper_left_pixel, y_upper_left_pixel;
+    VIO_Real         x_lower_right_pixel, y_lower_right_pixel;
+    VIO_Real         dx_pixel, dy_pixel;
+    VIO_Real         lower_left_voxel2[VIO_MAX_DIMENSIONS];
+    VIO_Real         upper_left_voxel2[VIO_MAX_DIMENSIONS];
+    VIO_Real         lower_right_voxel2[VIO_MAX_DIMENSIONS];
+    VIO_Real         origin1[VIO_MAX_DIMENSIONS];
+    VIO_Real         x_axis1[VIO_MAX_DIMENSIONS], y_axis1[VIO_MAX_DIMENSIONS];
+    VIO_Real         origin2[VIO_MAX_DIMENSIONS];
+    VIO_Real         x_axis2[VIO_MAX_DIMENSIONS], y_axis2[VIO_MAX_DIMENSIONS];
+    VIO_Colour       *rgb_colour_map, **rgb_colour_map_ptr;
     pixels_struct    *merged_pixels, pixels1, pixels2;
 
     volume1 = get_slice_volume( main, 0 );
@@ -298,13 +298,13 @@ static  void  convert_volume1_voxel_to_volume2(
     int             view_index,
     int             x_pixel,
     int             y_pixel,
-    VIO_Real            voxel_position[VIO_N_DIMENSIONS] )
+    VIO_Real        voxel_position[VIO_MAX_DIMENSIONS] )
 {
     VIO_BOOL        in_volume;
-    VIO_Real           x_translation, y_translation, x_scale, y_scale;
-    VIO_Volume         volume;
-    VIO_Real           origin[VIO_MAX_DIMENSIONS];
-    VIO_Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
+    VIO_Real        x_translation, y_translation, x_scale, y_scale;
+    VIO_Volume      volume;
+    VIO_Real        origin[VIO_MAX_DIMENSIONS];
+    VIO_Real        x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
 
     volume = get_slice_volume( main, volume_index );
     get_slice_plane( main, volume_index, view_index, origin, x_axis, y_axis );
@@ -324,9 +324,9 @@ static  void  convert_volume1_voxel_to_volume2(
     main_struct     *main,
     int             volume_index,
     int             view_index,
-    VIO_Real            voxel_position[VIO_N_DIMENSIONS],
-    VIO_Real            *x_pixel,
-    VIO_Real            *y_pixel )
+    VIO_Real        voxel_position[VIO_MAX_DIMENSIONS],
+    VIO_Real        *x_pixel,
+    VIO_Real        *y_pixel )
 {
     VIO_Real           origin[VIO_MAX_DIMENSIONS];
     VIO_Real           x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];

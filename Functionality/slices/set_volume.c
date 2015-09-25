@@ -50,8 +50,8 @@ static  void   record_register_volume(
     VIO_Volume         volume,
     VIO_STR         filename )
 {
-    int     view, axis, sizes[VIO_N_DIMENSIONS];
-    VIO_Real    min_value, max_value, *cursor_ptr;
+    int      view, axis, sizes[VIO_MAX_DIMENSIONS];
+    VIO_Real min_value, max_value, *cursor_ptr;
 
     if( is_volume_active( main, volume_index ) )
     {
@@ -177,8 +177,8 @@ static  void  set_merged_volume_visibility(
     main_struct    *main,
     VIO_BOOL        activity )
 {
-    int     view, axis, sizes[VIO_N_DIMENSIONS];
-    VIO_Real    position[VIO_N_DIMENSIONS];
+    int      view, axis, sizes[VIO_MAX_DIMENSIONS];
+    VIO_Real position[VIO_N_DIMENSIONS];
 
     if( activity )
     {

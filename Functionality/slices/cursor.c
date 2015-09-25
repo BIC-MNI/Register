@@ -225,9 +225,9 @@ static  void  set_cursor_colours(
     int           volume_index,
     int           view_index )
 {
-    VIO_BOOL        activity;
-    VIO_Real           x_pixel, y_pixel;
-    VIO_Real           position[VIO_N_DIMENSIONS];
+    VIO_BOOL       activity;
+    VIO_Real       x_pixel, y_pixel;
+    VIO_Real       position[VIO_MAX_DIMENSIONS];
     object_struct  *cursor;
 
     cursor = get_cursor_lines( main, volume_index, view_index );
