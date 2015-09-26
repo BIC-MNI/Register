@@ -297,7 +297,8 @@ static  void  increment_slice(
         advance_current_tag_point( get_ui_struct() );
         break;
 
-    case  'S':
+    case 's':
+    case 'S':
         save_current_viewport( get_ui_struct(), event_viewport_index );
         break;
 
@@ -309,6 +310,7 @@ static  void  increment_slice(
         time_step(get_ui_struct(), event_viewport_index, 1);
         break;
 
+    case 't':
     case 'T':
         xs_display(get_ui_struct(), event_viewport_index, 1);
         break;
