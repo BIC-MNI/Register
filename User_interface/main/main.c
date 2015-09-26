@@ -46,9 +46,8 @@ static  void  print_usage(
     char   executable[] )
 {
     static  VIO_STR  usage =
-"Usage: %s  [-help] [-rgb] [-cmap] [-single] [-double] [volume1.mnc] \n\
-                                [volume2.mnc] [tags.tag]\n\
-\n\
+"Usage: %s  [OPTION]... [volume1.mnc] [volume2.mnc] [tags.tag]\n\
+\nOptions:\n\
     -help:      Prints this message.\n\
     -rgb:       Starts program in RGB mode.\n\
     -cmap:      Starts program in colour map mode.\n\
@@ -70,7 +69,7 @@ int  main(
 {
     int              volume, n_volumes;
     VIO_STR          argument;
-    VIO_STR          volume_filenames[2], tag_filename;
+    VIO_STR          volume_filenames[N_VOLUMES], tag_filename;
     VIO_STR          variable_name, variable_value;
     VIO_Status       status;
 
@@ -163,7 +162,7 @@ int  main(
         {
             tag_filename = argument;
         }
-        else if( n_volumes < 2 )
+        else if( n_volumes < N_VOLUMES )
         {
             volume_filenames[n_volumes] = argument;
             ++n_volumes;
