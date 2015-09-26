@@ -8,7 +8,7 @@
 
 /*
  * These function signatures are NOT strictly correct, they use "void *"
- * to replace what should be "main_struct *", but main_struct is not 
+ * to replace what should be "main_struct *", but main_struct is not
  * exposed in this module.
  */
 extern void *get_main_struct();
@@ -23,11 +23,11 @@ struct xs_window {
     VIO_Real x_min_ui, x_max_ui;
     VIO_Real x_min_abs, x_max_abs;
     int file_widget_id;
-    int viewport_index; 
+    int viewport_index;
 };
 
 
-/* There can be only one cross-section window at a time in this 
+/* There can be only one cross-section window at a time in this
  * implementation . */
 static struct xs_window *_xswin = NULL;
 
@@ -154,7 +154,7 @@ static DEFINE_WIDGET_CALLBACK(xs_save_callback)
     /* END OF CUT AND PASTE */
 
     fprintf(fp, "# File %s\n", get_volume_filename(main_ptr, volume_index));
-    fprintf(fp, "# Timecourse of voxel at X=%.2f,Y=%.2f,Z=%.2f\n", 
+    fprintf(fp, "# Timecourse of voxel at X=%.2f,Y=%.2f,Z=%.2f\n",
             worldpos[VIO_X], worldpos[VIO_Y], worldpos[VIO_Z]);
 
     t = x_min;
@@ -272,7 +272,7 @@ xs_create_widgets(widgets_struct *widgets,
 
     widget_ptr = create_toggle_button( gwin, (Viewport_types) 0,
                                        x, 2, Button_width, Button_height,
-                                       "Full range", "Scaled", FALSE, TRUE, TRUE, 
+                                       "Full range", "Scaled", FALSE, TRUE, TRUE,
                                        BUTTON_ACTIVE_COLOUR,
                                        BUTTON_INACTIVE_COLOUR,
                                        BUTTON_TEXT_COLOUR,
@@ -288,7 +288,7 @@ xs_create_widgets(widgets_struct *widgets,
                               x, 2,
                               35, Text_entry_height,
                               "T(min):",
-                              FALSE, 
+                              FALSE,
                               LABEL_ACTIVE_COLOUR,
                               LABEL_SELECTED_COLOUR,
                               LABEL_INACTIVE_COLOUR,
@@ -304,17 +304,17 @@ xs_create_widgets(widgets_struct *widgets,
 
     widget_ptr = create_text_entry( gwin, 0,
                                     x, 2,
-                                    Position_values_width, 
+                                    Position_values_width,
                                     Text_entry_height,
                                     TRUE, string, TRUE,
-                                    TEXT_ENTRY_ACTIVE_COLOUR, 
+                                    TEXT_ENTRY_ACTIVE_COLOUR,
                                     TEXT_ENTRY_SELECTED_COLOUR,
                                     TEXT_ENTRY_INACTIVE_COLOUR,
                                     TEXT_ENTRY_TEXT_COLOUR,
                                     TEXT_ENTRY_EDIT_COLOUR,
                                     TEXT_ENTRY_EDIT_TEXT_COLOUR,
                                     TEXT_ENTRY_CURSOR_COLOUR,
-                                    (Font_types) Text_entry_font, 
+                                    (Font_types) Text_entry_font,
                                     Text_entry_font_size,
                                     xs_min_callback, (void *) _xswin );
 
@@ -326,7 +326,7 @@ xs_create_widgets(widgets_struct *widgets,
                               x, 2,
                               35, Text_entry_height,
                               "T(max):",
-                              FALSE, 
+                              FALSE,
                               LABEL_ACTIVE_COLOUR,
                               LABEL_SELECTED_COLOUR,
                               LABEL_INACTIVE_COLOUR,
@@ -342,17 +342,17 @@ xs_create_widgets(widgets_struct *widgets,
 
     widget_ptr = create_text_entry( gwin, 0,
                                     x, 2,
-                                    Position_values_width, 
+                                    Position_values_width,
                                     Text_entry_height,
                                     TRUE, string, TRUE,
-                                    TEXT_ENTRY_ACTIVE_COLOUR, 
+                                    TEXT_ENTRY_ACTIVE_COLOUR,
                                     TEXT_ENTRY_SELECTED_COLOUR,
                                     TEXT_ENTRY_INACTIVE_COLOUR,
                                     TEXT_ENTRY_TEXT_COLOUR,
                                     TEXT_ENTRY_EDIT_COLOUR,
                                     TEXT_ENTRY_EDIT_TEXT_COLOUR,
                                     TEXT_ENTRY_CURSOR_COLOUR,
-                                    (Font_types) Text_entry_font, 
+                                    (Font_types) Text_entry_font,
                                     Text_entry_font_size,
                                     x_max_callback, (void *) _xswin );
 
@@ -360,16 +360,16 @@ xs_create_widgets(widgets_struct *widgets,
 
     x += Position_values_width + 2 + 10;
 
-    widget_ptr = create_button( gwin, 0, 
-                                x, 2, 
+    widget_ptr = create_button( gwin, 0,
+                                x, 2,
                                 30, Button_height,
                                 "Save",
-                                TRUE, TRUE, 
-                                BUTTON_ACTIVE_COLOUR, 
+                                TRUE, TRUE,
+                                BUTTON_ACTIVE_COLOUR,
                                 BUTTON_SELECTED_COLOUR,
                                 BUTTON_INACTIVE_COLOUR,
                                 BUTTON_TEXT_COLOUR,
-                                (Font_types) Button_text_font, 
+                                (Font_types) Button_text_font,
                                 Button_text_font_size,
                                 xs_save_callback, (void *) _xswin ) ;
     add_widget_to_list( widgets, widget_ptr);
@@ -380,14 +380,14 @@ xs_create_widgets(widgets_struct *widgets,
                                     x, 2,
                                     Load_filename_width, Text_entry_height,
                                     FALSE, "", TRUE,
-                                    TEXT_ENTRY_ACTIVE_COLOUR, 
+                                    TEXT_ENTRY_ACTIVE_COLOUR,
                                     TEXT_ENTRY_SELECTED_COLOUR,
                                     TEXT_ENTRY_INACTIVE_COLOUR,
                                     TEXT_ENTRY_TEXT_COLOUR,
                                     TEXT_ENTRY_EDIT_COLOUR,
                                     TEXT_ENTRY_EDIT_TEXT_COLOUR,
                                     TEXT_ENTRY_CURSOR_COLOUR,
-                                    (Font_types) Text_entry_font, 
+                                    (Font_types) Text_entry_font,
                                     Text_entry_font_size,
                                     xs_name_callback, (void *) _xswin );
     _xswin->file_widget_id = add_widget_to_list( widgets, widget_ptr);
@@ -395,7 +395,7 @@ xs_create_widgets(widgets_struct *widgets,
     x += Load_filename_width + 2 + 10;
 
     widget_ptr = create_button( gwin, (Viewport_types) 0,
-                                x, 2, 
+                                x, 2,
                                 Button_width, Button_height,
                                 "Close", TRUE, TRUE,
                                 BUTTON_ACTIVE_COLOUR,
@@ -410,7 +410,7 @@ xs_create_widgets(widgets_struct *widgets,
 }
 
 void xs_display(UI_struct *ui_info,
-                        Viewport_types viewport_index, 
+                        Viewport_types viewport_index,
                         int force)
 {
     int x_axis_pixels;
@@ -502,9 +502,9 @@ void xs_display(UI_struct *ui_info,
 
         xswin->viewport_index = viewport_index;
 
-        create_popup_window(&xswin->popup, "Timecourse", x, y, 
-                            x_axis_pixels+(LMARGIN+RMARGIN), 
-                            y_axis_pixels+(TMARGIN+BMARGIN), 
+        create_popup_window(&xswin->popup, "Timecourse", x, y,
+                            x_axis_pixels+(LMARGIN+RMARGIN),
+                            y_axis_pixels+(TMARGIN+BMARGIN),
                             xs_quit_callback, (void *) xswin);
 
         xswin->x_min_abs = starts[3] + (x_start * separations[3]);
@@ -519,7 +519,7 @@ void xs_display(UI_struct *ui_info,
         for (i = 0; i < XS_MAX_OBJECTS; i++) {
             if ((obj_ptr = xswin->objects[i]) != NULL) {
 
-                remove_object_from_viewport(&xswin->popup.graphics.graphics, 
+                remove_object_from_viewport(&xswin->popup.graphics.graphics,
                                             0,
                                             NORMAL_PLANES,
                                             obj_ptr);
@@ -529,7 +529,7 @@ void xs_display(UI_struct *ui_info,
     }
 
     xswin->n_objects = 0;
-           
+
     /* Default X range is the absolute minimum and maximum */
 
     x_min = xswin->x_min_abs;
@@ -548,9 +548,9 @@ void xs_display(UI_struct *ui_info,
         x_end = (x_max / separations[3]) - starts[3];
     }
 
-    /* Calculate the Y range here.  It can be either "scaled" or 
-     * "full-range".  Full-range means the scale displays the full 
-     * possible range of data, scaled means it displays only the 
+    /* Calculate the Y range here.  It can be either "scaled" or
+     * "full-range".  Full-range means the scale displays the full
+     * possible range of data, scaled means it displays only the
      * range of valid data within the given cross-section.
      */
     if (xswin->do_scale_yrange) {
@@ -559,7 +559,7 @@ void xs_display(UI_struct *ui_info,
         y_max = -DBL_MAX;
         y_min = DBL_MAX;
 
-        for_less( i, 0, x_axis_pixels ) {
+        for_less( i, x_start, x_end ) {
             VIO_Real value = get_volume_real_value(volume, vx, vy, vz, (VIO_Real) i, 0);
             if (value > y_max) {
                 y_max = value;
@@ -575,7 +575,7 @@ void xs_display(UI_struct *ui_info,
     }
 
 
-    /* Draw the Y axis scale 
+    /* Draw the Y axis scale
      */
     obj_ptr = create_object( LINES );
     lines_obj_ptr = get_lines_ptr( obj_ptr );
@@ -585,42 +585,45 @@ void xs_display(UI_struct *ui_info,
     lines_obj_ptr->n_points = 8*3;
 
     lines_obj_ptr->n_items = 1;
-        
+
     ALLOC( lines_obj_ptr->points, lines_obj_ptr->n_points );
 
     ALLOC( lines_obj_ptr->end_indices, lines_obj_ptr->n_items );
     ALLOC( lines_obj_ptr->indices, lines_obj_ptr->n_points );
-    
+
     lines_obj_ptr->end_indices[0] = 8*3;
 
+    /* Draw the bottom tick along the Y axis.
+     */
     x = LMARGIN;
     y = BMARGIN;
     sprintf(string, "%5.03f", y_min);
     display_text(xswin, 2, y-(Message_font_size/4), string);
 
+    /* Draw 8 more ticks along the Y axis */
     for ( i = 0; i < 8; i++ ) {
         int t = i*3;
         fill_Point( lines_obj_ptr->points[t+0], x, y, 0.0 );
         y += y_axis_pixels/8;
         fill_Point( lines_obj_ptr->points[t+1], x, y, 0.0 );
         fill_Point( lines_obj_ptr->points[t+2], x+10.0, y, 0.0 );
-        
+
         lines_obj_ptr->indices[t+0] = t+0;
         lines_obj_ptr->indices[t+1] = t+1;
         lines_obj_ptr->indices[t+2] = t+2;
 
-        sprintf(string, "%5.03f", 
-                y_min + ((y_max - y_min) * (i + 1)) / 8); 
+        sprintf(string, "%5.03f",
+                y_min + ((y_max - y_min) * (i + 1)) / 8);
         display_text(xswin, 2, y-(Message_font_size/4), string);
     }
-        
 
-    add_object_to_viewport( &xswin->popup.graphics.graphics, 
+
+    add_object_to_viewport( &xswin->popup.graphics.graphics,
                             0, NORMAL_PLANES, obj_ptr );
 
     add_object_to_xs_window(xswin, obj_ptr);
 
-    /* Draw the X axis scale 
+    /* Draw the X axis scale.
      */
     obj_ptr = create_object( LINES );
     lines_obj_ptr = get_lines_ptr( obj_ptr );
@@ -631,12 +634,12 @@ void xs_display(UI_struct *ui_info,
     lines_obj_ptr->n_points = ticks*3;
 
     lines_obj_ptr->n_items = 1;
-        
+
     ALLOC( lines_obj_ptr->points, lines_obj_ptr->n_points );
 
     ALLOC( lines_obj_ptr->end_indices, lines_obj_ptr->n_items );
     ALLOC( lines_obj_ptr->indices, lines_obj_ptr->n_points );
-    
+
     lines_obj_ptr->end_indices[0] = ticks*3;
 
     x = LMARGIN;
@@ -644,7 +647,7 @@ void xs_display(UI_struct *ui_info,
 
     sprintf(string, "%5.03f", x_min);
     display_text(xswin,
-                 x-Message_font_size*(strlen(string)/3), 
+                 x-Message_font_size*(strlen(string)/3),
                  y-Message_font_size, string);
 
     for ( i = 0; i < ticks; i++ ) {
@@ -658,14 +661,14 @@ void xs_display(UI_struct *ui_info,
         lines_obj_ptr->indices[t+1] = t+1;
         lines_obj_ptr->indices[t+2] = t+2;
 
-        sprintf(string, "%5.03f", 
-                x_min + ((x_max - x_min) * (i + 1)) / ticks); 
+        sprintf(string, "%5.03f",
+                x_min + ((x_max - x_min) * (i + 1)) / ticks);
         display_text(xswin,
-                     x-Message_font_size*(strlen(string)/3), 
+                     x-Message_font_size*(strlen(string)/3),
                      y-Message_font_size, string);
     }
 
-    add_object_to_viewport( &xswin->popup.graphics.graphics, 
+    add_object_to_viewport( &xswin->popup.graphics.graphics,
                             0, NORMAL_PLANES, obj_ptr );
 
     add_object_to_xs_window(xswin, obj_ptr);
@@ -673,7 +676,7 @@ void xs_display(UI_struct *ui_info,
     sprintf(string, "Timecourse of voxel at X=%.2f,Y=%.2f,Z=%.2f",
             worldpos[VIO_X], worldpos[VIO_Y], worldpos[VIO_Z]);
 
-    display_text(xswin, LMARGIN+10, 
+    display_text(xswin, LMARGIN+10,
                  y_axis_pixels + BMARGIN + TMARGIN - Message_font_size,
                  string);
 
@@ -698,7 +701,7 @@ void xs_display(UI_struct *ui_info,
         value = VIO_ROUND(value);
 
         x = VIO_ROUND((i - x_start) * x_delta);
-        fill_Point( lines_obj_ptr->points[i-x_start], (VIO_Real) x+LMARGIN+1, 
+        fill_Point( lines_obj_ptr->points[i-x_start], (VIO_Real) x+LMARGIN+1,
                     value+BMARGIN, 0.0 );
     }
 
