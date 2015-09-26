@@ -1,3 +1,23 @@
+2015-09-26  Robert D Vincent <robert.d.vincent@mcgill.ca
+   * Documentation/register.1: Correct and expand the man page.
+
+   * User_interface/event_callbacks/slice_events.c: Permit use of
+	lower-case characters for commands.
+
+   * User_interface/main/main.c: Minor cleanup and improvements.
+
+   * User_interface/windows/xsect.c: Fix x-axis range so that scaled
+	display mode works as intended.
+
+2015-09-25  Robert D Vincent <robert.d.vincent@mcgill.ca
+   * Functionality/slices/{create_slice.c, cursor.c, set_volume.c},
+	Functionality/tags/objects.c: Fix some memory overwrite errors.
+
+2015-09-24  Robert D Vincent <robert.d.vincent@mcgill.ca
+   * User_interface/main/main.c, Functionality/slices/set_volume.c,
+	./global_variables.h: Implement -range and -sync command line
+	options.
+
 2015-06-03  Robert D Vincent <robert.d.vincent@mcgill.ca>
    * CMakeLists.txt, config.h.cmake, User_interface/main/main.c: Added
 	git branch and hash to the version information. Updated version
