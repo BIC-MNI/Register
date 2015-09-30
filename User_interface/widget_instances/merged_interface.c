@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file merged_interface.c
+ * \brief User interface for the third "merged" volume.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,14 +13,14 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+*/
 
 #include  <user_interface.h>
 
 typedef  enum
 {
-    OPACITY_2_SLIDER,
     OPACITY_1_SLIDER,
+    OPACITY_2_SLIDER,
     RESET_VIEW_BUTTON,
     VALUE1_READOUT_TEXT,
     VALUE2_READOUT_TEXT,
@@ -334,6 +337,16 @@ static  Merged_widgets  get_merge_method_widget(
     UI_struct     *ui_info,
     int           volume )
 {
+    if (volume >= N_VOLUMES)
+        return NULL;
     return( ui_info->widget_list[Merged_menu_viewport].widgets
                              [widget_indices[VALUE1_READOUT_TEXT + volume]] );
+}
+
+widget_struct *get_merged_blend_widget(UI_struct *ui_info, int volume)
+{
+    if (volume >= N_VOLUMES)
+        return NULL;
+    return( ui_info->widget_list[Merged_menu_viewport].widgets
+            [widget_indices[OPACITY_1_SLIDER + volume]] );
 }

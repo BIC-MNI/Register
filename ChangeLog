@@ -1,4 +1,15 @@
-2015-09-26  Robert D Vincent <robert.d.vincent@mcgill.ca
+2015-09-30  Robert D Vincent <robert.d.vincent@mcgill.ca>
+   * User_interface/Include/User_interface_prototypes.h,
+     User_interface/event_callbacks/slice_events.c,
+     User_interface/widget_instances/merged_interface.c:
+	Implement 'R' and 'E' keys for moving blend slider.
+
+   * Documentation/register.1: Add documentation of 'R' and 'E'
+	commands.
+
+   * Various: Minor cleanup and doxygen comments.
+
+2015-09-26  Robert D Vincent <robert.d.vincent@mcgill.ca>
    * Documentation/register.1: Correct and expand the man page.
 
    * User_interface/event_callbacks/slice_events.c: Permit use of

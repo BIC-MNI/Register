@@ -438,6 +438,10 @@
     UI_struct     *ui_info,
     int           volume );
 
+widget_struct  *get_merged_blend_widget(
+    UI_struct     *ui_info,
+    int           volume );
+
   void  initialize_meter(
     popup_struct     *popup,
     int              x_size,

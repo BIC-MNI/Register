@@ -18,8 +18,8 @@
 
 #include  <user_interface.h>
 
-static void time_step(UI_struct *ui_info, 
-                       Viewport_types viewport, 
+static void time_step(UI_struct *ui_info,
+                       Viewport_types viewport,
                        int dir)
 {
     int  volume_index, view_index;
@@ -275,6 +275,34 @@ static  void  increment_slice(
     }
 }
 
+/**
+ * Change the blending weights (relative volume opacities) by a fixed
+ * step size in either direction, updating the UI to reflect the
+ * change in the weights.  Works only in the BLEND_VOLUMES merge mode
+ * for now.
+ *
+ * \param ui_info The main user interface structure.
+ * \param direction Indicates the sign and number of steps to change the
+ * opacity.
+ */
+static void
+change_blending_weights(UI_struct *ui_info,
+                        int direction)
+{
+    Merge_methods merge_method = IF_get_merge_method();
+    if (merge_method == BLEND_VOLUMES)
+    {
+        VIO_Real value = IF_get_merged_volume_opacity(0);
+        value += 0.01 * direction;
+        if (value < 0.0)
+            value = 0.0;
+        if (value > 1.0)
+            value = 1.0;
+        IF_set_merged_volume_opacity(0, value);
+        set_slider_values(get_merged_blend_widget(ui_info, 0), value, value);
+    }
+}
+
 /* ARGSUSED */
 
   DEFINE_EVENT_FUNCTION( slice_key_down_callback )
@@ -313,6 +341,16 @@ static  void  increment_slice(
     case 't':
     case 'T':
         xs_display(get_ui_struct(), event_viewport_index, 1);
+        break;
+
+    case 'r':
+    case 'R':
+        change_blending_weights(get_ui_struct(), 1);
+        break;
+
+    case 'e':
+    case 'E':
+        change_blending_weights(get_ui_struct(), -1);
         break;
     }
 }
