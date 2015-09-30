@@ -67,7 +67,7 @@
   void  ui_set_volume_voxel_position(
     UI_struct  *ui_info,
     int        volume_index,
-    VIO_Real       position[VIO_N_DIMENSIONS] )
+    VIO_Real   position[] )
 {
     IF_set_volume_voxel_position( volume_index, position );
 
@@ -90,7 +90,7 @@
   void  ui_set_volume_original_world_position(
     UI_struct  *ui_info,
     int        volume_index,
-    VIO_Real       position[VIO_N_DIMENSIONS] )
+    VIO_Real   position[] )
 {
     IF_set_volume_original_world_position( volume_index, position );
 

@@ -482,14 +482,14 @@ static  void  check_axes_assigned( void )
 
   void  get_volume_time_position(main_struct *main_ptr,
                                        int volume_index,
-                                       VIO_Real *tpos_ptr)
+                                       VIO_Real *t_voxel_ptr)
 {
-    *tpos_ptr = main_ptr->trislice[volume_index].time_pos;
+    *t_voxel_ptr = main_ptr->trislice[volume_index].position[VIO_T];
 }
 
   void  set_volume_time_position(main_struct *main_ptr,
                                        int volume_index,
-                                       VIO_Real tpos)
+                                       VIO_Real t_voxel)
 {
     int sizes[VIO_MAX_DIMENSIONS];
     VIO_Volume volume;
@@ -504,15 +504,15 @@ static  void  check_axes_assigned( void )
 
         /* Force time within range.
          */
-        if (tpos < 0.0) {
-            tpos = 0;
+        if (t_voxel < 0.0) {
+            t_voxel = 0;
         }
 
-        if (tpos >= (VIO_Real) sizes[3]) {
-            tpos = (VIO_Real) sizes[3] - 1.0;
+        if (t_voxel >= (VIO_Real) sizes[VIO_T]) {
+            t_voxel = (VIO_Real) sizes[VIO_T] - 1.0;
         }
 
-        main_ptr->trislice[volume_index].time_pos = tpos;
+        main_ptr->trislice[volume_index].position[VIO_T] = t_voxel;
 
         set_recreate_3_slices_flags(main_ptr, volume_index);
     }
@@ -661,22 +661,22 @@ static  void  check_axes_assigned( void )
 {
     VIO_Real           value, position[VIO_MAX_DIMENSIONS];
     VIO_Volume         volume;
-    VIO_Real           tpos;
+    VIO_Real           t_voxel;
 
     volume = get_slice_volume( main, volume_index );
 
-    tpos = main->trislice[volume_index].time_pos;
+    t_voxel = main->trislice[volume_index].position[VIO_T];
 
     position[VIO_X] = x_voxel;
     position[VIO_Y] = y_voxel;
     position[VIO_Z] = z_voxel;
-    position[3] = tpos;
+    position[VIO_T] = t_voxel;
 
     if( voxel_is_within_volume( volume, position ) )
     {
         value = get_volume_real_value( volume, VIO_ROUND(x_voxel), 
                                        VIO_ROUND(y_voxel), VIO_ROUND(z_voxel), 
-                                       VIO_ROUND(tpos), 0 );
+                                       VIO_ROUND(t_voxel), 0 );
     }
     else
         value = 0.0;

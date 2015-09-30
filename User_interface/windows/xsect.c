@@ -1,4 +1,6 @@
-/* X-section window "class" for Register.
+/**
+ * \file xsect.c
+ * \brief Defines the window used to display the timecourse of a voxel.
  */
 #include <float.h>
 #include <user_interface.h>

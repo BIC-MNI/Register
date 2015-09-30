@@ -1,8 +1,11 @@
 #ifndef  DEF_MAIN_STRUCT
 #define  DEF_MAIN_STRUCT
 
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file main_struct.h
+ * \brief Defines the singleton structure containing the program's state.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -13,12 +16,10 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <common_include.h>
 
-#define  TWO_BUFFERS    2
-#define  VOXEL_TYPE     MI_ORIGINAL_TYPE
 #define  N_MERGED       2
 
 typedef enum { BACKGROUND_COLOUR,
@@ -32,15 +33,15 @@ typedef enum { BACKGROUND_COLOUR,
 
 typedef  struct
 {
-    VIO_Real            x_translation, y_translation;
-    VIO_Real            x_scale, y_scale;
+    VIO_Real        x_translation, y_translation;
+    VIO_Real        x_scale, y_scale;
     int             prev_viewport_x_size;
     int             prev_viewport_y_size;
     int             used_viewport_x_size;
     int             used_viewport_y_size;
-    VIO_Filter_types    filter_type;
-    VIO_Real            filter_width;
-    VIO_BOOL         pixels_are_up_to_date;
+    VIO_Filter_types filter_type;
+    VIO_Real        filter_width;
+    VIO_BOOL        pixels_are_up_to_date;
     int             n_pixels_alloced;
     pixels_struct   *pixels;
     object_struct   *cursor_lines;
@@ -48,35 +49,33 @@ typedef  struct
 
 typedef struct
 {
-    VIO_BOOL                    input_flag;
-    VIO_Volume                     volume;
-    VIO_STR                     filename;
+    VIO_BOOL                   input_flag;
+    VIO_Volume                 volume;
+    VIO_STR                    filename;
     slice_struct               slices[N_VIEWS];
-    VIO_Real                       position[VIO_N_DIMENSIONS];
+    VIO_Real                   position[VIO_MAX_DIMENSIONS];
     unsigned short             *cmode_colour_map;
     int                        cmode_colour_offset;
-    VIO_Colour                     *rgb_colour_map;
+    VIO_Colour                 *rgb_colour_map;
     int                        rgb_colour_offset;
     int                        start_colour_map;
     int                        n_colour_entries;
     colour_coding_struct       colour_coding;
 
     volume_input_struct        volume_input;
-    VIO_Volume                     volume_being_input;
-    VIO_Real                       time_pos; /* Time position for 4D volumes */
-}
-trislice_struct;
+    VIO_Volume                 volume_being_input;
+} trislice_struct;
 
 typedef  struct
 {
-    VIO_BOOL                active_flag;
+    VIO_BOOL               active_flag;
     slice_struct           slices[N_VIEWS];
-    VIO_Real                   position[VIO_N_DIMENSIONS];
+    VIO_Real               position[VIO_MAX_DIMENSIONS];
     int                    start_colour_map;
     int                    n_colour_entries1;
     int                    n_colour_entries2;
     Merge_methods          merge_method;
-    VIO_Real                   opacity[N_MERGED];
+    VIO_Real               opacity[N_MERGED];
     colour_coding_struct   colour_coding[N_MERGED];
 }
 merged_struct;
