@@ -85,7 +85,7 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 
     G_get_mouse_screen_position( &x, &y );
 
-    (void) sprintf( window_name, "VIO_Volume %d %s VIO_Colour Selection", volume + 1,
+    (void) sprintf( window_name, "Volume %d %s Colour Selection", volume + 1,
                     over_under_names[over_or_under] );
 
     create_popup_window( &popup->popup_window, window_name, x, y,

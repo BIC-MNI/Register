@@ -103,7 +103,7 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
                    &ui_info->widget_list[viewport_index],
                    create_label( &ui_info->graphics_window, viewport_index,
                    x, y, Load_filename_width, Volume_button_height,
-                   "VIO_Volume Resampled", FALSE, LABEL_ACTIVE_COLOUR,
+                   "Volume Resampled", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
