@@ -1,3 +1,9 @@
+2015-10-17  Robert D Vincent <robert.d.vincent@mcgill.ca>
+   * Functionality/tags/tag_transform.c: Avoid use of
+	safe_compute_transform_from_tags(). It us not absolutely
+	required, and its creation of a subprocess seems to consistently
+	trigger a fatal error in X11.
+
 2015-09-30  Robert D Vincent <robert.d.vincent@mcgill.ca>
    * User_interface/Include/User_interface_prototypes.h,
      User_interface/event_callbacks/slice_events.c,

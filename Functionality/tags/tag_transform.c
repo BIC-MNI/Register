@@ -81,7 +81,7 @@ static  void  recompute_tag_rms_errors(
         tags->transform_exists = FALSE;
         return;
     }
-    
+
     VIO_ALLOC2D( Apoints, tags->n_tag_points, VIO_N_DIMENSIONS );
     VIO_ALLOC2D( Bpoints, tags->n_tag_points, VIO_N_DIMENSIONS );
 
@@ -106,9 +106,12 @@ static  void  recompute_tag_rms_errors(
 
     if( n_valid >= 4 )
     {
-        safe_compute_transform_from_tags( n_valid, Apoints, Bpoints,
-                                          tags->transform_type,
-                                          &tags->v2_to_v1_transform );
+        /* Don't use safe_compute_transform_from_tags(), it isn't
+         * safe. It actually triggers a crash in GLUT/X (bert).
+         */
+        compute_transform_from_tags( n_valid, Apoints, Bpoints,
+                                     tags->transform_type,
+                                     &tags->v2_to_v1_transform );
         tags->transform_exists = TRUE;
         recompute_tag_rms_errors( tags );
     }
