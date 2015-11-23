@@ -1,3 +1,8 @@
+2015-11-23  Robert D Vincent <robert.d.vincent@mcgill.ca>
+   * Functionality/slices/colour_map.c, Functionality/slices/create_slice.c:
+	Use create_volume_slice_coding() to implement proper display
+	of non-integral images or images with very wide value ranges.
+
 2015-10-17  Robert D Vincent <robert.d.vincent@mcgill.ca>
    * Functionality/tags/tag_transform.c: Avoid use of
 	safe_compute_transform_from_tags(). It us not absolutely

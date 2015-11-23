@@ -50,12 +50,15 @@
     else
     {
         rgb_colour_map = main->trislice[volume_index].rgb_colour_map;
-        rgb_colour_map_ptr = &rgb_colour_map;
+        if (rgb_colour_map != NULL)
+            rgb_colour_map_ptr = &rgb_colour_map;
+        else
+            rgb_colour_map_ptr = NULL;
     }
 
     get_slice_plane( main, volume_index, view, origin, x_axis, y_axis );
 
-    create_volume_slice( volume, filter_type, filter_width,
+    create_volume_slice_coding( volume, filter_type, filter_width,
                          origin, x_axis, y_axis,
                          x_translation, y_translation, x_scale, y_scale,
                          (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
@@ -65,6 +68,7 @@
                          main->degrees_continuity,
                          &cmode_colour_map,
                          rgb_colour_map_ptr, make_rgba_Colour( 0, 0, 0, 0 ),
+                         &main->trislice[volume_index].colour_coding,
                     main->render_storage, TRUE,
                     &main->trislice[volume_index].slices[view].n_pixels_alloced,
                     main->trislice[volume_index].slices[view].pixels );

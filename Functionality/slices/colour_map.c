@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file Functionality/slices/colour_map.c
+ * \brief Handle mapping of voxel data to colours.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -134,10 +137,13 @@ static  void  update_rgb_colour_maps(
     }
 
     get_volume_range_of_voxels( main, volume_index, &min_value, &max_value );
-    if (((double) max_value - (double) min_value) > 100000000) {
-        fprintf(stderr, "ERROR: Colour map would be too large (%g, %g).\n", 
-                (double) min_value, (double) max_value);
-        exit(EXIT_FAILURE);
+    if (((double) max_value - (double) min_value) > 100000000 ||
+        ((double) max_value - (double) min_value) < 2) {
+        /* It is impractical to optimize colour map accesses in these
+         * cases, so we don't bother.
+         */
+        main->trislice[volume_index].rgb_colour_map = NULL;
+        return;
     }
 
     tmp_ptr = malloc((max_value - min_value + 1) * sizeof (*tmp_ptr));
