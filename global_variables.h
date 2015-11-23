@@ -264,4 +264,5 @@ START_GLOBALS
     DEF_GLOBAL( Volume_1_colour_coding_max, VIO_Real, -1.0)
     DEF_GLOBAL( Volume_2_colour_coding_min, VIO_Real, 1.0)
     DEF_GLOBAL( Volume_2_colour_coding_max, VIO_Real, -1.0)
+    DEF_GLOBAL( Min_colour_map, int, 100)
 END_GLOBALS

@@ -233,7 +233,10 @@ static  void  convert_volume1_voxel_to_volume2(
     else
     {
         rgb_colour_map = main->trislice[0].rgb_colour_map;
-        rgb_colour_map_ptr = &rgb_colour_map;
+        if (rgb_colour_map != NULL)
+            rgb_colour_map_ptr = &rgb_colour_map;
+        else
+            rgb_colour_map_ptr = NULL;
     }
 
     initialize_pixels( &pixels1,
@@ -245,7 +248,7 @@ static  void  convert_volume1_voxel_to_volume2(
                        merged_pixels->y_zoom,
                        RGB_PIXEL );
 
-    create_volume_slice( volume1, filter_type, filter_width,
+    create_volume_slice_coding( volume1, filter_type, filter_width,
                          origin1, x_axis1, y_axis1,
                          x_translation1, y_translation1, x_scale1, y_scale1,
                          (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
@@ -256,6 +259,7 @@ static  void  convert_volume1_voxel_to_volume2(
                          NULL,
                          rgb_colour_map_ptr,
                          make_rgba_Colour( 0, 0, 0, 0 ),
+                         &main->trislice[0].colour_coding,
                          main->render_storage,
                          FALSE, NULL, &pixels1 );
 
@@ -264,7 +268,10 @@ static  void  convert_volume1_voxel_to_volume2(
     else
     {
         rgb_colour_map = main->trislice[1].rgb_colour_map;
-        rgb_colour_map_ptr = &rgb_colour_map;
+        if (rgb_colour_map != NULL)
+            rgb_colour_map_ptr = &rgb_colour_map;
+        else
+            rgb_colour_map_ptr = NULL;
     }
     initialize_pixels( &pixels2,
                        merged_pixels->x_position,
@@ -275,7 +282,7 @@ static  void  convert_volume1_voxel_to_volume2(
                        merged_pixels->y_zoom,
                        RGB_PIXEL );
 
-    create_volume_slice( volume2, filter_type, filter_width,
+    create_volume_slice_coding( volume2, filter_type, filter_width,
                          origin2, x_axis2, y_axis2,
                          x_translation2, y_translation2, x_scale2, y_scale2,
                          (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
@@ -286,6 +293,7 @@ static  void  convert_volume1_voxel_to_volume2(
                          NULL,
                          rgb_colour_map_ptr,
                          make_rgba_Colour( 0, 0, 0, 0 ),
+                         &main->trislice[1].colour_coding,
                          main->render_storage,
                          FALSE, NULL, &pixels2 );
 

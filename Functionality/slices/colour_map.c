@@ -138,7 +138,7 @@ static  void  update_rgb_colour_maps(
 
     get_volume_range_of_voxels( main, volume_index, &min_value, &max_value );
     if (((double) max_value - (double) min_value) > 100000000 ||
-        ((double) max_value - (double) min_value) < 2) {
+        ((double) max_value - (double) min_value) < Min_colour_map) {
         /* It is impractical to optimize colour map accesses in these
          * cases, so we don't bother.
          */
