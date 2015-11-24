@@ -17,9 +17,16 @@
 
 #include  <user_interface.h>
 
+/**
+ * Perform basic initialization for the user interface.
+ *
+ * Sets up the global UI_struct, creates the main window.
+ * \param ui A pointer to the global UI_struct.
+ * \param executable_name The path to the executable, generally from argv[0].
+ */
   VIO_Status   initialize_user_interface(
-    UI_struct  *ui,
-    VIO_STR     executable_name )
+    UI_struct     *ui,
+    const VIO_STR executable_name )
 {
     VIO_Status      status;
 
@@ -36,36 +43,9 @@
     status = G_create_window( Main_window_name, -1, -1,
                               Initial_window_x_size,
                               Initial_window_y_size,
-                              !Initial_rgb_state,
+                              Initial_rgb_state,
                               Initial_double_buffer_state,
-                              FALSE, 2, &ui->graphics_window.window );
-
-    if( status != VIO_OK ||
-        (!Initial_rgb_state &&
-         G_get_n_colour_map_entries(ui->graphics_window.window) < 64) )
-    {
-        if( status == VIO_OK )
-             G_delete_window( ui->graphics_window.window );
-        else
-        {
-            print_error( "Not enough colours for colour map mode.\n" );
-            print_error( "Using RGB mode.\n" );
-        }
-
-        status = G_create_window( Main_window_name, -1, -1,
-                                  Initial_window_x_size,
-                                  Initial_window_y_size,
-                                  Initial_rgb_state,
-                                  Initial_double_buffer_state,
-                                  FALSE, 2, &ui->graphics_window.window );
-
-        if( Initial_rgb_state &&
-            G_get_n_colour_map_entries(ui->graphics_window.window) < 64 )
-        {
-            print_error( "Not enough colours for colour map mode\n" );
-            exit( 1 );
-        }
-    }
+                              FALSE, 1, &ui->graphics_window.window );
 
     set_window_event_callbacks( &ui->graphics_window );
 
@@ -111,6 +91,12 @@
     return( status );
 }
 
+/**
+ * Clean up after the user interface.
+ *
+ * Disposes of memory and other resources.
+ * \param ui A pointer to the global UI_struct.
+ */
   void   terminate_user_interface(
     UI_struct  *ui )
 {
