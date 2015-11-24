@@ -1,5 +1,7 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file quit.c
+ * \brief Defines the popup_quit_confirm() function to confirm program exit.
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +12,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <user_interface.h>
 
@@ -47,7 +49,14 @@ static  DEFINE_EVENT_FUNCTION( kill_window_callback )
     delete_quit_confirm( (popup_struct *) callback_data );
 }
 
-  void  popup_quit_confirm(
+/** 
+ * Creates and displays a simple dialog box which asks the user to
+ * confirm whether she really wants to exit the program. Warns the use
+ * specifically if tag points have not been saved.
+ *
+ * \param ui A pointer to the global UI_struct.
+ */
+void  popup_quit_confirm(
     UI_struct   *ui )
 {
     int               x, y;
