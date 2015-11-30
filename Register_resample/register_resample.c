@@ -284,7 +284,7 @@ void get_file_info(char *filename, FileInfo *file)
    FREE(tempfile);
 
    /* Get dimension info */
-   ncopts = 0;
+   set_ncopts(0);
    (void) ncvarinq(mincid, ncvarid(mincid, MIimage), NULL, NULL, 
                    &ndims, dim, NULL);
    for (idim = 0; idim < WORLD_NDIMS; idim++) {
@@ -322,7 +322,7 @@ void get_file_info(char *filename, FileInfo *file)
       file->modality = spect;
    else
       file->modality = unknown;
-   ncopts = NC_VERBOSE | NC_FATAL;
+   set_ncopts(NC_VERBOSE | NC_FATAL);
    (void) miclose(mincid);
 
    return;
