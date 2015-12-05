@@ -191,10 +191,14 @@ static  void  set_merged_volume_visibility(
         for_less( axis, 0, VIO_N_DIMENSIONS )
             position[axis] = (VIO_Real) (sizes[axis]-1) / 2.0;
 
+        main->merged.active_flag = TRUE;
+
         set_volume_voxel_position( main, MERGED_VOLUME_INDEX, position );
     }
-
-    main->merged.active_flag = activity;
+    else
+    {
+        main->merged.active_flag = FALSE;
+    }
 
     set_merged_volume_visibility( main, activity );
 
