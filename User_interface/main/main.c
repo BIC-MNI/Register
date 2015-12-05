@@ -28,6 +28,7 @@
 // #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/mni/lib"
 // #define  HARD_CODED_REGISTER_DIRECTORY3    "/usr/local/lib"
 
+#include <float.h>
 #define  GLOBALS_LOOKUP_NAME   UI_globals_list
 #include <bicpl/globals.h>
 

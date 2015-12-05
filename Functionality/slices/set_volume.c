@@ -15,6 +15,8 @@
  */
 
 #include  <register.h>
+#include <float.h>
+
 
   VIO_BOOL  is_volume_active(
     main_struct    *main,
@@ -45,14 +47,98 @@
         return( main->trislice[volume_index].filename );
 }
 
+/**
+ * Compute the initial voxel position for either volume 0 or 1.
+ *
+ * Attempts to use world values from the global settings if they are
+ * available, converting the into the voxel space and constraining
+ * them to lie within the actual voxel space.
+ *
+ * Otherwise it falls back to using the midpoints of the voxel space.
+ */
+static void
+compute_initial_voxel_position(VIO_Volume volume,
+                               int volume_index,
+                               VIO_Real initial_voxel[])
+{
+  VIO_Real world[VIO_N_DIMENSIONS];
+  int      sizes[VIO_MAX_DIMENSIONS];
+  VIO_Real voxel[VIO_MAX_DIMENSIONS];
+  int      n_dims;
+  int      i;
+
+  n_dims = get_volume_n_dimensions( volume );
+  get_volume_sizes( volume, sizes );
+
+  /* Compute the default value we use if all else fails.
+   */
+  for (i = 0; i < n_dims; i++)
+  {
+    initial_voxel[i] = (sizes[i] - 1.0) / 2.0;
+  }
+
+  while (i < VIO_MAX_DIMENSIONS)
+  {
+    initial_voxel[i++] = 0;
+  }
+
+  if (volume_index == 0)
+  {
+    if (Initial_volume_1_world_x < FLT_MAX &&
+        Initial_volume_1_world_y < FLT_MAX &&
+        Initial_volume_1_world_z < FLT_MAX)
+    {
+      world[VIO_X] = Initial_volume_1_world_x;
+      world[VIO_Y] = Initial_volume_1_world_y;
+      world[VIO_Z] = Initial_volume_1_world_z;
+    }
+    else
+    {
+      return;                   /* Just use default. */
+    }
+  }
+  else if (volume_index == 1)
+  {
+    if (Initial_volume_2_world_x < FLT_MAX &&
+        Initial_volume_2_world_y < FLT_MAX &&
+        Initial_volume_2_world_z < FLT_MAX)
+    {
+      world[VIO_X] = Initial_volume_2_world_x;
+      world[VIO_Y] = Initial_volume_2_world_y;
+      world[VIO_Z] = Initial_volume_2_world_z;
+    }
+    else
+    {
+      return;                   /* Just use default. */
+    }
+  }
+
+  convert_world_to_voxel(volume, world[VIO_X], world[VIO_Y], world[VIO_Z],
+                         voxel);
+
+  for (i = 0; i < n_dims; i++)
+  {
+    VIO_Real pos = voxel[i];
+
+    if ( pos < -0.5 )
+      pos = -0.5;
+
+    if ( pos >= (VIO_Real) sizes[i] - 0.5 )
+      pos = (VIO_Real) sizes[i] - 0.500001;
+
+    initial_voxel[i] = pos;
+  }
+}
+
 static  void   record_register_volume(
     main_struct    *main,
     int            volume_index,
     VIO_Volume         volume,
     VIO_STR         filename )
 {
-    int      view, axis, sizes[VIO_MAX_DIMENSIONS];
+    int      view, axis;
     VIO_Real min_value, max_value, *cursor_ptr;
+    VIO_Real initial_position[VIO_MAX_DIMENSIONS];
 
     if( is_volume_active( main, volume_index ) )
     {
@@ -65,12 +151,12 @@ static  void   record_register_volume(
     replace_string( &main->trislice[volume_index].filename,
                     create_string(filename) );
 
-    get_volume_sizes( volume, sizes );
+    compute_initial_voxel_position( volume, volume_index, initial_position );
 
     cursor_ptr = get_volume_cursor( main, volume_index );
 
     for_less( axis, 0, VIO_N_DIMENSIONS )
-        cursor_ptr[axis] = (VIO_Real) (sizes[axis]-1) / 2.0;
+      cursor_ptr[axis] = initial_position[axis];
 
     for_less( view, 0, N_VIEWS )
     {
@@ -178,7 +264,7 @@ static  void  set_merged_volume_visibility(
     main_struct    *main,
     VIO_BOOL        activity )
 {
-    int      view, axis, sizes[VIO_MAX_DIMENSIONS];
+    int      view, axis;
     VIO_Real position[VIO_N_DIMENSIONS];
 
     if( activity )
@@ -186,10 +272,8 @@ static  void  set_merged_volume_visibility(
         for_less( view, 0, N_VIEWS )
             initialize_slice_view( main, MERGED_VOLUME_INDEX, view );
 
-        get_volume_sizes( get_slice_volume(main,0), sizes );
-
         for_less( axis, 0, VIO_N_DIMENSIONS )
-            position[axis] = (VIO_Real) (sizes[axis]-1) / 2.0;
+            position[axis] = main->trislice[0].position[axis];
 
         main->merged.active_flag = TRUE;
 

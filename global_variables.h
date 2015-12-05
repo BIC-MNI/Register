@@ -265,4 +265,12 @@ START_GLOBALS
     DEF_GLOBAL( Volume_2_colour_coding_min, VIO_Real, 1.0)
     DEF_GLOBAL( Volume_2_colour_coding_max, VIO_Real, -1.0)
     DEF_GLOBAL( Min_colour_map, int, 100)
+
+    DEF_GLOBAL( Initial_volume_1_world_x, VIO_Real, FLT_MAX )
+    DEF_GLOBAL( Initial_volume_1_world_y, VIO_Real, FLT_MAX )
+    DEF_GLOBAL( Initial_volume_1_world_z, VIO_Real, FLT_MAX )
+
+    DEF_GLOBAL( Initial_volume_2_world_x, VIO_Real, FLT_MAX )
+    DEF_GLOBAL( Initial_volume_2_world_y, VIO_Real, FLT_MAX )
+    DEF_GLOBAL( Initial_volume_2_world_z, VIO_Real, FLT_MAX )
 END_GLOBALS
