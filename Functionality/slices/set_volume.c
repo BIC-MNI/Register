@@ -66,6 +66,8 @@ compute_initial_voxel_position(VIO_Volume volume,
   VIO_Real voxel[VIO_MAX_DIMENSIONS];
   int      n_dims;
   int      i;
+  VIO_BOOL is_set1;             /* True if volume 1 position specified. */
+  VIO_BOOL is_set2;             /* True if volume 2 position specified. */
 
   n_dims = get_volume_n_dimensions( volume );
   get_volume_sizes( volume, sizes );
@@ -77,40 +79,44 @@ compute_initial_voxel_position(VIO_Volume volume,
     initial_voxel[i] = (sizes[i] - 1.0) / 2.0;
   }
 
+  /* Non-spatial dimensions, if present, just default to zero.
+   */
   while (i < VIO_MAX_DIMENSIONS)
   {
     initial_voxel[i++] = 0;
   }
 
-  if (volume_index == 0)
+  is_set1 = (Initial_volume_1_world_x < FLT_MAX ||
+             Initial_volume_1_world_y < FLT_MAX ||
+             Initial_volume_1_world_z < FLT_MAX);
+
+  is_set2 = (Initial_volume_2_world_x < FLT_MAX ||
+             Initial_volume_2_world_y < FLT_MAX ||
+             Initial_volume_2_world_z < FLT_MAX);
+
+  world[VIO_X] = world[VIO_Y] = world[VIO_Z] = 0;
+
+  if (is_set1 && (volume_index == 0 || Initial_volumes_synced))
   {
-    if (Initial_volume_1_world_x < FLT_MAX &&
-        Initial_volume_1_world_y < FLT_MAX &&
-        Initial_volume_1_world_z < FLT_MAX)
-    {
+    if (Initial_volume_1_world_x < FLT_MAX)
       world[VIO_X] = Initial_volume_1_world_x;
+    if (Initial_volume_1_world_y < FLT_MAX)
       world[VIO_Y] = Initial_volume_1_world_y;
+    if (Initial_volume_1_world_z < FLT_MAX)
       world[VIO_Z] = Initial_volume_1_world_z;
-    }
-    else
-    {
-      return;                   /* Just use default. */
-    }
   }
-  else if (volume_index == 1)
+  else if (is_set2 && (volume_index == 1 || Initial_volumes_synced))
   {
-    if (Initial_volume_2_world_x < FLT_MAX &&
-        Initial_volume_2_world_y < FLT_MAX &&
-        Initial_volume_2_world_z < FLT_MAX)
-    {
+    if (Initial_volume_2_world_x < FLT_MAX)
       world[VIO_X] = Initial_volume_2_world_x;
+    if (Initial_volume_2_world_y < FLT_MAX)
       world[VIO_Y] = Initial_volume_2_world_y;
+    if (Initial_volume_2_world_z < FLT_MAX)
       world[VIO_Z] = Initial_volume_2_world_z;
-    }
-    else
-    {
-      return;                   /* Just use default. */
-    }
+  }
+  else
+  {
+    return;                     /* Just use the default. */
   }
 
   convert_world_to_voxel(volume, world[VIO_X], world[VIO_Y], world[VIO_Z],
