@@ -169,7 +169,7 @@ START_GLOBALS
     DEF_GLOBAL( Message_expiration_time, VIO_Real, 15.0 * 60.0 )
 
     DEF_GLOBAL( Colour_selection_x_size, int, 300 )
-    DEF_GLOBAL( Colour_selection_y_size, int, 120 )
+    DEF_GLOBAL( Colour_selection_y_size, int, 140 )
     DEF_GLOBAL( Colour_selection_n_across, int, 3 )
 
     DEF_GLOBAL( Initial_volumes_synced, VIO_BOOL, FALSE )

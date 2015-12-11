@@ -135,7 +135,20 @@ static  DEFINE_EVENT_FUNCTION( push_button_event_callback )
     }
 }
 
-  void  update_button_colours(
+/** 
+ * Given a colour, return whether to use a black or white text with it
+ * such that the contrast is maximized.
+ */
+static VIO_Colour get_text_colour(VIO_Colour bkgd_colour)
+{
+    int r = get_Colour_r(bkgd_colour);
+    int g = get_Colour_g(bkgd_colour);
+    int b = get_Colour_b(bkgd_colour);
+    int yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? BLACK : WHITE;
+}
+
+void  update_button_colours(
     widget_struct   *widget )
 {
     VIO_BOOL        colour_map_state;
@@ -168,14 +181,13 @@ static  DEFINE_EVENT_FUNCTION( push_button_event_callback )
         button->polygons->colours[0] = get_ui_colour(colour_map_state,
                                             (UI_colours) rectangle_colour);
 
-        button->text->colour = get_ui_colour( colour_map_state,
-                                             (UI_colours) button->text_colour );
+        button->text->colour = get_text_colour( button->polygons->colours[0] );
     }
     else
     {
         button->polygons->colours[0] = rectangle_colour;
 
-        button->text->colour = button->text_colour;
+        button->text->colour = get_text_colour( rectangle_colour );
     }
 }
 
