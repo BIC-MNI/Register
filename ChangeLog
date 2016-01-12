@@ -1,3 +1,7 @@
+2016-01-12  Robert D Vincent <robert.d.vincent@mcgill.ca>
+   * CMakeLists.txt: Build and install register_resample, don't install
+	globals file.
+
 2015-11-23  Robert D Vincent <robert.d.vincent@mcgill.ca>
    * Functionality/slices/colour_map.c, Functionality/slices/create_slice.c:
 	Use create_volume_slice_coding() to implement proper display
