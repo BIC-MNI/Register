@@ -1,6 +1,7 @@
 /**
  * \file main.c
  * \brief Entry point and command line processing for Register.
+ *
  * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,

@@ -1,6 +1,7 @@
 /**
  * \file quit.c
  * \brief Defines the popup_quit_confirm() function to confirm program exit.
+ *
  * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
