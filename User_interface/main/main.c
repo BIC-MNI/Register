@@ -234,6 +234,18 @@ static  void     initialize_global_colours( void )
     Resample_meter_colour = BLUE;
     Popup_background_colour = DIM_GREY;
     Message_text_colour = WHITE;
+    Overlay_colour_1 = RED;
+    Overlay_colour_2 = GREEN;
+    Overlay_colour_3 = BLUE;
+    Slice_background_colour = DARK_SLATE_GREY;
+    Cursor_inside_colour = RED;
+    Cursor_outside_colour = BLUE;
+    Tag_inside_colour = CYAN;
+    Tag_outside_colour = MAGENTA;
+    Tag_inside_inactive_colour = WHITE;
+    Tag_outside_inactive_colour = GRAY;
+    Initial_under_colour = BLACK;
+    Initial_over_colour = WHITE;
 }
 
 static  void  read_global_files(

@@ -17,21 +17,7 @@
 
 #include  <register.h>
 
-// #define  GLOBALS_LOOKUP_NAME  functional_globals
-// #include  <bicpl/globals.h>
-// 
-// #define   REGISTER_GLOBALS_FILENAME   "register.globals"
-
-// #define  HARD_CODED_REGISTER_DIRECTORY1    "/usr/local/mni/lib"
-// #define  HARD_CODED_REGISTER_DIRECTORY2    "/usr/local/lib"
-
-
-// static  void  read_global_files(
-//     VIO_STR  executable_name );
-
 static   main_struct      main_info;
-
-static  void    initialize_global_colours( void );
 
   main_struct  *get_main_struct( void )
 {
@@ -44,10 +30,6 @@ static  void    initialize_global_colours( void );
 {
     int             volume, view;
     Bitplane_types  bitplane;
-
-    initialize_global_colours();
-
-    //read_global_files( executable_name );
 
     if( Disable_alloc_checking )
         set_alloc_checking( FALSE );
@@ -117,67 +99,3 @@ static  void    initialize_global_colours( void );
     delete_general_transform( &main_info.resampling_transform );
 }
 
-static  void    initialize_global_colours( void )
-{
-    Overlay_colour_1 = RED;
-    Overlay_colour_2 = GREEN;
-    Overlay_colour_3 = BLUE;
-    Slice_background_colour = DARK_SLATE_GREY;
-    Cursor_inside_colour = RED;
-    Cursor_outside_colour = BLUE;
-    Tag_inside_colour = CYAN;
-    Tag_outside_colour = MAGENTA;
-    Tag_inside_inactive_colour = WHITE;
-    Tag_outside_inactive_colour = GRAY;
-    Initial_under_colour = BLACK;
-    Initial_over_colour = WHITE;
-}
-
-// static  void  read_global_files(
-//     VIO_STR  executable_name )
-// {
-//     int      dir, n_directories;
-//     VIO_STR   runtime_directory, *directories, globals_filename;
-// 
-//     runtime_directory = extract_directory( executable_name );
-// 
-//     n_directories = 0;
-//     directories = NULL;
-// 
-//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-//                           HARD_CODED_REGISTER_DIRECTORY2, DEFAULT_CHUNK_SIZE );
-//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-//                           HARD_CODED_REGISTER_DIRECTORY1, DEFAULT_CHUNK_SIZE );
-//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-//                           runtime_directory, DEFAULT_CHUNK_SIZE );
-//     ADD_ELEMENT_TO_ARRAY( directories, n_directories,
-//                           getenv("HOME"), DEFAULT_CHUNK_SIZE );
-//     ADD_ELEMENT_TO_ARRAY( directories, n_directories, ".", DEFAULT_CHUNK_SIZE );
-// 
-//     for_less( dir, 0, n_directories )
-//     {
-//         globals_filename = get_absolute_filename( REGISTER_GLOBALS_FILENAME,
-//                                                   directories[dir] );
-// 
-//         if( file_exists( globals_filename ) )
-//         {
-//             (void) input_globals_file( VIO_SIZEOF_STATIC_ARRAY(functional_globals),
-//                                        functional_globals, globals_filename );
-//         }
-// 
-//         delete_string( globals_filename );
-//     }
-// 
-//     delete_string( runtime_directory );
-// 
-//     FREE( directories );
-// }
-
-//   VIO_Status  set_functional_global_variable(
-//     VIO_STR  variable_name,
-//     VIO_STR  value_to_set )
-// {
-//     return( set_global_variable( VIO_SIZEOF_STATIC_ARRAY(functional_globals),
-//                                  functional_globals, variable_name,
-//                                  value_to_set ) );
-// }
