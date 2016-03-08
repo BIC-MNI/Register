@@ -248,11 +248,22 @@ static  void     initialize_global_colours( void )
     Initial_over_colour = WHITE;
 }
 
+void try_global_file(VIO_STR filename, VIO_STR directory)
+{
+    VIO_STR globals_filename = get_absolute_filename( filename, directory );
+    if( file_exists( globals_filename ) )
+    {
+        input_globals_file( VIO_SIZEOF_STATIC_ARRAY(UI_globals_list),
+                            UI_globals_list, globals_filename );
+    }
+    delete_string( globals_filename );
+}
+
 static  void  read_global_files(
     VIO_STR  executable_name )
 {
     int      dir, n_directories;
-    VIO_STR   runtime_directory, *directories, globals_filename;
+    VIO_STR   runtime_directory, *directories;
 
     runtime_directory = extract_directory( executable_name );
 
@@ -273,16 +284,8 @@ static  void  read_global_files(
 
     for_less( dir, 0, n_directories )
     {
-        globals_filename = get_absolute_filename( UI_GLOBALS_FILENAME,
-                                                  directories[dir] );
-
-        if( file_exists( globals_filename ) )
-        {
-            (void) input_globals_file( VIO_SIZEOF_STATIC_ARRAY(UI_globals_list),
-                                       UI_globals_list, globals_filename );
-        }
-
-        delete_string( globals_filename );
+        try_global_file( UI_GLOBALS_FILENAME, directories[dir] );
+        try_global_file( "register.globals", directories[dir] );
     }
 
     delete_string( runtime_directory );
