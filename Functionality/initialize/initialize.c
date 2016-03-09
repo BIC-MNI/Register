@@ -31,9 +31,6 @@ static   main_struct      main_info;
     int             volume, view;
     Bitplane_types  bitplane;
 
-    if( Disable_alloc_checking )
-        set_alloc_checking( FALSE );
-
     if( G_has_overlay_planes() && Use_overlay_planes )
     {
         G_set_overlay_colour_map( window, 1, Overlay_colour_1 );

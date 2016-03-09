@@ -192,8 +192,6 @@ START_GLOBALS
     DEF_GLOBAL( Activity_9_10, VIO_BOOL, TRUE )
 
 //Functionality
-    DEF_GLOBAL( Disable_alloc_checking, VIO_BOOL, TRUE )
-    DEF_GLOBAL( Alloc_debugging, VIO_BOOL, FALSE )
 
     DEF_GLOBAL( Default_transform_type, int, (int) TRANS_LSQ6 )
 
@@ -273,4 +271,5 @@ START_GLOBALS
     DEF_GLOBAL( Initial_volume_2_world_x, VIO_Real, FLT_MAX )
     DEF_GLOBAL( Initial_volume_2_world_y, VIO_Real, FLT_MAX )
     DEF_GLOBAL( Initial_volume_2_world_z, VIO_Real, FLT_MAX )
+
 END_GLOBALS

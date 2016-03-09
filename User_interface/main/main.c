@@ -197,8 +197,6 @@ int  main(
     delete_global_variables( VIO_SIZEOF_STATIC_ARRAY(UI_globals_list),
                              UI_globals_list );
 
-    output_alloc_to_file( ".register.alloc_debug" );
-
     return( status != VIO_OK );
 }
 
