@@ -14,6 +14,8 @@
 
 #include  <user_interface.h>
 
+int N_UI_viewports = N_VIEWPORT_TYPES - 1;
+
   void  initialize_layout( UI_struct  *ui_info )
 {
     int i;
@@ -23,9 +25,14 @@
     ui_info->volume_panel_height = Default_volume_panel_height;
     ui_info->divider_width = Default_divider_width;
 
+    ui_info->x_slice_divider[0] = 0.25;
+    ui_info->x_slice_divider[1] = 0.50;
+    ui_info->x_slice_divider[2] = 0.75;
+#if 0
     ui_info->x_slice_divider[0] = Slice_left_view_width;
     ui_info->x_slice_divider[1] = Slice_left_view_width +
                                   Slice_middle_view_width;
+#endif
     ui_info->y_slice_divider[0] = 1.0 - Slice_top_view_height -
                                         Slice_middle_view_height;
     ui_info->y_slice_divider[1] = 1.0 - Slice_top_view_height;
@@ -59,18 +66,17 @@
 
     x_main_start = 0;
     x_main_end = ui_info->main_menu_width-1;
+
     x_volume_start[0] = x_main_end + 1 + divider_width;
-    x_volume_end[2] = x_size - 1;
+    x_volume_end[MERGED_VOLUME_INDEX] = x_size - 1;
+    for (i = 1; i < N_VOLUMES_DISPLAYED; i++)
+    {
+      divider1 = VIO_ROUND( x_volume_start[0] + ui_info->x_slice_divider[i-1] *
+                            (x_volume_end[MERGED_VOLUME_INDEX] - x_volume_start[0]) );
 
-    divider1 = VIO_ROUND( x_volume_start[0] + ui_info->x_slice_divider[0] *
-                          (x_volume_end[2] - x_volume_start[0]) );
-    divider2 = VIO_ROUND( x_volume_start[0] + ui_info->x_slice_divider[1] *
-                          (x_volume_end[2] - x_volume_start[0]) );
-
-    x_volume_end[0] = divider1 - divider_width/2 - 1;
-    x_volume_start[1] = x_volume_end[0] + divider_width + 1;
-    x_volume_end[1] = divider2 - divider_width/2 - 1;
-    x_volume_start[2] = x_volume_end[1] + divider_width + 1;
+      x_volume_end[i-1] = divider1 - divider_width/2 - 1;
+      x_volume_start[i] = x_volume_end[i-1] + divider_width + 1;
+    }
 
     y_tag_start = 0;
     y_tag_end = ui_info->tag_panel_height-1;
@@ -123,15 +129,10 @@
 
     /* dividers */
 
-    set_graphics_viewport( graphics, Main_volume_1_separator_viewport,
-                           x_main_end+1, x_volume_start[0]-1, 0, y_size-1 );
-
-    set_graphics_viewport( graphics, Volume_1_2_separator_viewport,
-                           x_volume_end[0]+1, x_volume_start[1]-1, 0, y_size-1 );
-
-    set_graphics_viewport( graphics,
-                           Volume_2_merged_separator_viewport,
-                           x_volume_end[1]+1, x_volume_start[2]-1, 0, y_size-1 );
+    for (i = 0; i < N_VOLUMES_DISPLAYED; i++) {
+      set_graphics_viewport( graphics, Main_volume_1_separator_viewport + i,
+                             x_volume_start[i]-(divider_width+1), x_volume_start[i]-1, 0, y_size-1 );
+    }
 
     set_graphics_viewport( graphics, Slice_1_2_separator_viewport,
                            x_volume_start[0]+1, x_size-1,

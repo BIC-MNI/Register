@@ -17,6 +17,7 @@
   void  initialize_UI_widgets( UI_struct  *ui_info )
 {
     Viewport_types   viewport_index;
+    int i;
 
     for_enum( viewport_index, N_UI_viewports, Viewport_types )
         initialize_widget_list( &ui_info->widget_list[viewport_index] );
@@ -25,10 +26,15 @@
     add_main_widgets( ui_info );
 #endif
 
-    add_volume_widgets( ui_info, Volume_1_menu_viewport );
-    add_volume_widgets( ui_info, Volume_2_menu_viewport );
+    for (i = 0; i < N_VOLUMES_DISPLAYED; i++)
+    {
+      viewport_index = get_volume_menu_viewport_index( i );
+      if (i == MERGED_VOLUME_INDEX)
+          add_merged_widgets( ui_info, viewport_index );
+      else
+          add_volume_widgets( ui_info, viewport_index );
+    }
 
-    add_merged_widgets( ui_info, Merged_menu_viewport );
 
     ui_info->tag_points.n_tags_displayed = Default_n_tag_points;
     ui_info->tag_points.first_tag_displayed = 0;

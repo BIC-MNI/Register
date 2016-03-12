@@ -107,6 +107,7 @@ static  void  volume_has_been_loaded(
     load_struct    *data )
 {
     VIO_Real   min_value, max_value;
+    int i;
 
     if( !IF_volume_is_loaded( data->volume_index ) )
     {
@@ -140,9 +141,14 @@ static  void  volume_has_been_loaded(
         set_merged_activity( ui_info, TRUE );
     }
 
-    if( IF_volume_is_loaded( 1 - data->volume_index ) )
+    for (i = 0; i < N_VOLUMES; i++)
     {
-        update_other_volume_positions( ui_info, 1 - data->volume_index );
+        if ( i == data->volume_index )
+            continue;
+        if( IF_volume_is_loaded( i ) )
+        {
+            update_other_volume_positions( ui_info, i );
+        }
     }
 
     if( data->volume_index < N_VOLUMES )

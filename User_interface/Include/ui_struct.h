@@ -33,7 +33,7 @@ typedef  struct
 
     VIO_BOOL                  volumes_synced;
 
-    widgets_struct           widget_list[N_UI_viewports];
+    widgets_struct           widget_list[N_VIEWPORT_TYPES];
     int                      position_text_start_index[N_VOLUMES_DISPLAYED];
 
     tag_points_struct        tag_points;

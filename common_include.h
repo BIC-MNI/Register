@@ -4,8 +4,8 @@
 #include  <volume_io.h>
 #include  <graphics.h>
 
-#define  N_VOLUMES                         2
-#define  N_VOLUMES_DISPLAYED               3
+#define  N_VOLUMES                         3
+#define  N_VOLUMES_DISPLAYED               (N_VOLUMES+1)
 #define  N_VIEWS                           3
 #define  MERGED_VOLUME_INDEX       N_VOLUMES
 #define  RESAMPLED_VOLUME_INDEX            1

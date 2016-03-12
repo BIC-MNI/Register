@@ -102,13 +102,9 @@
   Viewport_types  get_volume_menu_viewport_index(
     int   volume_index )
 {
-    switch( volume_index )
-    {
-    case 0:    return( Volume_1_menu_viewport );
-    case 1:    return( Volume_2_menu_viewport );
-    case 2:    return( Merged_menu_viewport );
-    default:   return( Volume_1_menu_viewport );
-    }
+    if (volume_index <= MERGED_VOLUME_INDEX)
+      return Volume_1_menu_viewport + volume_index;
+    return Volume_1_menu_viewport;
 }
 
   int  get_viewport_volume_index(
@@ -118,7 +114,8 @@
     {
     case Volume_1_menu_viewport:    return( 0 );
     case Volume_2_menu_viewport:    return( 1 );
-    case Merged_menu_viewport:      return( 2 );
+    case Volume_3_menu_viewport:    return( 2 );
+    case Merged_menu_viewport:      return( MERGED_VOLUME_INDEX );
     default:                        return( 0 );
     }
 }

@@ -63,50 +63,29 @@ static  void   type_in_world_position_callback(
 
 /* ARGSUSED */
 
-static  DEFINE_WIDGET_CALLBACK( world_x_position1_callback )
+static  DEFINE_WIDGET_CALLBACK( world_x_position_callback )
 {
+    int n = widget->viewport_index - Volume_1_tags_viewport;
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     PTR_TO_INT(callback_data), 0, VIO_X );
+                                     PTR_TO_INT(callback_data), n, VIO_X );
 }
 
 /* ARGSUSED */
 
-static  DEFINE_WIDGET_CALLBACK( world_y_position1_callback )
+static  DEFINE_WIDGET_CALLBACK( world_y_position_callback )
 {
+    int n = widget->viewport_index - Volume_1_tags_viewport;
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     PTR_TO_INT(callback_data), 0, VIO_Y );
+                                     PTR_TO_INT(callback_data), n, VIO_Y );
 }
 
 /* ARGSUSED */
 
-static  DEFINE_WIDGET_CALLBACK( world_z_position1_callback )
+static  DEFINE_WIDGET_CALLBACK( world_z_position_callback )
 {
+    int n = widget->viewport_index - Volume_1_tags_viewport;
     type_in_world_position_callback( get_ui_struct(), widget, 
-                                     PTR_TO_INT(callback_data), 0, VIO_Z );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( world_x_position2_callback )
-{
-    type_in_world_position_callback( get_ui_struct(), widget, 
-                                     PTR_TO_INT(callback_data), 1, VIO_X );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( world_y_position2_callback )
-{
-    type_in_world_position_callback( get_ui_struct(), widget, 
-                                     PTR_TO_INT(callback_data), 1, VIO_Y );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( world_z_position2_callback )
-{
-    type_in_world_position_callback( get_ui_struct(), widget, 
-                                     PTR_TO_INT(callback_data), 1, VIO_Z );
+                                     PTR_TO_INT(callback_data), n, VIO_Z );
 }
 
 static  void  set_and_jump_to_tag(
@@ -179,14 +158,7 @@ static  DEFINE_WIDGET_CALLBACK( tag_activity_callback )
 
 /* ARGSUSED */
 
-static  DEFINE_WIDGET_CALLBACK( world1_button_callback )
-{
-    set_current_tag_from_button( callback_data );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( world2_button_callback )
+static  DEFINE_WIDGET_CALLBACK( world_button_callback )
 {
     set_current_tag_from_button( callback_data );
 }
@@ -273,7 +245,10 @@ static  Viewport_types  get_tag_menu_viewport_index(
     {
     case 0:   return( Volume_1_tags_viewport );
     case 1:   return( Volume_2_tags_viewport );
-    default:  return( Volume_1_tags_viewport );
+    case 2:   return( Volume_3_tags_viewport );
+    default:  
+      printf("WTF!!\n");
+      return( Volume_1_tags_viewport );
     }
 }
 
@@ -304,9 +279,10 @@ static  Viewport_types  get_tag_menu_viewport_index(
     Viewport_types    names_viewport_index )
 {
     int      tag, x, y, x_left, y_top, x_min, x_max, y_min, y_max;
+    int      vol;
 
     VIO_ALLOC2D( rms_widget_indices, n_tag_points, N_RMS_WIDGETS );
-    VIO_ALLOC3D( position_widgets_indices, 2, n_tag_points, N_POSITION_WIDGETS );
+    VIO_ALLOC3D( position_widgets_indices, N_VOLUMES, n_tag_points, N_POSITION_WIDGETS );
     VIO_ALLOC2D( tag_name_widget_indices, n_tag_points, N_TAG_NAME_WIDGETS );
 
     get_graphics_viewport( &ui_info->graphics_window.graphics,
@@ -349,11 +325,14 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    LABEL_TEXT_COLOUR,
                    (Font_types) Label_text_font, Label_text_font_size ) );
 
-        position_widgets_indices[0][tag][WORLD_POSITION_BUTTON] =
+        for_less(vol, 0, N_VOLUMES)
+        {
+          x = x_left;
+          position_widgets_indices[vol][tag][WORLD_POSITION_BUTTON] =
                    add_widget_to_list(
-                   &ui_info->widget_list[volume1_viewport_index],
+                   &ui_info->widget_list[volume1_viewport_index+vol],
                    create_button( &ui_info->graphics_window,
-                   volume1_viewport_index,
+                   volume1_viewport_index+vol,
                    x, y, Tag_world_button_width, Tag_point_height,
                    "World:",
                    FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
@@ -361,16 +340,16 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   world1_button_callback, INT_TO_PTR(tag) ) );
+                   world_button_callback, INT_TO_PTR(tag) ) );
 
 
-        x += Tag_world_button_width + Position_values_separation;
+          x += Tag_world_button_width + Position_values_separation;
 
-        position_widgets_indices[0][tag][WORLD_X_POSITION_TEXT] =
+          position_widgets_indices[vol][tag][WORLD_X_POSITION_TEXT] =
                    add_widget_to_list(
-                   &ui_info->widget_list[volume1_viewport_index],
+                   &ui_info->widget_list[volume1_viewport_index+vol],
                    create_text_entry(&ui_info->graphics_window,
-                       volume1_viewport_index, x, y,
+                       volume1_viewport_index+vol, x, y,
                        Tag_position_width, Tag_point_height,
                        TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
@@ -380,15 +359,33 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_x_position1_callback, INT_TO_PTR(tag) ) );
+                       world_x_position_callback, INT_TO_PTR(tag) ) );
+
+          x += Tag_position_width + Position_values_separation;
+
+          position_widgets_indices[vol][tag][WORLD_Y_POSITION_TEXT] =
+                   add_widget_to_list(
+                   &ui_info->widget_list[volume1_viewport_index+vol],
+                   create_text_entry(&ui_info->graphics_window,
+                       volume1_viewport_index+vol, x, y,
+                       Tag_position_width, Tag_point_height,
+                       TRUE, "", FALSE,
+                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
+                       TEXT_ENTRY_INACTIVE_COLOUR,
+                       TEXT_ENTRY_TEXT_COLOUR,
+                       TEXT_ENTRY_EDIT_COLOUR,
+                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
+                       TEXT_ENTRY_CURSOR_COLOUR,
+                       (Font_types) Text_entry_font, Text_entry_font_size,
+                       world_y_position_callback, INT_TO_PTR(tag) ) );
 
         x += Tag_position_width + Position_values_separation;
 
-        position_widgets_indices[0][tag][WORLD_Y_POSITION_TEXT] =
+        position_widgets_indices[vol][tag][WORLD_Z_POSITION_TEXT] =
                    add_widget_to_list(
-                   &ui_info->widget_list[volume1_viewport_index],
+                   &ui_info->widget_list[volume1_viewport_index+vol],
                    create_text_entry(&ui_info->graphics_window,
-                       volume1_viewport_index, x, y,
+                       volume1_viewport_index+vol, x, y,
                        Tag_position_width, Tag_point_height,
                        TRUE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
@@ -398,96 +395,8 @@ static  Viewport_types  get_tag_menu_viewport_index(
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_y_position1_callback, INT_TO_PTR(tag) ) );
-
-        x += Tag_position_width + Position_values_separation;
-
-        position_widgets_indices[0][tag][WORLD_Z_POSITION_TEXT] =
-                   add_widget_to_list(
-                   &ui_info->widget_list[volume1_viewport_index],
-                   create_text_entry(&ui_info->graphics_window,
-                       volume1_viewport_index, x, y,
-                       Tag_position_width, Tag_point_height,
-                       TRUE, "", FALSE,
-                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
-                       TEXT_ENTRY_INACTIVE_COLOUR,
-                       TEXT_ENTRY_TEXT_COLOUR,
-                       TEXT_ENTRY_EDIT_COLOUR,
-                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
-                       TEXT_ENTRY_CURSOR_COLOUR,
-                       (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_z_position1_callback, INT_TO_PTR(tag) ) );
-
-        x = x_left;
-        position_widgets_indices[1][tag][WORLD_POSITION_BUTTON] =
-                   add_widget_to_list(
-                   &ui_info->widget_list[volume2_viewport_index],
-                   create_button( &ui_info->graphics_window,
-                   volume2_viewport_index,
-                   x, y, Tag_world_button_width, Tag_point_height,
-                   "World:",
-                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
-                   BUTTON_SELECTED_COLOUR,
-                   BUTTON_INACTIVE_COLOUR,
-                   BUTTON_TEXT_COLOUR,
-                   (Font_types) Button_text_font, Button_text_font_size,
-                   world2_button_callback, INT_TO_PTR(tag) ) );
-
-
-
-        x += Tag_world_button_width + Position_values_separation;
-
-        position_widgets_indices[1][tag][WORLD_X_POSITION_TEXT] =
-                   add_widget_to_list(
-                   &ui_info->widget_list[volume2_viewport_index],
-                   create_text_entry(&ui_info->graphics_window,
-                       volume2_viewport_index, x, y,
-                       Tag_position_width, Tag_point_height,
-                       TRUE, "", FALSE,
-                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
-                       TEXT_ENTRY_INACTIVE_COLOUR,
-                       TEXT_ENTRY_TEXT_COLOUR,
-                       TEXT_ENTRY_EDIT_COLOUR,
-                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
-                       TEXT_ENTRY_CURSOR_COLOUR,
-                       (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_x_position2_callback, INT_TO_PTR(tag) ) );
-
-        x += Tag_position_width + Position_values_separation;
-
-        position_widgets_indices[1][tag][WORLD_Y_POSITION_TEXT] =
-                   add_widget_to_list(
-                   &ui_info->widget_list[volume2_viewport_index],
-                   create_text_entry(&ui_info->graphics_window,
-                       volume2_viewport_index, x, y,
-                       Tag_position_width, Tag_point_height,
-                       TRUE, "", FALSE,
-                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
-                       TEXT_ENTRY_INACTIVE_COLOUR,
-                       TEXT_ENTRY_TEXT_COLOUR,
-                       TEXT_ENTRY_EDIT_COLOUR,
-                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
-                       TEXT_ENTRY_CURSOR_COLOUR,
-                       (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_y_position2_callback, INT_TO_PTR(tag) ) );
-
-        x += Tag_position_width + Position_values_separation;
-
-        position_widgets_indices[1][tag][WORLD_Z_POSITION_TEXT] =
-                   add_widget_to_list(
-                   &ui_info->widget_list[volume2_viewport_index],
-                   create_text_entry(&ui_info->graphics_window,
-                       volume2_viewport_index, x, y,
-                       Tag_position_width, Tag_point_height,
-                       TRUE, "", FALSE,
-                       TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
-                       TEXT_ENTRY_INACTIVE_COLOUR,
-                       TEXT_ENTRY_TEXT_COLOUR,
-                       TEXT_ENTRY_EDIT_COLOUR,
-                       TEXT_ENTRY_EDIT_TEXT_COLOUR,
-                       TEXT_ENTRY_CURSOR_COLOUR,
-                       (Font_types) Text_entry_font, Text_entry_font_size,
-                       world_z_position2_callback, INT_TO_PTR(tag) ) );
+                       world_z_position_callback, INT_TO_PTR(tag) ) );
+        }
 
         x = x_left;
 
@@ -729,7 +638,8 @@ static  void  set_widget_activity_and_selected(
     Rms_widgets      rms_widget_index;
     Position_widgets pos_widget_index;
     Tag_name_widgets tag_widget_index;
-    VIO_BOOL          exists, selected;
+    VIO_BOOL         exists, selected;
+    int              i;
 
     exists = (ui_info->tag_points.first_tag_displayed + tag <=
               IF_get_n_tag_points());
@@ -755,6 +665,10 @@ static  void  set_widget_activity_and_selected(
               ui_info->widget_list[Volume_2_tags_viewport].
               widgets[position_widgets_indices[1][tag][pos_widget_index]],
               exists, selected );
+        set_widget_activity_and_selected(
+              ui_info->widget_list[Volume_3_tags_viewport].
+              widgets[position_widgets_indices[2][tag][pos_widget_index]],
+              exists, selected );
     }
 
     for_enum( tag_widget_index, N_TAG_NAME_WIDGETS, Tag_name_widgets )
@@ -766,8 +680,8 @@ static  void  set_widget_activity_and_selected(
     }
 
     update_rms_error( ui_info, tag );
-    update_tag_position( ui_info, 0, tag );
-    update_tag_position( ui_info, 1, tag );
+    for (i = 0; i < N_VOLUMES; i++) 
+      update_tag_position( ui_info, i, tag );
     update_tag_name( ui_info, tag );
 
     set_transform_buttons_activity( ui_info, IF_does_transform_exist() );
