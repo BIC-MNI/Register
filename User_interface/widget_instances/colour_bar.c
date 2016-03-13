@@ -252,8 +252,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Under",
                    FALSE, TRUE,
-                   (VIO_Colour) (volume == 0 ? VOLUME1_UNDER_COLOUR :
-                                           VOLUME2_UNDER_COLOUR),
+                   (VIO_Colour) (VOLUME1_UNDER_COLOUR + volume),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -282,8 +281,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Over",
                    FALSE, TRUE,
-                   (VIO_Colour) (volume == 0 ? VOLUME1_OVER_COLOUR :
-                                           VOLUME2_OVER_COLOUR),
+                   (VIO_Colour) (VOLUME1_OVER_COLOUR + volume),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
@@ -385,14 +383,10 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
         IF_set_over_colour( MERGED_VOLUME_INDEX + volume_index, colour );
     }
 
-    if( volume_index == 0 && over_or_under == 0 )
-        colour_name = VOLUME1_UNDER_COLOUR;
-    else if( volume_index == 0 && over_or_under == 1 )
-        colour_name = VOLUME1_OVER_COLOUR;
-    else if( volume_index == 1 && over_or_under == 0 )
-        colour_name = VOLUME2_UNDER_COLOUR;
-    else if( volume_index == 1 && over_or_under == 1 )
-        colour_name = VOLUME2_OVER_COLOUR;
+    if (over_or_under == 0)
+      colour_name = VOLUME1_UNDER_COLOUR + volume_index;
+    else
+      colour_name = VOLUME1_OVER_COLOUR + volume_index;
  
     set_ui_colour( ui_info, colour_name, colour );
 

@@ -18,6 +18,8 @@ static  VIO_Colour  colours[N_UI_COLOURS];
 
   void  initialize_ui_colours( void )
 {
+    int i;
+
     colours[BACKGROUND_COLOUR]          = Default_UI_background_colour;
     colours[DIVIDER_COLOUR]             = Default_divider_colour;
     colours[BUTTON_ACTIVE_COLOUR]       = Default_button_active_colour;
@@ -39,10 +41,11 @@ static  VIO_Colour  colours[N_UI_COLOURS];
     colours[SLIDER_INACTIVE_COLOUR]     = Default_slider_inactive_colour;
     colours[SLIDER_PEG_COLOUR]          = Default_slider_peg_colour;
 
-    colours[VOLUME1_UNDER_COLOUR]       = Default_volume1_under_colour;
-    colours[VOLUME1_OVER_COLOUR]        = Default_volume1_over_colour;
-    colours[VOLUME2_UNDER_COLOUR]       = Default_volume2_under_colour;
-    colours[VOLUME2_OVER_COLOUR]        = Default_volume2_over_colour;
+    for (i = 0; i < N_VOLUMES; i++)
+    {
+      colours[VOLUME1_UNDER_COLOUR + i] = Default_volume1_under_colour;
+      colours[VOLUME1_OVER_COLOUR + i]  = Default_volume1_over_colour;
+    }
 }
 
 static  int  start_colour_table = 0;

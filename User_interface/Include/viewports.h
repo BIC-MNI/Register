@@ -15,6 +15,20 @@
 #ifndef  DEF_VIEWPORTS
 #define  DEF_VIEWPORTS
 
+#define Main_menu_viewport 0
+#define RMS_error_viewport 1
+#define Volume_1_tags_viewport 2
+#define Volume_1_menu_viewport (Volume_1_tags_viewport + N_VOLUMES_DISPLAYED)
+#define Volume_1_horz_sep_viewport (Volume_1_menu_viewport + N_VOLUMES_DISPLAYED)
+#define Slice_1_vert_sep_viewport (Volume_1_horz_sep_viewport + N_VOLUMES_DISPLAYED)
+#define Whole_window_event_viewport (Slice_1_vert_sep_viewport + N_VIEWS + 1)
+#define N_VIEWPORT_TYPES (Whole_window_event_viewport+1)
+
+#define Tag_names_viewport (Volume_1_tags_viewport + MERGED_VOLUME_INDEX)
+#define Merged_menu_viewport (Volume_1_menu_viewport + MERGED_VOLUME_INDEX)
+
+typedef unsigned int Viewport_types;
+#if 0
 typedef  enum
 {
     Main_menu_viewport,
@@ -42,7 +56,8 @@ typedef  enum
     Whole_window_event_viewport,
     N_VIEWPORT_TYPES
 } Viewport_types;
+#endif
 
-extern int N_UI_viewports;
+extern unsigned int N_UI_viewports;
 
 #endif

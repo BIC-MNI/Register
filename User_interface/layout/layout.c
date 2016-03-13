@@ -14,7 +14,7 @@
 
 #include  <user_interface.h>
 
-int N_UI_viewports = N_VIEWPORT_TYPES - 1;
+unsigned int N_UI_viewports = N_VIEWPORT_TYPES - 1;
 
   void  initialize_layout( UI_struct  *ui_info )
 {
@@ -25,9 +25,10 @@ int N_UI_viewports = N_VIEWPORT_TYPES - 1;
     ui_info->volume_panel_height = Default_volume_panel_height;
     ui_info->divider_width = Default_divider_width;
 
-    ui_info->x_slice_divider[0] = 0.25;
-    ui_info->x_slice_divider[1] = 0.50;
-    ui_info->x_slice_divider[2] = 0.75;
+    for_less(i, 0, N_VOLUMES)
+    {
+        ui_info->x_slice_divider[i] = (double) (i+1) / N_VOLUMES_DISPLAYED;
+    }
 #if 0
     ui_info->x_slice_divider[0] = Slice_left_view_width;
     ui_info->x_slice_divider[1] = Slice_left_view_width +
@@ -130,23 +131,23 @@ int N_UI_viewports = N_VIEWPORT_TYPES - 1;
     /* dividers */
 
     for (i = 0; i < N_VOLUMES_DISPLAYED; i++) {
-      set_graphics_viewport( graphics, Main_volume_1_separator_viewport + i,
+      set_graphics_viewport( graphics, Volume_1_horz_sep_viewport + i,
                              x_volume_start[i]-(divider_width+1), x_volume_start[i]-1, 0, y_size-1 );
     }
 
-    set_graphics_viewport( graphics, Slice_1_2_separator_viewport,
+    set_graphics_viewport( graphics, Slice_1_vert_sep_viewport + 0,
                            x_volume_start[0]+1, x_size-1,
                            y_slice_end[1]+1, y_slice_start[0]-1 );
 
-    set_graphics_viewport( graphics, Slice_2_3_separator_viewport,
+    set_graphics_viewport( graphics, Slice_1_vert_sep_viewport + 1,
                            x_volume_start[0]+1, x_size-1,
                            y_slice_end[2]+1, y_slice_start[1]-1 );
 
-    set_graphics_viewport( graphics, Slice_3_menu_separator_viewport,
+    set_graphics_viewport( graphics, Slice_1_vert_sep_viewport + 2,
                            x_volume_start[0]+1, x_size-1,
                            y_volume_panel_end+1, y_slice_start[2]-1 );
 
-    set_graphics_viewport( graphics, Tag_volume_menu_separator_viewport,
+    set_graphics_viewport( graphics, Slice_1_vert_sep_viewport + 3,
                            0, x_size-1,
                            y_tag_end+1, y_volume_panel_start-1 );
 
@@ -155,7 +156,7 @@ int N_UI_viewports = N_VIEWPORT_TYPES - 1;
         get_graphics_viewport( graphics, (int) viewport_index,
                                &x_min, &x_max, &y_min, &y_max );
 
-        if( viewport_index < Main_volume_1_separator_viewport )
+        if( viewport_index < Volume_1_horz_sep_viewport )
             ui_colour = BACKGROUND_COLOUR;
         else
             ui_colour = DIVIDER_COLOUR;

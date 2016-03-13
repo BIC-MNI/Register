@@ -4,11 +4,11 @@
 #include  <volume_io.h>
 #include  <graphics.h>
 
-#define  N_VOLUMES                         3
-#define  N_VOLUMES_DISPLAYED               (N_VOLUMES+1)
-#define  N_VIEWS                           3
+#define  N_VOLUMES                 3
+#define  N_VOLUMES_DISPLAYED       (N_VOLUMES+1)
+#define  N_VIEWS                   3
 #define  MERGED_VOLUME_INDEX       N_VOLUMES
-#define  RESAMPLED_VOLUME_INDEX            1
+#define  RESAMPLED_VOLUME_INDEX    1
 
 /* Define the location of the time dimension for our volume_io calls.
  */

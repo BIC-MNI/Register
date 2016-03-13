@@ -241,15 +241,7 @@ static  DEFINE_WIDGET_CALLBACK( start_tags_button_callback )
 static  Viewport_types  get_tag_menu_viewport_index(
     int   volume_index )
 {
-    switch( volume_index )
-    {
-    case 0:   return( Volume_1_tags_viewport );
-    case 1:   return( Volume_2_tags_viewport );
-    case 2:   return( Volume_3_tags_viewport );
-    default:  
-      printf("WTF!!\n");
-      return( Volume_1_tags_viewport );
-    }
+    return (Volume_1_tags_viewport + volume_index);
 }
 
   void  set_tag_world_text(
@@ -657,18 +649,13 @@ static  void  set_widget_activity_and_selected(
 
     for_enum( pos_widget_index, N_POSITION_WIDGETS, Position_widgets )
     {
-        set_widget_activity_and_selected(
-              ui_info->widget_list[Volume_1_tags_viewport].
-              widgets[position_widgets_indices[0][tag][pos_widget_index]],
+        for_less(i, 0, N_VOLUMES)
+        {
+            set_widget_activity_and_selected(
+              ui_info->widget_list[Volume_1_tags_viewport + i].
+              widgets[position_widgets_indices[i][tag][pos_widget_index]],
               exists, selected );
-        set_widget_activity_and_selected(
-              ui_info->widget_list[Volume_2_tags_viewport].
-              widgets[position_widgets_indices[1][tag][pos_widget_index]],
-              exists, selected );
-        set_widget_activity_and_selected(
-              ui_info->widget_list[Volume_3_tags_viewport].
-              widgets[position_widgets_indices[2][tag][pos_widget_index]],
-              exists, selected );
+        }
     }
 
     for_enum( tag_widget_index, N_TAG_NAME_WIDGETS, Tag_name_widgets )

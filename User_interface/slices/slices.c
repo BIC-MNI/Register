@@ -110,14 +110,7 @@
   int  get_viewport_volume_index(
     Viewport_types   viewport_index )
 {
-    switch( viewport_index )
-    {
-    case Volume_1_menu_viewport:    return( 0 );
-    case Volume_2_menu_viewport:    return( 1 );
-    case Volume_3_menu_viewport:    return( 2 );
-    case Merged_menu_viewport:      return( MERGED_VOLUME_INDEX );
-    default:                        return( 0 );
-    }
+    return (viewport_index - Volume_1_menu_viewport);
 }
 
   void  set_merged_activity(
@@ -136,12 +129,14 @@
 
         if( activity )
         {
-            install_slice_events( &ui_info->graphics_window.event_viewports, 2);
+            install_slice_events( &ui_info->graphics_window.event_viewports,
+                                  MERGED_VOLUME_INDEX );
 
             update_position_counters( ui_info, MERGED_VOLUME_INDEX );
         }
         else
-            remove_slice_events( &ui_info->graphics_window.event_viewports, 2 );
+            remove_slice_events( &ui_info->graphics_window.event_viewports,
+                                 MERGED_VOLUME_INDEX );
     }
 }
 

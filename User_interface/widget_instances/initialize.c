@@ -43,7 +43,7 @@
 #ifndef DEBUG
     add_tag_point_widgets( ui_info, ui_info->tag_points.n_tags_displayed,
                            RMS_error_viewport, Volume_1_tags_viewport,
-                           Volume_2_tags_viewport, Tag_names_viewport );
+                           -1, Tag_names_viewport );
 #endif
 }
 
