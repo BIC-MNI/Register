@@ -337,7 +337,7 @@ static  Merged_widgets  get_merge_method_widget(
     UI_struct     *ui_info,
     int           volume )
 {
-    if (volume >= N_VOLUMES)
+    if (volume >= ui_info->n_volumes_loaded)
         return NULL;
     return( ui_info->widget_list[Merged_menu_viewport].widgets
                              [widget_indices[VALUE1_READOUT_TEXT + volume]] );
@@ -345,7 +345,7 @@ static  Merged_widgets  get_merge_method_widget(
 
 widget_struct *get_merged_blend_widget(UI_struct *ui_info, int volume)
 {
-    if (volume >= N_VOLUMES)
+    if (volume >= ui_info->n_volumes_loaded)
         return NULL;
     return( ui_info->widget_list[Merged_menu_viewport].widgets
             [widget_indices[OPACITY_1_SLIDER + volume]] );

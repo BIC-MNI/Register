@@ -231,7 +231,7 @@ static  DEFINE_WIDGET_CALLBACK( save_transform_button_callback )
     if( tag_index >= IF_get_n_tag_points() )
         IF_create_new_tag_point();
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, ui->n_volumes_loaded )
     {
         if( IF_volume_is_loaded( volume ) )
         {

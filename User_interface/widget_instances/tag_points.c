@@ -93,12 +93,12 @@ static  void  set_and_jump_to_tag(
 {
     VIO_Real  position[VIO_N_DIMENSIONS];
     int   volume_index, tag_volume;
-
-    set_current_tag_index( get_ui_struct(), tag_index );
+    UI_struct *ui_struct = get_ui_struct();
+    set_current_tag_index( ui_struct, tag_index );
 
     if( IF_get_tags_visibility() )
     {
-        for_less( volume_index, 0, N_VOLUMES_DISPLAYED )
+        for_less( volume_index, 0, ui_struct->n_volumes_displayed )
         {
             if( volume_index == MERGED_VOLUME_INDEX )
                 tag_volume = 0;
@@ -317,7 +317,7 @@ static  Viewport_types  get_tag_menu_viewport_index(
                    LABEL_TEXT_COLOUR,
                    (Font_types) Label_text_font, Label_text_font_size ) );
 
-        for_less(vol, 0, N_VOLUMES)
+        for_less(vol, 0, ui_info->n_volumes_loaded)
         {
           x = x_left;
           position_widgets_indices[vol][tag][WORLD_POSITION_BUTTON] =
@@ -649,7 +649,7 @@ static  void  set_widget_activity_and_selected(
 
     for_enum( pos_widget_index, N_POSITION_WIDGETS, Position_widgets )
     {
-        for_less(i, 0, N_VOLUMES)
+        for_less(i, 0, ui_info->n_volumes_loaded)
         {
             set_widget_activity_and_selected(
               ui_info->widget_list[Volume_1_tags_viewport + i].
@@ -667,7 +667,7 @@ static  void  set_widget_activity_and_selected(
     }
 
     update_rms_error( ui_info, tag );
-    for (i = 0; i < N_VOLUMES; i++) 
+    for (i = 0; i < ui_info->n_volumes_loaded; i++) 
       update_tag_position( ui_info, i, tag );
     update_tag_name( ui_info, tag );
 

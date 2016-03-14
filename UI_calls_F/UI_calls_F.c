@@ -16,9 +16,10 @@
 
   void  IF_initialize_register(
     Gwindow  window,
-    VIO_STR   executable_name )
+    VIO_STR   executable_name,
+    int      n_volumes )
 {
-    (void) initialize_register( window, executable_name );
+    (void) initialize_register( window, executable_name, n_volumes );
 }
 
   VIO_Status   UI_set_global_variable(

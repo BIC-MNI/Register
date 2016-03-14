@@ -346,16 +346,16 @@ static  void  update_cmode_colour_maps(
     main->merged.n_colour_entries1 = n_merged_1;
     main->merged.n_colour_entries2 = n_merged_2;
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, main->n_volumes_displayed-1 )
     {
         if( is_volume_active( main, volume ) )
             update_cmode_indices( main, volume );
     }
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
         update_colour_maps( main, volume );
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
         set_recreate_3_slices_flags( main, volume );
 }
 
@@ -394,7 +394,7 @@ static  void  update_cmode_colour_maps(
                                 main->start_colour_index +CURSOR_OUTSIDE_COLOUR,
                                 Cursor_outside_colour );
 
-        for_less( volume, 0, N_VOLUMES_DISPLAYED )
+        for_less( volume, 0, main->n_volumes_displayed )
         {
             for_less( view, 0, N_VIEWS )
             {
@@ -409,13 +409,13 @@ static  void  update_cmode_colour_maps(
 
     update_all_tag_colours( main );
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
         update_colour_maps( main, volume );
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
         set_recreate_3_slices_flags( main, volume );
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
         for_less( view, 0, N_VIEWS )
             update_cursor_colours( main, volume, view );
 }
@@ -437,7 +437,7 @@ static  colour_coding_struct  *get_volume_colour_coding(
     main_struct          *main,
     int                  volume_index )
 {
-    if( volume_index < N_VOLUMES )
+  if( volume_index < main->n_volumes_displayed - 1 )
         return( &main->trislice[volume_index].colour_coding );
     else
         return( &main->merged.colour_coding[volume_index-MERGED_VOLUME_INDEX] );
@@ -630,7 +630,7 @@ static  colour_coding_struct  *get_volume_colour_coding(
     if( !G_can_switch_colour_map_mode() )
         return( FALSE );
 
-    for_less( v, 0, N_VOLUMES )
+    for_less( v, 0, main->n_volumes_displayed-1 )
     {
         if( is_volume_active(main,v) &&
             is_an_rgb_volume(get_slice_volume(main,v)) )

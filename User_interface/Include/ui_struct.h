@@ -58,6 +58,8 @@ typedef  struct
     int                      which_volume_readout;
     int                      x_mouse_readout;
     int                      y_mouse_readout;
+    int                      n_volumes_loaded;
+    int                      n_volumes_displayed;
 } UI_struct;
 
 typedef  struct popup_struct

@@ -178,7 +178,7 @@ int  main(
         }
     }
 
-    status = initialize_user_interface( &ui_struct, argv[0] );
+    status = initialize_user_interface( &ui_struct, argv[0], n_volumes );
 
     for_less( volume, 0, n_volumes )
     {

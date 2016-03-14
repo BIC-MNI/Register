@@ -541,7 +541,7 @@ static  void  check_axes_assigned( void )
     main_struct   *main,
     int           volume_index )
 {
-    if( volume_index < N_VOLUMES )
+    if( volume_index < main->n_volumes_displayed - 1 )
         return( main->trislice[volume_index].volume );
     else
         return( main->trislice[volume_index-MERGED_VOLUME_INDEX].volume );
@@ -749,7 +749,7 @@ static  void  check_axes_assigned( void )
     else
         main->degrees_continuity = -1;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
         set_recreate_3_slices_flags( main, volume );
 }
 

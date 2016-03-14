@@ -26,7 +26,8 @@ static   main_struct      main_info;
 
   VIO_Status   initialize_register(
     Gwindow   window,
-    VIO_STR    executable_name )
+    VIO_STR    executable_name,
+    int n_volumes )
 {
     int             volume, view;
     Bitplane_types  bitplane;
@@ -39,6 +40,9 @@ static   main_struct      main_info;
     }
 
     main_info.window = window;
+    main_info.n_volumes_displayed = n_volumes + 1;
+    if (main_info.n_volumes_displayed < 3)
+      main_info.n_volumes_displayed = 3;
 
     initialize_graphics_struct( &main_info.graphics );
 
@@ -48,10 +52,10 @@ static   main_struct      main_info;
 
     main_info.original_volume_filename = create_string( NULL );
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, main_info.n_volumes_displayed - 1 )
         main_info.trislice[volume].filename = create_string( NULL );
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main_info.n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {
@@ -80,7 +84,7 @@ static   main_struct      main_info;
 
     delete_string( main_info.original_volume_filename );
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, main_info.n_volumes_displayed - 1 )
         delete_string( main_info.trislice[volume].filename );
 
     terminate_slices( &main_info );

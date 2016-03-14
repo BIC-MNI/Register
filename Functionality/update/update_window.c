@@ -21,7 +21,7 @@
     VIO_BOOL   drawn;
     int       volume, view;
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, main->n_volumes_displayed - 1 )
     {
         if( main->trislice[volume].input_flag )
         {
@@ -76,7 +76,7 @@
 
     update_required = FALSE;
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, main->n_volumes_displayed - 1 )
     {
         for_less( view, 0, N_VIEWS )
         {

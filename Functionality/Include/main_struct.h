@@ -122,6 +122,7 @@ typedef  struct
     tag_list_struct          tags;
 
     void                     *render_storage;
+    int                      n_volumes_displayed;
 } main_struct;
 
 #endif

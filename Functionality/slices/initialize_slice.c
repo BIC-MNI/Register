@@ -20,7 +20,7 @@ static  void  initialize_slice( main_struct *, int, int );
 {
     int            view, volume;
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, main->n_volumes_displayed - 1 )
     {
         main->trislice[volume].input_flag = FALSE;
         initialize_colour_coding( &main->trislice[volume].colour_coding,
@@ -30,7 +30,7 @@ static  void  initialize_slice( main_struct *, int, int );
                                   -0.5, (VIO_Real) 255 - 0.5 );
     }
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
             initialize_slice( main, volume, view );

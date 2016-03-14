@@ -17,22 +17,32 @@
 
 #include  <user_interface.h>
 
+int MERGED_VOLUME_INDEX = 0;
+
 /**
  * Perform basic initialization for the user interface.
  *
  * Sets up the global UI_struct, creates the main window.
  * \param ui A pointer to the global UI_struct.
  * \param executable_name The path to the executable, generally from argv[0].
+ * \param n_volumes Number of volumes loaded.
+ * \returns VIO_OK on successful completion.
  */
   VIO_Status   initialize_user_interface(
     UI_struct     *ui,
-    const VIO_STR executable_name )
+    const VIO_STR executable_name,
+    int           n_volumes )
 {
     VIO_Status      status;
 
     ui->volumes_synced = Initial_volumes_synced;
     ui->original_filename_volume_2 = create_string( NULL );
     ui->resampled_filename = create_string( NULL );
+    ui->n_volumes_loaded = n_volumes;
+    ui->n_volumes_displayed = n_volumes + 1;
+    if (ui->n_volumes_displayed < 3)
+      ui->n_volumes_displayed = 3;
+    MERGED_VOLUME_INDEX = ui->n_volumes_displayed - 1;
 
     create_linear_transform( &ui->resampling_transform, (VIO_Transform *) NULL );
 
@@ -49,7 +59,8 @@
 
     set_window_event_callbacks( &ui->graphics_window );
 
-    IF_initialize_register( ui->graphics_window.window, executable_name );
+    IF_initialize_register( ui->graphics_window.window, executable_name,
+                            n_volumes);
 
     IF_set_interpolation_flag( Initial_interpolation_state );
 
@@ -105,7 +116,7 @@
     delete_string( ui->original_filename_volume_2 );
     delete_string( ui->resampled_filename );
 
-    for_less( volume, 0, N_VOLUMES )
+    for_less( volume, 0, ui->n_volumes_loaded )
     {
         if( IF_volume_is_loaded(volume) )
             IF_delete_volume( volume );

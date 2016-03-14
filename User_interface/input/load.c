@@ -141,7 +141,7 @@ static  void  volume_has_been_loaded(
         set_merged_activity( ui_info, TRUE );
     }
 
-    for (i = 0; i < N_VOLUMES; i++)
+    for (i = 0; i < ui_info->n_volumes_loaded; i++)
     {
         if ( i == data->volume_index )
             continue;
@@ -151,7 +151,7 @@ static  void  volume_has_been_loaded(
         }
     }
 
-    if( data->volume_index < N_VOLUMES )
+    if( data->volume_index < ui_info->n_volumes_loaded )
     {
         IF_get_volume_value_range( data->volume_index, &min_value, &max_value );
         set_colour_bar_limits( ui_info, data->volume_index,

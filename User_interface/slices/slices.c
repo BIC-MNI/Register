@@ -52,7 +52,7 @@
     {
         IF_get_volume_world_position( volume_index, position );
 
-        for_less( i, 0, N_VOLUMES_DISPLAYED )
+        for_less( i, 0, ui_info->n_volumes_displayed )
         {
             if( i != volume_index && IF_volume_is_loaded( i ) )
             {

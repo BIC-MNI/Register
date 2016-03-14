@@ -62,7 +62,7 @@
         }
     }
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, ui_struct->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {
@@ -77,8 +77,9 @@
   void  set_recreate_all_slice_flags( void )
 {
     int             volume, view;
+    UI_struct  *ui_struct = get_ui_struct();
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, ui_struct->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {

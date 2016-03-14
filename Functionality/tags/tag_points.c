@@ -79,7 +79,7 @@ static  VIO_BOOL  check_update_transform_and_rms_error(
     int               volume_index;
     tag_point_struct  tag;
 
-    for_less( volume_index, 0, N_VOLUMES )
+    for_less( volume_index, 0, main->n_volumes_displayed - 1 )
     {
         tag.position_exists[volume_index] = FALSE;
         fill_Point( tag.position[volume_index], 0.0, 0.0, 0.0 );

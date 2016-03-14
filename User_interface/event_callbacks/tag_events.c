@@ -27,7 +27,7 @@ static  DEFINE_EVENT_FUNCTION( add_tag_point_callback )
     int             volume, view;
     Viewport_types  viewport;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, ui->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {

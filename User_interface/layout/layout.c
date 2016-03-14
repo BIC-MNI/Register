@@ -25,9 +25,9 @@ unsigned int N_UI_viewports = N_VIEWPORT_TYPES - 1;
     ui_info->volume_panel_height = Default_volume_panel_height;
     ui_info->divider_width = Default_divider_width;
 
-    for_less(i, 0, N_VOLUMES)
+    for_less(i, 0, ui_info->n_volumes_displayed)
     {
-        ui_info->x_slice_divider[i] = (double) (i+1) / N_VOLUMES_DISPLAYED;
+        ui_info->x_slice_divider[i] = (double) (i+1) / ui_info->n_volumes_displayed;
     }
 #if 0
     ui_info->x_slice_divider[0] = Slice_left_view_width;
@@ -70,7 +70,7 @@ unsigned int N_UI_viewports = N_VIEWPORT_TYPES - 1;
 
     x_volume_start[0] = x_main_end + 1 + divider_width;
     x_volume_end[MERGED_VOLUME_INDEX] = x_size - 1;
-    for (i = 1; i < N_VOLUMES_DISPLAYED; i++)
+    for (i = 1; i < ui_info->n_volumes_displayed; i++)
     {
       divider1 = VIO_ROUND( x_volume_start[0] + ui_info->x_slice_divider[i-1] *
                             (x_volume_end[MERGED_VOLUME_INDEX] - x_volume_start[0]) );
@@ -106,7 +106,7 @@ unsigned int N_UI_viewports = N_VIEWPORT_TYPES - 1;
                            x_main_start, x_main_end,
                            y_tag_start, y_tag_end );
 
-    for_less( i, 0, N_VOLUMES_DISPLAYED )
+    for_less( i, 0, ui_info->n_volumes_displayed )
     {
       set_graphics_viewport( graphics, Volume_1_tags_viewport + i,
                              x_volume_start[i], x_volume_end[i],
@@ -130,7 +130,7 @@ unsigned int N_UI_viewports = N_VIEWPORT_TYPES - 1;
 
     /* dividers */
 
-    for (i = 0; i < N_VOLUMES_DISPLAYED; i++) {
+    for (i = 0; i < ui_info->n_volumes_displayed; i++) {
       set_graphics_viewport( graphics, Volume_1_horz_sep_viewport + i,
                              x_volume_start[i]-(divider_width+1), x_volume_start[i]-1, 0, y_size-1 );
     }

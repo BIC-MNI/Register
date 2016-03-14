@@ -50,15 +50,16 @@ static  void  set_readout_activity(
     int        which_volume,
     VIO_BOOL    activity )
 {
-    if( which_volume < N_VOLUMES )
+    if( which_volume < ui->n_volumes_loaded )
     {
         set_widget_activity( get_volume_readout_widget(ui,which_volume),
                              activity );
     }
     else
     {
-        set_widget_activity( get_merged_readout_widget(ui,0), activity );
-        set_widget_activity( get_merged_readout_widget(ui,1), activity );
+        int i;
+        for (i = 0; i < ui->n_volumes_loaded)
+          set_widget_activity( get_merged_readout_widget(ui,i), activity );
     }
 }
 

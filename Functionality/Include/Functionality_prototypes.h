@@ -5,7 +5,8 @@
 
   VIO_Status   initialize_register(
     Gwindow   window,
-    VIO_STR    executable_name );
+    VIO_STR    executable_name,
+    int        n_volumes);
 
   void   terminate_register( void );
 

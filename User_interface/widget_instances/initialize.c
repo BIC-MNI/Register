@@ -26,7 +26,7 @@
     add_main_widgets( ui_info );
 #endif
 
-    for (i = 0; i < N_VOLUMES_DISPLAYED; i++)
+    for (i = 0; i < ui_info->n_volumes_displayed; i++)
     {
       viewport_index = get_volume_menu_viewport_index( i );
       if (i == MERGED_VOLUME_INDEX)

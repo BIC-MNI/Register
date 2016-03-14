@@ -21,7 +21,7 @@
     lines_struct    *lines;
     int             i, volume, view;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {
@@ -115,7 +115,7 @@
 {
     int             volume, view;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {
@@ -256,7 +256,7 @@ static  void  position_tag_circle(
 {
     int             volume, view;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {
@@ -293,7 +293,7 @@ static  void  position_tag_circle(
 {
     int             volume;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
     {
         update_volume_tag_objects( main, volume );
     }
@@ -305,7 +305,7 @@ static  void  position_tag_circle(
 {
     int             volume, view;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
     {
         for_less( view, 0, N_VIEWS )
         {

@@ -275,6 +275,6 @@ static  void  set_cursor_colours(
 
     main->cursor_visibility = state;
 
-    for_less( volume, 0, N_VOLUMES_DISPLAYED )
+    for_less( volume, 0, main->n_volumes_displayed )
         update_volume_cursors( main, volume );
 }

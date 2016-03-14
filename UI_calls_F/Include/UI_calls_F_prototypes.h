@@ -3,7 +3,8 @@
 
   void  IF_initialize_register(
     Gwindow  window,
-    VIO_STR   executable_name );
+    VIO_STR   executable_name,
+    int      n_volumes);
 
   VIO_Status   UI_set_global_variable(
     VIO_STR  variable_name,

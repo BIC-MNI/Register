@@ -5,7 +5,8 @@
 
   VIO_Status   initialize_user_interface(
     UI_struct  *ui,
-    const VIO_STR     executable_name );
+    const VIO_STR     executable_name,
+    int n_volumes );
 
   void   terminate_user_interface(
     UI_struct  *ui );
