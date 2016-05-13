@@ -43,6 +43,10 @@ int MERGED_VOLUME_INDEX = 0;
     if (ui->n_volumes_displayed < 3)
       ui->n_volumes_displayed = 3;
     MERGED_VOLUME_INDEX = ui->n_volumes_displayed - 1;
+    ui->prev_divider_x = 0;
+    ui->prev_divider_y = 0;
+    ui->prev_divider_x = 0;
+    ui->divider_vp_index = -1;
 
     create_linear_transform( &ui->resampling_transform, (VIO_Transform *) NULL );
 

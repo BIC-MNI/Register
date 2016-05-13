@@ -60,6 +60,9 @@ typedef  struct
     int                      y_mouse_readout;
     int                      n_volumes_loaded;
     int                      n_volumes_displayed;
+    int                      prev_divider_x;
+    int                      prev_divider_y;
+    int                      divider_vp_index;
 } UI_struct;
 
 typedef  struct popup_struct

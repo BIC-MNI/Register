@@ -153,7 +153,7 @@ static  void  update_rgb_colour_maps(
     }
 
     /* The colour map is set to the allocated pointer MINUS the minimum
-     * value.  For volumes with a signed range, this means that we can 
+     * value.  For volumes with a signed range, this means that we can
      * index the colour map by a voxel value with no translation.
      */
     main->trislice[volume_index].rgb_colour_map = tmp_ptr - min_value;
@@ -191,7 +191,7 @@ static  void  update_cmode_indices(
     /* TODO: check!!! */
 
     /* The colour map is set to the allocated pointer MINUS the minimum
-     * value.  For volumes with a signed range, this means that we can 
+     * value.  For volumes with a signed range, this means that we can
      * index the colour map by a voxel value with no translation.
      */
     main->trislice[volume].cmode_colour_map = tmp_ptr - min_value;
@@ -199,7 +199,7 @@ static  void  update_cmode_indices(
 
     for_inclusive( voxel_value, min_value, max_value )
     {
-        main->trislice[volume].cmode_colour_map[voxel_value] = 
+        main->trislice[volume].cmode_colour_map[voxel_value] =
            (unsigned short) CONVERT_INTEGER_RANGE( voxel_value,
                                                    min_value, max_value,
                                                    min_ind, max_ind );
@@ -225,7 +225,7 @@ static  void  update_cmode_colour_maps(
     {
         voxel_value = CONVERT_INTEGER_RANGE( i, min_ind, max_ind,
                                              min_value, max_value );
-        G_set_colour_map_entry( main->window, i, 
+        G_set_colour_map_entry( main->window, i,
                     get_colour_code(
                          &main->trislice[volume_index].colour_coding,
                          CONVERT_VOXEL_TO_VALUE(volume,(VIO_Real) voxel_value) ) );
@@ -330,7 +330,7 @@ static  void  update_cmode_colour_maps(
     n_volume_1 = 200;
     (void) printf( "Enter n_volume_1: " );
     (void) scanf( "%d", &n_volume_1 );
- 
+
     n_volume_2 = 200;
     n_merged_1 = 10;
     n_merged_2 = 10;
@@ -443,7 +443,7 @@ static  colour_coding_struct  *get_volume_colour_coding(
         return( &main->merged.colour_coding[volume_index-MERGED_VOLUME_INDEX] );
 }
 
-  void   set_volume_colour_coding_type( 
+  void   set_volume_colour_coding_type(
     main_struct          *main,
     int                  volume_index,
     Colour_coding_types  type )
@@ -453,7 +453,7 @@ static  colour_coding_struct  *get_volume_colour_coding(
     colour_coding_has_changed( main, volume_index );
 }
 
-  Colour_coding_types   get_volume_colour_coding_type( 
+  Colour_coding_types   get_volume_colour_coding_type(
     main_struct          *main,
     int                  volume_index )
 {
@@ -514,7 +514,7 @@ static  colour_coding_struct  *get_volume_colour_coding(
     return( main->merged.merge_method );
 }
 
-  void   set_volume_under_colour( 
+  void   set_volume_under_colour(
     main_struct          *main,
     int                  volume_index,
     VIO_Colour               colour )
@@ -524,7 +524,7 @@ static  colour_coding_struct  *get_volume_colour_coding(
     colour_coding_has_changed( main, volume_index );
 }
 
-  void   set_volume_over_colour( 
+  void   set_volume_over_colour(
     main_struct          *main,
     int                  volume_index,
     VIO_Colour               colour )
@@ -536,89 +536,89 @@ static  colour_coding_struct  *get_volume_colour_coding(
 
   void  composite_merged_pixels(
     main_struct          *main,
-    pixels_struct        *pixels1,
-    pixels_struct        *pixels2,
+    pixels_struct        pixels[],
     pixels_struct        *result )
 {
     int            p, n_pixels;
-    VIO_Colour         col1, col2;
-    VIO_Colour         *p1, *p2, *res_ptr;
+    VIO_Colour     col1, col2;
+    VIO_Colour     *res_ptr;
     int            r1, g1, b1, r2, g2, b2, r, g, b;
-    Merge_methods  method;
-    VIO_Real           alpha1, alpha2, a1, a2;
+    VIO_Real       alpha1, a1;
+    int            vol;
+    int            x, y;
+    int            dx, dy;
 
-    n_pixels = pixels1->x_size * pixels2->y_size;
+    n_pixels = result->x_size * result->y_size;
 
-    p1 = &PIXEL_RGB_COLOUR( *pixels1, 0, 0 );
-    p2 = &PIXEL_RGB_COLOUR( *pixels2, 0, 0 );
     res_ptr = &PIXEL_RGB_COLOUR( *result, 0, 0 );
-    method = main->merged.merge_method;
-
-    alpha1 = main->merged.opacity[0];
-    alpha2 = main->merged.opacity[1];
-
-    if( method == BLEND_VOLUMES )
+    for_less(p, 0, n_pixels)
     {
-        alpha2 = 1.0 - alpha1;
-        method = WEIGHTED_VOLUMES;
+      res_ptr[p] = 0;
     }
 
-    for_less( p, 0, n_pixels )
+    for (vol = 0; vol < main->n_volumes_displayed - 1; vol++)
     {
-        col1 = p1[p];
-        col2 = p2[p];
-        a1 = get_Colour_a_0_1( col1 );
-        a2 = get_Colour_a_0_1( col2 );
+      dx = (result->x_size - pixels[vol].x_size) / 2;
+      dy = (result->y_size - pixels[vol].y_size) / 2;
+      if (dx < 0)
+      {
+        dx = 0;
+      }
+      if (dy < 0)
+      {
+        dy = 0;
+      }
 
-        switch( method )
+#ifdef DEBUG
+      printf("%d %d, %d %d, %d %d\n", dx, dy, result->x_size, result->y_size,
+             pixels[vol].x_size, pixels[vol].y_size);
+#endif /* DEBUG */
+
+      alpha1 = main->merged.opacity[vol];
+      for (x = 0; x < pixels[vol].x_size; x++)
+      {
+        for (y = 0; y < pixels[vol].y_size; y++)
         {
-        case ONE_ON_TWO:
-            a2 = (1.0 - a1) * a2;
-            break;
+          if (x < 0 || x >= result->x_size ||
+              y < 0 || y >= result->y_size)
+            continue;
+          if (x < 0 || x >= pixels[vol].x_size ||
+              y < 0 || y >= pixels[vol].y_size)
+            continue;
+          col1 = PIXEL_RGB_COLOUR( pixels[vol], x, y );
+          col2 = PIXEL_RGB_COLOUR( *result, x, y );
+          a1 = alpha1;
 
-        case TWO_ON_ONE:
-            a1 = (1.0 - a2) * a1;
-            break;
+          r1 = get_Colour_r( col1 );
+          g1 = get_Colour_g( col1 );
+          b1 = get_Colour_b( col1 );
 
-        case WEIGHTED_VOLUMES:
-            a1 = alpha1 * a1;
-            a2 = alpha2 * a2;
-            break;
+          r2 = get_Colour_r( col2 );
+          g2 = get_Colour_g( col2 );
+          b2 = get_Colour_b( col2 );
 
-        default:
-            fprintf(stderr, "ERROR: unknown blending method '%d'.\n", method);
-            exit(EXIT_FAILURE);
-            break;
-        }
+          r = (int) (a1 * (VIO_Real) r1) + r2;
+          g = (int) (a1 * (VIO_Real) g1) + g2;
+          b = (int) (a1 * (VIO_Real) b1) + b2;
 
-        r1 = get_Colour_r( col1 );
-        g1 = get_Colour_g( col1 );
-        b1 = get_Colour_b( col1 );
-
-        r2 = get_Colour_r( col2 );
-        g2 = get_Colour_g( col2 );
-        b2 = get_Colour_b( col2 );
-
-        r = (int) (a1 * (VIO_Real) r1 + a2 * (VIO_Real) r2);
-        g = (int) (a1 * (VIO_Real) g1 + a2 * (VIO_Real) g2);
-        b = (int) (a1 * (VIO_Real) b1 + a2 * (VIO_Real) b2);
-
-        if( r < 0 )
+          if( r < 0 )
             r = 0;
-        else if( r > 255 )
+          else if( r > 255 )
             r = 255;
 
-        if( g < 0 )
+          if( g < 0 )
             g = 0;
-        else if( g > 255 )
+          else if( g > 255 )
             g = 255;
 
-        if( b < 0 )
+          if( b < 0 )
             b = 0;
-        else if( b > 255 )
+          else if( b > 255 )
             b = 255;
 
-        res_ptr[p] = make_Colour( r, g, b );
+          PIXEL_RGB_COLOUR(*result, x+dx, y+dy) = make_Colour( r, g, b );
+        }
+      }
     }
 }
 

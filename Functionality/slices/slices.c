@@ -515,6 +515,8 @@ static  void  check_axes_assigned( void )
         main_ptr->trislice[volume_index].position[VIO_T] = t_voxel;
 
         set_recreate_3_slices_flags(main_ptr, volume_index);
+
+        set_recreate_3_slices_flags(main_ptr, MERGED_VOLUME_INDEX);
     }
 }
 

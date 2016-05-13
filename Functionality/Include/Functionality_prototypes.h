@@ -74,8 +74,7 @@
 
   void  composite_merged_pixels(
     main_struct          *main,
-    pixels_struct        *pixels1,
-    pixels_struct        *pixels2,
+    pixels_struct        pixels[],
     pixels_struct        *result );
 
   VIO_BOOL  can_switch_colour_modes(

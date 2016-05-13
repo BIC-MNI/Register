@@ -71,9 +71,69 @@ static  DEFINE_EVENT_FUNCTION( deiconize_window_callback )
     set_window_colours( ui->graphics_window.window );
 }
 
+static DEFINE_EVENT_FUNCTION(divider_mouse_move)
+{
+  UI_struct *ui = (UI_struct *) callback_data;
+  int x, y;
+  int x_size, y_size;
+
+  G_get_mouse_position( ui->graphics_window.window, &x, &y);
+  if (x != ui->prev_divider_x || y != ui->prev_divider_y)
+  {
+    ui->prev_divider_x = x;
+    ui->prev_divider_y = y;
+    
+    G_get_window_size( ui->graphics_window.window, &x_size, &y_size );
+
+    int y_volume_panel_start = ui->tag_panel_height + ui->divider_width;
+    int y_volume_panel_end = y_volume_panel_start + ui->volume_panel_height-1;
+    int y_slice_end = y_size - 1;
+    int y_slice_start = y_volume_panel_end + 1 + ui->divider_width;
+    double new_d = (double) (y - y_slice_start) / (y_slice_end - y_slice_start);
+
+    int n = 1 - ui->divider_vp_index;
+
+    ui->y_slice_divider[n] = new_d;
+
+    resize_layout(ui);
+  }
+}
+
+static DEFINE_EVENT_FUNCTION(divider_mouse_up)
+{
+  UI_struct *ui = (UI_struct *) callback_data;
+  int x, y;
+
+  G_get_mouse_position( ui->graphics_window.window, &x, &y);
+
+  remove_global_event_callback( NO_EVENT, divider_mouse_move, callback_data );
+  remove_global_event_callback( LEFT_MOUSE_UP_EVENT, divider_mouse_up, callback_data );
+  set_interaction_in_progress(FALSE);
+}
+
+static DEFINE_EVENT_FUNCTION(divider_mouse_down)
+{
+  UI_struct *ui = (UI_struct *) callback_data;
+
+  ui->divider_vp_index = event_viewport_index - Slice_1_vert_sep_viewport;
+
+  G_get_mouse_position( ui->graphics_window.window, 
+                        &ui->prev_divider_x, &ui->prev_divider_y );
+
+  add_global_event_callback( NO_EVENT, divider_mouse_move,
+                             ANY_MODIFIER, (void *) ui );
+
+  add_global_event_callback( LEFT_MOUSE_UP_EVENT, divider_mouse_up,
+                             ANY_MODIFIER, (void *) ui );
+
+  set_interaction_in_progress(TRUE);
+}
+
   void  install_window_events(
     UI_struct  *ui )
 {
+    int i;
+
     set_event_viewport( &ui->graphics_window.event_viewports,
                         Whole_window_event_viewport, -1, -1, -1, -1 );
 
@@ -106,4 +166,18 @@ static  DEFINE_EVENT_FUNCTION( deiconize_window_callback )
                                  WINDOW_DEICONIZED_EVENT, -1, -1, -1, -1,
                                  deiconize_window_callback, ANY_MODIFIER,
                                  (void *) ui );
+
+    for (i = 0; i < 2; i++) {
+      add_event_viewport_callback( &ui->graphics_window.event_viewports,
+                                   Slice_1_vert_sep_viewport + i,
+                                   LEFT_MOUSE_DOWN_EVENT, -1, -1, -1, -1,
+                                   divider_mouse_down, ANY_MODIFIER,
+                                   (void *) ui );
+
+      add_event_viewport_callback( &ui->graphics_window.event_viewports,
+                                   Slice_1_vert_sep_viewport + i,
+                                   MOUSE_MOVEMENT_EVENT, -1, -1, -1, -1,
+                                   divider_mouse_move, ANY_MODIFIER,
+                                   (void *) ui );
+    }
 }

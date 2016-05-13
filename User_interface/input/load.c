@@ -73,6 +73,9 @@ static  void  delete_popup_interaction(
 
     ALLOC( data, 1 );
 
+    if (volume >= ui_info->n_volumes_loaded)
+      ui_info->n_volumes_loaded = volume + 1;
+
     data->volume_index = volume;
     data->filename = create_string( filename );
     data->this_is_resampled_volume = this_is_resampled_volume;
@@ -135,11 +138,16 @@ static  void  volume_has_been_loaded(
 
     update_position_counters( ui_info, data->volume_index );
 
-    if( IF_volume_is_loaded( 0 ) &&
-        IF_volume_is_loaded( 1 ) )
+    for (i = 0; i < ui_info->n_volumes_loaded; i++) 
     {
-        set_merged_activity( ui_info, TRUE );
+      if ( !IF_volume_is_loaded( i ) )
+      {
+        break;
+      }
     }
+
+    if ( i == ui_info->n_volumes_loaded && i >= MIN_MERGED_VOLUMES )
+      set_merged_activity( ui_info, TRUE );
 
     for (i = 0; i < ui_info->n_volumes_loaded; i++)
     {

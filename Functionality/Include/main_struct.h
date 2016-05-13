@@ -20,7 +20,7 @@
 
 #include  <common_include.h>
 
-#define  N_MERGED       2
+#define  N_MERGED       N_VOLUMES
 
 typedef enum { BACKGROUND_COLOUR,
                TAG_INSIDE_COLOUR,

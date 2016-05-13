@@ -74,10 +74,11 @@
                     main->trislice[volume_index].slices[view].pixels );
 }
 
-static  void  convert_volume1_voxel_to_volume2(
+static  void  convert_volume1_voxel_to_volumeN(
     main_struct   *main,
     VIO_Real      voxel1[],
-    VIO_Real      voxel2[] )
+    VIO_Real      voxel2[],
+    int           n)
 {
     VIO_Volume  volume1;
     VIO_Real    world[VIO_N_DIMENSIONS], original_world2[VIO_N_DIMENSIONS];
@@ -86,12 +87,12 @@ static  void  convert_volume1_voxel_to_volume2(
 
     convert_voxel_to_world( volume1, voxel1, &world[VIO_X], &world[VIO_Y], &world[VIO_Z] );
 
-    convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
+    convert_world_to_original_world( main, n,
                                      world[VIO_X], world[VIO_Y], world[VIO_Z],
                                      &original_world2[VIO_X], &original_world2[VIO_Y],
                                      &original_world2[VIO_Z] );
 
-    convert_original_world_to_voxel( main, RESAMPLED_VOLUME_INDEX,
+    convert_original_world_to_voxel( main, n,
                                      original_world2[VIO_X], original_world2[VIO_Y],
                                      original_world2[VIO_Z],
                                      &voxel2[VIO_X], &voxel2[VIO_Y], &voxel2[VIO_Z] );
@@ -113,6 +114,7 @@ static  void  convert_volume1_voxel_to_volume2(
     VIO_Real         x_translation2, y_translation2;
     VIO_Volume       volume1, volume2;
     VIO_Real         *position1, voxel1[VIO_MAX_DIMENSIONS];
+    VIO_Real         *position2;
     VIO_Real         x_lower_left_pixel, y_lower_left_pixel;
     VIO_Real         x_upper_left_pixel, y_upper_left_pixel;
     VIO_Real         x_lower_right_pixel, y_lower_right_pixel;
@@ -125,183 +127,195 @@ static  void  convert_volume1_voxel_to_volume2(
     VIO_Real         origin2[VIO_MAX_DIMENSIONS];
     VIO_Real         x_axis2[VIO_MAX_DIMENSIONS], y_axis2[VIO_MAX_DIMENSIONS];
     VIO_Colour       *rgb_colour_map, **rgb_colour_map_ptr;
-    pixels_struct    *merged_pixels, pixels1, pixels2;
+    pixels_struct    *merged_pixels;
+    int              vol;
+    pixels_struct    pixels[N_VOLUMES];
 
     volume1 = get_slice_volume( main, 0 );
-    volume2 = get_slice_volume( main, 1 );
     get_volume_sizes( volume1, sizes1 );
-    get_volume_separations( volume2, separations2 );
-
     position1 = get_volume_cursor( main, MERGED_VOLUME_INDEX );
-
     get_slice_axes( view, &x_axis_index, &y_axis_index );
     axis = get_slice_axis( view );
 
-    voxel1[VIO_X] = 0.0;
-    voxel1[VIO_Y] = 0.0;
-    voxel1[VIO_Z] = 0.0;
-    voxel1[axis] = position1[axis];
-    convert_volume1_voxel_to_volume2( main, voxel1, lower_left_voxel2 );
-    convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
-                            &x_lower_left_pixel, &y_lower_left_pixel );
+    for (vol = 1; vol < main->n_volumes_displayed - 1; vol++)
+    {
+      volume2 = get_slice_volume( main, vol );
+      get_volume_separations( volume2, separations2 );
 
-    voxel1[x_axis_index] = (VIO_Real) sizes1[x_axis_index];
-    convert_volume1_voxel_to_volume2( main, voxel1, lower_right_voxel2 );
-    convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
-                            &x_lower_right_pixel, &y_lower_right_pixel );
-    voxel1[x_axis_index] = 0.0;
+      voxel1[VIO_X] = 0.0;
+      voxel1[VIO_Y] = 0.0;
+      voxel1[VIO_Z] = 0.0;
+      voxel1[axis] = position1[axis];
+      convert_volume1_voxel_to_volumeN( main, voxel1, lower_left_voxel2, vol );
+      convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
+                              &x_lower_left_pixel, &y_lower_left_pixel );
 
-    voxel1[y_axis_index] = (VIO_Real) sizes1[y_axis_index];
-    convert_volume1_voxel_to_volume2( main, voxel1, upper_left_voxel2 );
-    convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
-                            &x_upper_left_pixel, &y_upper_left_pixel );
-    voxel1[y_axis_index] = 0.0;
+      voxel1[x_axis_index] = (VIO_Real) sizes1[x_axis_index];
+      convert_volume1_voxel_to_volumeN( main, voxel1, lower_right_voxel2, vol );
+      convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
+                              &x_lower_right_pixel, &y_lower_right_pixel );
+      voxel1[x_axis_index] = 0.0;
 
-    /*--- this assumes that x_axis1 and y_axis1 are principal axes */
+      voxel1[y_axis_index] = (VIO_Real) sizes1[y_axis_index];
+      convert_volume1_voxel_to_volumeN( main, voxel1, upper_left_voxel2, vol );
+      convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
+                              &x_upper_left_pixel, &y_upper_left_pixel );
+      voxel1[y_axis_index] = 0.0;
 
-    dx_pixel = x_lower_right_pixel - x_lower_left_pixel;
-    if( dx_pixel == 0.0 )
+      /*--- this assumes that x_axis1 and y_axis1 are principal axes */
+
+      dx_pixel = x_lower_right_pixel - x_lower_left_pixel;
+      if( dx_pixel == 0.0 )
         dx_pixel = 1.0;
-    dy_pixel = y_upper_left_pixel - y_lower_left_pixel;
-    if( dy_pixel == 0.0 )
+      dy_pixel = y_upper_left_pixel - y_lower_left_pixel;
+      if( dy_pixel == 0.0 )
         dy_pixel = 1.0;
 
-    for_less( c, 0, get_volume_n_dimensions(volume2) )
-    {
+      for_less( c, 0, get_volume_n_dimensions(volume2) )
+      {
         x_axis2[c] = (lower_right_voxel2[c] - lower_left_voxel2[c]) / dx_pixel;
         y_axis2[c] = (upper_left_voxel2[c] - lower_left_voxel2[c]) / dy_pixel;
         origin2[c] = lower_left_voxel2[c];
-    }
+      }
 
-    x_len = 0.0;
-    y_len = 0.0;
-    for_less( c, 0, get_volume_n_dimensions(volume2) )
-    {
+      position2 = get_volume_cursor( main, vol );
+
+      origin2[VIO_T] = position2[VIO_T];
+
+      x_len = 0.0;
+      y_len = 0.0;
+      for_less( c, 0, get_volume_n_dimensions(volume2) )
+      {
         VIO_Real  comp;
 
         comp = x_axis2[c] * separations2[c];
         x_len += comp * comp;
         comp = y_axis2[c] * separations2[c];
         y_len += comp * comp;
-    }
+      }
 
-    x_len = sqrt( x_len );
-    if( x_len == 0.0 )
+
+
+      x_len = sqrt( x_len );
+      if( x_len == 0.0 )
         x_len = 1.0;
-    y_len = sqrt( y_len );
-    if( y_len == 0.0 )
+      y_len = sqrt( y_len );
+      if( y_len == 0.0 )
         y_len = 1.0;
 
-    x_scale2 = 1.0 / x_len;
-    y_scale2 = 1.0 / y_len;
-    x_translation2 = x_lower_left_pixel;
-    y_translation2 = y_lower_left_pixel;
+      x_scale2 = 1.0 / x_len;
+      y_scale2 = 1.0 / y_len;
+      x_translation2 = x_lower_left_pixel;
+      y_translation2 = y_lower_left_pixel;
 
-    get_slice_transform( main, MERGED_VOLUME_INDEX, view,
-                         &x_translation1, &y_translation1,
-                         &x_scale1, &y_scale1 );
+      get_slice_transform( main, MERGED_VOLUME_INDEX, view,
+                           &x_translation1, &y_translation1,
+                           &x_scale1, &y_scale1 );
 
-    if( G_get_colour_map_state(main->window) )
+      if( G_get_colour_map_state(main->window) )
         pixel_type = COLOUR_INDEX_16BIT_PIXEL;
-    else
+      else
         pixel_type = RGB_PIXEL;
 
-    get_slice_viewport_size( main, MERGED_VOLUME_INDEX, view, &x_size, &y_size);
+      get_slice_viewport_size( main, MERGED_VOLUME_INDEX, view,
+                               &x_size, &y_size);
 
-    get_slice_plane( main, MERGED_VOLUME_INDEX, view,
-                     origin1, x_axis1, y_axis1 );
+      get_slice_plane( main, MERGED_VOLUME_INDEX, view,
+                       origin1, x_axis1, y_axis1 );
 
-    filter_type = get_slice_filter_type( main, MERGED_VOLUME_INDEX, view );
-    filter_width = get_slice_filter_width( main, MERGED_VOLUME_INDEX, view );
+      filter_type = get_slice_filter_type( main, MERGED_VOLUME_INDEX, view );
+      filter_width = get_slice_filter_width( main, MERGED_VOLUME_INDEX, view );
 
-    merged_pixels = main->merged.slices[view].pixels;
+      merged_pixels = main->merged.slices[view].pixels;
 
-    set_volume_slice_pixel_range( volume1, filter_type, filter_width,
-                                  origin1, x_axis1, y_axis1,
-                                  x_translation1, y_translation1, 
-                                  x_scale1, y_scale1,
-                                  volume2, filter_type, filter_width,
-                                  origin2, x_axis2, y_axis2,
-                                  x_translation2, y_translation2, 
-                                  x_scale2, y_scale2,
-                                  x_size, y_size, pixel_type,
-                                  &main->merged.slices[view].n_pixels_alloced,
-                                  merged_pixels );
+      set_volume_slice_pixel_range( volume1, filter_type, filter_width,
+                                    origin1, x_axis1, y_axis1,
+                                    x_translation1, y_translation1,
+                                    x_scale1, y_scale1,
+                                    NULL, NEAREST_NEIGHBOUR, 0.0,
+                                    NULL, NULL, NULL,
+                                    0, 0, 0, 0,
+                                    x_size, y_size, pixel_type,
+                                    &main->merged.slices[view].n_pixels_alloced,
+                                    merged_pixels );
 
-    if( is_an_rgb_volume(volume1) )
+      if( is_an_rgb_volume(volume1) )
         rgb_colour_map_ptr = NULL;
-    else
-    {
+      else
+      {
         rgb_colour_map = main->trislice[0].rgb_colour_map;
         if (rgb_colour_map != NULL)
             rgb_colour_map_ptr = &rgb_colour_map;
         else
             rgb_colour_map_ptr = NULL;
-    }
+      }
 
-    initialize_pixels( &pixels1,
-                       merged_pixels->x_position,
-                       merged_pixels->y_position,
-                       merged_pixels->x_size,
-                       merged_pixels->y_size,
-                       merged_pixels->x_zoom,
-                       merged_pixels->y_zoom,
-                       RGB_PIXEL );
+      initialize_pixels( &pixels[0],
+                         merged_pixels->x_position,
+                         merged_pixels->y_position,
+                         merged_pixels->x_size,
+                         merged_pixels->y_size,
+                         merged_pixels->x_zoom,
+                         merged_pixels->y_zoom,
+                         RGB_PIXEL );
 
-    create_volume_slice_coding( volume1, filter_type, filter_width,
-                         origin1, x_axis1, y_axis1,
-                         x_translation1, y_translation1, x_scale1, y_scale1,
-                         (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
-                         (VIO_Real *) NULL, (VIO_Real *) NULL, (VIO_Real *) NULL,
-                         0.0, 0.0, 0.0, 0.0,
-                         x_size, y_size, 0, -1, 0, -1, pixel_type,
-                         main->degrees_continuity,
-                         NULL,
-                         rgb_colour_map_ptr,
-                         make_rgba_Colour( 0, 0, 0, 0 ),
-                         &main->trislice[0].colour_coding,
-                         main->render_storage,
-                         FALSE, NULL, &pixels1 );
+      create_volume_slice_coding( volume1, filter_type, filter_width,
+                                  origin1, x_axis1, y_axis1,
+                                  x_translation1, y_translation1,
+                                  x_scale1, y_scale1,
+                                  NULL, NEAREST_NEIGHBOUR, 0.0,
+                                  NULL, NULL, NULL,
+                                  0.0, 0.0, 0.0, 0.0,
+                                  x_size, y_size, 0, -1, 0, -1, pixel_type,
+                                  main->degrees_continuity,
+                                  NULL,
+                                  rgb_colour_map_ptr,
+                                  make_rgba_Colour( 0, 0, 0, 0 ),
+                                  &main->trislice[0].colour_coding,
+                                  main->render_storage,
+                                  FALSE, NULL, &pixels[0] );
 
-    if( is_an_rgb_volume(volume2) )
+      if( is_an_rgb_volume(volume2) )
         rgb_colour_map_ptr = NULL;
-    else
-    {
-        rgb_colour_map = main->trislice[1].rgb_colour_map;
+      else
+      {
+        rgb_colour_map = main->trislice[vol].rgb_colour_map;
         if (rgb_colour_map != NULL)
             rgb_colour_map_ptr = &rgb_colour_map;
         else
             rgb_colour_map_ptr = NULL;
+      }
+      initialize_pixels( &pixels[vol],
+                         merged_pixels->x_position,
+                         merged_pixels->y_position,
+                         merged_pixels->x_size,
+                         merged_pixels->y_size,
+                         merged_pixels->x_zoom,
+                         merged_pixels->y_zoom,
+                         RGB_PIXEL );
+
+      create_volume_slice_coding( volume2, filter_type, filter_width,
+                                  origin2, x_axis2, y_axis2,
+                                  x_translation2, y_translation2,
+                                  x_scale2, y_scale2,
+                                  NULL, NEAREST_NEIGHBOUR, 0.0,
+                                  NULL, NULL, NULL,
+                                  0.0, 0.0, 0.0, 0.0,
+                                  x_size, y_size, 0, -1, 0, -1, pixel_type,
+                                  main->degrees_continuity,
+                                  NULL,
+                                  rgb_colour_map_ptr,
+                                  make_rgba_Colour( 0, 0, 0, 0 ),
+                                  &main->trislice[vol].colour_coding,
+                                  main->render_storage,
+                                  FALSE, NULL, &pixels[vol] );
+
     }
-    initialize_pixels( &pixels2,
-                       merged_pixels->x_position,
-                       merged_pixels->y_position,
-                       merged_pixels->x_size,
-                       merged_pixels->y_size,
-                       merged_pixels->x_zoom,
-                       merged_pixels->y_zoom,
-                       RGB_PIXEL );
-
-    create_volume_slice_coding( volume2, filter_type, filter_width,
-                         origin2, x_axis2, y_axis2,
-                         x_translation2, y_translation2, x_scale2, y_scale2,
-                         (VIO_Volume) NULL, NEAREST_NEIGHBOUR, 0.0,
-                         (VIO_Real *) NULL, (VIO_Real *) NULL, (VIO_Real *) NULL,
-                         0.0, 0.0, 0.0, 0.0,
-                         x_size, y_size, 0, -1, 0, -1, pixel_type,
-                         main->degrees_continuity,
-                         NULL,
-                         rgb_colour_map_ptr,
-                         make_rgba_Colour( 0, 0, 0, 0 ),
-                         &main->trislice[1].colour_coding,
-                         main->render_storage,
-                         FALSE, NULL, &pixels2 );
-
-    composite_merged_pixels( main, &pixels1, &pixels2,
+    composite_merged_pixels( main, pixels,
                              main->merged.slices[view].pixels );
 
-    delete_pixels( &pixels1 );
-    delete_pixels( &pixels2 );
+    for (vol = 0; vol < main->n_volumes_displayed - 1; vol++)
+      delete_pixels( &pixels[vol] );
 }
 
   VIO_BOOL   convert_pixel_to_voxel(
