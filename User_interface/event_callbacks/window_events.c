@@ -77,6 +77,9 @@ static DEFINE_EVENT_FUNCTION(divider_mouse_move)
   int x, y;
   int x_size, y_size;
 
+  if ( ui->divider_vp_index < 0 )
+    return;
+
   G_get_mouse_position( ui->graphics_window.window, &x, &y);
   if (x != ui->prev_divider_x || y != ui->prev_divider_y)
   {
@@ -109,6 +112,7 @@ static DEFINE_EVENT_FUNCTION(divider_mouse_up)
   remove_global_event_callback( NO_EVENT, divider_mouse_move, callback_data );
   remove_global_event_callback( LEFT_MOUSE_UP_EVENT, divider_mouse_up, callback_data );
   set_interaction_in_progress(FALSE);
+  ui->divider_vp_index = -1;
 }
 
 static DEFINE_EVENT_FUNCTION(divider_mouse_down)
@@ -167,17 +171,12 @@ static DEFINE_EVENT_FUNCTION(divider_mouse_down)
                                  deiconize_window_callback, ANY_MODIFIER,
                                  (void *) ui );
 
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++)
+    {
       add_event_viewport_callback( &ui->graphics_window.event_viewports,
                                    Slice_1_vert_sep_viewport + i,
                                    LEFT_MOUSE_DOWN_EVENT, -1, -1, -1, -1,
                                    divider_mouse_down, ANY_MODIFIER,
-                                   (void *) ui );
-
-      add_event_viewport_callback( &ui->graphics_window.event_viewports,
-                                   Slice_1_vert_sep_viewport + i,
-                                   MOUSE_MOVEMENT_EVENT, -1, -1, -1, -1,
-                                   divider_mouse_move, ANY_MODIFIER,
                                    (void *) ui );
     }
 }

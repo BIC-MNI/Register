@@ -156,7 +156,7 @@ static  void  check_event_viewport_exists(
       callback_function, callback_data );
 }
 
-  void  execute_event_viewport_events(
+VIO_BOOL  execute_event_viewport_events(
     VIO_BOOL                 shift_state,
     event_viewports_struct  *event_viewports,
     int                     x_mouse,
@@ -190,6 +190,7 @@ static  void  check_event_viewport_exists(
                 break;
         }
     }
+    return (found);
 }
 
   VIO_BOOL  find_viewport_containing_mouse(

@@ -42,18 +42,17 @@ static  void  timer_function(
     int                     shift_state;
     int                     x_mouse, y_mouse;
     event_viewports_struct  *event_viewports;
+    VIO_BOOL                got_mouse;
 
     shift_state = G_get_shift_key_state() || G_get_ctrl_key_state() ||
                   G_get_alt_key_state();
 
-    x_mouse = 0;
-    y_mouse = 0;
+    got_mouse = G_get_mouse_position( event_window, &x_mouse, &y_mouse );
 
     if( !execute_global_event_callbacks( shift_state, event_type,
                                          key_pressed ) &&
         event_is_allowable( event_type ) &&
-        (!mouse_must_be_in_window(event_type) ||
-         G_get_mouse_position( event_window, &x_mouse, &y_mouse )) &&
+        (!mouse_must_be_in_window(event_type) || got_mouse ) &&
         lookup_event_viewports( event_window, &event_viewports ) )
     {
         execute_event_viewport_events( shift_state, event_viewports,

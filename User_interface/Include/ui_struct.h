@@ -58,7 +58,9 @@ typedef  struct
     int                      which_volume_readout;
     int                      x_mouse_readout;
     int                      y_mouse_readout;
+    /** Number of real, loaded or loadable volumes. */
     int                      n_volumes_loaded;
+    /** One more than n_volumes_loaded, to account for the merged volume. */
     int                      n_volumes_displayed;
     int                      prev_divider_x;
     int                      prev_divider_y;

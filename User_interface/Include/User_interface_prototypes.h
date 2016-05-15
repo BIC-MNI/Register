@@ -171,7 +171,7 @@
     event_function_type     callback_function,
     void                    *callback_data );
 
-  void  execute_event_viewport_events(
+VIO_BOOL execute_event_viewport_events(
     VIO_BOOL                 shift_state,
     event_viewports_struct  *event_viewports,
     int                     x_mouse,

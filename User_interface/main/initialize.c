@@ -38,14 +38,15 @@ int MERGED_VOLUME_INDEX = 0;
     ui->volumes_synced = Initial_volumes_synced;
     ui->original_filename_volume_2 = create_string( NULL );
     ui->resampled_filename = create_string( NULL );
+    /* Enforce a minimum of two loadable volumes. */
+    if (n_volumes < 2) {
+      n_volumes = 2;
+    }
     ui->n_volumes_loaded = n_volumes;
     ui->n_volumes_displayed = n_volumes + 1;
-    if (ui->n_volumes_displayed < 3)
-      ui->n_volumes_displayed = 3;
     MERGED_VOLUME_INDEX = ui->n_volumes_displayed - 1;
     ui->prev_divider_x = 0;
     ui->prev_divider_y = 0;
-    ui->prev_divider_x = 0;
     ui->divider_vp_index = -1;
 
     create_linear_transform( &ui->resampling_transform, (VIO_Transform *) NULL );
