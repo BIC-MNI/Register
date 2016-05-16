@@ -286,9 +286,7 @@ static  Merged_widgets  get_merge_method_widget(
     y += Volume_button_height + Interface_y_spacing;
 
     ui_info->position_text_start_index[MERGED_VOLUME_INDEX] =
-                                add_cursor_position_widgets(
-                                ui_info, viewport_index, &height );
-
+      add_cursor_position_widgets( ui_info, viewport_index, &height, FALSE );
 
     radio_widgets[0] = ui_info->widget_list[viewport_index].widgets
                                [widget_indices[ONE_ON_TWO_BUTTON]];
@@ -321,7 +319,7 @@ static  Merged_widgets  get_merge_method_widget(
 
     set_voxel_position_widgets_activity( ui_info, Merged_menu_viewport,
                                          ui_info->position_text_start_index[MERGED_VOLUME_INDEX],
-                                         activity );
+                                         activity, FALSE );
 
     if( activity )
     {

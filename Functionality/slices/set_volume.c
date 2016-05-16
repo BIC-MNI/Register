@@ -394,3 +394,10 @@ char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime, MIvector_
             is_an_rgb_volume(get_slice_volume(main,volume_index)) );
 }
 
+VIO_BOOL  volume_has_time_axis(
+    main_struct    *main,
+    int            volume_index )
+{
+    return( is_volume_active( main, volume_index ) &&
+            get_volume_n_dimensions( get_slice_volume( main, volume_index ) ) > 3 );
+}

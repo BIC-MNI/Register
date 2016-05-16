@@ -68,6 +68,12 @@
     return( is_volume_rgb( get_main_struct(), volume_index ) );
 }
 
+  VIO_BOOL  IF_volume_has_time_axis(
+    int            volume_index )
+{
+    return( volume_has_time_axis( get_main_struct(), volume_index ) );
+}
+
   VIO_BOOL  IF_is_resampled_volume_loaded( void )
 {
     return( is_resampled_volume_loaded( get_main_struct() ) );

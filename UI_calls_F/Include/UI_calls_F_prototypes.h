@@ -30,6 +30,9 @@
   VIO_BOOL  IF_is_an_rgb_volume(
     int            volume_index );
 
+  VIO_BOOL  IF_volume_has_time_axis(
+    int            volume_index );
+
   VIO_BOOL  IF_is_resampled_volume_loaded( void );
 
   VIO_Status  IF_do_resampling(

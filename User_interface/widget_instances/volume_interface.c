@@ -180,8 +180,7 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
 
 
     ui_info->position_text_start_index[volume_index] =
-                             add_cursor_position_widgets( ui_info,
-                                   viewport_index, &height );
+      add_cursor_position_widgets( ui_info, viewport_index, &height, TRUE );
 }
 
   void  set_load_activity(
@@ -221,7 +220,8 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           activity,
-    VIO_BOOL           is_rgb_volume )
+    VIO_BOOL           is_rgb_volume,
+    VIO_BOOL           has_time_axis)
 {
     Viewport_types       viewport_index;
     Volume_widgets       widget_index;
@@ -255,7 +255,7 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
 
     set_voxel_position_widgets_activity( ui_info, viewport_index,
                            ui_info->position_text_start_index[volume_index],
-                           activity );
+                           activity, has_time_axis );
 }
 
   int  get_colour_bar_start_index( void )

@@ -231,6 +231,10 @@
     main_struct    *main,
     int            volume_index );
 
+  VIO_BOOL  volume_has_time_axis(
+    main_struct    *main,
+    int            volume_index );
+
   void  get_slice_axes(
     int   view_index,
     int   *x_axis_index,

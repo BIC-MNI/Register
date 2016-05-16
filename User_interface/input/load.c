@@ -130,7 +130,8 @@ static  void  volume_has_been_loaded(
     }
 
     set_volume_widgets_activity( ui_info, data->volume_index, TRUE,
-                                 IF_is_an_rgb_volume(data->volume_index) );
+                                 IF_is_an_rgb_volume(data->volume_index),
+                                 IF_volume_has_time_axis(data->volume_index));
 
     update_colour_map_toggle_activity( ui_info );
 

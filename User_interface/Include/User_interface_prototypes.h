@@ -461,13 +461,15 @@ widget_struct  *get_merged_blend_widget(
   int  add_cursor_position_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
-    int               *height );
+    int               *height,
+    VIO_BOOL          show_time );
 
   void  set_voxel_position_widgets_activity(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    VIO_BOOL           activity );
+    VIO_BOOL          activity,
+    VIO_BOOL          has_time_axis);
 
   void  set_volume_voxel_text(
     UI_struct         *ui_info,
@@ -551,8 +553,9 @@ widget_struct  *get_merged_blend_widget(
   void  set_volume_widgets_activity(
     UI_struct         *ui_info,
     int               volume_index,
-    VIO_BOOL           activity,
-    VIO_BOOL           is_rgb_volume );
+    VIO_BOOL          activity,
+    VIO_BOOL          is_rgb_volume,
+    VIO_BOOL          has_time_axis);
 
   int  get_colour_bar_start_index( void );
 

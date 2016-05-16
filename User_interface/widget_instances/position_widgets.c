@@ -107,7 +107,8 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
   int  add_cursor_position_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
-    int               *height )
+    int               *height,
+    VIO_BOOL          show_time )
 {
     int           x, y, start_index, x_start, dx;
     int           x_min, x_max, y_min, y_max;
@@ -238,10 +239,12 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_z_world_callback, (void *) NULL ) ) - start_index;
 
-    y -= Text_entry_height + 2;
-    x = x_start + 2 * dx - (Position_label_width + Position_values_separation);
+    if (show_time)
+    {
+        y -= Text_entry_height + 2;
+        x = x_start + 2 * dx - (Position_label_width + Position_values_separation);
 
-    widget_indices[TIME_LABEL] = add_widget_to_list(
+        widget_indices[TIME_LABEL] = add_widget_to_list(
                   &ui_info->widget_list[viewport_index],
                   create_label( &ui_info->graphics_window, viewport_index, 
                   x, y, Position_label_width, Text_entry_height,
@@ -251,14 +254,14 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                   (Font_types) Label_text_font, 
                   Label_text_font_size ) ) - start_index;
 
-    x += Position_label_width + Position_values_separation;
+        x += Position_label_width + Position_values_separation;
 
-    widget_indices[TIME_TEXT] = add_widget_to_list(
+        widget_indices[TIME_TEXT] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                   create_text_entry( &ui_info->graphics_window, viewport_index,
                        x, y,
                        Position_values_width, Text_entry_height,
-                       TRUE, "", FALSE,
+                       FALSE, "", FALSE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
                        TEXT_ENTRY_INACTIVE_COLOUR,
                        TEXT_ENTRY_TEXT_COLOUR,
@@ -267,6 +270,8 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_time_callback, (void *) NULL ) ) - start_index;
+    }
+    else printf("NO TIME\n");
 
     *height = Text_entry_height;
 
@@ -277,15 +282,31 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
     int               start_widget_index,
-    VIO_BOOL           activity )
+    VIO_BOOL          activity,
+    VIO_BOOL          has_time_axis )
 {
     Position_widgets       widget_index;
 
     for_enum( widget_index, N_POSITION_WIDGETS, Position_widgets )
     {
-        set_widget_activity( ui_info->widget_list[viewport_index].widgets
-                             [start_widget_index+widget_indices[widget_index]],
-                             activity );
+        int n = start_widget_index + widget_indices[widget_index];
+        /* Make sure the time widgets are actually present here.
+         */
+        if ( n >= ui_info->widget_list[viewport_index].n_widgets )
+        {
+            continue;
+        }
+
+        if (widget_index == TIME_LABEL || widget_index == TIME_TEXT)
+        {
+            set_widget_activity( ui_info->widget_list[viewport_index].widgets[n],
+                                 activity && has_time_axis );
+        }
+        else
+        {
+            set_widget_activity( ui_info->widget_list[viewport_index].widgets[n],
+                                 activity );
+        }
     }
 }
 
@@ -326,17 +347,20 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
   void  set_volume_time_text(
     UI_struct         *ui_info,
     int               volume_index,
-    VIO_Real              value )
+    VIO_Real          value )
 {
-    Viewport_types  viewport_index;
+    Viewport_types viewport_index = get_volume_menu_viewport_index( volume_index );
+    int n = ui_info->position_text_start_index[volume_index]+widget_indices[TIME_TEXT];
 
-    viewport_index = get_volume_menu_viewport_index( volume_index );
+    /* Make sure the time widgets are actually present here.
+     */
+    if ( n >= ui_info->widget_list[viewport_index].n_widgets )
+    {
+        return;
+    }
 
-    set_text_entry_real_value( ui_info->widget_list[viewport_index].widgets
-                           [ui_info->position_text_start_index[volume_index]+
-                            widget_indices[TIME_TEXT]],
-                            Position_values_format,
-                            value );
+    set_text_entry_real_value( ui_info->widget_list[viewport_index].widgets[n],
+                               Position_values_format, value );
 }
 
 static  void   set_voxel_position_callback(
