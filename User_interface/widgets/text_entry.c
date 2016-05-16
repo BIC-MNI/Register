@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file text_entry.c
+ * \brief Implement the text entry (edit) widget.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,12 +13,14 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+*/
 
 #include  <user_interface.h>
 
 #define  CONTROL_A    1
+#define  CONTROL_B    2
 #define  CONTROL_E    5
+#define  CONTROL_F    6
 #define  CONTROL_U    21
 
 static  VIO_BOOL  fit_text_within_widget(
@@ -102,12 +107,9 @@ static  void      recreate_text_entry_text(
             ++text_entry->left_index;
         }
 
-        if( get_object_visibility( text_entry->cursor ))
-        {
-            position_rectangle( get_polygons_ptr( text_entry->cursor),
-                                widget->x + (int) cursor_pos, widget->y,
-                                (int) Text_entry_cursor_size, widget->y_size );
-        }
+        position_rectangle( get_polygons_ptr( text_entry->cursor),
+                            widget->x + (int) cursor_pos, widget->y,
+                            (int) Text_entry_cursor_size, widget->y_size );
     }
 }
 
@@ -173,11 +175,13 @@ static  void  add_character_to_text_entry(
         replace_string( &text_entry->string, create_string(NULL) );
         break;
 
+    case CONTROL_B:
     case LEFT_ARROW_KEY:
         if( text_entry->string_index > 0 )
             --text_entry->string_index;
         break;
 
+    case CONTROL_F:
     case RIGHT_ARROW_KEY:
         if( text_entry->string_index < string_length( text_entry->string ) )
             ++text_entry->string_index;
@@ -198,6 +202,24 @@ static  void  add_character_to_text_entry(
 static  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback );
 
 /* ARGSUSED */
+
+static  DEFINE_EVENT_FUNCTION( timer_event )
+{
+    widget_struct       *widget;
+    text_entry_struct   *text_entry;
+
+    widget = (widget_struct *) callback_data;
+    text_entry = get_widget_text_entry( widget );
+    VIO_Real time_now = current_realtime_seconds() ;
+    if (time_now - text_entry->blink_time >= Text_entry_blink_time)
+    {
+        VIO_BOOL is_visible = get_object_visibility(text_entry->cursor);
+        set_object_visibility(text_entry->cursor, !is_visible);
+        text_entry->blink_time = time_now;
+        set_viewport_update_flag( &widget->graphics->graphics,
+                                  (int) widget->viewport_index, NORMAL_PLANES );
+    }
+}
 
 static  DEFINE_EVENT_FUNCTION( key_hit_event )
 {
@@ -220,6 +242,9 @@ static  DEFINE_EVENT_FUNCTION( key_hit_event )
                            TRUE );
 
         remove_global_event_callback( KEY_DOWN_EVENT, key_hit_event,
+                                      (void *) widget );
+
+        remove_global_event_callback( NO_EVENT, timer_event,
                                       (void *) widget );
 
         set_interaction_in_progress( FALSE );
@@ -276,7 +301,12 @@ static  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
 
     set_interaction_in_progress( TRUE );
 
+    text_entry->blink_time = current_realtime_seconds();
+
     add_global_event_callback( KEY_DOWN_EVENT, key_hit_event, ANY_MODIFIER,
+                               (void *) widget );
+
+    add_global_event_callback( NO_EVENT, timer_event, ANY_MODIFIER,
                                (void *) widget );
 }
 
@@ -290,7 +320,7 @@ static  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
 
     text_entry = get_widget_text_entry( widget );
 
-    position_text( text_entry->text, widget->x, widget->y, widget->y_size );
+    position_text( text_entry->text, widget->x+1, widget->y, widget->y_size );
     position_rectangle( text_entry->polygons, widget->x, widget->y,
                         widget->x_size, widget->y_size );
 
@@ -517,6 +547,8 @@ static  widget_struct  *create_a_text_entry(
 
     text_entry->string = create_string( initial_text );
     text_entry->saved_string = create_string( NULL );
+
+    text_entry->blink_time = 0;
 
     if( !text_entry->label_only_flag )
     {

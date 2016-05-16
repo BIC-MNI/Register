@@ -69,7 +69,8 @@ START_GLOBALS
     DEF_GLOBAL( Text_entry_height, int, 15 )
     DEF_GLOBAL( Text_entry_font, int, (int) SIZED_FONT )
     DEF_GLOBAL( Text_entry_font_size, VIO_Real, 10.0 )
-    DEF_GLOBAL( Text_entry_cursor_size, VIO_Real, 10.0 )
+    DEF_GLOBAL( Text_entry_cursor_size, VIO_Real, 2.0 )
+    DEF_GLOBAL( Text_entry_blink_time, VIO_Real, 0.5 )
 
     DEF_GLOBAL( Tags_filename_x_offset, int, 5 )
     DEF_GLOBAL( Tags_filename_width, int, 90 )
@@ -134,7 +135,7 @@ START_GLOBALS
 
     DEF_GLOBAL( Colour_bar_slider_width, int, 150 )
     DEF_GLOBAL( Colour_bar_slider_height, int, 10 )
-    DEF_GLOBAL( Colour_bar_text_format, VIO_STR, "%.3g" )
+    DEF_GLOBAL( Colour_bar_text_format, VIO_STR, "%.6g" )
 
     DEF_GLOBAL( Opacity_slider_width, int, 150 )
     DEF_GLOBAL( Opacity_slider_height, int, 10 )

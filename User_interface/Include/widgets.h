@@ -56,11 +56,11 @@ typedef  struct
 
 typedef  struct
 {
-    VIO_BOOL                  label_only_flag;
-    VIO_BOOL                  in_edit_mode;
-    VIO_BOOL                  clear_text_when_selected;
-    VIO_STR                   string;
-    VIO_STR                   saved_string;
+    VIO_BOOL                 label_only_flag;
+    VIO_BOOL                 in_edit_mode;
+    VIO_BOOL                 clear_text_when_selected;
+    VIO_STR                  string;
+    VIO_STR                  saved_string;
     int                      left_index;
     int                      string_index;
     widget_callback_type     hit_return_callback;
@@ -69,13 +69,14 @@ typedef  struct
     object_struct            *cursor;
     text_struct              *text;
 
-    VIO_Colour                   active_colour;
-    VIO_Colour                   selected_colour;
-    VIO_Colour                   inactive_colour;
-    VIO_Colour                   text_colour;
-    VIO_Colour                   edit_colour;
-    VIO_Colour                   text_edit_colour;
-    VIO_Colour                   cursor_colour;
+    VIO_Colour               active_colour;
+    VIO_Colour               selected_colour;
+    VIO_Colour               inactive_colour;
+    VIO_Colour               text_colour;
+    VIO_Colour               edit_colour;
+    VIO_Colour               text_edit_colour;
+    VIO_Colour               cursor_colour;
+    VIO_Real                 blink_time;
 } text_entry_struct;
 
 typedef  struct

@@ -393,3 +393,4 @@ char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime, MIvector_
     return( is_volume_active(main,volume_index) &&
             is_an_rgb_volume(get_slice_volume(main,volume_index)) );
 }
+
