@@ -165,6 +165,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
 {
     int              start_index, dx, volume;
     widget_struct    *radio_widgets[6];
+    int              i;
 
     volume = get_viewport_volume_index( viewport_index );
 
@@ -244,11 +245,11 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    (Font_types) Button_text_font, Button_text_font_size,
                    blue_callback, (void *) NULL ) ) - start_index;
 
-    y += Volume_button_height + Interface_y_spacing;
+    y += Volume_button_height + Volume_y_spacing;
 
     widget_indices[UNDER_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
-                   create_button( &ui_info->graphics_window, viewport_index, 
+                   create_button( &ui_info->graphics_window, viewport_index,
                    x, y, Colour_bar_button_width, Volume_button_height,
                    "Under",
                    FALSE, TRUE,
@@ -259,7 +260,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    (Font_types) Button_text_font, Button_text_font_size,
                    under_button_callback, (void *) NULL ) ) - start_index;
 
-    x += Colour_bar_button_width + Interface_x_spacing;
+    x += Colour_bar_button_width + Volume_x_spacing;
 
     widget_indices[COLOUR_BAR_SLIDER] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -273,7 +274,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    lower_limit_callback, (void *) NULL,
                    upper_limit_callback, (void *) NULL ) ) - start_index;
 
-    x += Colour_bar_slider_width + Interface_x_spacing;
+    x += Colour_bar_slider_width + Volume_x_spacing;
 
     widget_indices[OVER_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -288,21 +289,13 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    (Font_types) Button_text_font, Button_text_font_size,
                    over_button_callback, (void *) NULL ) ) - start_index;
 
-    *height = y + Colour_bar_slider_height;
+    *height = y + Colour_bar_slider_height + 9;
 
-    radio_widgets[0] = ui_info->widget_list[viewport_index].widgets
-                               [start_index+widget_indices[GRAY_SCALE_BUTTON]];
-    radio_widgets[1] = ui_info->widget_list[viewport_index].widgets
-                                 [start_index+widget_indices[HOT_METAL_BUTTON]];
-    radio_widgets[2] = ui_info->widget_list[viewport_index].widgets
-                                 [start_index+widget_indices[SPECTRAL_BUTTON]];
-    radio_widgets[3] = ui_info->widget_list[viewport_index].widgets
-                                 [start_index+widget_indices[RED_BUTTON]];
-    radio_widgets[4] = ui_info->widget_list[viewport_index].widgets
-                                 [start_index+widget_indices[GREEN_BUTTON]];
-    radio_widgets[5] = ui_info->widget_list[viewport_index].widgets
-                                 [start_index+widget_indices[BLUE_BUTTON]];
-
+    for_less( i, 0, 6 )
+    {
+        radio_widgets[i] = ui_info->widget_list[viewport_index].widgets
+                               [start_index + i];
+    }
     define_radio_buttons( 6, radio_widgets );
 
     return( start_index );

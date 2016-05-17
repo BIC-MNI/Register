@@ -117,8 +117,8 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                            (int) viewport_index,
                            &x_min, &x_max, &y_min, &y_max );
 
-    x = Interface_x_spacing;
-    y = y_max - y_min - 1 - Interface_y_spacing - Text_entry_height;;
+    x = Volume_x_spacing;
+    y = y_max - y_min - 1 - Volume_y_spacing - Text_entry_height;;
 
     start_index = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -271,7 +271,6 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        (Font_types) Text_entry_font, Text_entry_font_size,
                        pos_time_callback, (void *) NULL ) ) - start_index;
     }
-    else printf("NO TIME\n");
 
     *height = Text_entry_height;
 

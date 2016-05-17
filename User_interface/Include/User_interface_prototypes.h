@@ -424,9 +424,6 @@ VIO_BOOL execute_event_viewport_events(
   void  update_avg_rms_error(
     UI_struct         *ui_info );
 
-  void  update_colour_map_toggle_activity(
-    UI_struct         *ui_info );
-
   void  add_merged_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index );

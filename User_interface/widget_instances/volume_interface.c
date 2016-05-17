@@ -22,7 +22,7 @@ typedef  enum
     LOAD_BUTTON,
     LOAD_FILENAME_TEXT,
     RESAMPLED_LABEL,
-
+    WEIGHT_SLIDER,
     N_VOLUME_WIDGETS
 }
 Volume_widgets;
@@ -82,6 +82,22 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
 {
 }
 
+static  void  opacity_callback(
+    widget_struct  *widget,
+    int            which_volume )
+{
+    VIO_Real  value, ignored;
+
+    get_slider_values( widget, &value, &ignored );
+
+    IF_set_merged_volume_opacity( which_volume, value );
+}
+
+static DEFINE_WIDGET_CALLBACK(opacity_widget_callback)
+{
+    opacity_callback( widget, (int) callback_data );
+}
+
   void  add_volume_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index )
@@ -90,8 +106,8 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
 
     volume_index = get_viewport_volume_index( viewport_index );
 
-    x = Volume_menu_x_offset;
-    y = Volume_menu_y_offset;
+    x = Volume_x_spacing;
+    y = Volume_y_spacing;
 
     colour_bar_start_index = add_colour_bar_widgets( ui_info, viewport_index,
                                                      x, y, &height );
@@ -102,14 +118,27 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
                    add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_label( &ui_info->graphics_window, viewport_index,
-                   x, y, Load_filename_width, Volume_button_height,
-                   "Volume Resampled", FALSE, LABEL_ACTIVE_COLOUR,
+                   x, y, 15, Volume_button_height,
+                   "*", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,
                    BACKGROUND_COLOUR,
                    BACKGROUND_COLOUR,
                    (Font_types) Label_text_font, Label_text_font_size ) );
+    x += 15 + Volume_x_spacing;
+    widget_indices[WEIGHT_SLIDER] = 
+                   add_widget_to_list(
+                   &ui_info->widget_list[viewport_index],
+                   create_slider( &ui_info->graphics_window,
+                   viewport_index, x, y, Opacity_slider_width,
+                   Opacity_slider_height,
+                   IF_get_merged_volume_opacity(volume_index),
+                   0.0, 1.0, Opacity_text_format,
+                   FALSE,
+                   SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
+                   SLIDER_PEG_COLOUR, opacity_widget_callback, (void *) volume_index ) );
 
-    y += Volume_button_height + Volume_y_spacing;
+    x = Volume_x_spacing;
+    y += Opacity_slider_height + Volume_button_height + Volume_y_spacing;
 
     widget_indices[LOAD_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -126,7 +155,7 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
                    &ui_info->widget_list[viewport_index],
                    create_text_entry( &ui_info->graphics_window,
                        viewport_index, 
-                       x + Volume_button_width + Interface_x_spacing, y,
+                       x + Volume_button_width + Volume_x_spacing, y,
                        Load_filename_width, Text_entry_height,
                        FALSE, "", TRUE,
                        TEXT_ENTRY_ACTIVE_COLOUR, TEXT_ENTRY_SELECTED_COLOUR,
@@ -155,7 +184,7 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
     widget_indices[POPUP_FILTER_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_button( &ui_info->graphics_window, viewport_index, 
-                   x + Volume_button_width + Interface_x_spacing, y,
+                   x + Volume_button_width + Volume_x_spacing, y,
                    Filter_button_width, Filter_button_height,
                    "Filter",
                    FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
@@ -169,8 +198,8 @@ static  DEFINE_WIDGET_CALLBACK( volume_filename_callback )
                    add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_label( &ui_info->graphics_window, viewport_index,
-                   x + Volume_button_width + Interface_x_spacing +
-                   Filter_button_width + Interface_x_spacing, y,
+                   x + Volume_button_width + Volume_x_spacing +
+                   Filter_button_width + Volume_x_spacing, y,
                    Value_readout_width, Volume_button_height,
                    "", FALSE, LABEL_ACTIVE_COLOUR,
                    LABEL_SELECTED_COLOUR,

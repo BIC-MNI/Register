@@ -133,8 +133,6 @@ static  void  volume_has_been_loaded(
                                  IF_is_an_rgb_volume(data->volume_index),
                                  IF_volume_has_time_axis(data->volume_index));
 
-    update_colour_map_toggle_activity( ui_info );
-
     set_resampled_label_activity( ui_info, IF_is_resampled_volume_loaded() );
 
     update_position_counters( ui_info, data->volume_index );
@@ -170,8 +168,6 @@ static  void  volume_has_been_loaded(
         set_colour_bar_values( ui_info, data->volume_index,
                                min_value, max_value );
     }
-
-    update_colour_map_toggle_activity( ui_info );
 
     delete_popup_interaction( data );
 }

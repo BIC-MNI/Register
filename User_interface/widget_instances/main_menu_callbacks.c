@@ -20,8 +20,6 @@ typedef  enum
     RESAMPLE_BUTTON,
     RESAMPLE_FILENAME_ENTRY,
     SYNC_VOLUMES_BUTTON,
-    COLOUR_MODE_BUTTON,
-    DOUBLE_BUFFER_BUTTON,
     LOAD_TAGS_BUTTON,
     TAGS_FILENAME_ENTRY,
     SAVE_TAGS_BUTTON,
@@ -99,54 +97,6 @@ static  DEFINE_WIDGET_CALLBACK( sync_volumes_button_callback )
     {
         update_other_volume_positions( get_ui_struct(), 0 );
     }
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( colour_mode_button_callback )
-{
-    int            state;
-
-    state = get_toggle_button_state( widget );
-
-    G_set_colour_map_state( get_ui_struct()->graphics_window.window, state );
-
-    if( G_get_colour_map_state( get_ui_struct()->graphics_window.window )
-        != state )
-    {
-        set_toggle_button_state( widget, !state );
-    }
-
-    if( G_get_colour_map_state( get_ui_struct()->graphics_window.window ) &&
-        G_get_n_colour_map_entries( get_ui_struct()->graphics_window.window )
-                        < Min_colours_needed )
-    {
-        set_toggle_button_state( widget, FALSE );
-        G_set_colour_map_state( get_ui_struct()->graphics_window.window, FALSE );
-    }
-
-    colour_map_state_has_changed( get_ui_struct() );
-
-    set_clear_and_update_flags( get_ui_struct() );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( double_buffer_button_callback )
-{
-    int            state, true_state;
-
-    state = get_toggle_button_state( widget );
-
-    G_set_double_buffer_state( get_ui_struct()->graphics_window.window, state );
-
-    true_state = G_get_double_buffer_state(
-                    get_ui_struct()->graphics_window.window );
-
-    if( true_state != state )
-        set_toggle_button_state( widget, true_state );
-
-    set_clear_and_update_flags( get_ui_struct() );
 }
 
   void  load_tags_file(
@@ -359,33 +309,6 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
                    (Font_types) Button_text_font, Button_text_font_size,
                    sync_volumes_button_callback, (void *) 0 ) );
 
-
-    widget_indices[COLOUR_MODE_BUTTON] = add_widget_to_list(
-                   &ui_info->widget_list[Main_menu_viewport],
-                   create_toggle_button( &ui_info->graphics_window,
-                   Main_menu_viewport, 
-                   0, 0, Button_width, Button_height,
-                   "RGB", "VIO_Colour Map",
-                   G_get_colour_map_state(ui_info->graphics_window.window),
-                   FALSE, TRUE, BUTTON_ACTIVE_COLOUR,
-                   BUTTON_INACTIVE_COLOUR,
-                   BUTTON_TEXT_COLOUR,
-                   (Font_types) Button_text_font, Button_text_font_size,
-                   colour_mode_button_callback, (void *) 0 ) );
-
-    widget_indices[DOUBLE_BUFFER_BUTTON] = add_widget_to_list(
-                   &ui_info->widget_list[Main_menu_viewport],
-                   create_toggle_button( &ui_info->graphics_window,
-                   Main_menu_viewport, 
-                   0, 0, Button_width, Button_height,
-                   "Single", "Double",
-                   G_get_double_buffer_state(ui_info->graphics_window.window),
-                   G_can_switch_double_buffering(), TRUE, BUTTON_ACTIVE_COLOUR,
-                   BUTTON_INACTIVE_COLOUR,
-                   BUTTON_TEXT_COLOUR,
-                   (Font_types) Button_text_font, Button_text_font_size,
-                   double_buffer_button_callback, (void *) 0 ) );
-
     widget_indices[LOAD_TAGS_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[Main_menu_viewport],
                    create_button( &ui_info->graphics_window,
@@ -569,8 +492,6 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
                   (Font_types) Label_text_font, Label_text_font_size ) );
 
     position_main_widgets( ui_info );
-
-    update_colour_map_toggle_activity( ui_info );
 }
 
   void  position_main_widgets(
@@ -605,7 +526,6 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
 
         if( widget == QUIT_BUTTON ||
             widget == RESAMPLE_FILENAME_ENTRY ||
-            widget == DOUBLE_BUFFER_BUTTON ||
             widget == SAVE_TAGS_BUTTON ||
             widget == TRANSFORM_FILENAME_ENTRY )
         {
@@ -687,13 +607,3 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     }
 }
 
-  void  update_colour_map_toggle_activity(
-    UI_struct         *ui_info )
-{
-    VIO_BOOL   activity;
-
-    activity = IF_can_switch_colour_modes();
-
-    set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
-                         [widget_indices[COLOUR_MODE_BUTTON]], activity );
-}

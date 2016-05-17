@@ -57,7 +57,8 @@ START_GLOBALS
     DEF_GLOBAL( Interface_y_spacing, int, 10 )
     DEF_GLOBAL( Interface_highlight_time, VIO_Real, 0.2 )
 
-    DEF_GLOBAL( Volume_y_spacing, int, 7 )
+    DEF_GLOBAL( Volume_y_spacing, int, 5 )
+    DEF_GLOBAL( Volume_x_spacing, int, 5 )
 
     DEF_GLOBAL( Pixels_per_double_size, VIO_Real, 100.0 )
 
@@ -127,7 +128,7 @@ START_GLOBALS
     DEF_GLOBAL( Slider_text_entry_x_offset, int, 3 )
     DEF_GLOBAL( Slider_text_entry_y_offset, int, 15 )
     DEF_GLOBAL( Slider_height, int, 15 )
-    DEF_GLOBAL( Slider_text_width, int, 55 )
+    DEF_GLOBAL( Slider_text_width, int, 50 )
     DEF_GLOBAL( Slider_text_height, int, 15 )
     DEF_GLOBAL( Slider_text_font, int, (int) SIZED_FONT )
     DEF_GLOBAL( Slider_text_font_size, VIO_Real, 10.0 )
@@ -237,7 +238,7 @@ START_GLOBALS
 
     DEF_GLOBAL( Initial_tags_visible, VIO_BOOL, TRUE )
 
-    DEF_GLOBAL( Initial_merge_method, int, 2 )
+    DEF_GLOBAL( Initial_merge_method, int, 3 )
     DEF_GLOBAL( Initial_merged_1_weight, VIO_Real, 0.5 )
     DEF_GLOBAL( Initial_merged_2_weight, VIO_Real, 0.5 )
     DEF_GLOBAL( Use_over_under_colour_in_weights, VIO_BOOL, TRUE )
