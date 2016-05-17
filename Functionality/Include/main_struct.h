@@ -77,8 +77,9 @@ typedef  struct
     Merge_methods          merge_method;
     VIO_Real               opacity[N_MERGED];
     colour_coding_struct   colour_coding[N_MERGED];
-}
-merged_struct;
+    VIO_BOOL               volume_flag[N_MERGED];
+    int                    order[N_MERGED];
+} merged_struct;
 
 typedef  struct
 {

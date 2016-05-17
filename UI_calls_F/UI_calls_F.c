@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file UI_calls_F/UI_calls_F.c
+ * \brief Interface from user interface code to functionality code.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +13,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <UI_calls_F.h>
 
@@ -317,17 +320,6 @@
     set_volume_under_colour( get_main_struct(), volume_index, colour );
 }
 
-  void  IF_set_merge_method(
-    Merge_methods     method )
-{
-    set_merged_method( get_main_struct(), method );
-}
-
-  Merge_methods  IF_get_merge_method( void )
-{
-    return( get_merged_method( get_main_struct() ) );
-}
-
   void  IF_set_over_colour(
     int        volume_index,
     VIO_Colour     colour )
@@ -378,6 +370,19 @@
     int    which_volume )
 {
     return( get_merged_volume_opacity( get_main_struct(), which_volume ) );
+}
+
+void  IF_set_volume_active(
+    int    which_volume,
+    VIO_BOOL active )
+{
+    set_volume_merge_activity( get_main_struct(), which_volume, active );
+}
+
+VIO_BOOL IF_get_volume_active(
+    int    which_volume )
+{
+    return( get_volume_merge_activity( get_main_struct(), which_volume ) );
 }
 
   void  IF_set_slice_filter_type(

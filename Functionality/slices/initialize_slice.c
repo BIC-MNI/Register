@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file Functionality/slices/initialize_slice.c 
+ * \brief Initialize the slice displays.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +13,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+*/
 
 #include  <register.h>
 
@@ -49,11 +52,10 @@ static  void  initialize_slice( main_struct *, int, int );
           main->merged.opacity[volume] = Initial_merged_1_weight;
         else
           main->merged.opacity[volume] = Initial_merged_2_weight;
-        
+
+        main->merged.volume_flag[volume] = TRUE;
+        main->merged.order[volume] = volume;
     }
-
-
-    main->merged.merge_method = (Merge_methods) Initial_merge_method;
 }
 
 static  void  initialize_slice(

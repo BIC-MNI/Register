@@ -198,9 +198,6 @@ static  void   record_register_volume(
                                          min_value, max_value );
     }
 
-    if( G_get_colour_map_state(main->window) )
-        repartition_colour_maps( main );
-
     update_colour_maps( main, volume_index );
 }
 

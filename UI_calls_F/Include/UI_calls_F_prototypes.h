@@ -159,11 +159,6 @@
     int        volume_index,
     VIO_Colour     colour );
 
-  void  IF_set_merge_method(
-    Merge_methods     method );
-
-  Merge_methods  IF_get_merge_method( void );
-
   void  IF_set_over_colour(
     int        volume_index,
     VIO_Colour     colour );
@@ -191,6 +186,10 @@
 
   VIO_Real  IF_get_merged_volume_opacity(
     int    which_volume );
+
+void IF_set_volume_active( int which_volume, VIO_BOOL active );
+
+VIO_BOOL IF_get_volume_active( int which_volume );
 
   void  IF_set_slice_filter_type(
     int           volume_index,

@@ -1,5 +1,10 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file User_interface/widget_instances/position_widgets.c
+ *
+ * \brief Implement the position (world, voxel, and time coordinates) 
+ * widgets for the per-volume interface.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +15,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+*/
 
 #include  <user_interface.h>
 
@@ -32,51 +37,20 @@ typedef  enum
     TIME_LABEL,
     TIME_TEXT,
     N_POSITION_WIDGETS
-}
-Position_widgets;
+} Position_widgets;
 
 static  int  widget_indices[N_POSITION_WIDGETS];
 
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( pos_x_voxel_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_voxel_callback )
 {
-    set_voxel_position_callback( get_ui_struct(), widget, VIO_X );
+    set_voxel_position_callback( get_ui_struct(), widget,
+                                 (intptr_t) callback_data );
 }
 
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( pos_y_voxel_callback )
+static  DEFINE_WIDGET_CALLBACK( pos_world_callback )
 {
-    set_voxel_position_callback( get_ui_struct(), widget, VIO_Y );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( pos_z_voxel_callback )
-{
-    set_voxel_position_callback( get_ui_struct(), widget, VIO_Z );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( pos_x_world_callback )
-{
-    set_world_position_callback( get_ui_struct(), widget, VIO_X );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( pos_y_world_callback )
-{
-    set_world_position_callback( get_ui_struct(), widget, VIO_Y );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( pos_z_world_callback )
-{
-    set_world_position_callback( get_ui_struct(), widget, VIO_Z );
+    set_world_position_callback( get_ui_struct(), widget,
+                                 (intptr_t) callback_data );
 }
 
 static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
@@ -118,7 +92,7 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                            &x_min, &x_max, &y_min, &y_max );
 
     x = Volume_x_spacing;
-    y = y_max - y_min - 1 - Volume_y_spacing - Text_entry_height;;
+    y = (y_max - y_min) + 1 - Volume_y_spacing - Text_entry_height;
 
     start_index = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -148,7 +122,7 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       pos_x_voxel_callback, (void *) NULL ) ) - start_index;
+                       pos_voxel_callback, (void *) VIO_X ) ) - start_index;
 
     widget_indices[Y_VOXEL_TEXT] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -163,7 +137,7 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       pos_y_voxel_callback, (void *) NULL ) ) - start_index;
+                       pos_voxel_callback, (void *) VIO_Y ) ) - start_index;
 
     widget_indices[Z_VOXEL_TEXT] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -178,7 +152,7 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       pos_z_voxel_callback, (void *) NULL ) ) - start_index;
+                       pos_voxel_callback, (void *) VIO_Z ) ) - start_index;
 
     widget_indices[WORLD_LABEL] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -207,7 +181,7 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       pos_x_world_callback, (void *) NULL ) ) - start_index;
+                       pos_world_callback, (void *) VIO_X ) ) - start_index;
 
     widget_indices[Y_WORLD_TEXT] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -222,7 +196,7 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       pos_y_world_callback, (void *) NULL ) ) - start_index;
+                       pos_world_callback, (void *) VIO_Y ) ) - start_index;
 
     widget_indices[Z_WORLD_TEXT] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -237,11 +211,11 @@ static  DEFINE_WIDGET_CALLBACK( pos_time_callback )
                        TEXT_ENTRY_EDIT_TEXT_COLOUR,
                        TEXT_ENTRY_CURSOR_COLOUR,
                        (Font_types) Text_entry_font, Text_entry_font_size,
-                       pos_z_world_callback, (void *) NULL ) ) - start_index;
+                       pos_world_callback, (void *) VIO_Z ) ) - start_index;
 
     if (show_time)
     {
-        y -= Text_entry_height + 2;
+        y -= Text_entry_height + Volume_y_spacing;
         x = x_start + 2 * dx - (Position_label_width + Position_values_separation);
 
         widget_indices[TIME_LABEL] = add_widget_to_list(

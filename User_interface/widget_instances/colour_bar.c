@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/** \file User_interface/widget_instances/colour_bar.c
+ *
+ * \brief Create widgets for the per-volume colour coding and colour bar.
+ * 
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,11 +13,18 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+*/
 
 #include  <user_interface.h>
 
-typedef  enum
+/** 
+ * Number of colour coding types supported in this program.
+ * There are more options in the library that we don't support here!
+ */
+#define N_COLOUR_CODING_TYPES 6
+
+/** widget indices for the colour bar widgets. */
+typedef enum
 {
     GRAY_SCALE_BUTTON,
     HOT_METAL_BUTTON,
@@ -25,12 +35,16 @@ typedef  enum
     UNDER_BUTTON,
     OVER_BUTTON,
     COLOUR_BAR_SLIDER,
-
     N_COLOUR_BAR_WIDGETS
-}
-Colour_bar_widgets;
+} Colour_bar_widgets;
 
-static  int  get_colour_coding_widget_index(
+/** 
+ * Map the colour coding type to the corresponding button widget index.
+ * \param type The colour coding type.
+ * \returns The local widget id of the button corresponding to this
+ * colour coding type.
+ */
+static  Colour_bar_widgets  get_colour_coding_widget_index(
     Colour_coding_types  type )
 {
     switch( type )
@@ -45,90 +59,29 @@ static  int  get_colour_coding_widget_index(
     }
 }
 
+/** 
+ * Stores the widget index offsets for the colour bar widgets.
+ */
 static  int  widget_indices[N_COLOUR_BAR_WIDGETS];
 
-static  void  set_colour_coding(
-    widget_struct        *widget,
-    Colour_coding_types  type )
+static DEFINE_WIDGET_CALLBACK(colour_coding_callback)
 {
-    int   volume_index;
-
-    volume_index = get_viewport_volume_index(widget->viewport_index);
-
-    IF_set_volume_colour_coding_type( volume_index, type );
-
+    int volume_index = get_viewport_volume_index( widget->viewport_index );
+    Colour_coding_types coding_type = (Colour_coding_types) callback_data;
+    IF_set_volume_colour_coding_type( volume_index, coding_type );
     IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX + volume_index,
-                                      type );
+                                      coding_type );
 }
 
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( gray_scale_callback )
+static DEFINE_WIDGET_CALLBACK( colour_button_callback )
 {
-    set_colour_coding( widget, GRAY_SCALE );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( hot_metal_callback )
-{
-    set_colour_coding( widget, HOT_METAL );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( spectral_callback )
-{
-    set_colour_coding( widget, SPECTRAL );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( red_callback )
-{
-    set_colour_coding( widget, RED_COLOUR_MAP );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( green_callback )
-{
-    set_colour_coding( widget, GREEN_COLOUR_MAP );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( blue_callback )
-{
-    set_colour_coding( widget, BLUE_COLOUR_MAP );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( under_button_callback )
-{
-    int   volume_index;
-
-    volume_index = get_viewport_volume_index(widget->viewport_index);
-
+    int volume_index = get_viewport_volume_index( widget->viewport_index );
+    int is_over = (intptr_t) callback_data;
     set_widget_activity( widget, FALSE );
-    popup_colour_selection( get_ui_struct(), volume_index, 0 );
+    popup_colour_selection( get_ui_struct(), volume_index, is_over );
 }
 
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( over_button_callback )
-{
-    int   volume_index;
-
-    volume_index = get_viewport_volume_index(widget->viewport_index);
-
-    set_widget_activity( widget, FALSE );
-    popup_colour_selection( get_ui_struct(), volume_index, 1 );
-}
-
-static  void  change_limits(
-    widget_struct  *widget )
+static  DEFINE_WIDGET_CALLBACK(change_limits)
 {
     VIO_Real   min_val, max_val;
     int    volume_index;
@@ -142,20 +95,6 @@ static  void  change_limits(
                                  min_val, max_val );
 }
 
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( lower_limit_callback )
-{
-    change_limits( widget );
-}
-
-/* ARGSUSED */
-
-static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
-{
-    change_limits( widget );
-}
-
   int  add_colour_bar_widgets(
     UI_struct         *ui_info,
     Viewport_types    viewport_index,
@@ -163,11 +102,11 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
     int               y,
     int               *height )
 {
-    int              start_index, dx, volume;
-    widget_struct    *radio_widgets[6];
+    int              start_index, dx;
+    widget_struct    *radio_widgets[N_COLOUR_CODING_TYPES];
     int              i;
-
-    volume = get_viewport_volume_index( viewport_index );
+    int              volume_index;
+    volume_index = get_viewport_volume_index( viewport_index );
 
     dx = Colour_bar_button_width + Colour_bar_button_spacing;
 
@@ -181,7 +120,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   gray_scale_callback, (void *) NULL ) );
+                   colour_coding_callback, (void *) GRAY_SCALE ) );
 
     widget_indices[GRAY_SCALE_BUTTON] = 0;
 
@@ -195,7 +134,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   hot_metal_callback, (void *) NULL ) ) - start_index;
+                   colour_coding_callback, (void *) HOT_METAL ) ) - start_index;
 
     widget_indices[SPECTRAL_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -207,7 +146,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   spectral_callback, (void *) NULL ) ) - start_index;
+                   colour_coding_callback, (void *) SPECTRAL ) ) - start_index;
 
     widget_indices[RED_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -219,7 +158,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   red_callback, (void *) NULL ) ) - start_index;
+                   colour_coding_callback, (void *) RED_COLOUR_MAP ) ) - start_index;
 
     widget_indices[GREEN_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -231,7 +170,7 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   green_callback, (void *) NULL ) ) - start_index;
+                   colour_coding_callback, (void *) GREEN_COLOUR_MAP ) ) - start_index;
 
     widget_indices[BLUE_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
@@ -243,22 +182,22 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   blue_callback, (void *) NULL ) ) - start_index;
+                   colour_coding_callback, (void *) BLUE_COLOUR_MAP ) ) - start_index;
 
     y += Volume_button_height + Volume_y_spacing;
 
     widget_indices[UNDER_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_button( &ui_info->graphics_window, viewport_index,
-                   x, y, Colour_bar_button_width, Volume_button_height,
-                   "Under",
+                   x, y-2, Colour_bar_button_width, Volume_button_height,
+                   "Under...",
                    FALSE, TRUE,
-                   (VIO_Colour) (VOLUME1_UNDER_COLOUR + volume),
+                   (VIO_Colour) (VOLUME1_UNDER_COLOUR + volume_index),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   under_button_callback, (void *) NULL ) ) - start_index;
+                   colour_button_callback, (void *) 0 ) ) - start_index;
 
     x += Colour_bar_button_width + Volume_x_spacing;
 
@@ -271,32 +210,32 @@ static  DEFINE_WIDGET_CALLBACK( upper_limit_callback )
                    FALSE,
                    SLIDER_ACTIVE_COLOUR, SLIDER_INACTIVE_COLOUR,
                    SLIDER_PEG_COLOUR,
-                   lower_limit_callback, (void *) NULL,
-                   upper_limit_callback, (void *) NULL ) ) - start_index;
+                   change_limits, (void *) NULL,
+                   change_limits, (void *) NULL ) ) - start_index;
 
     x += Colour_bar_slider_width + Volume_x_spacing;
 
     widget_indices[OVER_BUTTON] = add_widget_to_list(
                    &ui_info->widget_list[viewport_index],
                    create_button( &ui_info->graphics_window, viewport_index, 
-                   x, y, Colour_bar_button_width, Volume_button_height,
-                   "Over",
+                   x, y-2, Colour_bar_button_width, Volume_button_height,
+                   "Over...",
                    FALSE, TRUE,
-                   (VIO_Colour) (VOLUME1_OVER_COLOUR + volume),
+                   (VIO_Colour) (VOLUME1_OVER_COLOUR + volume_index),
                    BUTTON_SELECTED_COLOUR,
                    BUTTON_INACTIVE_COLOUR,
                    BUTTON_TEXT_COLOUR,
                    (Font_types) Button_text_font, Button_text_font_size,
-                   over_button_callback, (void *) NULL ) ) - start_index;
+                   colour_button_callback, (void *) 1 ) ) - start_index;
 
-    *height = y + Colour_bar_slider_height + 9;
+    *height = y + Colour_bar_slider_height + 12;
 
-    for_less( i, 0, 6 )
+    for_less( i, 0, N_COLOUR_CODING_TYPES )
     {
         radio_widgets[i] = ui_info->widget_list[viewport_index].widgets
                                [start_index + i];
     }
-    define_radio_buttons( 6, radio_widgets );
+    define_radio_buttons( N_COLOUR_CODING_TYPES, radio_widgets );
 
     return( start_index );
 }

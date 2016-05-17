@@ -111,9 +111,3 @@ void  add_merged_widgets(
                              [widget_indices[VALUE1_READOUT_TEXT + volume]] );
 }
 
-widget_struct *get_merged_blend_widget(UI_struct *ui_info, int volume)
-{
-    if (volume >= ui_info->n_volumes_loaded)
-        return NULL;
-    return( NULL );
-}

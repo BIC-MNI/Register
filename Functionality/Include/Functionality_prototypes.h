@@ -55,6 +55,15 @@
     main_struct          *main,
     int                  which_volume );
 
+  void set_volume_merge_activity( 
+    main_struct          *main,
+    int                  volume_index,
+    VIO_BOOL             active );
+
+  VIO_BOOL get_volume_merge_activity(
+    main_struct          *main,
+    int                  volume_index );
+
   void  set_merged_method(
     main_struct       *main,
     Merge_methods     method );

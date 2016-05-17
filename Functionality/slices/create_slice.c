@@ -1,5 +1,7 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file Functionality/slices/create_slice.c
+ * \brief Function to render slice data to pixels.
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +12,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+*/
 
 #include  <register.h>
 
@@ -193,8 +195,6 @@ static  void  convert_volume1_voxel_to_volumeN(
         comp = y_axis2[c] * separations2[c];
         y_len += comp * comp;
       }
-
-
 
       x_len = sqrt( x_len );
       if( x_len == 0.0 )

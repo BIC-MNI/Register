@@ -206,206 +206,21 @@ static  void  update_cmode_indices(
     }
 }
 
-static  void  update_cmode_colour_maps(
-    main_struct  *main,
-    int          volume_index )
-{
-    int            i, voxel_value, min_ind, max_ind;
-    int            min_value, max_value;
-    VIO_Volume         volume;
-
-    min_ind = main->trislice[volume_index].start_colour_map;
-    max_ind = min_ind + main->trislice[volume_index].n_colour_entries-1;
-
-    get_volume_range_of_voxels( main, volume_index, &min_value, &max_value );
-
-    volume = get_slice_volume( main, volume_index );
-
-    for_inclusive( i, min_ind, max_ind )
-    {
-        voxel_value = CONVERT_INTEGER_RANGE( i, min_ind, max_ind,
-                                             min_value, max_value );
-        G_set_colour_map_entry( main->window, i,
-                    get_colour_code(
-                         &main->trislice[volume_index].colour_coding,
-                         CONVERT_VOXEL_TO_VALUE(volume,(VIO_Real) voxel_value) ) );
-    }
-}
-
   void   update_colour_maps(
     main_struct  *main,
     int          volume )
 {
     if( volume != MERGED_VOLUME_INDEX && is_volume_active( main, volume ) )
     {
-        if( G_get_colour_map_state( main->window ) )
-            update_cmode_colour_maps( main, volume );
-        else
-            update_rgb_colour_maps( main, volume );
+      update_rgb_colour_maps( main, volume );
     }
-}
-
-  void  repartition_colour_maps(
-    main_struct  *main )
-{
-    int        volume, start_index;
-    int        total_colours, n_merged;
-    int        min_value1, max_value1, min_value2, max_value2;
-    int        max_colours_1, max_colours_2, max_colours_merged, total_volume;
-    int        n_volume_1, n_volume_2, n_merged_1, n_merged_2;
-    VIO_Real       ratio;
-
-    start_index = main->start_colour_index + N_MAIN_COLOURS;
-
-    total_colours = G_get_n_colour_map_entries( main->window ) - start_index;
-
-    get_volume_range_of_voxels( main, 0, &min_value1, &max_value1 );
-    get_volume_range_of_voxels( main, 1, &min_value2, &max_value2 );
-
-    max_colours_1 = max_value1 - min_value1 + 1;
-    max_colours_2 = max_value2 - min_value2 + 1;
-
-    max_colours_merged = max_colours_1 * max_colours_2;
-
-    n_merged = VIO_ROUND( Merged_colour_table_fraction * (VIO_Real) total_colours );
-
-    if( n_merged > max_colours_merged )
-        n_merged = max_colours_merged;
-
-    total_volume = total_colours - n_merged;
-    if( total_volume >= max_colours_1 + max_colours_2 )
-    {
-        n_volume_1 = max_colours_1;
-        n_volume_2 = max_colours_2;
-        n_merged = MIN( max_colours_merged,
-                        total_colours - n_volume_1 - n_volume_2 );
-    }
-    else
-    {
-        ratio = (VIO_Real) max_colours_1 / (VIO_Real) (max_colours_1 + max_colours_2);
-        n_volume_1 = VIO_ROUND( (VIO_Real) total_volume * ratio );
-        if( n_volume_1 < 1 && max_colours_1 > 0 )
-            n_volume_1 = 1;
-        n_volume_2 = total_volume - n_volume_1;
-    }
-
-    if( n_merged + n_volume_1 + n_volume_2 > total_colours )
-        HANDLE_INTERNAL_ERROR( "repartition_colour_maps" );
-
-    if( n_volume_1 * n_volume_2 <= n_merged )
-    {
-        n_merged_1 = n_volume_1;
-        n_merged_2 = n_volume_2;
-    }
-    else
-    {
-        n_merged_1 = (int) sqrt( (double) n_merged );
-        if( n_merged_1 < 1 && max_colours_merged > 0 )
-            n_merged_1 = 1;
-
-        if( max_colours_1 <= n_merged_1 )
-        {
-            n_merged_1 = max_colours_1;
-            n_merged_2 = MAX( max_colours_2, n_merged / n_merged_1 );
-        }
-        else if( max_colours_2 <= n_merged_1 )
-        {
-            n_merged_2 = max_colours_2;
-            n_merged_1 = MAX( max_colours_1, n_merged / n_merged_2 );
-        }
-        else
-        {
-            n_merged_2 = n_merged / n_merged_1;
-        }
-    }
-
-#ifdef  DEBUG
-#define DEBUG
-(void) printf( "%d %d  (%d * %d) = %d   total = %d\n",
-       n_volume_1, n_volume_2, n_merged_1, n_merged_2, n_merged_1 * n_merged_2,
-       n_volume_1 + n_volume_2 + n_merged_1 * n_merged_2 );
-#endif
-
-/*
-    n_volume_1 = 200;
-    (void) printf( "Enter n_volume_1: " );
-    (void) scanf( "%d", &n_volume_1 );
-
-    n_volume_2 = 200;
-    n_merged_1 = 10;
-    n_merged_2 = 10;
-*/
-
-    main->trislice[0].start_colour_map = start_index;
-    main->trislice[0].n_colour_entries = n_volume_1;
-
-    main->trislice[1].start_colour_map = start_index + n_volume_1;
-    main->trislice[1].n_colour_entries = n_volume_2;
-
-    main->merged.start_colour_map = start_index + n_volume_1 + n_volume_2;
-    main->merged.n_colour_entries1 = n_merged_1;
-    main->merged.n_colour_entries2 = n_merged_2;
-
-    for_less( volume, 0, main->n_volumes_displayed-1 )
-    {
-        if( is_volume_active( main, volume ) )
-            update_cmode_indices( main, volume );
-    }
-
-    for_less( volume, 0, main->n_volumes_displayed )
-        update_colour_maps( main, volume );
-
-    for_less( volume, 0, main->n_volumes_displayed )
-        set_recreate_3_slices_flags( main, volume );
 }
 
   void  colour_mode_has_toggled(
     main_struct  *main,
     int          start_index )
 {
-    int        volume, view, bg_index;
-
-    if( G_get_colour_map_state(main->window) )
-    {
-        main->start_colour_index = start_index;
-
-        bg_index = main->start_colour_index + BACKGROUND_COLOUR;
-
-        G_set_colour_map_entry( main->window, bg_index,
-                                Slice_background_colour );
-        G_set_colour_map_entry( main->window,
-                                main->start_colour_index + TAG_INSIDE_COLOUR,
-                                Tag_inside_colour );
-        G_set_colour_map_entry( main->window,
-                                main->start_colour_index + TAG_OUTSIDE_COLOUR,
-                                Tag_outside_colour );
-        G_set_colour_map_entry( main->window,
-                                main->start_colour_index +
-                                      TAG_INSIDE_INACTIVE_COLOUR,
-                                Tag_inside_inactive_colour );
-        G_set_colour_map_entry( main->window,
-                                main->start_colour_index +
-                                      TAG_OUTSIDE_INACTIVE_COLOUR,
-                                Tag_outside_inactive_colour );
-        G_set_colour_map_entry( main->window,
-                                main->start_colour_index + CURSOR_INSIDE_COLOUR,
-                                Cursor_inside_colour );
-        G_set_colour_map_entry( main->window,
-                                main->start_colour_index +CURSOR_OUTSIDE_COLOUR,
-                                Cursor_outside_colour );
-
-        for_less( volume, 0, main->n_volumes_displayed )
-        {
-            for_less( view, 0, N_VIEWS )
-            {
-                set_graphics_viewport_background( &main->graphics,
-                                  get_slice_viewport_index(volume,view),
-                                  Slice_background_colour, bg_index );
-            }
-        }
-
-        repartition_colour_maps( main );
-    }
+    int        volume, view;
 
     update_all_tag_colours( main );
 
@@ -499,19 +314,21 @@ static  colour_coding_struct  *get_volume_colour_coding(
     return( main->merged.opacity[which_volume] );
 }
 
-  void  set_merged_method(
-    main_struct       *main,
-    Merge_methods     method )
+VIO_BOOL get_volume_merge_activity(
+    main_struct          *main,
+    int                  which_volume )
 {
-    main->merged.merge_method = method;
-
-    colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
+    return( main->merged.volume_flag[which_volume] );
 }
 
-  Merge_methods  get_merged_method(
-    main_struct       *main )
+void set_volume_merge_activity(
+    main_struct          *main,
+    int                  which_volume,
+    VIO_BOOL             active )
 {
-    return( main->merged.merge_method );
+    main->merged.volume_flag[which_volume] = active;
+
+    colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
 }
 
   void   set_volume_under_colour(
@@ -558,6 +375,9 @@ static  colour_coding_struct  *get_volume_colour_coding(
 
     for (vol = 0; vol < main->n_volumes_displayed - 1; vol++)
     {
+      if (!main->merged.volume_flag[vol])
+          continue;
+
       dx = (result->x_size - pixels[vol].x_size) / 2;
       dy = (result->y_size - pixels[vol].y_size) / 2;
       if (dx < 0)

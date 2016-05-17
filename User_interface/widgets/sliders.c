@@ -334,12 +334,13 @@ static  void  update_one_slider_position(
     if( ind == 0 )
     {
         text_entry_pos = x - Slider_text_entry_x_offset -
-                         slider->text_widgets[ind]->x_size;
+                         slider->text_widgets[ind]->x_size/2;
         callback = select_lower_slider;
     }
     else
     {
-        text_entry_pos = x + Slider_text_entry_x_offset;
+        text_entry_pos = x - Slider_text_entry_x_offset -
+          slider->text_widgets[ind]->x_size/2;
         callback = select_upper_slider;
     }
 

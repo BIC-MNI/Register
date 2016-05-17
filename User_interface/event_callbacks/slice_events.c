@@ -289,18 +289,16 @@ static void
 change_blending_weights(UI_struct *ui_info,
                         int direction)
 {
-    Merge_methods merge_method = IF_get_merge_method();
-    if (merge_method == BLEND_VOLUMES)
-    {
-        VIO_Real value = IF_get_merged_volume_opacity(0);
-        value += 0.01 * direction;
-        if (value < 0.0)
-            value = 0.0;
-        if (value > 1.0)
-            value = 1.0;
-        IF_set_merged_volume_opacity(0, value);
-        set_slider_values(get_merged_blend_widget(ui_info, 0), value, value);
-    }
+  VIO_Real value = IF_get_merged_volume_opacity(0);
+  value += 0.01 * direction;
+  if (value < 0.0)
+    value = 0.0;
+  if (value > 1.0)
+    value = 1.0;
+  IF_set_merged_volume_opacity(0, value);
+  IF_set_merged_volume_opacity(1, 1.0 - value);
+  set_slider_values(get_merged_blend_widget(ui_info, 0), value, value);
+  set_slider_values(get_merged_blend_widget(ui_info, 1), 1.0-value, 1.0-value);
 }
 
 /* ARGSUSED */
