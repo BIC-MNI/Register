@@ -364,6 +364,6 @@ widget_struct *get_merged_blend_widget( UI_struct *ui_info, int volume_index )
 {
     if ( volume_index >= ui_info->n_volumes_loaded )
         return NULL;
-    int viewport_index = get_volume_menu_viewport_index( volume );
+    int viewport_index = get_volume_menu_viewport_index( volume_index );
     return ui_info->widget_list[viewport_index].widgets[widget_indices[WEIGHT_SLIDER]];
 }
