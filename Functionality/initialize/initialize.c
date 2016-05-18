@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file Functionality/initialize/initialize.c
+ * \brief Initialize functionality components...
+ * 
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +13,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif //HAVE_CONFIG_H
@@ -31,13 +34,6 @@ static   main_struct      main_info;
 {
     int             volume, view;
     Bitplane_types  bitplane;
-
-    if( G_has_overlay_planes() && Use_overlay_planes )
-    {
-        G_set_overlay_colour_map( window, 1, Overlay_colour_1 );
-        G_set_overlay_colour_map( window, 2, Overlay_colour_2 );
-        G_set_overlay_colour_map( window, 3, Overlay_colour_3 );
-    }
 
     main_info.window = window;
     main_info.n_volumes_displayed = n_volumes + 1;

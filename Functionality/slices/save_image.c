@@ -1,7 +1,8 @@
 /**
  * \file Functionality/slices/save_image.c
+ * \brief Save a portion of the window to a file.
  *
- \copyright
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -21,7 +22,7 @@
 
 static  int  frame_number = 1;
 
-VIO_Status   save_window_to_file(
+static VIO_Status   save_window_to_file(
     Gwindow         window,
     VIO_STR         filename,
     int             x_min,
