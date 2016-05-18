@@ -315,21 +315,92 @@ void set_volume_merge_method(
     colour_coding_has_changed( main, volume_index );
 }
 
+static void
+composite_one_image( pixels_struct *result, 
+                     const pixels_struct *source,
+                     Merge_methods method,
+                     VIO_Real alpha1 )
+{
+  int        dx = (result->x_size - source->x_size) / 2;
+  int        dy = (result->y_size - source->y_size) / 2;
+  int        x;
+  int        y;
+  int        r1, g1, b1, r2, g2, b2, r, g, b;
+  VIO_Real   a1, a2;
+  VIO_Colour col1, col2;
+
+  if (dx < 0)
+  {
+    dx = 0;
+  }
+  if (dy < 0)
+  {
+    dy = 0;
+  }
+
+#ifdef DEBUG
+  printf("%d %d, %d %d, %d %d\n", dx, dy, result->x_size, result->y_size,
+         source->x_size, source->y_size);
+#endif /* DEBUG */
+
+  for (x = 0; x < source->x_size; x++)
+  {
+    for (y = 0; y < source->y_size; y++)
+    {
+      if ((x + dx) >= result->x_size || (y + dy) >= result->y_size)
+        continue;
+      col1 = PIXEL_RGB_COLOUR( *source, x, y );
+      col2 = PIXEL_RGB_COLOUR( *result, x + dx, y + dy);
+      a1 = get_Colour_a_0_1( col1 );
+      a2 = get_Colour_a_0_1( col2 );
+      if (method == OPAQUE)
+      {
+        a2 = (1.0 - a1) * a2;
+      }
+      else
+      {
+        a1 = alpha1 * a1;
+      }
+
+      r1 = get_Colour_r( col1 );
+      g1 = get_Colour_g( col1 );
+      b1 = get_Colour_b( col1 );
+
+      r2 = get_Colour_r( col2 );
+      g2 = get_Colour_g( col2 );
+      b2 = get_Colour_b( col2 );
+
+      r = (int) (a1 * (VIO_Real) r1) + (a2 * (VIO_Real) r2);
+      g = (int) (a1 * (VIO_Real) g1) + (a2 * (VIO_Real) g2);
+      b = (int) (a1 * (VIO_Real) b1) + (a2 * (VIO_Real) b2);
+
+      if( r < 0 )
+        r = 0;
+      else if( r > 255 )
+        r = 255;
+      if( g < 0 )
+        g = 0;
+      else if( g > 255 )
+        g = 255;
+
+      if( b < 0 )
+        b = 0;
+      else if( b > 255 )
+        b = 255;
+
+      PIXEL_RGB_COLOUR( *result, x + dx, y + dy ) = make_Colour( r, g, b );
+    }
+  }
+}
+
   void  composite_merged_pixels(
     main_struct          *main,
     pixels_struct        pixels[],
     pixels_struct        *result )
 {
     int            p, n_pixels;
-    VIO_Colour     col1, col2;
     VIO_Colour     *res_ptr;
-    int            r1, g1, b1, r2, g2, b2, r, g, b;
-    VIO_Real       alpha1, a1;
-    VIO_Real       alpha2, a2;
     int            vol;
-    int            x, y;
-    int            dx, dy;
-    int            ind;
 
     n_pixels = result->x_size * result->y_size;
 
@@ -339,82 +410,26 @@ void set_volume_merge_method(
       res_ptr[p] = 0;
     }
 
+    /* Draw blended images FIRST. */
     for (vol = 0; vol < main->n_volumes_displayed - 1; vol++)
     {
-      if (main->merged.method[vol] == DISABLED)
-          continue;
-
-      dx = (result->x_size - pixels[vol].x_size) / 2;
-      dy = (result->y_size - pixels[vol].y_size) / 2;
-      if (dx < 0)
+      if (main->merged.method[vol] == BLENDED)
       {
-        dx = 0;
-      }
-      if (dy < 0)
-      {
-        dy = 0;
-      }
-
-#ifdef DEBUG
-      printf("%d %d, %d %d, %d %d\n", dx, dy, result->x_size, result->y_size,
-             pixels[vol].x_size, pixels[vol].y_size);
-#endif /* DEBUG */
-
-      alpha1 = main->merged.opacity[vol];
-      for (x = 0; x < pixels[vol].x_size; x++)
-      {
-        for (y = 0; y < pixels[vol].y_size; y++)
-        {
-          if (x < 0 || x >= result->x_size ||
-              y < 0 || y >= result->y_size)
-            continue;
-          if (x < 0 || x >= pixels[vol].x_size ||
-              y < 0 || y >= pixels[vol].y_size)
-            continue;
-          col1 = PIXEL_RGB_COLOUR( pixels[vol], x, y );
-          col2 = PIXEL_RGB_COLOUR( *result, x, y );
-          a1 = get_Colour_a_0_1( col1 );
-          a2 = get_Colour_a_0_1( col2 );
-          if (main->merged.method[vol] == OPAQUE)
-          {
-            a2 = (1.0 - a1) * a2;
-          }
-          else
-          {
-            a1 = alpha1 * a1;
-          }
-
-          r1 = get_Colour_r( col1 );
-          g1 = get_Colour_g( col1 );
-          b1 = get_Colour_b( col1 );
-
-          r2 = get_Colour_r( col2 );
-          g2 = get_Colour_g( col2 );
-          b2 = get_Colour_b( col2 );
-
-          r = (int) (a1 * (VIO_Real) r1) + (a2 * (VIO_Real) r2);
-          g = (int) (a1 * (VIO_Real) g1) + (a2 * (VIO_Real) g2);
-          b = (int) (a1 * (VIO_Real) b1) + (a2 * (VIO_Real) b2);
-
-          if( r < 0 )
-            r = 0;
-          else if( r > 255 )
-            r = 255;
-
-          if( g < 0 )
-            g = 0;
-          else if( g > 255 )
-            g = 255;
-
-          if( b < 0 )
-            b = 0;
-          else if( b > 255 )
-            b = 255;
-
-          PIXEL_RGB_COLOUR(*result, x+dx, y+dy) = make_Colour( r, g, b );
-        }
+        composite_one_image( result, &pixels[vol], BLENDED,
+                             main->merged.opacity[vol] );
       }
     }
+
+    /* Then draw opaque images. */
+    for (vol = 0; vol < main->n_volumes_displayed - 1; vol++)
+    {
+      if (main->merged.method[vol] == OPAQUE)
+      {
+        composite_one_image( result, &pixels[vol], OPAQUE,
+                             main->merged.opacity[vol] );
+      }
+    }
+
 }
 
   VIO_BOOL  can_switch_colour_modes(
