@@ -342,13 +342,19 @@ change_blending_weights(UI_struct *ui_info,
         break;
 
     case 'r':
-    case 'R':
         change_blending_weights(get_ui_struct(), 1);
         break;
 
     case 'e':
-    case 'E':
         change_blending_weights(get_ui_struct(), -1);
+        break;
+
+    case 'R':
+        change_blending_weights( get_ui_struct(), 1000);
+        break;
+
+    case 'E':
+        change_blending_weights( get_ui_struct(), -1000);
         break;
     }
 }
