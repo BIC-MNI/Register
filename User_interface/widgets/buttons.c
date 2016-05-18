@@ -158,8 +158,7 @@ static VIO_Colour get_text_colour(VIO_Colour bkgd_colour)
 void  update_button_colours(
     widget_struct   *widget )
 {
-    VIO_BOOL        colour_map_state;
-    VIO_Colour         rectangle_colour;
+    VIO_Colour     rectangle_colour;
     button_struct  *button;
 
     button = get_widget_button( widget );
@@ -181,11 +180,9 @@ void  update_button_colours(
     else
         rectangle_colour = button->inactive_colour;
 
-    colour_map_state = G_get_colour_map_state(widget->graphics->window);
-
     if( widget->use_ui_colours )
     {
-        button->polygons->colours[0] = get_ui_colour(colour_map_state,
+        button->polygons->colours[0] = get_ui_colour(FALSE,
                                             (UI_colours) rectangle_colour);
 
         button->text->colour = get_text_colour( button->polygons->colours[0] );

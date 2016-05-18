@@ -51,21 +51,15 @@ static  VIO_Colour  colours[N_UI_COLOURS];
     }
 }
 
-static  int  start_colour_table = 0;
-
   void  set_start_colour_table(
     UI_struct  *ui )
 {
-    if( G_get_n_colour_map_entries(ui->graphics_window.window) <= 256 )
-        start_colour_table = Colour_table_8bit_start;
-    else
-        start_colour_table = Colour_table_start;
 }
 
   int  get_ui_colour_index(
     UI_colours  colour_name )
 {
-    return( colour_name + start_colour_table );
+    return 0;
 }
 
   VIO_Colour  get_ui_rgb_colour(
@@ -78,61 +72,29 @@ static  int  start_colour_table = 0;
     VIO_BOOL        colour_map_state,
     UI_colours     colour_name )
 {
-    if( colour_map_state )
-        return( (VIO_Colour) get_ui_colour_index(colour_name) );
-    else
-        return( get_ui_rgb_colour(colour_name) );
+    return( get_ui_rgb_colour(colour_name) );
 }
 
-  void  set_ui_colour(
+void  set_ui_colour(
     UI_struct    *ui,
     UI_colours   colour_name,
     VIO_Colour       colour )
 {
     colours[colour_name] = colour;
-
-    if( G_get_colour_map_state(ui->graphics_window.window) )
-    {
-        G_set_colour_map_entry( ui->graphics_window.window,
-                                get_ui_colour_index(colour_name),
-                                colour );
-    }
 }
 
-  void  set_window_colours( window_struct *window )
+void  set_window_colours( window_struct *window )
 {
-    UI_colours  colour_name;
-
-    if( G_get_colour_map_state(window) )
-    {
-        for_enum( colour_name, N_UI_COLOURS, UI_colours )
-        {
-            G_set_colour_map_entry( window,
-                                    get_ui_colour_index(colour_name),
-                                    get_ui_rgb_colour(colour_name) );
-        }
-    }
-
-    if( G_get_colour_map_state(window) )
-    {
-        G_set_background_colour( window,
-                                 (VIO_Colour)
-                                 get_ui_colour_index(BACKGROUND_COLOUR) );
-    }
-    else
-    {
-        G_set_background_colour( window,
-                                 get_ui_rgb_colour(BACKGROUND_COLOUR) );
-    }
+    G_set_background_colour( window, get_ui_rgb_colour(BACKGROUND_COLOUR) );
 }
 
-  void  colour_map_state_has_changed( UI_struct  *ui )
+void  colour_map_state_has_changed( UI_struct  *ui )
 {
     set_start_colour_table( ui );
 
     set_window_colours( ui->graphics_window.window );
 
-    IF_colour_mode_has_toggled( start_colour_table + N_UI_COLOURS );
+    IF_colour_mode_has_toggled( 0 );
 
     update_all_widget_colours( ui );
 

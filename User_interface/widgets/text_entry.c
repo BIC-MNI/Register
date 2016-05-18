@@ -379,7 +379,6 @@ static  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
   void  update_text_entry_colours(
     widget_struct  *widget )
 {
-    VIO_BOOL            colour_map_state;
     polygons_struct    *cursor_polygons;
     text_entry_struct  *text_entry;
     VIO_Colour             rectangle_colour, text_colour;
@@ -408,16 +407,15 @@ static  DEFINE_EVENT_FUNCTION( select_text_entry_event_callback )
         text_colour = text_entry->text_colour;
     }
 
-    colour_map_state = G_get_colour_map_state( widget->graphics->window );
     cursor_polygons = get_polygons_ptr( text_entry->cursor );
 
     if( widget->use_ui_colours )
     {
-        text_entry->polygons->colours[0] = get_ui_colour( colour_map_state,
+        text_entry->polygons->colours[0] = get_ui_colour( FALSE,
                                               (UI_colours) rectangle_colour );
-        text_entry->text->colour = get_ui_colour( colour_map_state,
+        text_entry->text->colour = get_ui_colour( FALSE,
                                                   (UI_colours) text_colour );
-        cursor_polygons->colours[0] = get_ui_colour( colour_map_state,
+        cursor_polygons->colours[0] = get_ui_colour( FALSE,
                                    (UI_colours) text_entry->cursor_colour );
     }
     else

@@ -254,10 +254,7 @@ static  void  update_one_slider_colours(
     widget_struct   *widget )
 {
     VIO_Colour         rectangle_colour;
-    VIO_BOOL        colour_map_state;
     slider_struct  *slider;
-
-    colour_map_state = G_get_colour_map_state( widget->graphics->window );
 
     slider = get_widget_slider( widget );
 
@@ -267,17 +264,15 @@ static  void  update_one_slider_colours(
         rectangle_colour = slider->inactive_colour;
 
     if( widget->use_ui_colours )
-        slider->polygons->colours[0] = get_ui_colour(colour_map_state,
+        slider->polygons->colours[0] = get_ui_colour(FALSE,
                                                (UI_colours) rectangle_colour);
     else
         slider->polygons->colours[0] = rectangle_colour;
 
-    update_one_slider_colours( slider, 0, widget->use_ui_colours,
-                               colour_map_state );
+    update_one_slider_colours( slider, 0, widget->use_ui_colours, FALSE );
 
     if( slider->colour_bar_flag )
-        update_one_slider_colours( slider, 1, widget->use_ui_colours,
-                                   colour_map_state );
+        update_one_slider_colours( slider, 1, widget->use_ui_colours, FALSE );
 }
 
 static  VIO_Real  convert_position_to_slider_value(

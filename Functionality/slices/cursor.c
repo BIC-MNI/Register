@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file Functionality/slices/cursor.c
+ * \brief Draw the cursor.
+ * 
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +13,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <register.h>
 
@@ -19,14 +22,6 @@ static  const  int  N_LINES = 12;
 static  void  set_cursor_colours(
     main_struct    *main,
     lines_struct   *lines );
-
-static  Bitplane_types  get_cursor_bitplane( void )
-{
-    if( G_has_overlay_planes() && Use_overlay_planes )
-        return( OVERLAY_PLANES );
-    else
-        return( NORMAL_PLANES );
-}
 
 static  void  create_cursor_graphics(
     lines_struct   *lines )
@@ -91,7 +86,7 @@ static  void  create_cursor_graphics(
 
     add_object_to_viewport( &main->graphics,
                             get_slice_viewport_index(volume_index,view_index),
-                            get_cursor_bitplane(), object );
+                            NORMAL_PLANES, object );
 
     return( object );
 }
@@ -177,21 +172,8 @@ static  void  set_cursor_colours(
 {
     VIO_Colour         inside, outside;
 
-    if( get_cursor_bitplane() == OVERLAY_PLANES )
-    {
-        inside = 1;
-        outside = 3;
-    }
-    else if( G_get_colour_map_state( main->window ) )
-    {
-        inside = (VIO_Colour) (main->start_colour_index + CURSOR_INSIDE_COLOUR);
-        outside = (VIO_Colour) (main->start_colour_index + CURSOR_OUTSIDE_COLOUR);
-    }
-    else
-    {
-        inside = Cursor_inside_colour;
-        outside = Cursor_outside_colour;
-    }
+    inside = Cursor_inside_colour;
+    outside = Cursor_outside_colour;
 
     lines->colours[0] = inside;
     lines->colours[1] = inside;
@@ -248,7 +230,7 @@ static  void  set_cursor_colours(
     }
 
     set_update_slice_viewport_flag( main, volume_index, view_index,
-                                    get_cursor_bitplane() );
+                                    NORMAL_PLANES );
 }
 
   void  update_volume_cursors(

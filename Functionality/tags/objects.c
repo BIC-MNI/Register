@@ -74,35 +74,15 @@
 
     lines = get_lines_ptr( tag->objects[volume][view] );
 
-    if( G_get_colour_map_state( main->window ) )
+    if( tag->activity )
     {
-        if( tag->activity )
-        {
-            inside_colour = (VIO_Colour) (main->start_colour_index +
-                                      TAG_INSIDE_COLOUR);
-            outside_colour = (VIO_Colour) (main->start_colour_index +
-                                       TAG_OUTSIDE_COLOUR);
-        }
-        else
-        {
-            inside_colour = (VIO_Colour) (main->start_colour_index +
-                                      TAG_INSIDE_INACTIVE_COLOUR);
-            outside_colour = (VIO_Colour) (main->start_colour_index+
-                                       TAG_OUTSIDE_INACTIVE_COLOUR);
-        }
+        inside_colour = Tag_inside_colour;
+        outside_colour = Tag_outside_colour;
     }
     else
     {
-        if( tag->activity )
-        {
-            inside_colour = Tag_inside_colour;
-            outside_colour = Tag_outside_colour;
-        }
-        else
-        {
-            inside_colour = Tag_inside_inactive_colour;
-            outside_colour = Tag_outside_inactive_colour;
-        }
+        inside_colour = Tag_inside_inactive_colour;
+        outside_colour = Tag_outside_inactive_colour;
     }
 
     lines->colours[0] = inside_colour;

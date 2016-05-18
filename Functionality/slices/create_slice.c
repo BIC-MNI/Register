@@ -38,10 +38,7 @@
     filter_type = get_slice_filter_type( main, volume_index, view );
     filter_width = get_slice_filter_width( main, volume_index, view );
 
-    if( G_get_colour_map_state(main->window) )
-        pixel_type = COLOUR_INDEX_16BIT_PIXEL;
-    else
-        pixel_type = RGB_PIXEL;
+    pixel_type = RGB_PIXEL;
 
     get_slice_viewport_size( main, volume_index, view, &x_size, &y_size );
 
@@ -210,10 +207,7 @@ static  void  convert_volume1_voxel_to_volumeN(
                            &x_translation1, &y_translation1,
                            &x_scale1, &y_scale1 );
 
-      if( G_get_colour_map_state(main->window) )
-        pixel_type = COLOUR_INDEX_16BIT_PIXEL;
-      else
-        pixel_type = RGB_PIXEL;
+      pixel_type = RGB_PIXEL;
 
       get_slice_viewport_size( main, MERGED_VOLUME_INDEX, view,
                                &x_size, &y_size);

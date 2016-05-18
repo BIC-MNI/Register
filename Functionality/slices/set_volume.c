@@ -324,26 +324,6 @@ char *XYZT_dimension_names[] = { MIxspace, MIyspace, MIzspace, MItime, MIvector_
                               &main->trislice[volume_index].volume_being_input,
                               &options,
                               &main->trislice[volume_index].volume_input );
-
-    if( status == VIO_OK &&
-        is_an_rgb_volume(main->trislice[volume_index].volume_being_input) &&
-        G_get_colour_map_state( main->window ) )
-    {
-        print( "Warning: reading rgb volume as intensity volume.\n" );
-        print( "         This is because the program is in colour map mode.\n");
-
-        cancel_loading_volume( main, volume_index );
-
-        set_minc_input_vector_to_colour_flag( &options, FALSE );
-
-        status = start_volume_input( filename, 0, XYZT_dimension_names,
-                              Volume_voxel_type, Volume_voxel_signed,
-                              0.0, 0.0, TRUE,
-                              &main->trislice[volume_index].volume_being_input,
-                              &options,
-                              &main->trislice[volume_index].volume_input );
-    }
-
     return( status );
 }
 

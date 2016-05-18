@@ -13,110 +13,9 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <register.h>
-
-typedef  enum  { UNDER_RANGE, WITHIN_RANGE, OVER_RANGE } Range_flags;
-
-#if 0
-static  VIO_Colour  merge_colours(
-    VIO_Real      alpha1,
-    VIO_Colour    col1,
-    VIO_Real      alpha2,
-    VIO_Colour    col2 )
-{
-    int   r, g, b;
-
-    r = (int) (alpha1 * (VIO_Real) get_Colour_r(col1) +
-               alpha2 * (VIO_Real) get_Colour_r(col2));
-    if( r > 255 ) r = 255;
-
-    g = (int) (alpha1 * (VIO_Real) get_Colour_g(col1) +
-               alpha2 * (VIO_Real) get_Colour_g(col2));
-    if( g > 255 ) g = 255;
-
-    b = (int) (alpha1 * (VIO_Real) get_Colour_b(col1) +
-               alpha2 * (VIO_Real) get_Colour_b(col2));
-    if( b > 255 ) b = 255;
-
-    return( make_Colour( r, g, b ) );
-}
-
-/* ARGSUSED */
-
-static  VIO_Colour  get_merged_colour(
-    Merge_methods  method,
-    VIO_BOOL        use_under_over_colour_with_weights,
-    VIO_Colour         under_colour,
-    VIO_Colour         over_colour,
-    Range_flags    range_flag1,
-    VIO_Real           alpha1,
-    VIO_Colour         col1,
-    Range_flags    range_flag2,
-    VIO_Real           alpha2,
-    VIO_Colour         col2 )
-{
-    if( (!use_under_over_colour_with_weights ||
-         method == ONE_ON_TWO || method == TWO_ON_ONE) &&
-         (range_flag1 == UNDER_RANGE && range_flag2 == UNDER_RANGE) )
-    {
-        return( under_colour );
-    }
-
-    switch( method )
-    {
-    case ONE_ON_TWO:
-        if( range_flag1 != UNDER_RANGE )
-            return( col1 );
-        else
-            return( col2 );
-
-    case TWO_ON_ONE:
-        if( range_flag2 != UNDER_RANGE )
-            return( col2 );
-        else
-            return( col1 );
-
-    case BLEND_VOLUMES:
-    case WEIGHTED_VOLUMES:
-        if( method == BLEND_VOLUMES )
-            alpha2 = 1.0 - alpha1;
-
-        if( use_under_over_colour_with_weights ||
-            range_flag1 != UNDER_RANGE && range_flag2 != UNDER_RANGE )
-            return( merge_colours( alpha1, col1, alpha2, col2 ) );
-        else if( range_flag1 == UNDER_RANGE )
-            return( merge_colours( 0.0, col1, alpha2, col2 ) );
-        else
-            return( merge_colours( alpha1, col1, 0.0, col2 ) );
-    }
-
-    return( BLACK );
-}
-
-static  Range_flags  lookup_colour_code(
-    VIO_Volume                volume,
-    colour_coding_struct  *colour_coding,
-    int                   voxel,
-    VIO_Colour                *col )
-{
-    VIO_Real          value;
-    Range_flags   flag;
-
-    value = CONVERT_VOXEL_TO_VALUE( volume, (VIO_Real) voxel );
-
-    *col = get_colour_code( colour_coding, value );
-    if( value < colour_coding->min_value )
-        flag = UNDER_RANGE;
-    else if( value > colour_coding->max_value )
-        flag = OVER_RANGE;
-    else
-        flag = WITHIN_RANGE;
-
-    return( flag );
-}
-#endif /* 0 */
 
 static  void  update_rgb_colour_maps(
     main_struct  *main,
@@ -208,8 +107,7 @@ static  void   colour_coding_has_changed (
 
     update_colour_maps( main, volume_index );
 
-    if( !G_get_colour_map_state( main->window ) )
-        set_recreate_3_slices_flags( main, volume_index );
+    set_recreate_3_slices_flags( main, volume_index );
 }
 
 static  colour_coding_struct  *get_volume_colour_coding(
