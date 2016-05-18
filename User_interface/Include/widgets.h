@@ -36,10 +36,10 @@ typedef  void  (*widget_callback_type) ( struct  widget_struct *, void * );
 
 typedef  struct
 {
-    VIO_BOOL                  toggle_flag;
-    VIO_BOOL                  state;
-    VIO_STR                   toggle_text[2];
-    VIO_Real                     time_to_unpush;
+    int                      toggle_count;
+    int                      state;
+    VIO_STR                  *toggle_text;
+    VIO_Real                 time_to_unpush;
     widget_callback_type     push_callback;
     void                     *callback_data;
     polygons_struct          *polygons;

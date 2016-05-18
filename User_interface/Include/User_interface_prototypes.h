@@ -593,7 +593,7 @@ widget_struct  *get_merged_blend_widget(
 
   void  set_toggle_button_state(
     widget_struct    *widget,
-    VIO_BOOL          state );
+    int              state );
 
   void  set_button_text(
     widget_struct    *widget,
@@ -638,6 +638,26 @@ widget_struct  *get_merged_blend_widget(
     VIO_Colour                     text_colour,
     Font_types                 text_font,
     VIO_Real                       font_size,
+    widget_callback_type       push_callback,
+    void                       *callback_data );
+
+  widget_struct  *create_multi_button(
+    graphics_window_struct     *graphics,
+    Viewport_types             viewport_index,
+    int                        x,
+    int                        y,
+    int                        x_size,
+    int                        y_size,
+    int                        n_states,
+    VIO_STR                    state_text[],
+    int                        initial_state,
+    VIO_BOOL                   initial_activity,
+    VIO_BOOL                   use_ui_colours,
+    VIO_Colour                 active_colour,
+    VIO_Colour                 inactive_colour,
+    VIO_Colour                 text_colour,
+    Font_types                 text_font,
+    VIO_Real                   font_size,
     widget_callback_type       push_callback,
     void                       *callback_data );
 

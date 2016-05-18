@@ -49,11 +49,16 @@ int MERGED_VOLUME_INDEX = 0;
     ui->prev_divider_y = 0;
     ui->divider_vp_index = -1;
 
-    create_linear_transform( &ui->resampling_transform, (VIO_Transform *) NULL );
+    create_linear_transform( &ui->resampling_transform, NULL );
 
     initialize_ui_colours();
 
     initialize_print_popup();
+
+    if ( Initial_window_x_size <= 0 )
+    {
+        Initial_window_x_size = 100 + ui->n_volumes_displayed * 300;
+    }
 
     status = G_create_window( Main_window_name, -1, -1,
                               Initial_window_x_size,

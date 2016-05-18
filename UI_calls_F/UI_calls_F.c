@@ -372,17 +372,17 @@
     return( get_merged_volume_opacity( get_main_struct(), which_volume ) );
 }
 
-void  IF_set_volume_active(
+void  IF_set_volume_merge_method(
     int    which_volume,
-    VIO_BOOL active )
+    Merge_methods method )
 {
-    set_volume_merge_activity( get_main_struct(), which_volume, active );
+    set_volume_merge_method( get_main_struct(), which_volume, method );
 }
 
-VIO_BOOL IF_get_volume_active(
+Merge_methods IF_get_volume_merge_method(
     int    which_volume )
 {
-    return( get_volume_merge_activity( get_main_struct(), which_volume ) );
+    return( get_volume_merge_method( get_main_struct(), which_volume ) );
 }
 
   void  IF_set_slice_filter_type(

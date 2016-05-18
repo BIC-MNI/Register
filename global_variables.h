@@ -37,7 +37,7 @@ START_GLOBALS
     DEF_GLOBAL_COLOUR( Default_volume2_under_colour )
     DEF_GLOBAL_COLOUR( Default_volume2_over_colour )
 
-    DEF_GLOBAL( Initial_window_x_size, int, 1000 )
+    DEF_GLOBAL( Initial_window_x_size, int, -1 )
     DEF_GLOBAL( Initial_window_y_size, int, 900 )
     DEF_GLOBAL( Default_main_menu_width, int, 100 )
     DEF_GLOBAL( Default_tag_panel_height, int, 110 )

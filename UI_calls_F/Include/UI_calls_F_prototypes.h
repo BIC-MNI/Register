@@ -187,9 +187,9 @@
   VIO_Real  IF_get_merged_volume_opacity(
     int    which_volume );
 
-void IF_set_volume_active( int which_volume, VIO_BOOL active );
+void IF_set_volume_merge_method( int which_volume, Merge_methods method );
 
-VIO_BOOL IF_get_volume_active( int which_volume );
+Merge_methods IF_get_volume_merge_method( int which_volume );
 
   void  IF_set_slice_filter_type(
     int           volume_index,

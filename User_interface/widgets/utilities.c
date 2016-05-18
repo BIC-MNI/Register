@@ -176,7 +176,7 @@
     {
         button = get_widget_button( widget );
 
-        if( button->toggle_flag )
+        if( button->toggle_count > 0 )
             state = button->state;
         else
         {

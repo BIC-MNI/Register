@@ -1,6 +1,7 @@
 /**
  * \file Functionality/slices/create_slice.c
- * \brief Function to render slice data to pixels.
+ * \brief Functions to render slice data to pixels.
+ *
  * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
@@ -29,7 +30,6 @@
     VIO_Real             origin[VIO_MAX_DIMENSIONS];
     VIO_Real             x_axis[VIO_MAX_DIMENSIONS], y_axis[VIO_MAX_DIMENSIONS];
     VIO_Volume           volume;
-    unsigned short   *cmode_colour_map;
     VIO_Colour           *rgb_colour_map, **rgb_colour_map_ptr;
 
     volume = get_slice_volume( main, volume_index );
@@ -44,8 +44,6 @@
         pixel_type = RGB_PIXEL;
 
     get_slice_viewport_size( main, volume_index, view, &x_size, &y_size );
-
-    cmode_colour_map = main->trislice[volume_index].cmode_colour_map;
 
     if( is_an_rgb_volume(volume) )
         rgb_colour_map_ptr = NULL;
@@ -68,7 +66,7 @@
                          0.0, 0.0, 0.0, 0.0,
                          x_size, y_size, 0, -1, 0, -1, pixel_type,
                          main->degrees_continuity,
-                         &cmode_colour_map,
+                         NULL,
                          rgb_colour_map_ptr, make_rgba_Colour( 0, 0, 0, 0 ),
                          &main->trislice[volume_index].colour_coding,
                     main->render_storage, TRUE,

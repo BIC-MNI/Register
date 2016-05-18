@@ -54,14 +54,9 @@ typedef struct
     VIO_STR                    filename;
     slice_struct               slices[N_VIEWS];
     VIO_Real                   position[VIO_MAX_DIMENSIONS];
-    unsigned short             *cmode_colour_map;
-    int                        cmode_colour_offset;
     VIO_Colour                 *rgb_colour_map;
     int                        rgb_colour_offset;
-    int                        start_colour_map;
-    int                        n_colour_entries;
     colour_coding_struct       colour_coding;
-
     volume_input_struct        volume_input;
     VIO_Volume                 volume_being_input;
 } trislice_struct;
@@ -71,14 +66,9 @@ typedef  struct
     VIO_BOOL               active_flag;
     slice_struct           slices[N_VIEWS];
     VIO_Real               position[VIO_MAX_DIMENSIONS];
-    int                    start_colour_map;
-    int                    n_colour_entries1;
-    int                    n_colour_entries2;
-    Merge_methods          merge_method;
     VIO_Real               opacity[N_MERGED];
     colour_coding_struct   colour_coding[N_MERGED];
-    VIO_BOOL               volume_flag[N_MERGED];
-    int                    order[N_MERGED];
+    Merge_methods          method[N_MERGED];
 } merged_struct;
 
 typedef  struct

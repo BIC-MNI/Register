@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file User_interface/widget_instances/volume_interface.c
+ * \brief Create the per-volume interface widgets. 
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +13,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+*/
 
 #include  <user_interface.h>
 
@@ -101,7 +104,7 @@ static DEFINE_WIDGET_CALLBACK(merge_button_callback)
 {
   int volume_index = (intptr_t) callback_data;
   button_struct *button = get_widget_button( widget );
-  IF_set_volume_active( volume_index, button->state );
+  IF_set_volume_merge_method( volume_index, (Merge_methods) button->state );
 }
 
 /**
@@ -113,6 +116,9 @@ void  add_volume_widgets(
     Viewport_types    viewport_index )
 {
     int            x, y, height, volume_index;
+    VIO_STR        choice_text[] = {
+      "Off", "Blended", "Opaque"
+    };
 
     volume_index = get_viewport_volume_index( viewport_index );
 
@@ -151,13 +157,13 @@ void  add_volume_widgets(
     x += Opacity_slider_width + Volume_x_spacing;
     widget_indices[ACTIVE_BUTTON] = 
       add_widget_to_list( &ui_info->widget_list[viewport_index],
-                          create_toggle_button( &ui_info->graphics_window,
+                          create_multi_button( &ui_info->graphics_window,
                           viewport_index, 
                           x, y, 
-                          Volume_button_width / 2,
+                          Volume_button_width,
                           Volume_button_height,
-                          "Show", "Hide",
-                          TRUE, TRUE, TRUE,
+                          3, choice_text,
+                          (int)BLENDED, TRUE, TRUE,
                           BUTTON_ACTIVE_COLOUR, 
                           BUTTON_INACTIVE_COLOUR,
                           BUTTON_TEXT_COLOUR,
@@ -365,5 +371,6 @@ widget_struct *get_merged_blend_widget( UI_struct *ui_info, int volume_index )
     if ( volume_index >= ui_info->n_volumes_loaded )
         return NULL;
     int viewport_index = get_volume_menu_viewport_index( volume_index );
-    return ui_info->widget_list[viewport_index].widgets[widget_indices[WEIGHT_SLIDER]];
+    return (ui_info->widget_list[viewport_index].
+            widgets[widget_indices[WEIGHT_SLIDER]]);
 }

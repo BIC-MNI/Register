@@ -53,8 +53,7 @@ static  void  initialize_slice( main_struct *, int, int );
         else
           main->merged.opacity[volume] = Initial_merged_2_weight;
 
-        main->merged.volume_flag[volume] = TRUE;
-        main->merged.order[volume] = volume;
+        main->merged.method[volume] = BLENDED;
     }
 }
 

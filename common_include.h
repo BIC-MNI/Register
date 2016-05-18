@@ -36,7 +36,6 @@ extern int MERGED_VOLUME_INDEX;
 
 #define  TAG_FILE_SUFFIX                "tag"
 
-typedef  enum  { ONE_ON_TWO, TWO_ON_ONE, BLEND_VOLUMES, WEIGHTED_VOLUMES }
-                 Merge_methods;
+typedef  enum  { DISABLED, BLENDED, OPAQUE } Merge_methods;
 
 #endif

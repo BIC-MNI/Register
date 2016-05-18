@@ -95,9 +95,14 @@ static  DEFINE_EVENT_FUNCTION( push_button_event_callback )
 
     set_widget_activity( widget, FALSE );
 
-    if( button->toggle_flag )
+    if( button->toggle_count > 0 )
     {
-        set_toggle_button_state( widget, !button->state );
+        int new_state = button->state + 1;
+        if ( new_state >= button->toggle_count )
+        {
+            new_state = 0;
+        }
+        set_toggle_button_state( widget, new_state );
     }
     else if( is_radio_button( button ) )
     {
@@ -159,7 +164,7 @@ void  update_button_colours(
 
     if( widget->active_flag )
     {
-        if( button->toggle_flag )
+        if( button->toggle_count > 0 )
         {
             rectangle_colour = button->active_colour;
         }
@@ -238,7 +243,7 @@ void  update_button_colours(
 
   void  set_toggle_button_state(
     widget_struct    *widget,
-    VIO_BOOL          state )
+    int              state )
 {
     button_struct    *button;
 
@@ -287,7 +292,7 @@ static  void  create_button_graphics(
 
     button->text = get_text_ptr( object );
 
-    if( button->toggle_flag )
+    if( button->toggle_count > 0 )
         set_button_text( widget, button->toggle_text[button->state] );
     else
         set_button_text( widget, label );
@@ -303,11 +308,18 @@ static  void  create_button_graphics(
     widget_struct  *widget )
 {
     button_struct     *button;
+    int               i;
 
     button = get_widget_button( widget );
 
-    delete_string( button->toggle_text[0] );
-    delete_string( button->toggle_text[1] );
+    if ( button->toggle_count > 0 )
+    {
+        for (i = 0; i < button->toggle_count; i++)
+        {
+            delete_string( button->toggle_text[i] );
+        }
+        FREE( button->toggle_text );
+    }
 
     if( button->update_counter >= 0 )
     {
@@ -324,10 +336,9 @@ static  widget_struct  *create_a_button(
     int                        y,
     int                        x_size,
     int                        y_size,
-    VIO_BOOL                    toggle_flag,
-    VIO_BOOL                    initial_state,
-    VIO_STR                     text1,
-    VIO_STR                     text2,
+    int                        toggle_count,
+    int                        initial_state,
+    VIO_STR                     *text,
     VIO_BOOL                    initial_activity,
     VIO_BOOL                    use_ui_colours,
     VIO_Colour                     active_colour,
@@ -341,6 +352,7 @@ static  widget_struct  *create_a_button(
 {
     widget_struct   *widget;
     button_struct   *button;
+    int             i;
 
     widget = create_widget( BUTTON, x, y, x_size, y_size, initial_activity,
                             use_ui_colours, graphics, viewport_index );
@@ -353,20 +365,22 @@ static  widget_struct  *create_a_button(
 
     button->next_radio_button = (widget_struct *) 0;
 
-    button->toggle_flag = toggle_flag;
+    button->toggle_count = toggle_count;
     button->update_counter = -1;
 
-    if( toggle_flag )
+    if( toggle_count > 0 )
     {
         button->state = initial_state;
-        button->toggle_text[0] = create_string( text1 );
-        button->toggle_text[1] = create_string( text2 );
+        ALLOC( button->toggle_text, toggle_count );
+        for (i = 0; i < toggle_count; i++)
+        {
+            button->toggle_text[i] = create_string( text[i] );
+        }
     }
     else
     {
         button->selected_colour = selected_colour;
-        button->toggle_text[0] = create_string( NULL );
-        button->toggle_text[1] = create_string( NULL );
+        button->toggle_text = NULL;
     }
 
     button->push_callback = push_callback;
@@ -379,7 +393,7 @@ static  widget_struct  *create_a_button(
                                  push_button_event_callback,
                                  ANY_MODIFIER, (void *) widget );
 
-    create_button_graphics( widget, text1, text_font, font_size );
+    create_button_graphics( widget, text[0], text_font, font_size );
 
     update_button_activity( widget );
 
@@ -409,9 +423,11 @@ static  widget_struct  *create_a_button(
     widget_callback_type       push_callback,
     void                       *callback_data )
 {
+    VIO_STR text[1];
+    text[0] = label;
     return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
-                     FALSE, FALSE, label, NULL,
+                     0, 0, text,
                      initial_activity, use_ui_colours, active_colour,
                      selected_colour, inactive_colour,
                      text_colour,
@@ -438,9 +454,41 @@ static  widget_struct  *create_a_button(
     widget_callback_type       push_callback,
     void                       *callback_data )
 {
+    VIO_STR text[2];
+    text[0] = off_text;
+    text[1] = on_text;
     return( create_a_button( graphics, viewport_index,
                      x, y, x_size, y_size,
-                     TRUE, initial_state, off_text, on_text,
+                     2, initial_state, text,
+                     initial_activity, use_ui_colours, active_colour, BLACK,
+                     inactive_colour, text_colour,
+                     text_font, font_size, push_callback, callback_data ) );
+}
+
+
+widget_struct  *create_multi_button(
+    graphics_window_struct     *graphics,
+    Viewport_types             viewport_index,
+    int                        x,
+    int                        y,
+    int                        x_size,
+    int                        y_size,
+    int                        n_states,
+    VIO_STR                    state_text[],
+    VIO_BOOL                   initial_state,
+    VIO_BOOL                   initial_activity,
+    VIO_BOOL                   use_ui_colours,
+    VIO_Colour                 active_colour,
+    VIO_Colour                 inactive_colour,
+    VIO_Colour                 text_colour,
+    Font_types                 text_font,
+    VIO_Real                   font_size,
+    widget_callback_type       push_callback,
+    void                       *callback_data )
+{
+    return( create_a_button( graphics, viewport_index,
+                     x, y, x_size, y_size,
+                     n_states, initial_state, state_text,
                      initial_activity, use_ui_colours, active_colour, BLACK,
                      inactive_colour, text_colour,
                      text_font, font_size, push_callback, callback_data ) );

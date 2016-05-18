@@ -170,43 +170,7 @@ static  void  update_rgb_colour_maps(
     }
 }
 
-static  void  update_cmode_indices(
-    main_struct  *main,
-    int          volume )
-{
-    int   min_ind, max_ind, voxel_value;
-    int   min_value, max_value;
-    unsigned short *tmp_ptr;
-
-    min_ind = main->trislice[volume].start_colour_map;
-    max_ind = min_ind + main->trislice[volume].n_colour_entries-1;
-
-    if (main->trislice[volume].cmode_colour_map != NULL) {
-        free(main->trislice[volume].cmode_colour_map +
-             main->trislice[volume].cmode_colour_offset);
-    }
-
-    get_volume_range_of_voxels( main, volume, &min_value, &max_value );
-    tmp_ptr = malloc((max_value - min_value + 1) * sizeof (*tmp_ptr));
-    /* TODO: check!!! */
-
-    /* The colour map is set to the allocated pointer MINUS the minimum
-     * value.  For volumes with a signed range, this means that we can
-     * index the colour map by a voxel value with no translation.
-     */
-    main->trislice[volume].cmode_colour_map = tmp_ptr - min_value;
-    main->trislice[volume].cmode_colour_offset = min_value;
-
-    for_inclusive( voxel_value, min_value, max_value )
-    {
-        main->trislice[volume].cmode_colour_map[voxel_value] =
-           (unsigned short) CONVERT_INTEGER_RANGE( voxel_value,
-                                                   min_value, max_value,
-                                                   min_ind, max_ind );
-    }
-}
-
-  void   update_colour_maps(
+void   update_colour_maps(
     main_struct  *main,
     int          volume )
 {
@@ -314,19 +278,19 @@ static  colour_coding_struct  *get_volume_colour_coding(
     return( main->merged.opacity[which_volume] );
 }
 
-VIO_BOOL get_volume_merge_activity(
+Merge_methods get_volume_merge_method(
     main_struct          *main,
     int                  which_volume )
 {
-    return( main->merged.volume_flag[which_volume] );
+    return( main->merged.method[which_volume] );
 }
 
-void set_volume_merge_activity(
+void set_volume_merge_method(
     main_struct          *main,
     int                  which_volume,
-    VIO_BOOL             active )
+    Merge_methods        merge_method )
 {
-    main->merged.volume_flag[which_volume] = active;
+    main->merged.method[which_volume] = merge_method;
 
     colour_coding_has_changed( main, MERGED_VOLUME_INDEX );
 }
@@ -361,9 +325,11 @@ void set_volume_merge_activity(
     VIO_Colour     *res_ptr;
     int            r1, g1, b1, r2, g2, b2, r, g, b;
     VIO_Real       alpha1, a1;
+    VIO_Real       alpha2, a2;
     int            vol;
     int            x, y;
     int            dx, dy;
+    int            ind;
 
     n_pixels = result->x_size * result->y_size;
 
@@ -375,7 +341,7 @@ void set_volume_merge_activity(
 
     for (vol = 0; vol < main->n_volumes_displayed - 1; vol++)
     {
-      if (!main->merged.volume_flag[vol])
+      if (main->merged.method[vol] == DISABLED)
           continue;
 
       dx = (result->x_size - pixels[vol].x_size) / 2;
@@ -407,7 +373,16 @@ void set_volume_merge_activity(
             continue;
           col1 = PIXEL_RGB_COLOUR( pixels[vol], x, y );
           col2 = PIXEL_RGB_COLOUR( *result, x, y );
-          a1 = alpha1;
+          a1 = get_Colour_a_0_1( col1 );
+          a2 = get_Colour_a_0_1( col2 );
+          if (main->merged.method[vol] == OPAQUE)
+          {
+            a2 = (1.0 - a1) * a2;
+          }
+          else
+          {
+            a1 = alpha1 * a1;
+          }
 
           r1 = get_Colour_r( col1 );
           g1 = get_Colour_g( col1 );
@@ -417,9 +392,9 @@ void set_volume_merge_activity(
           g2 = get_Colour_g( col2 );
           b2 = get_Colour_b( col2 );
 
-          r = (int) (a1 * (VIO_Real) r1) + r2;
-          g = (int) (a1 * (VIO_Real) g1) + g2;
-          b = (int) (a1 * (VIO_Real) b1) + b2;
+          r = (int) (a1 * (VIO_Real) r1) + (a2 * (VIO_Real) r2);
+          g = (int) (a1 * (VIO_Real) g1) + (a2 * (VIO_Real) g2);
+          b = (int) (a1 * (VIO_Real) b1) + (a2 * (VIO_Real) b2);
 
           if( r < 0 )
             r = 0;
@@ -445,17 +420,5 @@ void set_volume_merge_activity(
   VIO_BOOL  can_switch_colour_modes(
     main_struct          *main )
 {
-    int    v;
-
-    if( !G_can_switch_colour_map_mode() )
-        return( FALSE );
-
-    for_less( v, 0, main->n_volumes_displayed-1 )
-    {
-        if( is_volume_active(main,v) &&
-            is_an_rgb_volume(get_slice_volume(main,v)) )
-            return( FALSE );
-    }
-
-    return( TRUE );
+    return( FALSE );
 }
