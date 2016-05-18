@@ -1,6 +1,9 @@
 #ifndef  DEF_User_interface_prototypes
 #define  DEF_User_interface_prototypes
-
+/**
+ * \defgroup RegisterUI User interface
+ * @{
+ */
   UI_struct  *get_ui_struct( void );
 
   VIO_Status   initialize_user_interface(
@@ -936,4 +939,7 @@ widget_struct  *get_merged_blend_widget(
 
   void  xs_display(UI_struct *ui_info,
                          Viewport_types viewport, int force);
+/**
+ * @}
+ */
 #endif

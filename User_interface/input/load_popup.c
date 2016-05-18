@@ -1,5 +1,9 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file User_interface/input/load_popup.c
+ * \brief Implement the popup shown during file loading.
+ *
+ * \copyright
+
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +14,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <user_interface.h>
 

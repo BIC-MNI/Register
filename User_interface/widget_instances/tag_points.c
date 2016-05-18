@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file User_interface/widget_instances/tag_points.c
+ * \brief Create widgets for creating and editing tag points.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +13,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <user_interface.h>
 
@@ -19,8 +22,8 @@
  * useful to avoid compiler warnings. These macros should work on 
  * most 32 and 64 bit systems, I think.
  */
-#define INT_TO_PTR(i) (void *)(long)(i)
-#define PTR_TO_INT(p) (int)(long)(p)
+#define INT_TO_PTR(i) (void *)(intptr_t)(i)
+#define PTR_TO_INT(p) (int)(intptr_t)(p)
 
 typedef enum
 {

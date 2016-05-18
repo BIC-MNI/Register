@@ -1,5 +1,5 @@
-/** \file User_interface/widget_instances/colour_bar.c
- *
+/** 
+ * \file User_interface/widget_instances/colour_bar.c
  * \brief Create widgets for the per-volume colour coding and colour bar.
  * 
  * \copyright

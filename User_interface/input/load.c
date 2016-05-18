@@ -1,5 +1,8 @@
-/* ----------------------------------------------------------------------------
-@COPYRIGHT  :
+/**
+ * \file User_interface/input/load.c
+ * \brief Start and finish loading a volume.
+ *
+ * \copyright
               Copyright 1993,1994,1995 David MacDonald,
               McConnell Brain Imaging Centre,
               Montreal Neurological Institute, McGill University.
@@ -10,7 +13,7 @@
               make no representations about the suitability of this
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
----------------------------------------------------------------------------- */
+ */
 
 #include  <user_interface.h>
 
@@ -33,13 +36,6 @@ static  DEFINE_EVENT_FUNCTION( more_input )
 
     if( done_loading )
     {
-#ifdef  DISABLED_TO_SEE_IF_IT_IS_STILL_NEEDED
-        /*  --- the following printf line seems to fix a memory leak
-            error that occurs when reading an rgb MINC file */
-            
-        (void) printf( "" );
-#endif
-
         volume_has_been_loaded( get_ui_struct(), data );
     }
     else
