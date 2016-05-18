@@ -1,3 +1,7 @@
+2016-05-18  Robert D Vincent <robert.d.vincent@mcgill.ca>
+   * all: Major changes to clean up code and generalize register to support
+	 loading of N volumes. Removed colour map mode.
+
 2016-01-12  Robert D Vincent <robert.d.vincent@mcgill.ca>
    * CMakeLists.txt: Build and install register_resample, don't install
 	globals file.

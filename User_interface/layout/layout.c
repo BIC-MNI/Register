@@ -32,11 +32,6 @@ unsigned int N_UI_viewports = N_VIEWPORT_TYPES - 1;
     {
         ui_info->x_slice_divider[i] = (double) (i+1) / ui_info->n_volumes_displayed;
     }
-#if 0
-    ui_info->x_slice_divider[0] = Slice_left_view_width;
-    ui_info->x_slice_divider[1] = Slice_left_view_width +
-                                  Slice_middle_view_width;
-#endif
     ui_info->y_slice_divider[0] = 1.0 - Slice_top_view_height -
                                         Slice_middle_view_height;
     ui_info->y_slice_divider[1] = 1.0 - Slice_top_view_height;

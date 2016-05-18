@@ -29,6 +29,7 @@
 
 typedef unsigned int Viewport_types;
 #if 0
+/* Old viewport definitions */
 typedef  enum
 {
     Main_menu_viewport,
