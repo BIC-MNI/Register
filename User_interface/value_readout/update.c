@@ -27,21 +27,20 @@
     if( volume_index < MERGED_VOLUME_INDEX )
     {
         IF_get_volume_voxel_position( volume_index, voxel );
-        value = IF_get_voxel_value( volume_index, voxel[VIO_X], voxel[VIO_Y], voxel[VIO_Z]);
-        set_text_entry_real_value( get_volume_readout_widget(ui,volume_index),
+        value = IF_get_voxel_value( volume_index, voxel[VIO_X], voxel[VIO_Y], voxel[VIO_Z] );
+        set_text_entry_real_value( get_volume_readout_widget(ui, volume_index),
                                    Readout_values_format, value );
     }
     else
     {
-        IF_get_volume_voxel_position( MERGED_VOLUME_INDEX, voxel );
-        value = IF_get_voxel_value( 0, voxel[VIO_X], voxel[VIO_Y], voxel[VIO_Z] );
-        set_text_entry_real_value( get_merged_readout_widget(ui,0),
-                                   Readout_values_format, value );
-
-        IF_get_volume_voxel_position( MERGED_VOLUME_INDEX+1, voxel );
-        value = IF_get_voxel_value( 1, voxel[VIO_X], voxel[VIO_Y], voxel[VIO_Z] );
-        set_text_entry_real_value( get_merged_readout_widget(ui,1),
-                                   Readout_values_format, value );
+        int i;
+        for (i = 0; i < ui->n_volumes_loaded; i++)
+        {
+          IF_get_volume_voxel_position( MERGED_VOLUME_INDEX + i, voxel );
+          value = IF_get_voxel_value( i, voxel[VIO_X], voxel[VIO_Y], voxel[VIO_Z] );
+          set_text_entry_real_value( get_merged_readout_widget(ui, i),
+                                     Readout_values_format, value );
+        }
     }
 }
 

@@ -439,9 +439,7 @@ VIO_BOOL execute_event_viewport_events(
     UI_struct     *ui_info,
     int           volume );
 
-widget_struct  *get_merged_blend_widget(
-    UI_struct     *ui_info,
-    int           volume );
+widget_struct  *get_merged_blend_widget( UI_struct     *ui_info );
 
   void  initialize_meter(
     popup_struct     *popup,
@@ -571,6 +569,9 @@ widget_struct  *get_merged_blend_widget(
     UI_struct         *ui_info,
     int               volume_index,
     VIO_BOOL           activity );
+
+widget_struct *get_volume_weight_widget( UI_struct *ui_info, int volume_index );
+void set_volume_blend_value( UI_struct *ui_info, VIO_Real value );
 
   void  define_radio_buttons(
     int            n_widgets,

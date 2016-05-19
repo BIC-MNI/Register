@@ -258,30 +258,31 @@ static  void  check_axes_assigned( void )
     }
     else
     {
+        volume = volume - MERGED_VOLUME_INDEX;
         cursor_ptr = get_volume_cursor( main, MERGED_VOLUME_INDEX );
 
-        convert_voxel_to_original_world( main, 1 - RESAMPLED_VOLUME_INDEX,
+        convert_voxel_to_original_world( main, MERGED_VOLUME_INDEX,
                                          cursor_ptr[VIO_X],
                                          cursor_ptr[VIO_Y],
                                          cursor_ptr[VIO_Z],
                                          &original_world_position1[VIO_X],
                                          &original_world_position1[VIO_Y],
                                          &original_world_position1[VIO_Z] );
-        convert_original_world_to_world( main, 1 - RESAMPLED_VOLUME_INDEX,
+        convert_original_world_to_world( main, MERGED_VOLUME_INDEX,
                                          original_world_position1[VIO_X],
                                          original_world_position1[VIO_Y],
                                          original_world_position1[VIO_Z],
                                          &world_position[VIO_X],
                                          &world_position[VIO_Y],
                                          &world_position[VIO_Z] );
-        convert_world_to_original_world( main, RESAMPLED_VOLUME_INDEX,
+        convert_world_to_original_world( main, volume,
                                          world_position[VIO_X],
                                          world_position[VIO_Y],
                                          world_position[VIO_Z],
                                          &original_world_position2[VIO_X],
                                          &original_world_position2[VIO_Y],
                                          &original_world_position2[VIO_Z] );
-        convert_original_world_to_voxel( main, RESAMPLED_VOLUME_INDEX,
+        convert_original_world_to_voxel( main, volume,
                                          original_world_position2[VIO_X],
                                          original_world_position2[VIO_Y],
                                          original_world_position2[VIO_Z],

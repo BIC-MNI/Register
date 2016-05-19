@@ -366,7 +366,7 @@ void  add_volume_widgets(
                            [widget_indices[POPUP_FILTER_BUTTON]], activity );
 }
 
-widget_struct *get_merged_blend_widget( UI_struct *ui_info, int volume_index )
+widget_struct *get_volume_weight_widget( UI_struct *ui_info, int volume_index )
 {
     if ( volume_index >= ui_info->n_volumes_loaded )
         return NULL;
@@ -374,3 +374,16 @@ widget_struct *get_merged_blend_widget( UI_struct *ui_info, int volume_index )
     return (ui_info->widget_list[viewport_index].
             widgets[widget_indices[WEIGHT_SLIDER]]);
 }
+
+void 
+set_volume_blend_value( UI_struct *ui_info, VIO_Real value )
+{
+  set_slider_values( get_volume_weight_widget( ui_info, 0 ), value, value );
+  IF_set_merged_volume_opacity( 0, value );
+
+  value = 1.0 - value;
+
+  set_slider_values( get_volume_weight_widget( ui_info, 1 ), value, value );
+  IF_set_merged_volume_opacity( 1, value );
+}
+

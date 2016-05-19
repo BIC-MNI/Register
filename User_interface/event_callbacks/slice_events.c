@@ -290,15 +290,14 @@ change_blending_weights(UI_struct *ui_info,
                         int direction)
 {
   VIO_Real value = IF_get_merged_volume_opacity(0);
-  value += 0.01 * direction;
+  value += 0.02 * direction;
   if (value < 0.0)
     value = 0.0;
   if (value > 1.0)
     value = 1.0;
-  IF_set_merged_volume_opacity(0, value);
-  IF_set_merged_volume_opacity(1, 1.0 - value);
-  set_slider_values(get_merged_blend_widget(ui_info, 0), value, value);
-  set_slider_values(get_merged_blend_widget(ui_info, 1), 1.0-value, 1.0-value);
+
+  set_volume_blend_value( ui_info, value );
+  set_slider_values( get_merged_blend_widget(ui_info), value, value );
 }
 
 /* ARGSUSED */
