@@ -302,17 +302,6 @@
                                     x_pixel, y_pixel, voxel_position ) );
 }
 
-  VIO_BOOL  IF_can_switch_colour_modes( void )
-{
-    return( can_switch_colour_modes( get_main_struct() ) );
-}
-
-  void  IF_colour_mode_has_toggled(
-    int  start_index )
-{
-    colour_mode_has_toggled( get_main_struct(), start_index );
-}
-
   void  IF_set_under_colour(
     int        volume_index,
     VIO_Colour     colour )
@@ -333,6 +322,12 @@
 {
     set_volume_colour_coding_type( get_main_struct(), volume_index,
                                    type );
+}
+
+void IF_load_volume_colour_coding( int volume_index,
+                                   VIO_STR filename )
+{
+    load_volume_colour_coding( get_main_struct(), volume_index, filename );
 }
 
   Colour_coding_types  IF_get_colour_coding_type(

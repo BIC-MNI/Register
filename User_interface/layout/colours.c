@@ -94,8 +94,6 @@ void  colour_map_state_has_changed( UI_struct  *ui )
 
     set_window_colours( ui->graphics_window.window );
 
-    IF_colour_mode_has_toggled( 0 );
-
     update_all_widget_colours( ui );
 
     set_clear_and_update_flags( ui );

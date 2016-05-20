@@ -50,21 +50,24 @@ static  void  print_usage(
     char   executable[] )
 {
     static  VIO_STR  usage =
-"Usage: %s  [OPTION]... [volume1.mnc] [volume2.mnc] [tags.tag]\n\
+"Usage: %s  [OPTION]... [volume.mnc] [tags.tag] [colourmap.ccd]\n\
+You can specify up to %d volumes.\n\
 \nOptions:\n\
     -help:      Prints this message.\n\
-    -rgb:       Starts program in RGB mode.\n\
-    -cmap:      Starts program in colour map mode.\n\
-    -single:    Starts program in single buffer mode.\n\
-    -double:    Starts program in double buffer mode.\n\
     -global variable value:\n\
                 Sets a global variable that changes configuration of program.\n\
-    -sync:      Start program with volumes synced.\n\
+    -sync:      Start program with volume positions synchronized.\n\
     -range volume min max:\n\
                 Sets the minimum and maximum colour range for volume 0 or 1.\n\
+    -gray       Selects the gray colourmap for subsequent volumes.\n\
+    -red        Selects the red colourmap for subsequent volumes.\n\
+    -blue       Selects the blue colourmap for subsequent volumes.\n\
+    -green      Selects the green colourmap for subsequent volumes.\n\
+    -spectral   Selects the spectral colourmap for subsequent volumes.\n\
+    -hot        Selects the hot metal colourmap for subsequent volumes.\n\
     -version:   Displays the version number of the program.\n\n";
 
-    print_error( usage, executable );
+    print_error( usage, executable, N_VOLUMES );
 }
 
 int  main(
@@ -76,6 +79,8 @@ int  main(
     VIO_STR          volume_filenames[N_VOLUMES], tag_filename;
     VIO_STR          variable_name, variable_value;
     VIO_Status       status;
+    VIO_STR          ccd_filename;
+    int              colour_coding_type[N_VOLUMES];
 
     initialize_global_colours();
 
@@ -84,8 +89,15 @@ int  main(
     initialize_argument_processing( argc, argv );
 
     tag_filename = NULL;
+    ccd_filename = NULL;
 
     n_volumes = 0;
+
+
+    for (volume = 0; volume < N_VOLUMES; volume++)
+    {
+      colour_coding_type[volume] = -1;
+    }
 
     while( get_string_argument( "", &argument ) )
     {
@@ -96,7 +108,7 @@ int  main(
         }
         else if( equal_strings( argument, "-version" ) )
         {
-            print("%s %s (built %s) git:%s/%s\n", 
+            print("%s %s (built %s) git:%s/%s\n",
                   PACKAGE_NAME, PACKAGE_VERSION, __DATE__,
                   GIT_BRANCH, GIT_COMMIT );
             return( 0 );
@@ -140,7 +152,7 @@ int  main(
                 Volume_1_colour_coding_min = min_value;
                 Volume_1_colour_coding_max = max_value;
             }
-            else 
+            else
             {
                 Volume_2_colour_coding_min = min_value;
                 Volume_2_colour_coding_max = max_value;
@@ -162,9 +174,39 @@ int  main(
                     print("Error setting global variable from command line.\n");
             }
         }
+        else if( equal_strings( argument, "-gray") ||
+                 equal_strings( argument, "-grey"))
+        {
+            colour_coding_type[n_volumes] = GRAY_SCALE;
+        }
+        else if( equal_strings( argument, "-red"))
+        {
+            colour_coding_type[n_volumes] = RED_COLOUR_MAP;
+        }
+        else if( equal_strings( argument, "-green"))
+        {
+            colour_coding_type[n_volumes] = GREEN_COLOUR_MAP;
+        }
+        else if( equal_strings( argument, "-blue"))
+        {
+            colour_coding_type[n_volumes] = BLUE_COLOUR_MAP;
+        }
+        else if( equal_strings( argument, "-hot"))
+        {
+            colour_coding_type[n_volumes] = HOT_METAL;
+        }
+        else if( equal_strings( argument, "-spectral"))
+        {
+            colour_coding_type[n_volumes] = SPECTRAL;
+        }
         else if( string_ends_in( argument, TAG_FILE_SUFFIX ) )
         {
             tag_filename = argument;
+        }
+        else if( string_ends_in( argument, ".ccd" ) )
+        {
+            ccd_filename = argument;
+            colour_coding_type[n_volumes] = USER_DEFINED_COLOUR_MAP;
         }
         else if( n_volumes < N_VOLUMES )
         {
@@ -178,6 +220,16 @@ int  main(
         }
     }
 
+    for (volume = 0; volume < n_volumes; volume++)
+    {
+      if (colour_coding_type[volume] < 0)
+      {
+        colour_coding_type[volume] = (volume % 2) == 0 ?
+          Volume_1_default_colour_coding :
+          Volume_2_default_colour_coding;
+      }
+    }
+
     status = initialize_user_interface( &ui_struct, argv[0], n_volumes );
 
     for_less( volume, 0, n_volumes )
@@ -185,6 +237,12 @@ int  main(
         set_load_filename( &ui_struct, volume, volume_filenames[volume] );
         status = initialize_loading_volume( &ui_struct, volume,
                                             volume_filenames[volume], FALSE );
+        if( ccd_filename != NULL && colour_coding_type[volume] == USER_DEFINED_COLOUR_MAP )
+        {
+            IF_load_volume_colour_coding( volume, ccd_filename );
+        }
+
+        IF_set_volume_colour_coding_type( volume, colour_coding_type[volume] );
     }
 
     if( tag_filename != NULL )

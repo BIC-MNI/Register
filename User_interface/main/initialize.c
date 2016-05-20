@@ -100,10 +100,6 @@ int MERGED_VOLUME_INDEX = 0;
                   (Colour_coding_types) Volume_1_default_colour_coding );
     IF_set_volume_colour_coding_type( 1,
                   (Colour_coding_types) Volume_2_default_colour_coding );
-    IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX,
-                  (Colour_coding_types) Volume_1_default_colour_coding );
-    IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX+1,
-                  (Colour_coding_types) Volume_2_default_colour_coding );
 
     colour_map_state_has_changed( ui );
 

@@ -18,13 +18,6 @@
     main_struct  *main,
     int          volume );
 
-  void  repartition_colour_maps(
-    main_struct  *main );
-
-  void  colour_mode_has_toggled(
-    main_struct  *main,
-    int          start_index );
-
   void   set_volume_colour_coding_type( 
     main_struct          *main,
     int                  volume_index,
@@ -46,6 +39,9 @@
     VIO_Real                 *min_value,
     VIO_Real                 *max_value );
 
+void load_volume_colour_coding( main_struct *main, int volume_index,
+                                VIO_STR filename );
+
   void  set_merged_volume_opacity(
     main_struct          *main,
     int                  which_volume,
@@ -64,12 +60,10 @@
     main_struct          *main,
     int                  volume_index );
 
-  void  set_merged_method(
-    main_struct       *main,
-    Merge_methods     method );
+void  set_volume_merge_method( main_struct *main, int volume_index,
+                               Merge_methods     method );
 
-  Merge_methods  get_merged_method(
-    main_struct       *main );
+Merge_methods get_volume_merge_method( main_struct *main, int volume_index );
 
   void   set_volume_under_colour( 
     main_struct          *main,

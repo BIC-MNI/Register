@@ -51,7 +51,6 @@ void  add_merged_widgets(
     Viewport_types    viewport_index )
 {
     int             x, y, height;
-    widget_struct   *radio_widgets[2];
     int             i;
 
     x = Volume_menu_x_offset;

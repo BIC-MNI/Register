@@ -67,7 +67,6 @@ typedef  struct
     slice_struct           slices[N_VIEWS];
     VIO_Real               position[VIO_MAX_DIMENSIONS];
     VIO_Real               opacity[N_MERGED];
-    colour_coding_struct   colour_coding[N_MERGED];
     Merge_methods          method[N_MERGED];
 } merged_struct;
 

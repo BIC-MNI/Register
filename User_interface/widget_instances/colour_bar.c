@@ -69,8 +69,6 @@ static DEFINE_WIDGET_CALLBACK(colour_coding_callback)
     int volume_index = get_viewport_volume_index( widget->viewport_index );
     Colour_coding_types coding_type = (Colour_coding_types) callback_data;
     IF_set_volume_colour_coding_type( volume_index, coding_type );
-    IF_set_volume_colour_coding_type( MERGED_VOLUME_INDEX + volume_index,
-                                      coding_type );
 }
 
 static DEFINE_WIDGET_CALLBACK( colour_button_callback )
@@ -91,8 +89,6 @@ static  DEFINE_WIDGET_CALLBACK(change_limits)
     get_slider_values( widget, &min_val, &max_val );
 
     IF_set_colour_coding_limits( volume_index, min_val, max_val );
-    IF_set_colour_coding_limits( MERGED_VOLUME_INDEX + volume_index,
-                                 min_val, max_val );
 }
 
   int  add_colour_bar_widgets(
@@ -306,13 +302,11 @@ static  DEFINE_WIDGET_CALLBACK(change_limits)
     {
         widget_index = UNDER_BUTTON;
         IF_set_under_colour( volume_index, colour );
-        IF_set_under_colour( MERGED_VOLUME_INDEX + volume_index, colour );
     }
     else
     {
         widget_index = OVER_BUTTON;
         IF_set_over_colour( volume_index, colour );
-        IF_set_over_colour( MERGED_VOLUME_INDEX + volume_index, colour );
     }
 
     if (over_or_under == 0)

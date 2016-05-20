@@ -197,8 +197,6 @@ static  void   record_register_volume(
         set_volume_colour_coding_limits( main, volume_index,
                                          min_value, max_value );
     }
-
-    update_colour_maps( main, volume_index );
 }
 
   void   set_register_volume(
@@ -291,9 +289,6 @@ static  void  set_merged_volume_visibility(
     set_merged_volume_visibility( main, activity );
 
     update_volume_tag_objects( main, MERGED_VOLUME_INDEX );
-
-    if( activity )
-        update_colour_maps( main, MERGED_VOLUME_INDEX );
 
     set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }

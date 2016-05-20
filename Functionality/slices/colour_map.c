@@ -79,45 +79,25 @@ void   update_colour_maps(
     }
 }
 
-  void  colour_mode_has_toggled(
-    main_struct  *main,
-    int          start_index )
-{
-    int        volume, view;
-
-    update_all_tag_colours( main );
-
-    for_less( volume, 0, main->n_volumes_displayed )
-        update_colour_maps( main, volume );
-
-    for_less( volume, 0, main->n_volumes_displayed )
-        set_recreate_3_slices_flags( main, volume );
-
-    for_less( volume, 0, main->n_volumes_displayed )
-        for_less( view, 0, N_VIEWS )
-            update_cursor_colours( main, volume, view );
-}
-
 static  void   colour_coding_has_changed (
     main_struct          *main,
     int                  volume_index )
 {
-    if( volume_index > MERGED_VOLUME_INDEX )
-        volume_index = MERGED_VOLUME_INDEX;
-
-    update_colour_maps( main, volume_index );
-
-    set_recreate_3_slices_flags( main, volume_index );
+    if( volume_index < MERGED_VOLUME_INDEX )
+    {
+        update_colour_maps( main, volume_index );
+        set_recreate_3_slices_flags( main, volume_index );
+    }
+    set_recreate_3_slices_flags( main, MERGED_VOLUME_INDEX );
 }
 
 static  colour_coding_struct  *get_volume_colour_coding(
     main_struct          *main,
     int                  volume_index )
 {
-  if( volume_index < main->n_volumes_displayed - 1 )
-        return( &main->trislice[volume_index].colour_coding );
-    else
-        return( &main->merged.colour_coding[volume_index-MERGED_VOLUME_INDEX] );
+  if( volume_index >= MERGED_VOLUME_INDEX )
+    volume_index -= MERGED_VOLUME_INDEX;
+  return( &main->trislice[volume_index].colour_coding );
 }
 
   void   set_volume_colour_coding_type(
@@ -214,7 +194,7 @@ void set_volume_merge_method(
 }
 
 static void
-composite_one_image( pixels_struct *result, 
+composite_one_image( pixels_struct *result,
                      const pixels_struct *source,
                      Merge_methods method,
                      VIO_Real alpha1 )
@@ -334,4 +314,11 @@ composite_one_image( pixels_struct *result,
     main_struct          *main )
 {
     return( FALSE );
+}
+
+void load_volume_colour_coding( main_struct *main,
+                                int volume_index, VIO_STR filename )
+{
+  input_user_defined_colour_coding( get_volume_colour_coding( main, volume_index ),
+                                    filename );
 }

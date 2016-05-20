@@ -43,11 +43,6 @@ static  void  initialize_slice( main_struct *, int, int );
 
     for_less( volume, 0, N_MERGED )
     {
-        initialize_colour_coding( &main->merged.colour_coding[volume],
-                                  GRAY_SCALE,
-                                  Initial_under_colour, Initial_over_colour,
-                                  -0.5, (VIO_Real) 255 - 0.5 );
-
         if (volume == 0)
           main->merged.opacity[volume] = Initial_merged_1_weight;
         else
