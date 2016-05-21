@@ -137,6 +137,42 @@ compute_initial_voxel_position(VIO_Volume volume,
   }
 }
 
+/**
+ * Get the determinant of the 3x3 transform (i.e. the direction
+ * cosines).
+ *
+ * This is useful, for example, in checking whether or not
+ * we have a rigid body transform (the determinant of a rigid
+ * transform is either 1.0 or -1.0).
+
+ * \param volume The volume whose determinant we want.
+ * \returns The determinant of the 3x3 matrix formed by the direction cosines.
+ */
+static VIO_Real get_volume_transform_determinant( VIO_Volume volume )
+{
+     VIO_Real m[VIO_N_DIMENSIONS][VIO_N_DIMENSIONS];
+     int i;
+
+     for_less( i, 0, VIO_N_DIMENSIONS )
+         get_volume_direction_cosine( volume, i, m[i] );
+
+     return (+ m[0][0] * m[1][1] * m[2][2] - m[0][0] * m[2][1] * m[1][2]
+             - m[1][0] * m[0][1] * m[2][2] + m[1][0] * m[2][1] * m[0][2]
+             + m[2][0] * m[0][1] * m[1][2] - m[2][0] * m[1][1] * m[0][2] );
+}
+
+/**
+ * Check whether this volume's voxel to world transform specifies a
+ * rigid body transform.
+ * \param volume The volume whose transform we want to check.
+ * \returns TRUE if the transform is a rigid body transform.
+ */
+static VIO_BOOL is_volume_transform_rigid( VIO_Volume volume )
+{
+    VIO_Real det = get_volume_transform_determinant( volume );
+    return (fabs( fabs( det ) - 1.0 ) < 1e-6 );
+}
+
 static  void   record_register_volume(
     main_struct    *main,
     int            volume_index,
@@ -197,7 +233,17 @@ static  void   record_register_volume(
         set_volume_colour_coding_limits( main, volume_index,
                                          min_value, max_value );
     }
+
+    if ( !is_volume_transform_rigid( volume ) )
+    {
+        char *message = {
+            "WARNING: Volume transform is not rigid. This may cause distortion or\n"
+            "         other odd effects if this volume is superimposed on another volume.\n"
+        };
+        printf( "%s", message );
+    }
 }
+
 
   void   set_register_volume(
     main_struct    *main,
