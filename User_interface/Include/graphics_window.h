@@ -21,7 +21,7 @@
 
 typedef struct
 {
-    window_struct           *window;
+    Gwindow                 window;
     event_viewports_struct  event_viewports;
     graphics_struct         graphics;
     int                     current_buffer;
