@@ -229,7 +229,7 @@ In the slice viewports, the following actions are valid:
 *Shift/Ctrl/Alt Middle Mouse:* Zooms the slice display according to the
  y position of the mouse.
 
-*Scroll up/Scroll down: Zooms the slice display.
+*Scroll up/Scroll down*: Zooms the slice display.
 
 ## FILES
 
