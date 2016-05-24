@@ -110,8 +110,8 @@ static  void  convert_volume1_voxel_to_volumeN(
     VIO_Real         x_translation1, y_translation1;
     VIO_Real         x_translation2, y_translation2;
     VIO_Volume       volume1, volume2;
-    VIO_Real         *position1, voxel1[VIO_MAX_DIMENSIONS];
-    VIO_Real         *position2;
+    VIO_Real         voxel1[VIO_MAX_DIMENSIONS];
+    VIO_Real         *cursor_pos;
     VIO_Real         x_lower_left_pixel, y_lower_left_pixel;
     VIO_Real         x_upper_left_pixel, y_upper_left_pixel;
     VIO_Real         x_lower_right_pixel, y_lower_right_pixel;
@@ -127,10 +127,16 @@ static  void  convert_volume1_voxel_to_volumeN(
     pixels_struct    *merged_pixels;
     int              vol;
     pixels_struct    pixels[N_VOLUMES];
+    int              n_dimensions;
+
+    for (c = 0; c < VIO_MAX_DIMENSIONS; c++)
+    {
+      x_axis1[c] = y_axis1[c] = 0.0;
+      x_axis2[c] = y_axis2[c] = 0.0;
+    }
 
     volume1 = get_slice_volume( main, 0 );
     get_volume_sizes( volume1, sizes1 );
-    position1 = get_volume_cursor( main, MERGED_VOLUME_INDEX );
     get_slice_axes( view, &x_axis_index, &y_axis_index );
     axis = get_slice_axis( view );
 
@@ -142,7 +148,8 @@ static  void  convert_volume1_voxel_to_volumeN(
       voxel1[VIO_X] = 0.0;
       voxel1[VIO_Y] = 0.0;
       voxel1[VIO_Z] = 0.0;
-      voxel1[axis] = position1[axis];
+      cursor_pos = get_volume_cursor( main, MERGED_VOLUME_INDEX );
+      voxel1[axis] = cursor_pos[axis];
       convert_volume1_voxel_to_volumeN( main, voxel1, lower_left_voxel2, vol );
       convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                               &x_lower_left_pixel, &y_lower_left_pixel );
@@ -157,7 +164,6 @@ static  void  convert_volume1_voxel_to_volumeN(
       convert_volume1_voxel_to_volumeN( main, voxel1, upper_left_voxel2, vol );
       convert_voxel_to_pixel( main, MERGED_VOLUME_INDEX, view, voxel1,
                               &x_upper_left_pixel, &y_upper_left_pixel );
-      voxel1[y_axis_index] = 0.0;
 
       /*--- this assumes that x_axis1 and y_axis1 are principal axes */
 
@@ -168,20 +174,23 @@ static  void  convert_volume1_voxel_to_volumeN(
       if( dy_pixel == 0.0 )
         dy_pixel = 1.0;
 
-      for_less( c, 0, get_volume_n_dimensions(volume2) )
+      n_dimensions = get_volume_n_dimensions( volume2 );
+      if ( n_dimensions > VIO_N_DIMENSIONS )
+          n_dimensions = VIO_N_DIMENSIONS;
+
+      for_less( c, 0, n_dimensions )
       {
         x_axis2[c] = (lower_right_voxel2[c] - lower_left_voxel2[c]) / dx_pixel;
         y_axis2[c] = (upper_left_voxel2[c] - lower_left_voxel2[c]) / dy_pixel;
         origin2[c] = lower_left_voxel2[c];
       }
 
-      position2 = get_volume_cursor( main, vol );
-
-      origin2[VIO_T] = position2[VIO_T];
+      cursor_pos = get_volume_cursor( main, vol );
+      origin2[VIO_T] = cursor_pos[VIO_T];
 
       x_len = 0.0;
       y_len = 0.0;
-      for_less( c, 0, get_volume_n_dimensions(volume2) )
+      for_less( c, 0, n_dimensions )
       {
         VIO_Real  comp;
 
@@ -214,6 +223,9 @@ static  void  convert_volume1_voxel_to_volumeN(
 
       get_slice_plane( main, MERGED_VOLUME_INDEX, view,
                        origin1, x_axis1, y_axis1 );
+
+      cursor_pos = get_volume_cursor( main, 0 );
+      origin1[VIO_T] = cursor_pos[VIO_T];
 
       filter_type = get_slice_filter_type( main, MERGED_VOLUME_INDEX, view );
       filter_width = get_slice_filter_width( main, MERGED_VOLUME_INDEX, view );
