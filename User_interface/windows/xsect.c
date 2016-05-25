@@ -496,6 +496,9 @@ void xs_display(UI_struct *ui_info,
     x_start = 0;
     x_end = sizes[3];
 
+    if (separations[VIO_T] == 0.0)
+      separations[VIO_T] = 1.0;
+
     if (xswin == NULL) {
         ALLOC(xswin, 1);
         _xswin = xswin;
