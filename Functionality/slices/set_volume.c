@@ -290,6 +290,9 @@ static  void   record_register_volume(
     {
         free(main->trislice[volume_index].rgb_colour_map +
              main->trislice[volume_index].rgb_colour_offset);
+
+        main->trislice[volume_index].rgb_colour_map = NULL;
+        main->trislice[volume_index].rgb_colour_offset = 0;
     }
 
     for_less( view, 0, N_VIEWS )
@@ -297,7 +300,6 @@ static  void   record_register_volume(
         set_viewport_objects_visibility( &main->graphics,
                                 get_slice_viewport_index(volume_index,view),
                                 FALSE );
-        delete_object( main->trislice[volume_index].slices[view].cursor_lines );
     }
 }
 
