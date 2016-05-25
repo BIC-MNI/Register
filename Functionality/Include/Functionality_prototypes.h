@@ -603,10 +603,6 @@ Merge_methods get_volume_merge_method( main_struct *main, int volume_index );
     main_struct     *main,
     int             current_buffer );
 
-  VIO_BOOL  slices_to_be_updated(
-    main_struct     *main,
-    int             current_buffer );
-
  void get_volume_time_position(main_struct *main,
                                      int volume_index,
                                      VIO_Real *tpos_ptr);

@@ -95,9 +95,6 @@ void  IF_set_update_slice_viewport_flag(
     int             view,
     Bitplane_types  bitplane );
 
-VIO_BOOL  IF_slices_to_be_updated(
-    int   current_buffer );
-
 VIO_BOOL  IF_redraw_slices(
     int             current_buffer );
 

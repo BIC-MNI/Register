@@ -187,12 +187,6 @@
                                     bitplane );
 }
 
-  VIO_BOOL  IF_slices_to_be_updated(
-    int   current_buffer )
-{
-    return( slices_to_be_updated( get_main_struct(), current_buffer ) );
-}
-
   VIO_BOOL  IF_redraw_slices(
     int             current_buffer )
 {
