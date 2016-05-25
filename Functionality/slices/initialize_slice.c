@@ -22,7 +22,7 @@ static  void  initialize_slice( main_struct *, int, int );
   void  initialize_slices( main_struct  *main )
 {
     int            view, volume;
-
+    int            i;
     for_less( volume, 0, main->n_volumes_displayed - 1 )
     {
         main->trislice[volume].input_flag = FALSE;
@@ -31,6 +31,11 @@ static  void  initialize_slice( main_struct *, int, int );
                                   Initial_under_colour,
                                   Initial_over_colour,
                                   -0.5, (VIO_Real) 255 - 0.5 );
+
+        for (i = 0; i < VIO_MAX_DIMENSIONS; i++)
+        {
+            main->trislice[volume].position[i] = 0.0;
+        }
     }
 
     for_less( volume, 0, main->n_volumes_displayed )

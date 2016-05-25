@@ -117,7 +117,7 @@ static  void  check_axes_assigned( void )
 
     origin[axis] = slice_position[axis];
 
-    get_volume_time_position(main, volume_index, &origin[3]);
+    get_volume_time_position(main, volume_index, &origin[VIO_T]);
 
     if( x_flip )
         x_axis[x_index] = -VIO_FSIGN(separations[x_index]);

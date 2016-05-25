@@ -286,11 +286,18 @@ static  void   record_register_volume(
     delete_volume( main->trislice[volume_index].volume );
     main->trislice[volume_index].input_flag = FALSE;
 
+    if (main->trislice[volume_index].rgb_colour_map != NULL)
+    {
+        free(main->trislice[volume_index].rgb_colour_map +
+             main->trislice[volume_index].rgb_colour_offset);
+    }
+
     for_less( view, 0, N_VIEWS )
     {
         set_viewport_objects_visibility( &main->graphics,
                                 get_slice_viewport_index(volume_index,view),
                                 FALSE );
+        delete_object( main->trislice[volume_index].slices[view].cursor_lines );
     }
 }
 
