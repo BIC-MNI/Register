@@ -468,7 +468,7 @@ void xs_display(UI_struct *ui_info,
     }
 
     /* No time dimension? */
-    if (get_volume_n_dimensions(volume) < 4) {
+    if ( !IF_volume_has_time_axis( volume_index ) ) {
         return;
     }
 
