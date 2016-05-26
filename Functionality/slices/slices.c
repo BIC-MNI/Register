@@ -503,7 +503,8 @@ static  void  check_axes_assigned( void )
     /* If we're dealing with a 3D volume, assume there is no time
      * dimension.
      */
-    if (get_volume_n_dimensions(volume) > 3) {
+    if (volume_has_time_axis( main_ptr, volume_index ))
+    {
         get_volume_sizes( volume, sizes );
 
         /* Force time within range.
