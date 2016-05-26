@@ -62,7 +62,7 @@ static  VIO_STR  create_comments(
 
     if( main->trislice[0].input_flag )
     {
-        (void) sprintf( buffer1, "VIO_Volume: %s\n",
+        (void) sprintf( buffer1, "Volume: %s\n",
                         get_volume_filename(main,0) );
     }
     else
@@ -70,7 +70,7 @@ static  VIO_STR  create_comments(
 
     if( main->trislice[1].input_flag )
     {
-        (void) sprintf( buffer2, "VIO_Volume: %s\n",
+        (void) sprintf( buffer2, "Volume: %s\n",
                         get_volume_filename(main,1) );
     }
     else
