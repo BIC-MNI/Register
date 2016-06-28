@@ -138,5 +138,5 @@ int MERGED_VOLUME_INDEX = 0;
 
     delete_general_transform( &ui->resampling_transform );
 
-    G_terminate();
+    /* Don't call G_terminate() */
 }

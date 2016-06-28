@@ -111,9 +111,11 @@ static  int  get_window_index( window_struct  *window )
 
         delete_event_viewports( &windows[i]->event_viewports );
 
-        (void) G_delete_window( windows[i]->window );
+        /* don't actually call G_delete_window here, as it
+         * will trigger an error since glut has already been
+         * deinitialized.
+         */
     }
-
     if( n_windows > 0 )
         FREE( windows );
 }

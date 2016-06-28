@@ -17,9 +17,9 @@
 
 #include  <user_interface.h>
 
-  void  set_quit_program_flag( void )
+void  set_quit_program_flag( void )
 {
-    exit( 0 );
+    G_exit_loop();
 }
 
 static  void  timer_function(
