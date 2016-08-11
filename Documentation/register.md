@@ -91,7 +91,8 @@ The 'T' key will display a window containing the graph of the timecourse of the 
 
 The 'R' and 'E' keys will move the blend slider to the right or left,
 respectively. This allows for changing the relative visibility of the
-first two merged volumes from the keyboard.
+first two merged volumes from the keyboard. However, it is active only with the
+'Blend' merge method.
 
 ## MAIN MENU
 
@@ -244,8 +245,6 @@ David MacDonald
 ## BUGS
 
 Sometimes turning the tags visibilities off does not turn them off.
-
-Switching between colour map and rgb mode or double/single buffer on the OpenGL version sometimes prints error messages, or core dumps.
 
 In smooth interpolation mode, filtering has not been implemented.
 
