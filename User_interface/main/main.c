@@ -70,6 +70,18 @@ You can specify up to %d volumes.\n\
     print_error( usage, executable, N_VOLUMES );
 }
 
+/**
+ * Default error function for Register. Register just prints any errors to
+ * the tty that is connected to the Register process.
+ *
+ * \param msg The message to print.
+ */
+static void
+register_error( char *msg )
+{
+    fputs( msg, stderr );
+}
+
 int  main(
     int   argc,
     char  *argv[] )
@@ -82,6 +94,7 @@ int  main(
     VIO_STR          ccd_filename;
     int              colour_coding_type[N_VOLUMES];
 
+    set_print_error_function( register_error );
     initialize_global_colours();
 
     read_global_files( argv[0] );
