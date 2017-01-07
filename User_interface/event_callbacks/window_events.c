@@ -99,9 +99,16 @@ static DEFINE_EVENT_FUNCTION(divider_mouse_move)
 
     int n = 1 - ui->divider_vp_index;
 
-    ui->y_slice_divider[n] = new_d;
-
-    resize_layout(ui);
+    /* When dragging the dividers, limit how small the panels can get.
+     * Otherwise we can get mathematically weird results in resize_layout(),
+     * and these can lead to instability elsewhere.
+     */
+    if ((n == 0 && new_d > 0.01 && (ui->y_slice_divider[1] - new_d) > 0.01) ||
+        (n == 1 && new_d < 0.99 && (new_d - ui->y_slice_divider[0]) > 0.01))
+    {
+      ui->y_slice_divider[n] = new_d;
+      resize_layout(ui);
+    }
   }
 }
 
