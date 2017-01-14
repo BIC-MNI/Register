@@ -239,8 +239,6 @@ START_GLOBALS
     DEF_GLOBAL( Initial_tags_visible, VIO_BOOL, TRUE )
 
     DEF_GLOBAL( Initial_merge_method, int, 3 )
-    DEF_GLOBAL( Initial_merged_1_weight, VIO_Real, 0.5 )
-    DEF_GLOBAL( Initial_merged_2_weight, VIO_Real, 0.5 )
     DEF_GLOBAL( Use_over_under_colour_in_weights, VIO_BOOL, TRUE )
 
     DEF_GLOBAL( Resample_command_name, VIO_STR, "register_resample" )

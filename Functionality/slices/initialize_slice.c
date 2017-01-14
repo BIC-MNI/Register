@@ -23,6 +23,8 @@ static  void  initialize_slice( main_struct *, int, int );
 {
     int            view, volume;
     int            i;
+    VIO_Real       initial_opacity;
+
     for_less( volume, 0, main->n_volumes_displayed - 1 )
     {
         main->trislice[volume].input_flag = FALSE;
@@ -46,13 +48,18 @@ static  void  initialize_slice( main_struct *, int, int );
 
     main->merged.active_flag = FALSE;
 
+    if ( main->n_volumes_displayed > 1 )
+    {
+        initial_opacity = 1.0 / ( main->n_volumes_displayed - 1 );
+    }
+    else
+    {
+        initial_opacity = 0.5;
+    }
+
     for_less( volume, 0, N_MERGED )
     {
-        if (volume == 0)
-          main->merged.opacity[volume] = Initial_merged_1_weight;
-        else
-          main->merged.opacity[volume] = Initial_merged_2_weight;
-
+        main->merged.opacity[volume] = initial_opacity;
         main->merged.method[volume] = BLENDED;
     }
 }
