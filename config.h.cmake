@@ -57,6 +57,10 @@
 /* Define to 1 if the X Window System is missing or not being used. */
 #cmakedefine X_DISPLAY_MISSING
 
+/* Define to 1 if you have the <GL/freeglut.h> header file. */
+#cmakedefine HAVE_FREEGLUT_H
+
+
 #define LIBDIR "@CMAKE_INSTALL_PREFIX@/lib"
 
 #define PACKAGE "@PACKAGE_NAME@"

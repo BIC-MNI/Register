@@ -14,6 +14,9 @@
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
 */
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif //HAVE_CONFIG_H
 
 #include  <register.h>
 

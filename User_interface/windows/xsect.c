@@ -2,6 +2,10 @@
  * \file xsect.c
  * \brief Defines the window used to display the timecourse of a voxel.
  */
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif //HAVE_CONFIG_H
+
 #include <float.h>
 #include <user_interface.h>
 
