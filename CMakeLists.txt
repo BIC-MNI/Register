@@ -2,7 +2,7 @@
 #
 # Vladimir S. FONOV - vladimir.fonov@gmail.com
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.6)
 
 SET(REGISTER_PACKAGE_VERSION_MAJOR 1)
 SET(REGISTER_PACKAGE_VERSION_MINOR 5)
@@ -76,6 +76,7 @@ INCLUDE( ${LIBMINC_USE_FILE} )
 INCLUDE( ${BICPL_USE_FILE} )
 
 SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${LIBMINC_INCLUDE_DIRS} ${BICPL_INCLUDE_DIRS})
+message("LIBMINC_INCLUDE_DIRS=${LIBMINC_INCLUDE_DIRS}")
 
 ADD_DEFINITIONS(-DHAVE_CONFIG_H)
 IF(NOT APPLE)
@@ -136,6 +137,12 @@ INCLUDE_DIRECTORIES( ${GLUT_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES( ${BICPL_INCLUDE_DIRS} )
 INCLUDE_DIRECTORIES( ${BICGL_INCLUDE_DIRS} )
 INCLUDE_DIRECTORIES( User_interface/Include Functionality/Include UI_calls_F/Include  )
+
+IF(NETPBM_FOUND)
+  INCLUDE_DIRECTORIES(${NETPBM_INCLUDE_DIR})
+ENDIF(NETPBM_FOUND)
+
+
 LINK_DIRECTORIES( ${BICGL_LIBRARY_DIRS} )
 LINK_DIRECTORIES( ${BICPL_LIBRARY_DIRS} )
 
@@ -200,7 +207,7 @@ SET(USER_INTERFACE_SRC
   User_interface/widgets/buttons.c 
   User_interface/widgets/sliders.c 
   User_interface/widgets/text_entry.c 
-  User_interface/widgets/utilities.c 
+  User_interface/widgets/utilities.c
   User_interface/widgets/widgets.c 
   User_interface/windows/lookup.c 
   User_interface/windows/popup.c 
