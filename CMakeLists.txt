@@ -74,6 +74,21 @@ SET(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 INCLUDE( ${LIBMINC_USE_FILE} )
 INCLUDE( ${BICPL_USE_FILE} )
 
+# Override bicgl paths when building against a locally-built EGL backend.
+# Pass -DBICGL_EGL_BUILD_DIR=/path/to/bicgl/build_egl to activate.
+# This must come AFTER the INCLUDE() calls above because UseLIBMINC.cmake
+# sets normal (non-cache) variables that would otherwise shadow our -D flags.
+if(BICGL_EGL_BUILD_DIR)
+  get_filename_component(_bicgl_src "${BICGL_EGL_BUILD_DIR}/.." ABSOLUTE)
+  set(BICGL_INCLUDE_DIRS
+      "${_bicgl_src}/OpenGL_graphics/Include"
+      "${_bicgl_src}/Include"
+      "${_bicgl_src}/EGL_windows/Include")
+  set(BICGL_LIBRARY_DIRS "${BICGL_EGL_BUILD_DIR}")
+  set(BICGL_LIBRARIES    "bicgl;EGL;X11;GL")
+  message(STATUS "Using EGL bicgl from: ${BICGL_EGL_BUILD_DIR}")
+endif()
+
 SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${LIBMINC_INCLUDE_DIRS} ${BICPL_INCLUDE_DIRS})
 
 ADD_DEFINITIONS(-DHAVE_CONFIG_H)
