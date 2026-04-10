@@ -557,6 +557,8 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
+    if( ui_info->widget_list[Main_menu_viewport].widgets == NULL )
+        return;
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[SAVE_TRANSFORM_BUTTON]], activity );
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
@@ -579,6 +581,8 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
+    if( ui_info->widget_list[Main_menu_viewport].widgets == NULL )
+        return;
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[RESAMPLE_BUTTON]], activity );
 }
@@ -587,6 +591,8 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
+    if( ui_info->widget_list[Main_menu_viewport].widgets == NULL )
+        return;
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[DELETE_ALL_TAGS_BUTTON]], activity );
 }
@@ -595,6 +601,8 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
+    if( ui_info->widget_list[Main_menu_viewport].widgets == NULL )
+        return;
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[TRANSFORM_TYPE_BUTTON]], activity );
 }
@@ -605,6 +613,8 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     VIO_Real           avg_rms;
     widget_struct  *widget;
 
+    if( ui_info->widget_list[Main_menu_viewport].widgets == NULL )
+        return;
     widget = ui_info->widget_list[Main_menu_viewport].
                        widgets[widget_indices[AVG_RMS_ERROR]];
     if( IF_get_tag_point_avg_rms_error( &avg_rms ) )
