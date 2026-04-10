@@ -70,7 +70,15 @@
         }
     }
 
-    ui_struct->graphics_window.current_buffer = 0;
+    /* Do NOT reset current_buffer here.  set_bitplanes_clear_flag and
+     * set_viewport_update_flag both mark both buffer slots [0] and [1]
+     * dirty, so both buffers will be fully redrawn regardless of which
+     * one is current.  Forcing current_buffer=0 breaks the two-buffer
+     * invariant: if a swap has already flipped current_buffer to 1, the
+     * reset causes buffer 0 to be redrawn and swapped repeatedly while
+     * buffer 1's clear flag is consumed (G_clear_window fires) but its
+     * viewport flags were already consumed in a prior tick, producing a
+     * frame that is entirely black. */
 }
 
   void  set_recreate_all_slice_flags( void )
