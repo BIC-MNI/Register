@@ -27,6 +27,18 @@
 {
     VIO_BOOL          something_was_drawn;
 
+    /* If the UI layer is about to clear the whole back buffer, also
+     * invalidate all slice pixel caches.  This ensures Phase B
+     * (IF_redraw_slices) redraws every slice viewport into the freshly-
+     * cleared frame rather than skipping viewports whose per-buffer flags
+     * were already consumed in a prior tick — which would leave the slice
+     * areas black after the clear. */
+    if( window == get_ui_struct()->graphics_window.window &&
+        graphics->clear_bitplane_flags[NORMAL_PLANES][current_buffer] )
+    {
+        set_recreate_all_slice_flags();
+    }
+
     something_was_drawn = redraw_out_of_date_viewports( graphics, window,
                                                         current_buffer );
 
