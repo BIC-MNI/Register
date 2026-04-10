@@ -85,8 +85,9 @@ if(BICGL_EGL_BUILD_DIR)
       "${_bicgl_src}/Include"
       "${_bicgl_src}/EGL_windows/Include")
   set(BICGL_LIBRARY_DIRS "${BICGL_EGL_BUILD_DIR}")
-  set(BICGL_LIBRARIES    "bicgl;EGL;X11;GL")
-  message(STATUS "Using EGL bicgl from: ${BICGL_EGL_BUILD_DIR}")
+  # GLFW backend: link glfw (not EGL directly — GLFW handles EGL internally)
+  set(BICGL_LIBRARIES "bicgl;glfw;X11;GL")
+  message(STATUS "Using GLFW bicgl from: ${BICGL_EGL_BUILD_DIR}")
 endif()
 
 SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${LIBMINC_INCLUDE_DIRS} ${BICPL_INCLUDE_DIRS})
