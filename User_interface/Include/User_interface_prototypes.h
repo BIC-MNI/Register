@@ -916,7 +916,7 @@ void set_volume_blend_value( UI_struct *ui_info, VIO_Real value );
 
   void  delete_all_graphics_windows( void );
 
-  void   create_popup_window(
+  VIO_Status   create_popup_window(
     popup_struct          *popup,
     VIO_STR                title,
     int                   x_position,

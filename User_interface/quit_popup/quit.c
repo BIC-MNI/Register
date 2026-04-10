@@ -78,8 +78,13 @@ void  popup_quit_confirm(
 
     int popup_x_size = Quit_x_size;
     int popup_y_size = Quit_y_size;
-    create_popup_window( popup, "Quit Dialog", x, y, &popup_x_size, &popup_y_size,
-                         kill_window_callback, (void *) popup );
+    if( create_popup_window( popup, "Quit Dialog", x, y, &popup_x_size, &popup_y_size,
+                         kill_window_callback, (void *) popup ) != VIO_OK )
+    {
+        FREE( popup );
+        set_quit_button_activity( ui, TRUE );
+        return;
+    }
 
     x = Interface_x_spacing;
     y = popup_y_size - 1 - Interface_y_spacing;

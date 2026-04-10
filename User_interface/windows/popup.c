@@ -54,7 +54,7 @@ static  DEFINE_EVENT_FUNCTION( resize_window_callback )
     }
 }
 
-  void   create_popup_window(
+  VIO_Status   create_popup_window(
     popup_struct          *popup,
     VIO_STR                title,
     int                   x_position,
@@ -71,7 +71,7 @@ static  DEFINE_EVENT_FUNCTION( resize_window_callback )
                          FALSE, 0, &popup->graphics.window ) != VIO_OK )
     {
         (void) fprintf( stderr, "Cannot create popup window\n" );
-        return;
+        return VIO_ERROR;
     }
 
     set_window_event_callbacks( &popup->graphics );
@@ -117,13 +117,15 @@ static  DEFINE_EVENT_FUNCTION( resize_window_callback )
                                  Main_menu_viewport,
                                  WINDOW_QUIT_EVENT, -1, -1, -1, -1,
                                  quit_popup_callback, ANY_MODIFIER,
-                                 quit_callback_data );
+                                  quit_callback_data );
 
     for_enum( bitplane, N_BITPLANE_TYPES, Bitplane_types )
     {
         set_bitplanes_clear_flag( &popup->graphics.graphics, bitplane );
         set_viewport_update_flag( &popup->graphics.graphics, 0, bitplane );
     }
+
+    return VIO_OK;
 }
 
   void  delete_popup_window(
