@@ -168,6 +168,10 @@ static  void  volume_has_been_loaded(
                                min_value, max_value );
     }
 
+    /* Request a full redraw so the newly loaded volume is displayed
+     * immediately, even if the event loop is blocking in glfwWaitEvents. */
+    set_clear_and_update_flags( ui_info );
+
     delete_popup_interaction( data );
 }
 

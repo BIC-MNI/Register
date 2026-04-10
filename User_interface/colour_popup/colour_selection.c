@@ -96,14 +96,16 @@ void  popup_colour_selection(
     (void) sprintf( window_name, "Volume %d %s Colour Selection", volume + 1,
                     over_under_names[over_or_under] );
 
+    int popup_x_size = Colour_selection_x_size;
+    int popup_y_size = Colour_selection_y_size;
     create_popup_window( &popup->popup_window, window_name, x, y,
-                         Colour_selection_x_size, Colour_selection_y_size,
+                         &popup_x_size, &popup_y_size,
                          quit_window_callback, (void *) popup );
 
     initialize_widget_list( &popup->popup_window.widgets );
 
     x = Interface_x_spacing;
-    y = Colour_selection_y_size - 1 - Interface_y_spacing - Button_height;
+    y = popup_y_size - 1 - Interface_y_spacing - Button_height;
 
     for_less( i, 0, VIO_SIZEOF_STATIC_ARRAY( colours ) )
     {

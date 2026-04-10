@@ -174,7 +174,7 @@ static  void  create_message_popup(
                     Message_ok_button_height );
 
     create_popup_window( &popup->popup_window, "Register Message",
-                         x, y, x_size, y_size, quit_window_callback,
+                         x, y, &x_size, &y_size, quit_window_callback,
                          (void *) popup );
 
     popup->expiration_time = current_realtime_seconds() +

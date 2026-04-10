@@ -69,12 +69,14 @@ static  DEFINE_EVENT_FUNCTION( kill_window_callback )
 
     ALLOC( popup, 1 );
 
+    int popup_x_size = Delete_tags_x_size;
+    int popup_y_size = Delete_tags_y_size;
     create_popup_window( popup, "Delete Tags Dialog", x, y,
-                         Delete_tags_x_size, Delete_tags_y_size,
+                         &popup_x_size, &popup_y_size,
                          kill_window_callback, (void *) popup );
 
     x = Interface_x_spacing;
-    y = Delete_tags_y_size - 1 - Interface_y_spacing;
+    y = popup_y_size - 1 - Interface_y_spacing;
 
     object = create_object( TEXT );
     text = get_text_ptr( object );

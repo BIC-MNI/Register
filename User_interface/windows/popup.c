@@ -54,24 +54,24 @@ static  DEFINE_EVENT_FUNCTION( resize_window_callback )
     }
 }
 
-  void   create_popup_window(
+  VIO_Status   create_popup_window(
     popup_struct          *popup,
     VIO_STR                title,
     int                   x_position,
     int                   y_position,
-    int                   x_size,
-    int                   y_size,
+    int                   *x_size,
+    int                   *y_size,
     event_function_type   quit_popup_callback,
     void                  *quit_callback_data )
 {
     Bitplane_types    bitplane;
 
     if( G_create_window( title, x_position, y_position,
-                         x_size, y_size, FALSE, TRUE,
+                         *x_size, *y_size, FALSE, TRUE,
                          FALSE, 0, &popup->graphics.window ) != VIO_OK )
     {
         (void) fprintf( stderr, "Cannot create popup window\n" );
-        return;
+        return VIO_ERROR;
     }
 
     set_window_event_callbacks( &popup->graphics );
@@ -88,10 +88,12 @@ static  DEFINE_EVENT_FUNCTION( resize_window_callback )
 
     record_graphics_window( &popup->graphics );
 
-    G_get_window_size( popup->graphics.window, &x_size, &y_size );
+    /* Read back the actual physical pixel size so the caller can position
+     * widgets in framebuffer coordinates (which match glViewport). */
+    G_get_window_size( popup->graphics.window, x_size, y_size );
 
     set_graphics_viewport( &popup->graphics.graphics,
-                           0, 0, x_size-1, 0, y_size-1 );
+                           0, 0, *x_size-1, 0, *y_size-1 );
 
     set_graphics_viewport_background( &popup->graphics.graphics, 0,
                                       Popup_background_colour, 0 );
@@ -115,13 +117,15 @@ static  DEFINE_EVENT_FUNCTION( resize_window_callback )
                                  Main_menu_viewport,
                                  WINDOW_QUIT_EVENT, -1, -1, -1, -1,
                                  quit_popup_callback, ANY_MODIFIER,
-                                 quit_callback_data );
+                                  quit_callback_data );
 
     for_enum( bitplane, N_BITPLANE_TYPES, Bitplane_types )
     {
         set_bitplanes_clear_flag( &popup->graphics.graphics, bitplane );
         set_viewport_update_flag( &popup->graphics.graphics, 0, bitplane );
     }
+
+    return VIO_OK;
 }
 
   void  delete_popup_window(

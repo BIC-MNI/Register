@@ -41,10 +41,12 @@ public  void  initialize_resample_popup(
     STRING                   filename )
 {
     widget_struct   *widget;
+    int popup_x_size = Resample_popup_x_size;
+    int popup_y_size = Resample_popup_y_size;
 
     create_popup_window( &data->popup, filename,
                          x_position, y_position,
-                         Resample_popup_x_size, Resample_popup_y_size,
+                         &popup_x_size, &popup_y_size,
                          quit_window_callback, (void *) data );
 
     initialize_meter( &data->popup, Resample_meter_x_size,

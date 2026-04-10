@@ -76,11 +76,18 @@ void  popup_quit_confirm(
 
     ALLOC( popup, 1 );
 
-    create_popup_window( popup, "Quit Dialog", x, y, Quit_x_size, Quit_y_size,
-                         kill_window_callback, (void *) popup );
+    int popup_x_size = Quit_x_size;
+    int popup_y_size = Quit_y_size;
+    if( create_popup_window( popup, "Quit Dialog", x, y, &popup_x_size, &popup_y_size,
+                         kill_window_callback, (void *) popup ) != VIO_OK )
+    {
+        FREE( popup );
+        set_quit_button_activity( ui, TRUE );
+        return;
+    }
 
     x = Interface_x_spacing;
-    y = Quit_y_size - 1 - Interface_y_spacing;
+    y = popup_y_size - 1 - Interface_y_spacing;
 
     if( !IF_tag_points_have_been_saved() && IF_get_n_tag_points() > 0 )
     {
