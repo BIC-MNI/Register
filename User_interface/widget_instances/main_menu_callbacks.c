@@ -567,6 +567,10 @@ static  DEFINE_WIDGET_CALLBACK( interpolation_button_callback )
     UI_struct         *ui_info,
     VIO_BOOL           activity )
 {
+    /* Widget list may be NULL if the close button is pressed before
+     * initialize_UI_widgets() has finished populating it. */
+    if( ui_info->widget_list[Main_menu_viewport].widgets == NULL )
+        return;
     set_widget_activity( ui_info->widget_list[Main_menu_viewport].widgets
                          [widget_indices[QUIT_BUTTON]], activity );
 }

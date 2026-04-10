@@ -45,10 +45,14 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
     int popup_x_size = Load_popup_x_size;
     int popup_y_size = Load_popup_y_size;
 
-    create_popup_window( &load_data->popup, filename,
-                         x_position, y_position,
-                         &popup_x_size, &popup_y_size,
-                         quit_window_callback, (void *) load_data );
+    if( create_popup_window( &load_data->popup, filename,
+                             x_position, y_position,
+                             &popup_x_size, &popup_y_size,
+                             quit_window_callback, (void *) load_data )
+        != VIO_OK )
+    {
+        return;
+    }
 
     initialize_meter( &load_data->popup,
                       Load_meter_x_size, Load_meter_y_size,
@@ -69,11 +73,19 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
                    cancel_button_callback, (void *) load_data );
 
     (void) add_widget_to_list( &load_data->popup.widgets, widget );
+
+    /* Schedule a full redraw now that all widgets are in place.
+     * On Wayland the initial redisplay_pending (set by WS_create_window)
+     * may have already fired before the meter and button were added. */
+    G_set_update_flag( load_data->popup.graphics.window );
 }
 
   void  delete_load_popup(
     load_struct   *load_data )
 {
+    /* Popup may not exist if create_popup_window failed. */
+    if( load_data->popup.graphics.window == NULL )
+        return;
     delete_popup_window( &load_data->popup );
 }
 
@@ -81,6 +93,13 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
     load_struct   *load_data,
     VIO_Real          fraction_done )
 {
+    /* Popup may not exist if create_popup_window failed. */
+    if( load_data->popup.graphics.window == NULL )
+        return;
     set_meter_position( &load_data->popup, load_data->meter_background,
                         load_data->meter, fraction_done );
+
+    /* Ensure the popup is actually repainted on Wayland where there are
+     * no expose events — set_meter_position only marks internal flags. */
+    G_set_update_flag( load_data->popup.graphics.window );
 }
