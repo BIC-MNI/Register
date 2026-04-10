@@ -511,9 +511,10 @@ void xs_display(UI_struct *ui_info,
 
         xswin->viewport_index = viewport_index;
 
+        int popup_x_size = x_axis_pixels+(LMARGIN+RMARGIN);
+        int popup_y_size = y_axis_pixels+(TMARGIN+BMARGIN);
         create_popup_window(&xswin->popup, "Timecourse", x, y,
-                            x_axis_pixels+(LMARGIN+RMARGIN),
-                            y_axis_pixels+(TMARGIN+BMARGIN),
+                            &popup_x_size, &popup_y_size,
                             xs_quit_callback, (void *) xswin);
 
         xswin->x_min_abs = starts[3] + (x_start * separations[3]);

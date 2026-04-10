@@ -86,14 +86,16 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 
     G_get_mouse_screen_position( &x, &y );
 
+    int popup_x_size = Transform_selection_x_size;
+    int popup_y_size = Transform_selection_y_size;
     create_popup_window( popup, window_name, x, y,
-                         Transform_selection_x_size, Transform_selection_y_size,
+                         &popup_x_size, &popup_y_size,
                          quit_window_callback, (void *) popup );
 
     initialize_widget_list( &popup->widgets );
 
     x = Interface_x_spacing;
-    y = Transform_selection_y_size - 1 - Interface_y_spacing - Button_height;
+    y = popup_y_size - 1 - Interface_y_spacing - Button_height;
 
     for_less( i, 0, VIO_SIZEOF_STATIC_ARRAY( choices ) )
     {

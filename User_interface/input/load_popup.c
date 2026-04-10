@@ -42,10 +42,12 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
     VIO_STR        filename )
 {
     widget_struct  *widget;
+    int popup_x_size = Load_popup_x_size;
+    int popup_y_size = Load_popup_y_size;
 
     create_popup_window( &load_data->popup, filename,
                          x_position, y_position,
-                         Load_popup_x_size, Load_popup_y_size,
+                         &popup_x_size, &popup_y_size,
                          quit_window_callback, (void *) load_data );
 
     initialize_meter( &load_data->popup,

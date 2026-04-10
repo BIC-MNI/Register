@@ -298,14 +298,16 @@ static  DEFINE_EVENT_FUNCTION( quit_window_callback )
 
     (void) sprintf( window_name, "Volume %d Filter Selection", volume + 1 );
 
+    int popup_x_size = Filter_selection_x_size;
+    int popup_y_size = Filter_selection_y_size;
     create_popup_window( &popup->popup_window, window_name, x, y,
-                         Filter_selection_x_size, Filter_selection_y_size,
+                         &popup_x_size, &popup_y_size,
                          quit_window_callback, (void *) popup );
 
     initialize_widget_list( &popup->popup_window.widgets );
 
     x = Interface_x_spacing;
-    y = Filter_selection_y_size - 1 - Interface_y_spacing -
+    y = popup_y_size - 1 - Interface_y_spacing -
         Filter_button_height;
 
     for_less( view_index, (Viewport_types) 0, N_VIEWS )

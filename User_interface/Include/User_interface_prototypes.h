@@ -921,8 +921,8 @@ void set_volume_blend_value( UI_struct *ui_info, VIO_Real value );
     VIO_STR                title,
     int                   x_position,
     int                   y_position,
-    int                   x_size,
-    int                   y_size,
+    int                   *x_size,
+    int                   *y_size,
     event_function_type   quit_popup_callback,
     void                  *quit_callback_data );
 
