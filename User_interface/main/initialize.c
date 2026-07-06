@@ -23,6 +23,115 @@
 int MERGED_VOLUME_INDEX = 0;
 
 /**
+ * Scale the fixed-pixel UI-geometry globals by an integer factor.
+ *
+ * bicgl lays out all widgets in framebuffer (physical) pixels, and on a
+ * HiDPI/Retina display it DPI-scales its bitmap fonts by the same factor
+ * (see G_get_window_content_scale).  The pixel-sized widget-geometry globals
+ * below are interpreted directly in that framebuffer space, so to stay
+ * consistent with the scaled fonts they must be scaled by the same factor —
+ * otherwise text overflows still-tiny buttons.  On a normal display the
+ * factor is 1 and this is a no-op (so Linux behaviour is unchanged).
+ *
+ * Only *internal* layout dimensions are scaled here.  Window-creation sizes
+ * (Initial_window_*, and the *_popup / *_selection / Quit / Delete_tags
+ * window sizes) are logical points passed to G_create_window and already
+ * double via the framebuffer, so they are deliberately left alone; likewise
+ * fractions, counts, font sizes, colours, formats, and timings.
+ */
+static void scale_ui_geometry( int scale )
+{
+    if( scale <= 1 )
+        return;
+
+    Default_main_menu_width      *= scale;
+    Default_tag_panel_height     *= scale;
+    Default_volume_panel_height  *= scale;
+    Default_divider_width        *= scale;
+
+    Main_menu_x_offset           *= scale;
+    Main_menu_y_offset           *= scale;
+    Interface_x_spacing          *= scale;
+    Interface_y_spacing          *= scale;
+    Volume_x_spacing             *= scale;
+    Volume_y_spacing             *= scale;
+
+    Button_width                 *= scale;
+    Button_height                *= scale;
+    Text_entry_height            *= scale;
+    Text_entry_cursor_size       *= scale;
+
+    Tags_filename_x_offset       *= scale;
+    Tags_filename_width          *= scale;
+
+    Volume_menu_x_offset         *= scale;
+    Volume_menu_y_offset         *= scale;
+    Volume_button_width          *= scale;
+    Volume_button_height         *= scale;
+
+    Filter_button_width          *= scale;
+    Filter_button_height         *= scale;
+    Filter_button_spacing        *= scale;
+    Filter_y_spacing             *= scale;
+    Full_width_label_width       *= scale;
+    Full_width_text_width        *= scale;
+    Filter_view_label_width      *= scale;
+
+    Load_filename_width          *= scale;
+    Load_meter_x_size            *= scale;
+    Load_meter_y_size            *= scale;
+    Resample_meter_x_size        *= scale;
+    Resample_meter_y_size        *= scale;
+
+    Colour_bar_button_width      *= scale;
+    Colour_bar_button_spacing    *= scale;
+    Colour_bar_slider_width      *= scale;
+    Colour_bar_slider_height     *= scale;
+    Opacity_slider_width         *= scale;
+    Opacity_slider_height        *= scale;
+
+    Position_label_width         *= scale;
+    Position_values_width        *= scale;
+    Position_values_separation   *= scale;
+
+    Slider_text_entry_x_offset   *= scale;
+    Slider_text_entry_y_offset   *= scale;
+    Slider_height                *= scale;
+    Slider_text_width            *= scale;
+    Slider_text_height           *= scale;
+    Slider_text_peg_width        *= scale;
+
+    Avg_rms_label_width          *= scale;
+    Avg_rms_number_width         *= scale;
+    Rms_button_width             *= scale;
+    Rms_number_width             *= scale;
+    Value_readout_width          *= scale;
+
+    Tag_world_button_width       *= scale;
+    Tag_number_button_width      *= scale;
+    Tag_position_label_width     *= scale;
+    Tag_position_width           *= scale;
+    Tag_point_height             *= scale;
+    Tag_name_width               *= scale;
+    Tag_activity_width           *= scale;
+    Advance_tags_button_width    *= scale;
+    Tags_x_spacing               *= scale;
+    Tags_y_spacing               *= scale;
+    Tag_radius_pixels            *= scale;
+
+    Transform_button_width       *= scale;
+
+    Message_x_offset             *= scale;
+    Message_y_offset             *= scale;
+    Message_text_y_offset        *= scale;
+    Message_ok_button_width      *= scale;
+    Message_ok_button_height     *= scale;
+
+    Slice_cursor_offset          *= scale;
+    Slice_cursor_size            *= scale;
+}
+
+/**
  * Perform basic initialization for the user interface.
  *
  * Sets up the global UI_struct, creates the main window.
@@ -71,6 +180,11 @@ int MERGED_VOLUME_INDEX = 0;
                               FALSE, 1, &ui->graphics_window.window );
 
     set_window_event_callbacks( &ui->graphics_window );
+
+    /* On a HiDPI/Retina display bicgl works in framebuffer pixels and scales
+     * its fonts up; scale the fixed-pixel widget geometry to match, before any
+     * layout is computed.  No-op (scale == 1) on normal displays and X11. */
+    scale_ui_geometry( G_get_window_content_scale( ui->graphics_window.window ) );
 
     IF_initialize_register( ui->graphics_window.window, executable_name,
                             n_volumes);
