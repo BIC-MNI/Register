@@ -287,6 +287,7 @@ static  void   record_register_volume(
     int            view;
 
     delete_volume( main->trislice[volume_index].volume );
+    main->trislice[volume_index].volume = NULL;
     main->trislice[volume_index].input_flag = FALSE;
 
     if (main->trislice[volume_index].rgb_colour_map != NULL)

@@ -173,6 +173,22 @@ static  void  convert_volume1_voxel_to_volumeN(
 
     for (vol = 0; vol < main->n_volumes_displayed - 1; vol++)
     {
+      if( !is_volume_active( main, vol ) )
+      {
+          /* Slot has no volume loaded: still give it a validly-allocated,
+           * empty pixel buffer, since composite_merged_pixels() reads
+           * pixels[vol] for every vol unconditionally. */
+          initialize_pixels( &pixels[vol],
+                             merged_pixels->x_position,
+                             merged_pixels->y_position,
+                             merged_pixels->x_size,
+                             merged_pixels->y_size,
+                             merged_pixels->x_zoom,
+                             merged_pixels->y_zoom,
+                             RGB_PIXEL );
+          continue;
+      }
+
       volume2 = get_slice_volume( main, vol );
       get_volume_separations( volume2, separations2 );
 
