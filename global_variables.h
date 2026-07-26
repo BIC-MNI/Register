@@ -65,11 +65,11 @@ START_GLOBALS
     DEF_GLOBAL( Button_height, int, 15 )
     DEF_GLOBAL( Button_width, int, 80 )
     DEF_GLOBAL( Button_text_font, int, (int) SIZED_FONT )
-    DEF_GLOBAL( Button_text_font_size, VIO_Real, 15.0 )
+    DEF_GLOBAL( Button_text_font_size, VIO_Real, 10.0 )
 
     DEF_GLOBAL( Text_entry_height, int, 15 )
     DEF_GLOBAL( Text_entry_font, int, (int) SIZED_FONT )
-    DEF_GLOBAL( Text_entry_font_size, VIO_Real, 15.0 )
+    DEF_GLOBAL( Text_entry_font_size, VIO_Real, 10.0 )
     DEF_GLOBAL( Text_entry_cursor_size, VIO_Real, 2.0 )
     DEF_GLOBAL( Text_entry_blink_time, VIO_Real, 0.5 )
 
@@ -102,7 +102,7 @@ START_GLOBALS
     DEF_GLOBAL( Filter_name3, VIO_STR, "Coronal Filter" )
 
     DEF_GLOBAL( Label_text_font, int, (int) SIZED_FONT )
-    DEF_GLOBAL( Label_text_font_size, VIO_Real, 15.0 )
+    DEF_GLOBAL( Label_text_font_size, VIO_Real, 10.0 )
 
     DEF_GLOBAL( Load_popup_x_size, int, 250 )
     DEF_GLOBAL( Load_popup_y_size, int, 80 )
@@ -131,7 +131,7 @@ START_GLOBALS
     DEF_GLOBAL( Slider_text_width, int, 50 )
     DEF_GLOBAL( Slider_text_height, int, 15 )
     DEF_GLOBAL( Slider_text_font, int, (int) SIZED_FONT )
-    DEF_GLOBAL( Slider_text_font_size, VIO_Real, 15.0 )
+    DEF_GLOBAL( Slider_text_font_size, VIO_Real, 10.0 )
     DEF_GLOBAL( Slider_text_peg_width, int, 10 )
 
     DEF_GLOBAL( Colour_bar_slider_width, int, 150 )
