@@ -1,0 +1,41 @@
+# Citation metadata for Register (Citation File Format, https://citation-file-format.github.io/).
+# The author list comes from the commit history and from the history comments in the files.
+
+cff-version: 1.2.0
+title: Register
+message: >-
+  If you use this software, please cite it using the metadata from this file.
+type: software
+authors:
+  - given-names: David
+    family-names: MacDonald
+  - given-names: Steve M.
+    family-names: Robbins
+  - given-names: Andrew L.
+    family-names: Janke
+    orcid: "https://orcid.org/0000-0003-0547-5171"
+  - given-names: Robert D.
+    family-names: Vincent
+  - given-names: Vladimir
+    family-names: Fonov
+    email: vladimir.fonov@gmail.com
+    affiliation: McGill University
+    orcid: "https://orcid.org/0000-0003-3402-7749"
+  - given-names: Peter
+    family-names: Neelin
+  - given-names: Haz-Edine
+    family-names: Assemlal
+  - given-names: Jason
+    family-names: Lerch
+    orcid: "https://orcid.org/0000-0001-6164-2881"
+repository-code: "https://github.com/BIC-MNI/Register"
+abstract: >-
+  MNI Register: interactive program to display and merge two volumes and to
+  pick homologous points for manual registration of one volume to the other.
+keywords:
+  - MINC
+  - medical imaging
+  - neuroimaging
+  - visualization
+  - image registration
+license-url: "https://github.com/BIC-MNI/Register/blob/master/COPYING"
